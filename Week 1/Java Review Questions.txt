@@ -1,0 +1,104 @@
+What is Java?
+What does it mean to be a “pass-by-value” language? How is this different from passing by reference?
+What is the difference between the JRE, JDK, and JVM?
+What happens during the compilation process?
+What are the benefits of using Java?
+What is a constructor?
+What is the first line of a constructor?
+What are the primitive data types?
+What is a no args constructor?
+What is the default constructor?
+Under what circumstances does a class have a default constructor?
+What are the scopes of a variable in java?
+What are the different access modifiers? What does each one do?
+What are the different control statements, and how are they different?
+How do you create an Array in java?
+What is varargs?
+What is the first line of a java application?
+What are packages and imports?
+What is a static import?
+What does the static modifier do?
+What are Strings?
+What are some string methods?
+What is the difference between String, StringBuilder, and StringBuffer?
+What is the string pool?
+What is the difference between the stack and the heap?
+What goes on the stack?
+What goes on the heap?
+What is an exception?
+What is the difference between an exception and an error?
+What are the different ways in which we can handle an exception?
+What are the differences between a checked exception and an unchecked exception?
+How many catch blocks can be used in a try catch? (min and max)?
+What does finally do?
+Can finally be skipped? How?
+How do I create a custom exception?
+What is autoboxing? 
+What is auto-unboxing?
+What is a wrapper class?
+What are the different wrapper classes?
+What is garbage collection?
+How do I perform garbage collection?
+What is the difference between final, finally, and finalize?
+What is the Reflection API?
+What is a Lambda expression?
+What is a functional interface?
+What are the pillars of object oriented programming? Explain them.
+What is the difference between an abstract class and an interface?
+How many interfaces can a class implement in Java?
+How many interfaces can an interface implement in Java?
+How many interfaces can interface extend in Java?
+Can an abstract class implement an interface in Java?
+How many classes can a class extend in Java?
+How many abstract classes can a class extend in Java?
+What are the different non-access modifiers? What do they do?
+What are the differences between FileinputStream, FileReader, and BufferedReader (as well as their counterparts)?
+What is the Scanner class?
+What are some Scanner methods?
+What is serialization and deserialization?
+How do I serialize an object?
+What is a marker interface? What is an example of a marker interface?
+How do I prevent some data from getting serialized? 
+What is the difference between Collection and Collections?
+What are some of the subinterfaces of the Collection interface?
+What are the various input/delete/get methods for List, Set, and Queue?
+How are the List, Set, and Queue interfaces different from each other?
+What is an iterator? 
+How is an iterator different from a ListIterator?
+What are generics? Why use them?
+Do generics support primitive data types?
+What is the difference between comparator and comparable?
+What is the purpose of the Object class?
+What are some methods that are inherited from the Object class?
+What is the difference between  == and .equals?
+What is the purpose of hashcode?
+What is the Map interface’s relationship to the Collection interface?
+Explain the difference between Hashmap and Hashtable.
+How do I iterate through a HashMap?
+What is multithreading? Why do we use it?
+What are the different ways to create a thread? What is different about them?
+Why would I choose one method of creating a thread over another?
+What are the JVM recognized states of a thread?
+What are various methods that threads have?
+What is synchronization?
+What are the risks of synchronization?
+What is deadlock, livelock, and thread starvation?
+What is the producer and consumer problem?
+What is JUnit?
+What are the annotations of JUnit?
+What are the different assert methods of JUnit?
+How do I create a test case and test suite in JUnit?
+What is Maven?
+What is the Maven lifecycle?
+What is the purpose of the pom.xml?
+What is the purpose of using Maven?
+What is the difference between a Singleton and Factory?
+What is the difference between a Java Bean and a POJO?
+What is the difference between implicit and explicit casting?
+When can you upcast a variable? Downcast a variable?
+What is Git?
+What are some of the benefits of using Git?
+What is version control?
+What are some basic Git commands?
+What is the difference between git init and git clone?
+
