@@ -1,8 +1,13 @@
 public class PuppyMill {
-
+    
+    // Static variable counting the number of puppies created
+    // Static variables do not need to be part of an object to be called
     static int puppyNumber;
+    //default value of int used to begin the class at 0;
 
     public PuppyMill() {
+    	
+	//Constructor that increments the value of puppyNumber
         puppyNumber++;
 
     }
