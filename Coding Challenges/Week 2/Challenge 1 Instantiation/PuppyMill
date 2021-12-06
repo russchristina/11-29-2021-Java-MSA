@@ -1,0 +1,9 @@
+public class PuppyMill {
+
+    static int puppyNumber;
+
+    public PuppyMill() {
+        puppyNumber++;
+
+    }
+}
