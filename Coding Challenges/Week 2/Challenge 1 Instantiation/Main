@@ -1,13 +1,18 @@
 public class Main {
 
     public static void main(String[] args) {
-
+	
         PuppyMill puppyOutOfLoop = new PuppyMill();
+	// PuppyMill class created in main method
+	// Single instantiation
 
         for(int i = 0; i < 13; i++) {
-
+	    // For loop to create 13 puppies, and increment
+	    // static variable puppyNumber related to class
             PuppyMill puppyInLoop = new PuppyMill();
         }
+	// Print out total number of puppy objects created
+	// static variable is connected to puppy class, not puppy objects
         System.out.println(PuppyMill.puppyNumber);
 
     }
