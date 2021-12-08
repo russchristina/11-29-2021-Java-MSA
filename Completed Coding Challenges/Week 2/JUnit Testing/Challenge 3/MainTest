@@ -1,0 +1,50 @@
+package com.company;
+
+import org.junit.jupiter.api.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class MainTest {
+
+    Main mainClass;
+
+    @BeforeAll
+    void setUp(){
+        this.mainClass = new Main();
+    }
+
+    @BeforeEach
+    void setUpBeforeEach() {
+        System.out.println("Begin Test");
+    }
+
+    @AfterEach
+    void tearDownAfterEach() {
+        System.out.println("End Test");
+    }
+
+    @Test
+    void differenceTest() {
+        Assertions.assertEquals(3, mainClass.absoluteDifference(6,3));
+    }
+
+    @Test
+    void notNegativeTest() {
+        Assertions.assertTrue(mainClass.absoluteDifference(4, 20) >= 0);
+    }
+
+    @Test
+    void positiveTest(){
+        Assertions.assertTrue(mainClass.absoluteDifference(5, 300000) > 0);
+    }
+
+    @Test
+    void differenceOfNegativeIntTest(){
+        Assertions.assertEquals(10, mainClass.absoluteDifference(-40,-30));
+    }
+
+    @Test
+    void differenceWithZeroTest() {
+        Assertions.assertEquals(0, mainClass.absoluteDifference(10,10));
+    }
+
+}
