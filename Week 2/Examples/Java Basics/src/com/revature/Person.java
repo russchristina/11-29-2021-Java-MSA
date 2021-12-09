@@ -115,5 +115,11 @@ public class Person {
 		 */
 		System.out.println(this.firstName + " is eating " + foodName + ".");
 	}
+
+	@Override
+	public String toString() {
+		return "Person [firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", height=" + height
+				+ ", hairColor=" + hairColor + ", eyeColor=" + eyeColor + "]";
+	}
 	
 }
