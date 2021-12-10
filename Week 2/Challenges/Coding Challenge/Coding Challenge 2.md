@@ -15,13 +15,13 @@ Write a method that prints a left-aligned pyramid with n rows, where n is an int
 
 For example, if the number 7 is passed to the method, it should print:
 
-\*
-\*\*
-\*\*\*
-\*\*\*\*
-\*\*\*\*\*
-\*\*\*\*\*\*
-\*\*\*\*\*\*\*
+\* \
+\*\* \
+\*\*\* \
+\*\*\*\* \
+\*\*\*\*\* \
+\*\*\*\*\*\* \
+\*\*\*\*\*\*\* 
 
 ## Challenge 2: Fibonacci
 
