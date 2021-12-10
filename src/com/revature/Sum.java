@@ -1,4 +1,4 @@
-package com.revature;
+package Wilson_Challenges.bin.com.revature.Wilson_Challenges.src.com.revature;
 
 public class Sum {
 	
