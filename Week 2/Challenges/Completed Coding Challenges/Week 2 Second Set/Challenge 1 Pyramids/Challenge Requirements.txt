@@ -1,0 +1,15 @@
+Challenge 1: Pyramid
+
+Write a method that prints a left-aligned pyramid with n rows, where n is an integer that is passed to the method.
+Each row of your pyramid should contain a number of asterisks ( * ) that is equal to the row number.
+
+Example output, if the number 7 is passed to the method:
+
+*
+**
+***
+****
+*****
+******
+*******
+
