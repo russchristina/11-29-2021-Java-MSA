@@ -13,7 +13,6 @@ public class Palindrome {
 		 * If the loop completes without a return, the method returns true.
 		 */
 		input = input.replaceAll("[\\W\\s\\d]", "").toLowerCase();
-		System.out.println(input);
 		
 		for (int i = 0; i < input.length()/2; i++) {
 			if(input.charAt(i) != input.charAt(input.length() - i - 1)) {
