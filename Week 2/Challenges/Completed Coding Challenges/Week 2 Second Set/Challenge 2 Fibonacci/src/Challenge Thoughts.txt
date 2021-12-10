@@ -1,0 +1,39 @@
+A method is required that takes an integer n, and creates a sequence based on the Fibonacci sequence.
+
+It is only required to calculate the first n, I will make it print that out too.
+
+A linked list is most likely the best option, the Fibonacci sequence creates a new node based
+only on the previous node.
+Therefore, only two values are needed at a time to extend the sequence, the newest number and the
+number just before it.
+
+n + (n - 1) = n + 1
+where n is looking at row number
+
+row 1
+0 + (0) = 1 --- ignore the 0 element, use just 1
+row 2
+1 + 0 = 1
+row 3
+1 + 1 = 2
+row 4
+2 + 1 = 3
+row 5
+3 + 2 = 5
+.
+.
+.
+row n
+n + n-1 = n+1
+
+
+Testing Requirements
+
+Fibonacci sequence generator
+- Take in an integer and return the integer at the nth position
+- Create a LinkedList of length equal to n
+- Create a method that takes LinkedList of fib sequence, finds next value, adds it to LinkedList
+
+Sequence printer
+- Take linkedList, print out array
+- Print in format for sequence, including the math needed

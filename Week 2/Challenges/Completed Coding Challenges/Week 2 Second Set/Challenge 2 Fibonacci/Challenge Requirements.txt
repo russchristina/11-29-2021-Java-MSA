@@ -1,0 +1,11 @@
+Challenge 2: Fibonacci
+
+Write a method that calculates the first n numbers in the Fibonacci sequence
+n is an integer that is passed to the method
+
+Note:
+The Fibonacci sequence is a sequence in which the next number in the sequence
+is calculated by adding the previous two numbers in the sequence. For example,
+when n is 7, the method should return 13. The logic is as follows:
+
+1 1 2 3 5 8 13 -> 1 + 1 = 2, 2 + 1 = 3, 3 + 2 = 5, 5 + 3 = 8, 8 + 5 = 13
