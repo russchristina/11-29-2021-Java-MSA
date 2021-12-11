@@ -36,14 +36,14 @@ public class OutputTest {
     @Test
     public void returnsStringBufferToPrintTest() {
         PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
-        Assertions.assertTrue(pyramidPrinter.generatePyramidString(3, '*')
+        Assertions.assertTrue(pyramidPrinter.generateRow(3, '*')
                 instanceof StringBuilder);
     }
 
     @Test
     public void endLineCharacterTest() {
         PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
-        Assertions.assertTrue(pyramidPrinter.generatePyramidString(1, 'H').charAt(1) == '\n');
+        Assertions.assertTrue(pyramidPrinter.generateRow(1, 'H').charAt(1) == '\n');
     }
 
     @Test
