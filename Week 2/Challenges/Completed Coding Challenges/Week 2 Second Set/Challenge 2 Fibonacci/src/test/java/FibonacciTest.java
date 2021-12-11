@@ -17,8 +17,10 @@ public class FibonacciTest {
 
      */
 
-    public FibonacciGenerator fibonacciSequenceBuilder(int sequenceSize) {
-        return new FibonacciGenerator(sequenceSize);
+    public FibonacciGenerator fibonacciSequenceBuilder(int integerN) {
+        FibonacciGenerator fibonacciGenerator = new FibonacciGenerator();
+        fibonacciGenerator.setIntegerN(integerN);
+        return fibonacciGenerator;
     }
 
     public int fibonacciSequenceValueAtEnd(FibonacciGenerator fibonacciSequence){
