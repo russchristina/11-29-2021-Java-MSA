@@ -1,35 +1,29 @@
 public class PalindromeChecker {
 
-    private String userInput;
-
-    public PalindromeChecker(String userInput) {
-        this.userInput = removeSpacesLowerCase(userInput);
-    }
-
-    public String removeSpacesLowerCase(String input) {
-        char[] inputChars = input.toLowerCase().toCharArray();
-        StringBuffer userInputNoSpaceLowerCase = new StringBuffer();
+    public String removeSpacesLowerCase(String userInput) {
+        char[] inputChars = userInput.toLowerCase().toCharArray();
+        StringBuilder userInputNoSpaceLowerCase = new StringBuilder();
         for(char c: inputChars) if(c != ' ') userInputNoSpaceLowerCase.append(c);
         return userInputNoSpaceLowerCase.toString();
     }
 
-    public StringBuffer reverseStringBuffer() {
-        StringBuffer reverseInput = new StringBuffer(userInput);
+    public StringBuffer reverseStringBuffer(String userInput) {
+        StringBuffer reverseInput = new StringBuffer(removeSpacesLowerCase(userInput));
         reverseInput.reverse();
         return reverseInput;
     }
 
-    public boolean doesItPalindrome(){
-        return userInput.contentEquals(reverseStringBuffer());
+    public void doesItPalindrome(String userInput){
+        System.out.printf("Is \"%s\" a palindrome? ", userInput);
+        System.out.println(removeSpacesLowerCase(userInput).contentEquals(reverseStringBuffer(userInput)));
     }
 
     public static void main(String[] args) {
-        String userInputString = "r ac ec           ar";
-        PalindromeChecker palindromeChecker = new PalindromeChecker(userInputString);
-        System.out.println(palindromeChecker.doesItPalindrome());
+        PalindromeChecker palindromeChecker = new PalindromeChecker();
+        palindromeChecker.doesItPalindrome("r ac ec           ar");
+        palindromeChecker.doesItPalindrome("Hasda ajksd");
+        palindromeChecker.doesItPalindrome("a iBo hpHO bIa");
+
     }
 
-    public String getUserInput() {
-        return userInput;
-    }
 }

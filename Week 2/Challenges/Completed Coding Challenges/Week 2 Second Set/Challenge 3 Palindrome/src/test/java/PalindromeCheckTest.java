@@ -31,31 +31,31 @@ public class PalindromeCheckTest {
     this was not within my ability, so I reverted to an easier solution for myself.
      */
 
-    public PalindromeChecker palindromeCheckerBuilder(String userInput){
-        return new PalindromeChecker(userInput);
+    public PalindromeChecker palindromeCheckerBuilder(){
+        return new PalindromeChecker();
     }
 
     @Test
     public void returnStringTest(){
-        Assertions.assertTrue(palindromeCheckerBuilder("luffy").getUserInput() instanceof String);
+        Assertions.assertTrue(palindromeCheckerBuilder().reverseStringBuffer("luffy") instanceof StringBuffer);
     }
 
     @Test
     public void reverseStringBufferTest(){
-        String userInput = "abcba";
-        Assertions.assertTrue(palindromeCheckerBuilder(userInput).doesItPalindrome());
+        Assertions.assertTrue(palindromeCheckerBuilder().reverseStringBuffer("abc").toString().
+                contentEquals("cba"));
     }
 
     @Test
     public void removeSpacesTest(){
-        String userInput = "a b c";
-        Assertions.assertEquals("abc", palindromeCheckerBuilder(userInput).removeSpacesLowerCase(userInput));
+        Assertions.assertEquals("abc",
+                palindromeCheckerBuilder().removeSpacesLowerCase("a b c"));
     }
 
     @Test
     public void reverseStringWithSpaceTest(){
-        String userInput = "a bcba";
-        Assertions.assertTrue(palindromeCheckerBuilder(userInput).doesItPalindrome());
+        Assertions.assertTrue(palindromeCheckerBuilder().removeSpacesLowerCase("a b   c").
+                contentEquals("abc"));
     }
 
 
