@@ -1,7 +1,9 @@
 import java.util.LinkedList;
 
 public class FibonacciGenerator {
-
+    
+    //Changed from List<> to LinkedList<> to take advantage of getLast() of LinkedList
+    //Only occurence of Object referencing.
     private LinkedList<Integer> fibonacciSequence;
 
     public LinkedList<Integer> generateFibonacciLinkedList(int integerN) {
