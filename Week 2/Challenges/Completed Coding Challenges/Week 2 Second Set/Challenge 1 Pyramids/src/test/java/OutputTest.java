@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class OutputTest {
@@ -19,37 +20,32 @@ public class OutputTest {
 
      */
 
-    public UserInput userInputBuilder(int numberOfRows, char characterToPrint){
-        return new UserInput(numberOfRows, characterToPrint);
-    }
+    /*
+    Reformatted the code to have less useless tests, and ones that are more meaningful. Removed the userInput class
+    I had originally and just initialized those with the PyramidPrinter Class.
+     */
 
-    public PyramidPrinter pyramidPrinterBuilder(int numberOfRows, char characterToPrint) {
-        UserInput userInput = userInputBuilder(numberOfRows, characterToPrint);
-        return new PyramidPrinter(userInput);
-    }
-
-    @Test
-    public void correctCharacterFromUserInputTest() {
-        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder(0, 'd');
-        Assertions.assertEquals('d', pyramidPrinter.getPrintCharacter());
-    }
-
-    @Test
-    public void correctNumberOfRowsFromUserInputTest() {
-        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder(5, '*');
-        Assertions.assertEquals(5, pyramidPrinter.getNumberOfRows());
+    public PyramidPrinter pyramidPrinterBuilder() {
+        return new PyramidPrinter();
     }
 
     @Test
     public void returnsStringBufferToPrintTest() {
-        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder(3, '*');
-        Assertions.assertTrue(pyramidPrinter.generatePyramidString() instanceof StringBuffer);
+        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
+        Assertions.assertTrue(pyramidPrinter.generatePyramidString(3, '*')
+                instanceof StringBuffer);
     }
 
     @Test
     public void endLineCharacterTest() {
-        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder(1, '*');
-        Assertions.assertTrue(pyramidPrinter.generatePyramidString().charAt(1) == '\n');
+        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
+        Assertions.assertTrue(pyramidPrinter.generatePyramidString(1, 'H').charAt(1) == '\n');
+    }
+
+    @Test
+    public void lengthOfRowIncludingEndRowCharacterTest() {
+        PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
+        Assertions.assertEquals(5, pyramidPrinter.generateRow(4).length());
     }
 
 

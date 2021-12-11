@@ -4,20 +4,16 @@ public class PyramidPrinter {
     private int numberOfRows;
     private StringBuffer pyramidBuffer = new StringBuffer();
 
-    public PyramidPrinter(UserInput userInput) {
-        this.characterToPrint = userInput.getCharacterToPrint();;
-        this.numberOfRows = userInput.getNumberOfRows();
-    }
-
     public char getPrintCharacter() {
         return characterToPrint;
     }
-
     public int getNumberOfRows() {
         return numberOfRows;
     }
 
-    public StringBuffer generatePyramidString() {
+    public StringBuffer generatePyramidString(int numberOfRows, char characterToPrint) {
+        this.numberOfRows = numberOfRows;
+        this.characterToPrint = characterToPrint;
         for(int i = 1; i < numberOfRows + 1; i++) pyramidBuffer.append(generateRow(i));
         return pyramidBuffer;
     }
@@ -27,6 +23,11 @@ public class PyramidPrinter {
         for(int i = 0; i < lengthOfRow; i++) row.append(characterToPrint);
         row.append('\n');
         return row;
+    }
+
+    public static void main(String... args){
+        PyramidPrinter pyramidPrinter = new PyramidPrinter();
+        System.out.println(pyramidPrinter.generatePyramidString(90, '*'));
     }
 
 

@@ -7,13 +7,8 @@ Outputs
 - Output number of characters equal to row number
 - Maximum row is equal to inputted number
 
-Tests
-Inputs
-X Recognises the correct input number
-X Recognises the correct character to print
-
 Outputs
 X Outputs the correct character to print
 X Outputs the correct number of rows
-- Outputs the correct string of characters for row number
+X Outputs the correct string of characters for row number
 
