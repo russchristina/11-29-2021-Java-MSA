@@ -1,12 +1,11 @@
 import java.util.LinkedList;
-import java.util.List;
 
 public class FibonacciGenerator {
 
-    private int integerN;
-    private LinkedList<Integer> fibonacciSequence = new LinkedList<>();
+    private LinkedList<Integer> fibonacciSequence;
 
-    public LinkedList<Integer> getFibonacciLinkedList() {
+    public LinkedList<Integer> generateFibonacciLinkedList(int integerN) {
+        fibonacciSequence = new LinkedList<>();
         for(int i = 0; i < integerN; i++) fibonacciSequence.add(fibonacciRowSolver(i));
         return fibonacciSequence;
     }
@@ -17,16 +16,12 @@ public class FibonacciGenerator {
         return (fibonacciSequence.getLast()+previousSequence);
     }
 
-    public void setIntegerN(int integerN) {
-        this.integerN = integerN;
-    }
-
-    //Method call that takes in an inputN and prints out using stream and forEach with
-    //method referencing of each value in the linkedList
+    //Method call that takes in an inputN and prints out using forEach with
+    //method referencing of each value in the linkedList to just print out the sequence
+    //from the linkedList
 
     public void fibonacciSequencePrinter(int integerN){
-        this.integerN = integerN;
-        getFibonacciLinkedList().stream().forEach(System.out::println);
+        generateFibonacciLinkedList(integerN).forEach(System.out::println);
     }
 
     public static void main(String[] args) {
