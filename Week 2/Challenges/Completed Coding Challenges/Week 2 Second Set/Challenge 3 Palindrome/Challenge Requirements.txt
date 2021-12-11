@@ -1,0 +1,18 @@
+Challenge 3: Palindrome
+
+Write a method that returns true if a String that is passed into the method is a palindrome and false if the
+String is just a single word with no spaces.
+NOTE: A palindrome is simply a word that is spelled the same forwards and backwards. Examples include:
+
+civic
+radar
+madam
+refer
+aibohphobia
+
+Challenge: For a slightly more challenging variation of the method, assume that the String can contain spaces.
+
+Example:
+
+taco cat
+was it a car or a cat I saw

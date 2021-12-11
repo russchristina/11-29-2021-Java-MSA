@@ -1,0 +1,13 @@
+Take in an input of type String
+Check if it is a palindrome
+
+How to check?
+- remove all spaces from the String
+- reverse it as a duplicate
+- Check if it is equal to the original without spaces
+- if it is then it is a palindrome
+
+Tests
+return a string without any whitespace characters (/s)
+reverse the order of characters of a string
+check if two strings are equivalent
