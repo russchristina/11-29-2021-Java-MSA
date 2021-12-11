@@ -25,6 +25,10 @@ public class OutputTest {
     I had originally and just initialized those with the PyramidPrinter Class.
      */
 
+    /*
+    Removed the constructor from pyramid generator, unnecessary code within the class
+     */
+
     public PyramidPrinter pyramidPrinterBuilder() {
         return new PyramidPrinter();
     }
@@ -45,7 +49,7 @@ public class OutputTest {
     @Test
     public void lengthOfRowIncludingEndRowCharacterTest() {
         PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
-        Assertions.assertEquals(5, pyramidPrinter.generateRow(4).length());
+        Assertions.assertEquals(5, pyramidPrinter.generateRow(4, '*').length());
     }
 
 
