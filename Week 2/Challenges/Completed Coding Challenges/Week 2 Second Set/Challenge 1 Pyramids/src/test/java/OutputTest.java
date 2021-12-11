@@ -8,7 +8,7 @@ public class OutputTest {
     The main focus for the output tests were to ensure that the UserInput object was being read correctly
     in order to generate the Pyramid Printer object.
     The classes correctCharacterFromUserTest and correctNumberOfRowsFromUserTest are a bit redundant, but I
-    decided to make those values private so they needed getters and setters.
+    decided to make those values private, so they needed getters and setters.
     The focus was ensuring correct transfer between UserInput obj to PyramidPrinter obj.
 
     I used a StringBuffer instead of a String due to the constant need for updating and appending character to
@@ -37,7 +37,7 @@ public class OutputTest {
     public void returnsStringBufferToPrintTest() {
         PyramidPrinter pyramidPrinter = pyramidPrinterBuilder();
         Assertions.assertTrue(pyramidPrinter.generatePyramidString(3, '*')
-                instanceof StringBuffer);
+                instanceof StringBuilder);
     }
 
     @Test

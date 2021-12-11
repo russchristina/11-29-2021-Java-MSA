@@ -1,15 +1,15 @@
 public class PyramidPrinter {
 
-    private StringBuffer pyramidBuffer;
+    private StringBuilder pyramidBuilder;
 
-    public StringBuffer generatePyramidString(int numberOfRows, char characterToPrint) {
-        this.pyramidBuffer = new StringBuffer();
-        for(int i = 1; i < numberOfRows + 1; i++) pyramidBuffer.append(generateRow(i, characterToPrint));
-        return pyramidBuffer;
+    public StringBuilder generatePyramidString(int numberOfRows, char characterToPrint) {
+        this.pyramidBuilder = new StringBuilder();
+        for(int i = 1; i < numberOfRows + 1; i++) pyramidBuilder.append(generateRow(i, characterToPrint));
+        return pyramidBuilder;
     }
 
-    public StringBuffer generateRow(int lengthOfRow, char characterToPrint) {
-        StringBuffer row = new StringBuffer();
+    public StringBuilder generateRow(int lengthOfRow, char characterToPrint) {
+        StringBuilder row = new StringBuilder();
         for(int i = 0; i < lengthOfRow; i++) row.append(characterToPrint);
         row.append('\n');
         return row;
@@ -19,7 +19,7 @@ public class PyramidPrinter {
         PyramidPrinter pyramidPrinter = new PyramidPrinter();
         System.out.println(pyramidPrinter.generatePyramidString(4, '*'));
         System.out.println(pyramidPrinter.generatePyramidString(4, '+'));
-        System.out.println(pyramidPrinter.generatePyramidString(7, '|'));
+        System.out.println(pyramidPrinter.generatePyramidString(200, '|'));
     }
 
 
