@@ -1,5 +1,7 @@
 package palindrome;
 
+import java.util.ArrayList;
+
 public class Palindrome {
 
 	protected boolean isPalindrome(String s) {
@@ -16,5 +18,12 @@ public class Palindrome {
 	
 	public static void main(String[] args) {
 
+		ArrayList<Integer> arrLi = new ArrayList<>();
+		arrLi.add(2);
+		arrLi.add(1);
+		arrLi.add(3);
+		System.out.println(arrLi);
+		arrLi.sort(null);
+		System.out.println(arrLi);
 	}
 }
