@@ -67,7 +67,16 @@ class PrimaryUserTest {
             e.printStackTrace();
         }
     }
-    
+
+    @Test
+    void removeSecondaryUserEmptyInputExceptionTest(){
+        Assertions.assertThrows(EmptyInputException.class, () -> genericPrimary.removeSecondaryUser("", account));
+    }
+
+    @Test
+    void removeSecondaryUserUserNotFoundExceptionTest(){
+        Assertions.assertThrows(UserNotFoundException.class, () -> genericPrimary.removeSecondaryUser("NOTREAL", account));
+    }
 
     @Test
     void transferFundsToUser() {
