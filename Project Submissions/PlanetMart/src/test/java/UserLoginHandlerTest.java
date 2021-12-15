@@ -1,15 +1,15 @@
 import com.revature.database.exceptions.FailedToCreateAccountException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
-import com.revature.service.Login;
-import com.revature.service.exceptions.EmptyStringInputException;
+import com.revature.service.UserLoginHandler;
+import com.revature.service.exceptions.EmptyInputException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
-public class LoginTest {
+public class UserLoginHandlerTest {
 
-    public Login loginBuilder(String username, String password){
-        return new Login(username, password);
+    public UserLoginHandler loginBuilder(String username, String password){
+        return new UserLoginHandler(username, password);
     }
 
     @Test
@@ -23,13 +23,23 @@ public class LoginTest {
     }
 
     @Test
+    void spaceInputUsernameStringExceptionTest(){
+        Assertions.assertThrows(EmptyInputException.class, () -> loginBuilder("   ", "pass"), "An empty string username will throw an exception");
+    }
+
+    @Test
     void emptyInputUsernameStringExceptionTest(){
-        Assertions.assertThrows(EmptyStringInputException.class, () -> loginBuilder(" ", "pass"), "An empty string username will throw an exception");
+        Assertions.assertThrows(EmptyInputException.class, () -> loginBuilder("", "pass"), "An empty string username will throw an exception");
+    }
+
+    @Test
+    void spaceInputPasswordStringExceptionTest(){
+        Assertions.assertThrows(EmptyInputException.class, () -> loginBuilder("user", "    "), "An empty string password will throw an exception");
     }
 
     @Test
     void emptyInputPasswordStringExceptionTest(){
-        Assertions.assertThrows(EmptyStringInputException.class, () -> loginBuilder("user", " "), "An empty string password will throw an exception");
+        Assertions.assertThrows(EmptyInputException.class, () -> loginBuilder("user", ""), "An empty string password will throw an exception");
     }
 
     @Test
@@ -45,19 +55,20 @@ public class LoginTest {
 
     @Test
     void failedToCreateAccountExceptionTest(){
-        Login login = new Login();
-        Assertions.assertThrows(FailedToCreateAccountException.class, () -> login.createAccount("user1","password"));
+        UserLoginHandler userLoginHandler = new UserLoginHandler();
+        Assertions.assertThrows(FailedToCreateAccountException.class, () -> userLoginHandler.createAccount("user1","password"));
     }
 
     @Test
     void successfulAccountCreationTest(){
-        Login login = new Login();
+        UserLoginHandler userLoginHandler = new UserLoginHandler();
         try {
-            Assertions.assertTrue(login.createAccount("newUser", "pass"));
+            Assertions.assertTrue(userLoginHandler.createAccount("newUser", "pass"));
         } catch (FailedToCreateAccountException e) {
             e.printStackTrace();
         }
     }
+
 
 
 }
