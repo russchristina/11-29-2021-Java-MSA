@@ -1,4 +1,5 @@
-import com.revature.database.exceptions.FailedToCreateAccountException;
+import com.revature.database.exceptions.DuplicateUsernameException;
+import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
 import com.revature.service.UserLoginHandler;
 import com.revature.service.exceptions.EmptyInputException;
@@ -49,14 +50,18 @@ public class UserLoginHandlerTest {
     }
 
     @Test
-    void correctCredentialLoginTest(){
-        Assertions.assertTrue(loginBuilder("user1", "pass1").authenticateAccountCredentials());
+    void correctCredentialLoginTest() {
+        try {
+            Assertions.assertTrue(loginBuilder("user1", "pass1").authenticateAccountCredentials());
+        } catch (IncorrectAccountCredentialsException | EmptyUserCredentialDataException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     void failedToCreateAccountExceptionTest(){
         UserLoginHandler userLoginHandler = new UserLoginHandler();
-        Assertions.assertThrows(FailedToCreateAccountException.class, () -> userLoginHandler.createAccount("user1","password"));
+        Assertions.assertThrows(DuplicateUsernameException.class, () -> userLoginHandler.createAccount("user1","password"));
     }
 
     @Test
@@ -64,7 +69,7 @@ public class UserLoginHandlerTest {
         UserLoginHandler userLoginHandler = new UserLoginHandler();
         try {
             Assertions.assertTrue(userLoginHandler.createAccount("newUser", "pass"));
-        } catch (FailedToCreateAccountException e) {
+        } catch (DuplicateUsernameException e) {
             e.printStackTrace();
         }
     }

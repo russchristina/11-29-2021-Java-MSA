@@ -1,7 +1,9 @@
 package com.revature.service;
 
-import com.revature.database.DummyData;
-import com.revature.database.exceptions.FailedToCreateAccountException;
+
+import com.revature.database.UserCredentialsDao;
+import com.revature.database.exceptions.DuplicateUsernameException;
+import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
 import com.revature.service.exceptions.EmptyInputException;
 
@@ -11,6 +13,7 @@ public class UserLoginHandler {
 
     private String username;
     private String password;
+    private UserCredentialsDao userCredentialsDao = new UserCredentialsDao();
 
     public UserLoginHandler(String username, String password) {
         if(username.trim().contentEquals("") || username.isEmpty()) throw new EmptyInputException("Empty Username");
@@ -19,9 +22,7 @@ public class UserLoginHandler {
         this.password = password;
     }
 
-    public UserLoginHandler() {
-
-    }
+    public UserLoginHandler(){ }
 
     public String getUsername() {return username;}
     public String getPassword() {return password;}
@@ -36,18 +37,18 @@ public class UserLoginHandler {
         this.password = password;
     }
 
-    public boolean authenticateAccountCredentials() {
-        if(!DummyData.userCredentialCheck(username, password)) throw new IncorrectAccountCredentialsException();
+    public boolean authenticateAccountCredentials() throws IncorrectAccountCredentialsException, EmptyUserCredentialDataException {
+        if(!userCredentialsDao.userCredentialCheck(username, password)) throw new IncorrectAccountCredentialsException();
         return true;
     }
 
-    public boolean createAccount(String newUser, String password) throws FailedToCreateAccountException{
+    public boolean createAccount(String newUser, String password) throws DuplicateUsernameException {
         try{
-            DummyData.usernameDuplicateCheck(newUser, password);
-            return true;
-        }catch (FailedToCreateAccountException e){
+            if(userCredentialsDao.usernameDuplicateCheck(newUser, password)) return true;
+        }catch (DuplicateUsernameException e){
             throw e;
         }
+        return false;
     }
 
     @Override

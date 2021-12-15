@@ -1,6 +1,6 @@
 package com.revature.database.exceptions;
 
-public class IncorrectAccountCredentialsException extends RuntimeException {
+public class IncorrectAccountCredentialsException extends Exception {
     public IncorrectAccountCredentialsException() {
     }
 

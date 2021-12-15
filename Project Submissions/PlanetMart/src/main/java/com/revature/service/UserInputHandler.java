@@ -1,7 +1,7 @@
 package com.revature.service;
 
-import com.revature.database.DummyData;
-import com.revature.database.exceptions.FailedToCreateAccountException;
+import com.revature.database.exceptions.DuplicateUsernameException;
+import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
 import com.revature.display.LoginDisplay;
 import com.revature.service.exceptions.EmptyInputException;
@@ -37,7 +37,7 @@ public class UserInputHandler {
                     manageWelcomeOptions(loginDisplay, sc);
                     break;
             }
-        }catch(NumberFormatException e){
+        }catch(NumberFormatException | IncorrectAccountCredentialsException e){
             e.printStackTrace();
             manageWelcomeOptions(loginDisplay, sc);
         }
@@ -64,28 +64,23 @@ public class UserInputHandler {
                 firstStage(sc);
             }
 
-        }catch (FailedToCreateAccountException e){
+        }catch (DuplicateUsernameException e){
             e.printStackTrace();
             createAccount(loginDisplay, sc);
         }
     }
 
-    private void loginAccount(LoginDisplay loginDisplay, Scanner sc) {
+    private void loginAccount(LoginDisplay loginDisplay, Scanner sc) throws IncorrectAccountCredentialsException {
         UserLoginHandler userLoginHandler = new UserLoginHandler();
         loginDisplay.printLoginDisplayUsername();
         try{
             userLoginHandler.setUsername(sc.nextLine());
             loginDisplay.printLoginDisplayPassword();
             userLoginHandler.setPassword(sc.nextLine());
-            try{
-                if(userLoginHandler.authenticateAccountCredentials()) {
-                    AccountHandler accountHandler = new AccountHandler();
-                }
-            }catch (IncorrectAccountCredentialsException e){
-                e.printStackTrace();
-                loginAccount(loginDisplay, sc);
+            if(userLoginHandler.authenticateAccountCredentials()) {
+                AccountHandler accountHandler = new AccountHandler();
             }
-        }catch (EmptyInputException e){
+        }catch (EmptyInputException | EmptyUserCredentialDataException e){
             e.printStackTrace();
             loginAccount(loginDisplay, sc);
         }
