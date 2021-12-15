@@ -2,6 +2,7 @@ package com.revature.models;
 
 import com.revature.models.exceptions.MaxSecondaryUsersException;
 import com.revature.models.exceptions.RepeatedNameOfUserException;
+import com.revature.models.exceptions.UserNotFoundException;
 import com.revature.service.exceptions.EmptyInputException;
 
 import java.util.List;
@@ -34,11 +35,11 @@ public class PrimaryUser extends User{
         return user;
     }
 
-    public boolean removeSecondaryUser(String name, CustomerAccount account) throws EmptyInputException {
+    public boolean removeSecondaryUser(String name, CustomerAccount account) throws EmptyInputException, UserNotFoundException {
         if(name.trim().contentEquals("") || name.isEmpty()) throw new EmptyInputException("Empty name");
         Map<String, User> secondaryUsers = account.getSecondaryUsers();
-
-
+        if(!secondaryUsers.containsKey(name)) throw new UserNotFoundException();
+        if(secondaryUsers.remove(name) != null) return true;
         return false;
     }
 
