@@ -99,7 +99,7 @@ class PrimaryUserTest {
     }
 
     @Test
-    void transferFundsFromUser() {
+    void transferFundsFromUserTest() {
         secondaryUsers.put("test1" , new User("test1", 100));
         secondaryUsers.put("test2" , new User("test2", 0));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
@@ -109,4 +109,43 @@ class PrimaryUserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    void transferFundsBetweenSecondaryUsersFailedExceptionInsufficientFundsTest() {
+        secondaryUsers.put("test1" , new User("test1", 100));
+        secondaryUsers.put("test2" , new User("test2", 0));
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+
+        Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsFromUserToUser(3000, "test1", "test2",fullAccount));
+
+    }
+
+    @Test
+    void transferFundsBetweenSecondaryUsersFailedExceptionNegativeTest() {
+        secondaryUsers.put("test1" , new User("test1", 100));
+        secondaryUsers.put("test2" , new User("test2", 0));
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsFromUserToUser(-100, "test1", "test2",fullAccount));
+
+    }
+
+    @Test
+    void transferFundsFromUserToPrimary(){
+        secondaryUsers.put("test1" , new User("test1", 100));
+        secondaryUsers.put("test2" , new User("test2", 0));
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        try {
+            Assertions.assertEquals(150, genericPrimary.transferFundsFromUserToPrimary(50, "test1", fullAccount));
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        } catch (FailedToTransferFundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
 }

@@ -70,6 +70,19 @@ public class PrimaryUser extends User{
         }
     }
 
+    public int transferFundsFromUserToPrimary(int amount, String user, CustomerAccount account) throws UserNotFoundException, FailedToTransferFundsException {
+        Map<String, User> secondaryUsers = account.getSecondaryUsers();
+        if(!secondaryUsers.containsKey(user)) throw new UserNotFoundException();
+        try {
+            User otherUser = secondaryUsers.get(user);
+            addFunds(otherUser.removeFunds(amount));
+            return getBalance();
+        } catch (NegativeAmountException | InsufficientFundsException e) {
+            e.printStackTrace();
+            throw new FailedToTransferFundsException();
+        }
+    }
+
     public String getUsername() {
         return username;
     }
