@@ -1,11 +1,8 @@
 package com.revature.models;
 
-import com.revature.models.exceptions.MaxSecondaryUsersException;
-import com.revature.models.exceptions.RepeatedNameOfUserException;
-import com.revature.models.exceptions.UserNotFoundException;
+import com.revature.models.exceptions.*;
 import com.revature.service.exceptions.EmptyInputException;
 
-import java.util.List;
 import java.util.Map;
 
 public class PrimaryUser extends User{
@@ -14,7 +11,7 @@ public class PrimaryUser extends User{
 
     public PrimaryUser(String name, int balance, String username) {
         super(name, balance);
-        this.username = username;
+        setUsername(username);
     }
 
     public PrimaryUser() {
@@ -29,6 +26,7 @@ public class PrimaryUser extends User{
         if(secondaryUsers.size() >= account.getMaxSecondaryAccounts()) throw new MaxSecondaryUsersException();
 
         if(secondaryUsers.containsKey(name)) throw new RepeatedNameOfUserException();
+
         User user = new User(name, 0);
         secondaryUsers.put(name, user);
         account.setSecondaryUsers(secondaryUsers);
@@ -39,16 +37,44 @@ public class PrimaryUser extends User{
         if(name.trim().contentEquals("") || name.isEmpty()) throw new EmptyInputException("Empty name");
         Map<String, User> secondaryUsers = account.getSecondaryUsers();
         if(!secondaryUsers.containsKey(name)) throw new UserNotFoundException();
-        if(secondaryUsers.remove(name) != null) return true;
-        return false;
+
+        return secondaryUsers.remove(name) != null;
     }
 
-    public void transferFundsToUser(int amount, User user){
-
+    public int transferFundsToUser(int amount, String user, CustomerAccount account) throws FailedToTransferFundsException, UserNotFoundException {
+        Map<String, User> secondaryUsers = account.getSecondaryUsers();
+        if(!secondaryUsers.containsKey(user)) throw new UserNotFoundException();
+        try {
+            User otherUser = secondaryUsers.get(user);
+            otherUser.addFunds(removeFunds(amount));
+            return otherUser.getBalance();
+        } catch (NegativeAmountException | InsufficientFundsException e) {
+            e.printStackTrace();
+            throw new FailedToTransferFundsException();
+        }
     }
 
-    public void transferFundsFromUser(int amount, User user){
+    public int transferFundsFromUserToUser(int amount, String fromUser, String toUser, CustomerAccount account) throws FailedToTransferFundsException, UserNotFoundException {
+        Map<String, User> secondaryUsers = account.getSecondaryUsers();
+        if(!secondaryUsers.containsKey(fromUser) || !secondaryUsers.containsKey(toUser)) throw new UserNotFoundException();
 
+        try {
+            User user1 = secondaryUsers.get(fromUser);
+            User user2 = secondaryUsers.get(toUser);
+
+            user2.addFunds(user1.removeFunds(amount));
+            return user2.getBalance();
+        } catch (NegativeAmountException | InsufficientFundsException e) {
+            e.printStackTrace();
+            throw new FailedToTransferFundsException();
+        }
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

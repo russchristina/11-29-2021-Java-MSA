@@ -1,21 +1,21 @@
 package com.revature.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class CustomerAccount extends Account{
+public class CustomerAccount{
 
     private Map<String, User> secondaryUsers;
     private String username;
     private PrimaryUser primaryUser;
-    private int maxSecondaryAccounts = 5;
+    private final int maxSecondaryAccounts = 5;
 
     public CustomerAccount(Map<String, User> secondaryUsers, String username, PrimaryUser primaryUser) {
         this.secondaryUsers = secondaryUsers;
         this.username = username;
         this.primaryUser = primaryUser;
     }
+
 
     public CustomerAccount() {
     }
@@ -38,6 +38,37 @@ public class CustomerAccount extends Account{
 
     public int getMaxSecondaryAccounts() {
         return maxSecondaryAccounts;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomerAccount)) return false;
+        CustomerAccount that = (CustomerAccount) o;
+        return getMaxSecondaryAccounts() == that.getMaxSecondaryAccounts() && getSecondaryUsers().equals(that.getSecondaryUsers()) && getUsername().equals(that.getUsername()) && getPrimaryUser().equals(that.getPrimaryUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSecondaryUsers(), getUsername(), getPrimaryUser(), getMaxSecondaryAccounts());
+    }
+
+    @Override
+    public String toString() {
+        return "{\"CustomerAccount\":{"
+                + "\"secondaryUsers\":" + secondaryUsers
+                + ", \"username\":\"" + username + "\""
+                + ", \"primaryUser\":" + primaryUser
+                + ", \"maxSecondaryAccounts\":\"" + maxSecondaryAccounts + "\""
+                + "}}";
     }
 }
 
