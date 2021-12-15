@@ -1,3 +1,5 @@
+package com.revature.service;
+
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
@@ -9,18 +11,26 @@ import org.junit.jupiter.api.Test;
 
 public class UserLoginHandlerTest {
 
-    public UserLoginHandler loginBuilder(String username, String password){
-        return new UserLoginHandler(username, password);
+    public UserLoginHandler loginBuilder(String username, String password) throws EmptyInputException {
+            return new UserLoginHandler(username, password);
     }
 
     @Test
     void userInputConversionForUsernameTest(){
-        Assertions.assertTrue(loginBuilder("user", "pass" ).getUsername() instanceof String, "The class method should always return a String");
+        try {
+            Assertions.assertTrue(loginBuilder("user", "pass" ).getUsername() instanceof String, "The class method should always return a String");
+        } catch (EmptyInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     void userInputConversionForPasswordTest(){
-        Assertions.assertTrue(loginBuilder("user", "pass" ).getPassword() instanceof String, "The class method should always return a String");
+        try {
+            Assertions.assertTrue(loginBuilder("user", "pass" ).getPassword() instanceof String, "The class method should always return a String");
+        } catch (EmptyInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -53,7 +63,7 @@ public class UserLoginHandlerTest {
     void correctCredentialLoginTest() {
         try {
             Assertions.assertTrue(loginBuilder("user1", "pass1").authenticateAccountCredentials());
-        } catch (IncorrectAccountCredentialsException | EmptyUserCredentialDataException e) {
+        } catch (IncorrectAccountCredentialsException | EmptyUserCredentialDataException | EmptyInputException e) {
             e.printStackTrace();
         }
     }

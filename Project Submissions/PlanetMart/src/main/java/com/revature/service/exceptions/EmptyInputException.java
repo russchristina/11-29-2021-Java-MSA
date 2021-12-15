@@ -1,6 +1,6 @@
 package com.revature.service.exceptions;
 
-public class EmptyInputException extends RuntimeException{
+public class EmptyInputException extends Exception{
 
     public EmptyInputException(){
         super();

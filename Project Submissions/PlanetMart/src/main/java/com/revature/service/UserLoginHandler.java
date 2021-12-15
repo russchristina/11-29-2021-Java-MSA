@@ -15,7 +15,7 @@ public class UserLoginHandler {
     private String password;
     private UserCredentialsDao userCredentialsDao = new UserCredentialsDao();
 
-    public UserLoginHandler(String username, String password) {
+    public UserLoginHandler(String username, String password) throws EmptyInputException {
         if(username.trim().contentEquals("") || username.isEmpty()) throw new EmptyInputException("Empty Username");
         if(password.trim().contentEquals("") || password.isEmpty()) throw new EmptyInputException("Empty Password");
         this.username = username;
@@ -27,12 +27,12 @@ public class UserLoginHandler {
     public String getUsername() {return username;}
     public String getPassword() {return password;}
 
-    public void setUsername(String username) {
+    public void setUsername(String username) throws EmptyInputException {
         if(username.trim().contentEquals("") || username.isEmpty()) throw new EmptyInputException("Empty Username");
         this.username = username;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws EmptyInputException {
         if(password.trim().contentEquals("") || password.isEmpty()) throw new EmptyInputException("Empty Password");
         this.password = password;
     }

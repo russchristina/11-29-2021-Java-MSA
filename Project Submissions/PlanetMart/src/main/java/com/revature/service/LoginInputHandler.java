@@ -8,9 +8,9 @@ import com.revature.service.exceptions.EmptyInputException;
 
 import java.util.Scanner;
 
-public class UserInputHandler {
+public class LoginInputHandler {
     public static void main(String[] args) {
-        UserInputHandler us = new UserInputHandler();
+        LoginInputHandler us = new LoginInputHandler();
         Scanner sc = new Scanner(System.in);
         us.firstStage(sc);
     }
@@ -52,10 +52,7 @@ public class UserInputHandler {
                 userLoginHandler.setUsername(sc.nextLine());
                 loginDisplay.printCreateAccountDisplayPassword();
                 userLoginHandler.setPassword(sc.nextLine());
-            }catch(EmptyInputException e){
-                e.printStackTrace();
-                createAccount(loginDisplay, sc);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException | EmptyInputException e){
                 e.printStackTrace();
                 createAccount(loginDisplay, sc);
             }
@@ -80,7 +77,7 @@ public class UserInputHandler {
             if(userLoginHandler.authenticateAccountCredentials()) {
                 AccountHandler accountHandler = new AccountHandler();
             }
-        }catch (EmptyInputException | EmptyUserCredentialDataException e){
+        }catch (EmptyUserCredentialDataException | EmptyInputException e){
             e.printStackTrace();
             loginAccount(loginDisplay, sc);
         }

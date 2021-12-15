@@ -1,3 +1,5 @@
+package com.revature.database;
+
 import com.revature.database.DummyData;
 import com.revature.database.UserCredentialsDao;
 import com.revature.database.exceptions.DuplicateUsernameException;
