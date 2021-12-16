@@ -103,7 +103,8 @@ public class PrimaryUser extends User{
 
 
     public String changeNameOfUser(String newName, String originalName, CustomerAccount account) throws UserNotFoundException, RepeatedNameOfUserException, EmptyInputException {
-        if(newName.trim().contentEquals("") || newName.isEmpty()) throw new EmptyInputException("Empty name");
+        if(newName.trim().contentEquals("") || newName.isEmpty()) throw new EmptyInputException("Empty input new name");
+        if(originalName.trim().contentEquals("") || originalName.isEmpty()) throw new EmptyInputException("Empty input user name");
 
         Map<String, User> secondaryUsers = account.getSecondaryUsers();
         if(!secondaryUsers.containsKey(originalName)) throw new UserNotFoundException();

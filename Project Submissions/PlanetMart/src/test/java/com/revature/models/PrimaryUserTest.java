@@ -162,6 +162,27 @@ class PrimaryUserTest {
     }
 
     @Test
+    void emptyUserForNameChangeException() {
+        Assertions.assertThrows(EmptyInputException.class, () -> genericPrimary.changeNameOfUser(" ", "name1", account));
+    }
+    @Test
+    void emptyNameChangeOfUserException() {
+        Assertions.assertThrows(EmptyInputException.class, () -> genericPrimary.changeNameOfUser("Greg", " ", account));
+    }
+
+    @Test
+    void repeatNameChangeOfUserException() {
+        Assertions.assertThrows(RepeatedNameOfUserException.class, () -> genericPrimary.changeNameOfUser("name1", "name1", account));
+    }
+
+    @Test
+    void userNotFoundNameChangeOfUserException() {
+        Assertions.assertThrows(UserNotFoundException.class, () -> genericPrimary.changeNameOfUser("Greg", "Varry", account));
+    }
+
+
+
+    @Test
     void successfulNameChangeTest() {
 
         try {
