@@ -79,11 +79,13 @@ class PrimaryUserTest {
 
     @Test
     void transferFundsToUser() {
-        secondaryUsers.put("test1" , new User("test1", 0));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        Map<String, User> justForThis = new HashMap<>();
+        justForThis.put("testingtest" , new User("testingtest", 0));
 
+        PrimaryUser primaryUser = new PrimaryUser("BOb", 100, "primary");
+        CustomerAccount transferringFundsAccount = new CustomerAccount(justForThis, "primary", primaryUser);
         try {
-            Assertions.assertEquals(50, genericPrimary.transferFundsToUser(50, "test1",fullAccount));
+            Assertions.assertEquals(50, primaryUser.transferFundsToUser(50, "testingtest",transferringFundsAccount));
         } catch (FailedToTransferFundsException | UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -143,7 +145,43 @@ class PrimaryUserTest {
         }
     }
 
+    @Test
+    void changeNameOfUser() {
+        secondaryUsers.put("test1" , new User("test1", 100));
+        secondaryUsers.put("test2" , new User("test2", 0));
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        try {
+            Assertions.assertEquals("namechange", genericPrimary.changeNameOfUser("namechange", "test1", fullAccount));
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        } catch (RepeatedNameOfUserException e) {
+            e.printStackTrace();
+        } catch (EmptyInputException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Test
+    void successfulNameChangeTest() {
+
+        try {
+            Assertions.assertEquals("ChangedName", genericPrimary.changeName("ChangedName", account));
+        } catch (EmptyInputException e) {
+            e.printStackTrace();
+        } catch (RepeatedNameOfUserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void emptyNameChangeExceptionTest(){
+        Assertions.assertThrows(EmptyInputException.class, () -> genericPrimary.changeName("", account));
+    }
+
+    @Test
+    void repeatNameChangeExceptionTest(){
+        Assertions.assertThrows(RepeatedNameOfUserException.class, () -> genericPrimary.changeName("name1", account));
+    }
 
 
 

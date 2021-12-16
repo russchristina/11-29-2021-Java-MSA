@@ -47,7 +47,7 @@ public class PrimaryUser extends User{
         try {
             User otherUser = secondaryUsers.get(user);
             otherUser.addFunds(removeFunds(amount));
-            return otherUser.getBalance();
+            return account.getSecondaryUsers().get(user).getBalance();
         } catch (NegativeAmountException | InsufficientFundsException e) {
             e.printStackTrace();
             throw new FailedToTransferFundsException();
@@ -90,4 +90,33 @@ public class PrimaryUser extends User{
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String changeName(String name, CustomerAccount account) throws EmptyInputException, RepeatedNameOfUserException {
+        Map<String, User> secondaryUsers = account.getSecondaryUsers();
+
+        if(name.trim().contentEquals("") || name.isEmpty()) throw new EmptyInputException("Empty name");
+        if(name.contentEquals(getName()) || secondaryUsers.containsKey(name)) throw new RepeatedNameOfUserException();
+        setName(name);
+
+        return getName();
+    }
+
+
+    public String changeNameOfUser(String newName, String originalName, CustomerAccount account) throws UserNotFoundException, RepeatedNameOfUserException, EmptyInputException {
+        if(newName.trim().contentEquals("") || newName.isEmpty()) throw new EmptyInputException("Empty name");
+
+        Map<String, User> secondaryUsers = account.getSecondaryUsers();
+        if(!secondaryUsers.containsKey(originalName)) throw new UserNotFoundException();
+        User user = secondaryUsers.get(originalName);
+        if(user.getName().contentEquals(newName)) throw new RepeatedNameOfUserException("Same name as primary User");
+        if(secondaryUsers.containsKey(newName)) throw new RepeatedNameOfUserException("Same name as secondary User");
+        if(newName.contentEquals(originalName)) throw new RepeatedNameOfUserException("Repeated name");
+        user.setName(newName);
+        secondaryUsers.remove(originalName);
+        secondaryUsers.put(user.getName(),user);
+        account.setSecondaryUsers(secondaryUsers);
+        return secondaryUsers.get(newName).getName();
+    }
+
+
 }

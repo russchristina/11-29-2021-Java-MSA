@@ -29,11 +29,6 @@ public class User {
         return balance -= amount;
     }
 
-    public String changeName(String name) throws EmptyInputException, RepeatedNameOfUserException {
-        if(name.trim().contentEquals("") || name.isEmpty()) throw new EmptyInputException("Empty name");
-        if(name.contentEquals(this.name)) throw new RepeatedNameOfUserException();
-        return this.name = name;
-    }
 
     public String getName() {
         return name;

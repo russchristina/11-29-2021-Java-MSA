@@ -46,25 +46,5 @@ class UserTest {
         Assertions.assertThrows(InsufficientFundsException.class, () -> user.removeFunds(100));
     }
 
-    @Test
-    void successfulNameChangeTest() {
-        try {
-            Assertions.assertEquals("ChangedName", genericUser.changeName("ChangedName"));
-        } catch (EmptyInputException e) {
-            e.printStackTrace();
-        } catch (RepeatedNameOfUserException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @Test
-    void emptyNameChangeExceptionTest(){
-        Assertions.assertThrows(EmptyInputException.class, () -> genericUser.changeName(""));
-    }
-
-    @Test
-    void repeatNameChangeExceptionTest(){
-        User user = new User("name", 10);
-        Assertions.assertThrows(RepeatedNameOfUserException.class, () -> user.changeName("name"));
-    }
 }
