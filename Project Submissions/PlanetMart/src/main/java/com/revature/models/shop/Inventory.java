@@ -11,6 +11,7 @@ public class Inventory {
     }
 
     public Inventory() {
+
     }
 
     public Map<String, Planet> getPlanetMap() {
