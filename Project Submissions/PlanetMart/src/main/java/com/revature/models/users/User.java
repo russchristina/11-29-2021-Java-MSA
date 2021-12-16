@@ -1,7 +1,8 @@
-package com.revature.models;
+package com.revature.models.users;
 
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
+import com.revature.models.shop.Inventory;
 
 public class User {
 

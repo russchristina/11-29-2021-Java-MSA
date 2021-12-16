@@ -1,6 +1,6 @@
 package com.revature.database;
 
-import com.revature.models.Account;
+import com.revature.models.accounts.Account;
 
 public class AccountDao {
 

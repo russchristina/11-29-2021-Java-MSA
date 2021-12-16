@@ -1,7 +1,7 @@
-package com.revature.service;
+package com.revature.service.account;
 
-import com.revature.models.CustomerAccount;
-import com.revature.models.User;
+import com.revature.models.accounts.CustomerAccount;
+import com.revature.models.users.User;
 import com.revature.models.exceptions.UserNotFoundException;
 
 import java.util.Scanner;

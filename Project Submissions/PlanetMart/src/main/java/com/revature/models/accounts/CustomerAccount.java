@@ -1,4 +1,7 @@
-package com.revature.models;
+package com.revature.models.accounts;
+
+import com.revature.models.users.PrimaryUser;
+import com.revature.models.users.User;
 
 import java.util.Map;
 import java.util.Objects;

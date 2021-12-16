@@ -2,6 +2,8 @@ package com.revature.models;
 
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
+import com.revature.models.shop.Inventory;
+import com.revature.models.users.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

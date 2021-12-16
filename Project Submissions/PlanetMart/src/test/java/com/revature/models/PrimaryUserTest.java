@@ -1,6 +1,10 @@
 package com.revature.models;
 
+import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.RepeatedNameOfUserException;
+import com.revature.models.shop.Inventory;
+import com.revature.models.users.PrimaryUser;
+import com.revature.models.users.User;
 import com.revature.service.exceptions.EmptyInputException;
 import com.revature.models.exceptions.FailedToTransferFundsException;
 import com.revature.models.exceptions.MaxSecondaryUsersException;

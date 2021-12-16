@@ -1,7 +1,7 @@
-package com.revature.display;
+package com.revature.display.account;
 
-import com.revature.models.CustomerAccount;
-import com.revature.models.User;
+import com.revature.models.accounts.CustomerAccount;
+import com.revature.models.users.User;
 
 public class AccountDisplay {
 

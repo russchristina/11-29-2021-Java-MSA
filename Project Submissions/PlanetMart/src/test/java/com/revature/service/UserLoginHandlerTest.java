@@ -4,6 +4,7 @@ import com.revature.service.exceptions.EmptyInputException;
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
+import com.revature.service.login.UserLoginHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

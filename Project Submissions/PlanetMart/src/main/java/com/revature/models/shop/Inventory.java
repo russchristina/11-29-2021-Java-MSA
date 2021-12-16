@@ -1,4 +1,4 @@
-package com.revature.models;
+package com.revature.models.shop;
 
 import java.util.Map;
 import java.util.Objects;

@@ -1,6 +1,10 @@
 package com.revature.database;
 
-import com.revature.models.*;
+import com.revature.models.accounts.Account;
+import com.revature.models.accounts.CustomerAccount;
+import com.revature.models.shop.Inventory;
+import com.revature.models.users.PrimaryUser;
+import com.revature.models.users.User;
 
 import java.util.*;
 

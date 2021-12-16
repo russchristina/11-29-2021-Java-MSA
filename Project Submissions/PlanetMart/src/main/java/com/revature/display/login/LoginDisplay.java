@@ -1,4 +1,4 @@
-package com.revature.display;
+package com.revature.display.login;
 
 public class LoginDisplay {
 

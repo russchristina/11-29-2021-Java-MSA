@@ -1,4 +1,4 @@
-package com.revature.service;
+package com.revature.service.login;
 
 
 import com.revature.service.exceptions.EmptyInputException;

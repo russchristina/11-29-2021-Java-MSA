@@ -1,10 +1,10 @@
-package com.revature.service;
+package com.revature.service.account;
 
-import com.revature.display.AccountDisplay;
-import com.revature.models.Account;
+import com.revature.display.account.AccountDisplay;
+import com.revature.models.accounts.Account;
 import com.revature.database.AccountDao;
-import com.revature.models.CustomerAccount;
-import com.revature.models.User;
+import com.revature.models.accounts.CustomerAccount;
+import com.revature.models.users.User;
 import com.revature.models.exceptions.UserNotFoundException;
 
 public class AccountHandler {

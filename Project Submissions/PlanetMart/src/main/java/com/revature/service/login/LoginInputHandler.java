@@ -1,10 +1,11 @@
-package com.revature.service;
+package com.revature.service.login;
 
+import com.revature.service.account.AccountHandler;
 import com.revature.service.exceptions.EmptyInputException;
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
-import com.revature.display.LoginDisplay;
+import com.revature.display.login.LoginDisplay;
 
 import java.util.Scanner;
 

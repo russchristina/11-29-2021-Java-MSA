@@ -1,6 +1,8 @@
-package com.revature.models;
+package com.revature.models.users;
 
+import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.*;
+import com.revature.models.shop.Inventory;
 import com.revature.service.exceptions.EmptyInputException;
 
 import java.util.Map;
