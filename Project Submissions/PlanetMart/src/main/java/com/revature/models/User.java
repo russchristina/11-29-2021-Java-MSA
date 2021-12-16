@@ -9,10 +9,20 @@ public class User {
 
     private String name;
     private int balance;
+    private Inventory inventory;
 
-    public User(String name, int balance) {
+    public User(String name, int balance, Inventory inventory) {
         this.name = name;
         this.balance = balance;
+        this.inventory = inventory;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public User() {
@@ -45,4 +55,6 @@ public class User {
     public void setBalance(int balance) {
         this.balance = balance;
     }
+
+
 }

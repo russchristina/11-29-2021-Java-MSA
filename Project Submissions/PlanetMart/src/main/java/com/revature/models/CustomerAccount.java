@@ -3,22 +3,25 @@ package com.revature.models;
 import java.util.Map;
 import java.util.Objects;
 
-public class CustomerAccount{
+public class CustomerAccount extends Account{
 
     private Map<String, User> secondaryUsers;
-    private String username;
     private PrimaryUser primaryUser;
     private final int maxSecondaryAccounts = 5;
 
+//    private Map<User, Inventory> userInventoryMap;
+
     public CustomerAccount(Map<String, User> secondaryUsers, String username, PrimaryUser primaryUser) {
+        super(username);
         this.secondaryUsers = secondaryUsers;
-        this.username = username;
         this.primaryUser = primaryUser;
     }
 
 
     public CustomerAccount() {
+        super();
     }
+
 
     public Map<String, User> getSecondaryUsers() {
         return secondaryUsers;

@@ -9,42 +9,55 @@ import com.revature.service.exceptions.EmptyInputException;
 import java.util.Scanner;
 
 public class LoginInputHandler {
+
     public static void main(String[] args) {
-        LoginInputHandler us = new LoginInputHandler();
-        Scanner sc = new Scanner(System.in);
-        us.firstStage(sc);
+        LoginInputHandler login = new LoginInputHandler();
+        login.firstStage();
     }
 
-    public void firstStage(Scanner sc){
+    public void firstStage(){
         LoginDisplay loginDisplay = new LoginDisplay();
         loginDisplay.printWelcomeDisplay();
-        manageWelcomeOptions(loginDisplay, sc);
-    }
-
-    private void manageWelcomeOptions(LoginDisplay loginDisplay, Scanner sc) {
-        loginDisplay.printWelcomeOptions();
-        try{
-            int input = Integer.parseInt(sc.nextLine());
-            switch(input){
-                case(1):
-                    loginAccount(loginDisplay, sc);
-                    break;
-                case(2):
-                    createAccount(loginDisplay, sc);
-                    break;
-                default:
-                    System.out.println("Please choose a valid option");
-                    manageWelcomeOptions(loginDisplay, sc);
-                    break;
-            }
-        }catch(NumberFormatException | IncorrectAccountCredentialsException e){
+        try {
+            manageWelcomeOptions(loginDisplay);
+        }catch (Exception e){
             e.printStackTrace();
-            manageWelcomeOptions(loginDisplay, sc);
         }
 
     }
 
-    private void createAccount(LoginDisplay loginDisplay, Scanner sc) {
+    private void manageWelcomeOptions(LoginDisplay loginDisplay) throws Exception {
+
+        Scanner sc = new Scanner(System.in);
+        loginDisplay.printWelcomeOptions();
+
+            try {
+                boolean choosingOptions = true;
+                while (choosingOptions) {
+                    int input = Integer.parseInt(sc.nextLine());
+                    switch (input) {
+                        case (1):
+                            choosingOptions = false;
+                            loginAccount(loginDisplay);
+                            break;
+                        case (2):
+                            choosingOptions = false;
+                            createAccount(loginDisplay);
+                            break;
+                        default:
+                            System.out.println("Please choose a valid option");
+                            break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                manageWelcomeOptions(loginDisplay);
+            }
+
+    }
+
+    private void createAccount(LoginDisplay loginDisplay) {
+        Scanner sc = new Scanner(System.in);
         UserLoginHandler userLoginHandler = new UserLoginHandler();
         loginDisplay.printCreateAccountDisplayUsername();
         try{
@@ -54,32 +67,40 @@ public class LoginInputHandler {
                 userLoginHandler.setPassword(sc.nextLine());
             } catch (NumberFormatException | EmptyInputException e){
                 e.printStackTrace();
-                createAccount(loginDisplay, sc);
+                createAccount(loginDisplay);
             }
             if(userLoginHandler.createAccount(userLoginHandler.getUsername(), userLoginHandler.getPassword())) {
                 System.out.println("new Account made ");
-                firstStage(sc);
+                firstStage();
             }
 
         }catch (DuplicateUsernameException e){
             e.printStackTrace();
-            createAccount(loginDisplay, sc);
+            createAccount(loginDisplay);
         }
     }
 
-    private void loginAccount(LoginDisplay loginDisplay, Scanner sc) throws IncorrectAccountCredentialsException {
+    private void loginAccount(LoginDisplay loginDisplay) {
+        Scanner sc = new Scanner(System.in);
         UserLoginHandler userLoginHandler = new UserLoginHandler();
         loginDisplay.printLoginDisplayUsername();
-        try{
-            userLoginHandler.setUsername(sc.nextLine());
-            loginDisplay.printLoginDisplayPassword();
-            userLoginHandler.setPassword(sc.nextLine());
-            if(userLoginHandler.authenticateAccountCredentials()) {
-                AccountHandler accountHandler = new AccountHandler();
+        boolean loggingIn = true;
+        while (loggingIn) {
+            try {
+                String usernameInput = sc.nextLine();
+                userLoginHandler.setUsername(usernameInput);
+                loginDisplay.printLoginDisplayPassword();
+                userLoginHandler.setPassword(sc.nextLine());
+                if (userLoginHandler.authenticateAccountCredentials()) {
+                    loggingIn = false;
+                    AccountHandler accountHandler = new AccountHandler(usernameInput);
+                    accountHandler.initiateAccount();
+                    ;
+                }
+            } catch (EmptyUserCredentialDataException | EmptyInputException | IncorrectAccountCredentialsException e) {
+                e.printStackTrace();
+                loginAccount(loginDisplay);
             }
-        }catch (EmptyUserCredentialDataException | EmptyInputException e){
-            e.printStackTrace();
-            loginAccount(loginDisplay, sc);
         }
     }
 }

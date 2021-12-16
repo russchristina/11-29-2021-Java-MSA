@@ -9,8 +9,8 @@ public class PrimaryUser extends User{
 
     private String username;
 
-    public PrimaryUser(String name, int balance, String username) {
-        super(name, balance);
+    public PrimaryUser(String name, int balance, Inventory inventory, String username) {
+        super(name, balance, inventory);
         setUsername(username);
     }
 
@@ -27,7 +27,7 @@ public class PrimaryUser extends User{
 
         if(secondaryUsers.containsKey(name)) throw new RepeatedNameOfUserException();
 
-        User user = new User(name, 0);
+        User user = new User(name, 0, new Inventory());
         secondaryUsers.put(name, user);
         account.setSecondaryUsers(secondaryUsers);
         return user;
