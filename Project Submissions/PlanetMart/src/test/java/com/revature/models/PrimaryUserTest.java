@@ -1,10 +1,10 @@
 package com.revature.models;
 
+import com.revature.models.exceptions.RepeatedNameOfUserException;
+import com.revature.service.exceptions.EmptyInputException;
 import com.revature.models.exceptions.FailedToTransferFundsException;
 import com.revature.models.exceptions.MaxSecondaryUsersException;
-import com.revature.models.exceptions.RepeatedNameOfUserException;
 import com.revature.models.exceptions.UserNotFoundException;
-import com.revature.service.exceptions.EmptyInputException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

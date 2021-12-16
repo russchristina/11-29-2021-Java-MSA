@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="0" failures="0" name="org.revature.service.UserLoginHandlerTest" time="0" errors="0" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_311\jre\bin"/>
+    <property name="java.vm.version" value="25.311-b11"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:/Users/Bravo/Documents/gitRepos/11-29-2021-Java-MSA/Project Submissions/PlanetMart"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart"/>
+    <property name="java.runtime.version" value="1.8.0_311-b11"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_311\jre\lib\endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\Bravo\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="classworlds.conf" value="C:/Users/Bravo/scoop/apps/maven/current/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_311\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\Bravo\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\mingw64\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\usr\local\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\usr\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\usr\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\mingw64\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\usr\bin;C:\Users\Bravo\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python310\Scripts;C:\Python310;C:\jdk-17\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Common Files\Autodesk Shared;C:\Program Files\Microsoft SQL Server\120\Tools\Binn;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\ojdkbuild\java-1.8.0-openjdk-1.8.0.302-1\bin;C:\Program Files\ojdkbuild\java-1.8.0-openjdk-1.8.0.302-1\jre\bin;C:\Program Files\dotnet;C:\Program Files (x86)\nodejs;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_311\bin;C:\Users\Bravo\scoop\apps\nodejs\current\bin;C:\Users\Bravo\scoop\apps\nodejs\current;C:\Users\Bravo\scoop\apps\maven\current\bin;C:\Users\Bravo\scoop\shims;C:\Users\Bravo\AppData\Local\Microsoft\WindowsApps;C:\Users\Bravo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Bravo\.dotnet\tools;C:\Users\Bravo\AppData\Roaming\npm;C:\Users\Bravo\scoop\apps\ojdkbuild8-full\1.8.0.312-1.b07\_tmp\SourceDir\ojdkbuild\java-1.8.0-openjdk-1.8.0.312-1\bin;C:\Users\Bravo\AppData\Local\GitHubDesktop\bin;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\usr\bin\vendor_perl;C:\Users\Bravo\scoop\apps\git\2.34.1.windows.1\usr\bin\core_perl;."/>
+    <property name="maven.conf" value="C:/Users/Bravo/scoop/apps/maven/current/conf"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="library.jansi.path" value="C:/Users/Bravo/scoop/apps/maven/current/lib/jansi-native"/>
+    <property name="user.home" value="C:\Users\Bravo"/>
+    <property name="user.timezone" value="America/Chicago"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="Bravo"/>
+    <property name="java.class.path" value="C:/Users/Bravo/scoop/apps/maven/current/boot/plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_311\jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_311"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_311\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_311\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_311\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_311\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_311\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_311\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_311\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_311\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_311\jre\classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="C:\Users\Bravo\scoop\apps\maven\current"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+</testsuite>

@@ -1,8 +1,8 @@
 package com.revature.service;
 
-import com.revature.database.AccountDao;
 import com.revature.display.AccountDisplay;
 import com.revature.models.Account;
+import com.revature.database.AccountDao;
 import com.revature.models.CustomerAccount;
 import com.revature.models.User;
 import com.revature.models.exceptions.UserNotFoundException;

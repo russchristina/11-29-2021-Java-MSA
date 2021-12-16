@@ -1,10 +1,8 @@
 package com.revature.service;
 
-import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.models.CustomerAccount;
 import com.revature.models.User;
 import com.revature.models.exceptions.UserNotFoundException;
-import com.revature.service.exceptions.EmptyInputException;
 
 import java.util.Scanner;
 

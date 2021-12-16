@@ -1,6 +1,5 @@
 package com.revature.display;
 
-import com.revature.models.Account;
 import com.revature.models.CustomerAccount;
 import com.revature.models.User;
 

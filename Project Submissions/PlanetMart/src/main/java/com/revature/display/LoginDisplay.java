@@ -1,7 +1,5 @@
 package com.revature.display;
 
-import com.revature.service.UserLoginHandler;
-
 public class LoginDisplay {
 
     public boolean printWelcomeDisplay() {
