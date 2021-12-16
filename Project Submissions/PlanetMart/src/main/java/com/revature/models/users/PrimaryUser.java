@@ -9,11 +9,8 @@ import java.util.Map;
 
 public class PrimaryUser extends User{
 
-    private String username;
-
     public PrimaryUser(String name, int balance, Inventory inventory, String username) {
-        super(name, balance, inventory);
-        setUsername(username);
+        super(name, balance, inventory, username);
     }
 
     public PrimaryUser() {
@@ -29,7 +26,7 @@ public class PrimaryUser extends User{
 
         if(secondaryUsers.containsKey(name)) throw new RepeatedNameOfUserException();
 
-        User user = new User(name, 0, new Inventory());
+        User user = new User(name, 0, new Inventory(), primaryUsername);
         secondaryUsers.put(name, user);
         account.setSecondaryUsers(secondaryUsers);
         return user;
@@ -83,14 +80,6 @@ public class PrimaryUser extends User{
             e.printStackTrace();
             throw new FailedToTransferFundsException();
         }
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String changeName(String name, CustomerAccount account) throws EmptyInputException, RepeatedNameOfUserException {

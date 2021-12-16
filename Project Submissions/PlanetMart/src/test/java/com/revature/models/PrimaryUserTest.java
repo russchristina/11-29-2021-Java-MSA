@@ -30,9 +30,9 @@ class PrimaryUserTest {
     public void instantiateVariables(){
         this.genericPrimary = new PrimaryUser("primary", 100,new Inventory(),"user1");
         this.secondaryUsers = new HashMap<>();
-        secondaryUsers.put("name1", new User("name1", 0, new Inventory()));
-        secondaryUsers.put("name2", new User("name2", 0, new Inventory()));
-        secondaryUsers.put("name3", new User("name3", 0, new Inventory()));
+        secondaryUsers.put("name1", new User("name1", 0, new Inventory(), "user1"));
+        secondaryUsers.put("name2", new User("name2", 0, new Inventory(), "user1"));
+        secondaryUsers.put("name3", new User("name3", 0, new Inventory(), "user1"));
         this.account = new CustomerAccount(secondaryUsers, "user1", genericPrimary);
     }
 
@@ -85,7 +85,7 @@ class PrimaryUserTest {
     @Test
     void transferFundsToUser() {
         Map<String, User> justForThis = new HashMap<>();
-        justForThis.put("testingtest" , new User("testingtest", 0, new Inventory()));
+        justForThis.put("testingtest" , new User("testingtest", 0, new Inventory(), "user1"));
 
         PrimaryUser primaryUser = new PrimaryUser("BOb", 100,new Inventory(), "primary");
         CustomerAccount transferringFundsAccount = new CustomerAccount(justForThis, "primary", primaryUser);
@@ -98,8 +98,8 @@ class PrimaryUserTest {
 
     @Test
     void failedToTransferFundsExceptionTest() {
-        secondaryUsers.put("test1" , new User("test1", 100, new Inventory()));
-        secondaryUsers.put("test2" , new User("test2", 0, new Inventory()));
+        secondaryUsers.put("test1" , new User("test1", 100, new Inventory(), "primary"));
+        secondaryUsers.put("test2" , new User("test2", 0, new Inventory(), "primary"));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
 
         Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsToUser(10000, "test1", fullAccount));
@@ -107,8 +107,8 @@ class PrimaryUserTest {
 
     @Test
     void transferFundsFromUserTest() {
-        secondaryUsers.put("test1" , new User("test1", 100, new Inventory()));
-        secondaryUsers.put("test2" , new User("test2", 0, new Inventory()));
+        secondaryUsers.put("test1" , new User("test1", 100, new Inventory(), "primary"));
+        secondaryUsers.put("test2" , new User("test2", 0, new Inventory(), "primary"));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
         try {
             Assertions.assertEquals(50, genericPrimary.transferFundsFromUserToUser(50, "test1", "test2", fullAccount));
@@ -119,8 +119,8 @@ class PrimaryUserTest {
 
     @Test
     void transferFundsBetweenSecondaryUsersFailedExceptionInsufficientFundsTest() {
-        secondaryUsers.put("test1" , new User("test1", 100, new Inventory()));
-        secondaryUsers.put("test2" , new User("test2", 0, new Inventory()));
+        secondaryUsers.put("test1" , new User("test1", 100, new Inventory(), "primary"));
+        secondaryUsers.put("test2" , new User("test2", 0, new Inventory(), "primary"));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
 
         Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsFromUserToUser(3000, "test1", "test2",fullAccount));
@@ -129,8 +129,8 @@ class PrimaryUserTest {
 
     @Test
     void transferFundsBetweenSecondaryUsersFailedExceptionNegativeTest() {
-        secondaryUsers.put("test1" , new User("test1", 100, new Inventory()));
-        secondaryUsers.put("test2" , new User("test2", 0, new Inventory()));
+        secondaryUsers.put("test1" , new User("test1", 100, new Inventory(), "primary"));
+        secondaryUsers.put("test2" , new User("test2", 0, new Inventory(), "primary"));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
         Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsFromUserToUser(-100, "test1", "test2",fullAccount));
 
@@ -138,8 +138,8 @@ class PrimaryUserTest {
 
     @Test
     void transferFundsFromUserToPrimary(){
-        secondaryUsers.put("test1" , new User("test1", 100, new Inventory()));
-        secondaryUsers.put("test2" , new User("test2", 0, new Inventory()));
+        secondaryUsers.put("test1" , new User("test1", 100, new Inventory(), "primary"));
+        secondaryUsers.put("test2" , new User("test2", 0, new Inventory(), "primary"));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
         try {
             Assertions.assertEquals(150, genericPrimary.transferFundsFromUserToPrimary(50, "test1", fullAccount));
@@ -152,8 +152,8 @@ class PrimaryUserTest {
 
     @Test
     void changeNameOfUser() {
-        secondaryUsers.put("test1" , new User("test1", 100, new Inventory()));
-        secondaryUsers.put("test2" , new User("test2", 0, new Inventory()));
+        secondaryUsers.put("test1" , new User("test1", 100, new Inventory(), "primary"));
+        secondaryUsers.put("test2" , new User("test2", 0, new Inventory(), "primary"));
         CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
         try {
             Assertions.assertEquals("namechange", genericPrimary.changeNameOfUser("namechange", "test1", fullAccount));

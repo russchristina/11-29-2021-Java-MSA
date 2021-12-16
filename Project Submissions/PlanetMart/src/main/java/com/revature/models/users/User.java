@@ -1,19 +1,22 @@
 package com.revature.models.users;
 
+import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
 import com.revature.models.shop.Inventory;
 
 public class User {
 
-    private String name;
-    private int balance;
-    private Inventory inventory;
+    protected String name;
+    protected int balance;
+    protected Inventory inventory;
+    protected String primaryUsername;
 
-    public User(String name, int balance, Inventory inventory) {
+    public User(String name, int balance, Inventory inventory, String primaryUsername) {
         this.name = name;
         this.balance = balance;
         this.inventory = inventory;
+        this.primaryUsername = primaryUsername;
     }
 
     public Inventory getInventory() {
@@ -55,5 +58,11 @@ public class User {
         this.balance = balance;
     }
 
+    public String getPrimaryUsername() {
+        return primaryUsername;
+    }
 
+    public void setPrimaryUsername(String primaryUsername) {
+        this.primaryUsername = primaryUsername;
+    }
 }

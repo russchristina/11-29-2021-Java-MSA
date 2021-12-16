@@ -14,7 +14,6 @@ public class Shop {
 
     private User user;
 
-
     public Shop() {
     }
 
@@ -22,7 +21,7 @@ public class Shop {
         this.user = user;
     }
 
-    public Planet buyPlanet(String planetChosen) {
+    public boolean buyPlanet(String planetChosen) {
         Planet planet = planetCatalogueMap.get(planetChosen);
         try {
             user.removeFunds(planet.getCost());
@@ -30,12 +29,30 @@ public class Shop {
             e.printStackTrace();
         } catch (InsufficientFundsException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
+        planet.setOwner(user);
+        planet.setUsername(user.getPrimaryUsername());
         ShopDao sDao = new ShopDao();
-        sDao.removePlanetFromMap(planetChosen);
-        sDao.addPlanetToUserOwnedMap(planetChosen, planet);
+        if(sDao.removePlanetFromMap(planetChosen) != null)
+                if(sDao.addPlanetToUserOwnedMap(planetChosen, planet) != null)
+                    return true;
 
-        return planet;
+        return false;
+    }
+
+    public boolean sellPlanet(Planet planet) {
+        ShopDao sDao = new ShopDao();
+        planet.setOwner(null);
+        planet.setUsername(null);
+        if(sDao.addPlanetToCatalogue(planet) != null) {
+            try {
+                user.addFunds(planet.getCost());
+            } catch (NegativeAmountException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
     }
 }

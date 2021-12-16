@@ -1,6 +1,7 @@
 package com.revature.models.shop;
 
 import com.revature.models.accounts.Account;
+import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.users.User;
 
 import java.util.Objects;
@@ -10,11 +11,13 @@ public class Planet {
     private int cost;
     private String name;
     private User owner;
-    private Account account;
+    private String username;
 
-    public Planet(int cost, String name) {
+    public Planet(int cost, String name, User owner, String username) {
         this.cost = cost;
         this.name = name;
+        this.owner = owner;
+        this.username = username;
     }
 
     public Planet() {
@@ -44,34 +47,11 @@ public class Planet {
         this.owner = owner;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Planet)) return false;
-        Planet planet = (Planet) o;
-        return getCost() == planet.getCost() && getName().equals(planet.getName()) && getOwner().equals(planet.getOwner()) && getAccount().equals(planet.getAccount());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getCost(), getName(), getOwner(), getAccount());
-    }
-
-    @Override
-    public String toString() {
-        return "{\"Planet\":{"
-                + "\"cost\":\"" + cost + "\""
-                + ", \"name\":\"" + name + "\""
-                + ", \"owner\":" + owner
-                + ", \"account\":" + account
-                + "}}";
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

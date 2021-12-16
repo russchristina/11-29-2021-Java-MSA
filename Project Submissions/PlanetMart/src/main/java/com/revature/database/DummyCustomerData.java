@@ -32,8 +32,8 @@ public class DummyCustomerData {
         PrimaryUser user2 = new PrimaryUser("Bojo", 3142, new Inventory(), "user2");
         PrimaryUser user3 = new PrimaryUser("HeyHo", 23124, new Inventory(), "user3");
 
-        User secondary1 = new User("Joseph", 10, new Inventory());
-        User secondary2 = new User("Jojo", 230, new Inventory());
+        User secondary1 = new User("Joseph", 10, new Inventory(), "user1");
+        User secondary2 = new User("Jojo", 230, new Inventory(), "user2");
 
 
         secondaryUsers1.put("Joseph", secondary1);
