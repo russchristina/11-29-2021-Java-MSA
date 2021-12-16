@@ -7,7 +7,7 @@ public class AccountDao {
     //add, modify, read, delete
 
     public Account getAccount(String username){
-        return DummyData.accountMap.get(username);
+        return DummyCustomerData.accountMap.get(username);
     }
 
 

@@ -16,8 +16,8 @@ public class UserCredentialsDaoTest {
     @BeforeAll
     public void InstantiateClass(){
         this.userCredentialsDao = new UserCredentialsDao();
-        this.existingUsername = DummyData.usernames.iterator().next();
-        this.existingPassword = DummyData.passwords.get(0);
+        this.existingUsername = DummyCustomerData.usernames.iterator().next();
+        this.existingPassword = DummyCustomerData.passwords.get(0);
     }
     
     @Test

@@ -8,7 +8,7 @@ import com.revature.models.users.User;
 
 import java.util.*;
 
-public class DummyData {
+public class DummyCustomerData {
 
     public static Set<String> usernames = new HashSet<>();
     public static ArrayList<String> passwords = new ArrayList<>();

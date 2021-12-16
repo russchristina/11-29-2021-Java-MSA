@@ -12,26 +12,26 @@ public class UserCredentialsDao {
     }
 
     public boolean passwordCheck(String password) throws EmptyUserCredentialDataException {
-        if(DummyData.passwords.isEmpty()) throw new EmptyUserCredentialDataException();
-        for(String s : DummyData.passwords) if(s.contentEquals(password)) return true;
+        if(DummyCustomerData.passwords.isEmpty()) throw new EmptyUserCredentialDataException();
+        for(String s : DummyCustomerData.passwords) if(s.contentEquals(password)) return true;
         return false;
     }
 
     public boolean usernameCheck(String username) throws EmptyUserCredentialDataException {
-        if(DummyData.usernames.isEmpty()) throw new EmptyUserCredentialDataException();
-        for(String s : DummyData.usernames) if(s.contentEquals(username)) return true;
+        if(DummyCustomerData.usernames.isEmpty()) throw new EmptyUserCredentialDataException();
+        for(String s : DummyCustomerData.usernames) if(s.contentEquals(username)) return true;
         return false;
     }
 
     public boolean usernameDuplicateCheck(String newUser, String password) throws DuplicateUsernameException {
-        if(DummyData.usernames.contains(newUser)) throw new DuplicateUsernameException("Duplicate username");
+        if(DummyCustomerData.usernames.contains(newUser)) throw new DuplicateUsernameException("Duplicate username");
 
         if(addNewAccount(newUser, password)) return true;
         return false;
     }
 
     public boolean addNewAccount(String newUser, String password) {
-        if(DummyData.usernames.add(newUser) && DummyData.passwords.add(password)) return true;
+        if(DummyCustomerData.usernames.add(newUser) && DummyCustomerData.passwords.add(password)) return true;
         return false;
     }
 }
