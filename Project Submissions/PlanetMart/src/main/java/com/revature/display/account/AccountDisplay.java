@@ -23,10 +23,32 @@ public class AccountDisplay {
         System.out.printf("Enter User name to choose: ");
     }
 
-    public void displayCurrentUser(User userChosen) {
+    public void displayCurrentUser(CustomerAccount account, User userChosen) {
 
         System.out.printf("Hello %s \n", userChosen.getName());
         System.out.printf("Balance: %d \n", userChosen.getBalance());
-        System.out.printf("Inventory: \n", userChosen.getInventory().toString());
+        System.out.printf("Inventory: %s\n", userChosen.getInventory(account, userChosen).toString());
+    }
+
+    public void displayCustomerOptions(CustomerAccount customerAccount, User user) {
+        if(customerAccount.getSecondaryUsers().containsKey(user.getName())){
+            System.out.println("SECONDARY USER OPTIONS");
+            System.out.println("1. Open Inventory");
+            System.out.println("2. Open Shop");
+            System.out.println("3. Change User");
+            System.out.println("4. Add to Balance");
+            System.out.println("5. Logout");
+        }else{
+            System.out.println("PRIMARY USER OPTIONS");
+            System.out.println("1. Open Inventory");
+            System.out.println("2. Open Shop");
+            System.out.println("3. Change User");
+            System.out.println("4. Add to Balance");
+            System.out.println("5. Logout");
+            System.out.println("6. Request Account Deletion");
+            System.out.println("7. Transfer Funds");
+            System.out.println("8. Change user names");
+            System.out.println("9. Remove User");
+        }
     }
 }

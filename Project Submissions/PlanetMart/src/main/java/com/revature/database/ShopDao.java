@@ -13,10 +13,9 @@ public class ShopDao {
         return planetCatalogueMap.remove(planetName);
     }
 
-    public Planet addPlanetToUserOwnedMap(String planetChosen, Planet planet) {
-        if(!userOwnedPlanetsMap.containsValue(planet)
-                || !userOwnedPlanetsMap.containsKey(planetChosen)) {
-            userOwnedPlanetsMap.put(planetChosen, planet);
+    public Planet addPlanetToUserOwnedMap(Planet planet) {
+        if(!userOwnedPlanetsList.contains(planet)){
+            userOwnedPlanetsList.add(planet);
             return planet;
         }
         return null;

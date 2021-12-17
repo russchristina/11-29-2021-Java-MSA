@@ -35,7 +35,7 @@ public class Shop {
         planet.setUsername(user.getPrimaryUsername());
         ShopDao sDao = new ShopDao();
         if(sDao.removePlanetFromMap(planetChosen) != null)
-                if(sDao.addPlanetToUserOwnedMap(planetChosen, planet) != null)
+                if(sDao.addPlanetToUserOwnedMap(planet) != null)
                     return true;
 
         return false;

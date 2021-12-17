@@ -1,15 +1,24 @@
 package com.revature.models.users;
 
+import com.revature.database.AccountDao;
+import com.revature.database.ShopDao;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
 import com.revature.models.shop.Inventory;
+import com.revature.models.shop.Planet;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class User {
 
     protected String name;
     protected int balance;
     protected Inventory inventory;
+    protected List<Planet> planetList = new ArrayList<>();
     protected String primaryUsername;
 
     public User(String name, int balance, Inventory inventory, String primaryUsername) {
@@ -19,7 +28,26 @@ public class User {
         this.primaryUsername = primaryUsername;
     }
 
-    public Inventory getInventory() {
+    public List<Planet> getPlanetList(CustomerAccount account, User user) {
+        List<Planet> accountPlanets = account.getPlanetsFromDao();
+        List<Planet> planetList = new ArrayList<>();
+        for(Planet p: accountPlanets){
+            if(p.getOwner().getName().contentEquals(name)) planetList.add(p);
+        }
+
+        setPlanetList(planetList);
+        return planetList;
+    }
+
+    public void setPlanetList(List<Planet> planetList) {
+        this.planetList = planetList;
+    }
+
+    public Inventory getInventory(CustomerAccount account, User user) {
+        if(inventory.getPlanetList().isEmpty()) {
+            inventory = new Inventory(account, user);
+            setInventory(inventory);
+        }
         return inventory;
     }
 

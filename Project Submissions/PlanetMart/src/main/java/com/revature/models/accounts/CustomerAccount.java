@@ -1,8 +1,11 @@
 package com.revature.models.accounts;
 
+import com.revature.database.AccountDao;
+import com.revature.models.shop.Planet;
 import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -11,13 +14,25 @@ public class CustomerAccount extends Account{
     private Map<String, User> secondaryUsers;
     private PrimaryUser primaryUser;
     private final int maxSecondaryAccounts = 5;
-
-//    private Map<User, Inventory> userInventoryMap;
+    public List<Planet> planetsFromDao;
+    //    private Map<User, Inventory> userInventoryMap;
 
     public CustomerAccount(Map<String, User> secondaryUsers, String username, PrimaryUser primaryUser) {
         super(username);
         this.secondaryUsers = secondaryUsers;
         this.primaryUser = primaryUser;
+        getPlanetsFromDao();
+    }
+
+    public List<Planet> getPlanetsFromDao() {
+        AccountDao aDao = new AccountDao();
+        List<Planet> planetsFromDao = aDao.getOwnedPlanets(username);
+        setPlanetsFromDao(planetsFromDao);
+        return planetsFromDao;
+    }
+
+    private void setPlanetsFromDao(List<Planet> planetsFromDao) {
+        this.planetsFromDao = planetsFromDao;
     }
 
 

@@ -1,8 +1,6 @@
 package com.revature.models;
 
 
-import com.revature.database.ShopDao;
-import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
 import com.revature.models.shop.Shop;
@@ -12,10 +10,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.revature.database.DummyShopData.*;
+import static com.revature.database.DummyShopData.planetCatalogueMap;
+import static com.revature.database.DummyShopData.userOwnedPlanetsList;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShopTest {
@@ -50,22 +46,25 @@ class ShopTest {
 
     @Test
     void boughtPlanetAddedToUserOwnedMapTest(){
+        Planet planet = planetCatalogueMap.get("addPlanet");
         shop.buyPlanet("addPlanet");
-        Assertions.assertTrue(userOwnedPlanetsMap.containsKey("addPlanet"));
+        Assertions.assertTrue(userOwnedPlanetsList.contains(planet));
     }
 
     @Test
     void boughtPlanetUpdatesOwnerTest(){
-        planetCatalogueMap.put("updateOwner", new Planet(1, "updateOwner", null, null));
+        Planet updateOwner = new Planet(1, "updateOwner", null, null);
+        planetCatalogueMap.put("updateOwner", updateOwner);
         shop.buyPlanet("updateOwner");
-        Assertions.assertEquals(user, userOwnedPlanetsMap.get("updateOwner").getOwner());
+        Assertions.assertTrue(userOwnedPlanetsList.contains(updateOwner));
     }
 
     @Test
     void boughtPlanetUpdatesUsernameTest(){
-        planetCatalogueMap.put("updateUsername", new Planet(1, "updateUsername", null, null));
+        Planet updateUsername = new Planet(1, "updateUsername", null, null);
+        planetCatalogueMap.put("updateUsername", updateUsername);
         shop.buyPlanet("updateUsername");
-        Assertions.assertEquals(user.getPrimaryUsername(), userOwnedPlanetsMap.get("updateUsername").getUsername());
+        Assertions.assertTrue(userOwnedPlanetsList.contains(updateUsername));
     }
 
     @Test
@@ -79,14 +78,14 @@ class ShopTest {
     void sellPlanetRemovesOwnerTest(){
         Planet planet = new Planet(200, "soldPlanet", user, "primary");
         shop.sellPlanet(planet);
-        Assertions.assertEquals(null, planetCatalogueMap.get("soldPlanet").getOwner());
+        Assertions.assertNull(planetCatalogueMap.get("soldPlanet").getOwner());
     }
 
     @Test
     void sellPlanetRemovesUsernameTest(){
         Planet planet = new Planet(200, "soldPlanet", user, "primary");
         shop.sellPlanet(planet);
-        Assertions.assertEquals(null, planetCatalogueMap.get("soldPlanet").getUsername());
+        Assertions.assertNull(planetCatalogueMap.get("soldPlanet").getUsername());
     }
 
 

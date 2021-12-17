@@ -26,24 +26,40 @@ public class AccountHandler {
         CustomerAccount customerAccount = account instanceof CustomerAccount ? ((CustomerAccount) account) : null;
         if(customerAccount != null) {
             accountDisplay.customerDisplay(customerAccount);
-            ChooseUser(customerAccount, accountDisplay);
+            boolean getCorrectUser = true;
+            User user = chooseUser(customerAccount);
+            while(getCorrectUser){
+                if(user == null) {
+                    user = chooseUser(customerAccount);
+                }else if(user != null) getCorrectUser = false;
+
+            }
+
+            customerUserOptions(customerAccount, user);
         }
 
     }
 
-    private void ChooseUser(CustomerAccount customerAccount, AccountDisplay accountDisplay) {
+    private void customerUserOptions(CustomerAccount customerAccount, User user) {
         AccountInputHandler accountInputHandler = new AccountInputHandler();
+        AccountDisplay accountDisplay = new AccountDisplay();
+            accountDisplay.displayCustomerOptions(customerAccount, user);
+            accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
 
+    }
+
+    private User chooseUser(CustomerAccount customerAccount) {
+        AccountInputHandler accountInputHandler = new AccountInputHandler();
+        AccountDisplay accountDisplay = new AccountDisplay();
         try {
             User userChosen = accountInputHandler.inputChooseUser(customerAccount);
-            accountDisplay.displayCurrentUser(userChosen);
+            accountDisplay.displayCurrentUser(customerAccount, userChosen);
+            return userChosen;
         } catch (UserNotFoundException e) {
             e.printStackTrace();
             accountDisplay.customerDisplay(customerAccount);
-            ChooseUser(customerAccount, accountDisplay);
+            chooseUser(customerAccount);
         }
-
-
-
+        return null;
     }
 }
