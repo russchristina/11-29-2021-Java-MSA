@@ -1,32 +1,27 @@
 package com.revature.models.shop;
 
-import com.revature.models.accounts.CustomerAccount;
-import com.revature.models.users.User;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class Inventory {
-    private List<Planet> planetList = new ArrayList<>();
+    private List<Planet> planetOwnedList = new ArrayList<>();
 
-    public Inventory(CustomerAccount account, User user) {
-
-        this.planetList = user.getPlanetList(account, user);
+    public Inventory(List<Planet> planetOwnedList) {
+        this.planetOwnedList = planetOwnedList;
     }
 
     public Inventory() {
 
     }
 
-    public List<Planet> getPlanetList() {
+    public List<Planet> getPlanetOwnedList() {
 
-        return planetList;
+        return planetOwnedList;
     }
 
-    public void setPlanetList(List<Planet> planetList) {
-        this.planetList = planetList;
+    public void setPlanetOwnedList(List<Planet> planetList) {
+        this.planetOwnedList = planetOwnedList;
     }
 
     @Override
@@ -34,18 +29,18 @@ public class Inventory {
         if (this == o) return true;
         if (!(o instanceof Inventory)) return false;
         Inventory inventory = (Inventory) o;
-        return getPlanetList().equals(inventory.getPlanetList());
+        return getPlanetOwnedList().equals(inventory.getPlanetOwnedList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPlanetList());
+        return Objects.hash(getPlanetOwnedList());
     }
 
     @Override
     public String toString() {
         return "{\"Inventory\":{"
-                + "\"planetList\":" + planetList
+                + "\"planetList\":" + planetOwnedList
                 + "}}";
     }
 }

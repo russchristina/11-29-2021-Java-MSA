@@ -15,7 +15,6 @@ public class CustomerAccount extends Account{
     private PrimaryUser primaryUser;
     private final int maxSecondaryAccounts = 5;
     public List<Planet> planetsFromDao;
-    //    private Map<User, Inventory> userInventoryMap;
 
     public CustomerAccount(Map<String, User> secondaryUsers, String username, PrimaryUser primaryUser) {
         super(username);

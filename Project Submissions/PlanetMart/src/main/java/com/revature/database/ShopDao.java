@@ -3,6 +3,7 @@ package com.revature.database;
 import com.revature.models.shop.Planet;
 
 import static com.revature.database.DummyShopData.*;
+import static com.revature.database.DummyCustomerData.*;
 
 public class ShopDao {
 
@@ -13,13 +14,7 @@ public class ShopDao {
         return planetCatalogueMap.remove(planetName);
     }
 
-    public Planet addPlanetToUserOwnedMap(Planet planet) {
-        if(!userOwnedPlanetsList.contains(planet)){
-            userOwnedPlanetsList.add(planet);
-            return planet;
-        }
-        return null;
-    }
+
 
     public Planet addPlanetToCatalogue(Planet planet) {
         return planetCatalogueMap.put(planet.getName(), planet);

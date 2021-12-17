@@ -9,12 +9,8 @@ import java.util.Map;
 
 public class PrimaryUser extends User{
 
-    public PrimaryUser(String name, int balance, Inventory inventory, String username) {
-        super(name, balance, inventory, username);
-    }
-
-    public PrimaryUser() {
-        super();
+    public PrimaryUser(String name, int balance, String username) {
+        super(name, balance, username);
     }
 
 
@@ -26,7 +22,7 @@ public class PrimaryUser extends User{
 
         if(secondaryUsers.containsKey(name)) throw new RepeatedNameOfUserException();
 
-        User user = new User(name, 0, new Inventory(), primaryUsername);
+        User user = new User(name, 0, primaryUsername);
         secondaryUsers.put(name, user);
         account.setSecondaryUsers(secondaryUsers);
         return user;

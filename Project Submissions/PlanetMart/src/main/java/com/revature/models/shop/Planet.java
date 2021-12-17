@@ -54,4 +54,14 @@ public class Planet {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "{\"Planet\":{"
+                + "\"cost\":\"" + cost + "\""
+                + ", \"name\":\"" + name + "\""
+                + ", \"owner\":" + owner
+                + ", \"username\":\"" + username + "\""
+                + "}}";
+    }
 }
