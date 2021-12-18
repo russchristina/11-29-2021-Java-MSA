@@ -1,14 +1,13 @@
 package com.revature.scannerandfileio;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
 
 /*
  * What is serialization? Serialization in this case refers to writing a Java object as
@@ -39,13 +38,8 @@ public class Serialization {
 		 */
 		
 		File myFile = new File("polkaman.txt");
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(myFile);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
+		try(FileOutputStream fos = new FileOutputStream(myFile); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			oos.writeObject(pekachu);
-			oos.close();
-			fos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,9 +49,7 @@ public class Serialization {
 		 * Let's read Pekachu back out of the file:
 		 */
 
-		try {
-			FileInputStream fis = new FileInputStream(myFile);
-			ObjectInputStream ois = new ObjectInputStream(fis);
+		try(FileInputStream fis = new FileInputStream(myFile); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			Polkaman retrievedPekachu = (Polkaman) ois.readObject();
 			System.out.println(retrievedPekachu);
 			fis.close();
