@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import com.revature.database.DummyCustomerData;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.RepeatedNameOfUserException;
 import com.revature.models.shop.Inventory;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -28,12 +30,9 @@ class PrimaryUserTest {
 
     @BeforeAll
     public void instantiateVariables(){
-        this.genericPrimary = new PrimaryUser("primary", 100,"user1");
-        this.secondaryUsers = new HashMap<>();
-        secondaryUsers.put("name1", new User("name1", 0,  "user1"));
-        secondaryUsers.put("name2", new User("name2", 0,  "user1"));
-        secondaryUsers.put("name3", new User("name3", 0,  "user1"));
-        this.account = new CustomerAccount(secondaryUsers, "user1", genericPrimary);
+        this.genericPrimary = DummyCustomerData.user1;
+        this.secondaryUsers = DummyCustomerData.secondaryUsers1;
+        this.account = (CustomerAccount) DummyCustomerData.accountMap.get("user1");
     }
 
     @Test
@@ -59,7 +58,7 @@ class PrimaryUserTest {
     void maxSecondaryUserExceptionTest(){
         secondaryUsers.put("quick1" , new User());
         secondaryUsers.put("quick2" , new User());
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
         Assertions.assertThrows(MaxSecondaryUsersException.class, () -> genericPrimary.addSecondaryUser("FULL",fullAccount));
     }
 
@@ -88,7 +87,7 @@ class PrimaryUserTest {
         justForThis.put("testingtest" , new User("testingtest", 0,  "user1"));
 
         PrimaryUser primaryUser = new PrimaryUser("BOb", 100, "primary");
-        CustomerAccount transferringFundsAccount = new CustomerAccount(justForThis, "primary", primaryUser);
+        CustomerAccount transferringFundsAccount = new CustomerAccount(justForThis, "primary", primaryUser, new ArrayList<>());
         try {
             Assertions.assertEquals(50, primaryUser.transferFundsToUser(50, "testingtest",transferringFundsAccount));
         } catch (FailedToTransferFundsException | UserNotFoundException e) {
@@ -100,7 +99,7 @@ class PrimaryUserTest {
     void failedToTransferFundsExceptionTest() {
         secondaryUsers.put("test1" , new User("test1", 100,  "primary"));
         secondaryUsers.put("test2" , new User("test2", 0,  "primary"));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
 
         Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsToUser(10000, "test1", fullAccount));
     }
@@ -109,7 +108,7 @@ class PrimaryUserTest {
     void transferFundsFromUserTest() {
         secondaryUsers.put("test1" , new User("test1", 100,  "primary"));
         secondaryUsers.put("test2" , new User("test2", 0,  "primary"));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
         try {
             Assertions.assertEquals(50, genericPrimary.transferFundsFromUserToUser(50, "test1", "test2", fullAccount));
         } catch (FailedToTransferFundsException | UserNotFoundException e) {
@@ -121,7 +120,7 @@ class PrimaryUserTest {
     void transferFundsBetweenSecondaryUsersFailedExceptionInsufficientFundsTest() {
         secondaryUsers.put("test1" , new User("test1", 100,  "primary"));
         secondaryUsers.put("test2" , new User("test2", 0,  "primary"));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
 
         Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsFromUserToUser(3000, "test1", "test2",fullAccount));
 
@@ -131,7 +130,7 @@ class PrimaryUserTest {
     void transferFundsBetweenSecondaryUsersFailedExceptionNegativeTest() {
         secondaryUsers.put("test1" , new User("test1", 100,  "primary"));
         secondaryUsers.put("test2" , new User("test2", 0,  "primary"));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
         Assertions.assertThrows(FailedToTransferFundsException.class, () -> genericPrimary.transferFundsFromUserToUser(-100, "test1", "test2",fullAccount));
 
     }
@@ -140,7 +139,7 @@ class PrimaryUserTest {
     void transferFundsFromUserToPrimary(){
         secondaryUsers.put("test1" , new User("test1", 100,  "primary"));
         secondaryUsers.put("test2" , new User("test2", 0,  "primary"));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
         try {
             Assertions.assertEquals(150, genericPrimary.transferFundsFromUserToPrimary(50, "test1", fullAccount));
         } catch (UserNotFoundException e) {
@@ -154,7 +153,7 @@ class PrimaryUserTest {
     void changeNameOfUser() {
         secondaryUsers.put("test1" , new User("test1", 100,  "primary"));
         secondaryUsers.put("test2" , new User("test2", 0,  "primary"));
-        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary);
+        CustomerAccount fullAccount = new CustomerAccount(secondaryUsers, "primary", genericPrimary, new ArrayList<>());
         try {
             Assertions.assertEquals("namechange", genericPrimary.changeNameOfUser("namechange", "test1", fullAccount));
         } catch (UserNotFoundException e) {

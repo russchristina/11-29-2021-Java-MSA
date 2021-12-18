@@ -2,6 +2,7 @@ package com.revature.database;
 
 import com.revature.models.accounts.Account;
 import com.revature.models.shop.Planet;
+import com.revature.models.users.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,10 +20,10 @@ public class AccountDao {
     }
 
 
-    public List<Planet> getOwnedPlanets(String name) {
+    public List<Planet> getOwnedPlanets(User user) {
         List<Planet> planetsOwnedByAccount = new ArrayList<>();
         for(Planet p: DummyCustomerData.userOwnedPlanetsList){
-            if(p.getUsername().contentEquals(name)) planetsOwnedByAccount.add(p);
+            if(p.getUsername().contentEquals(user.getPrimaryUsername())) planetsOwnedByAccount.add(p);
         }
         return planetsOwnedByAccount;
     }
@@ -35,4 +36,9 @@ public class AccountDao {
         return null;
     }
 
+    public void removePlanetFromOwnedList(Planet planet) {
+        if(userOwnedPlanetsList.contains(planet)){
+            userOwnedPlanetsList.remove(planet);
+        }
+    }
 }

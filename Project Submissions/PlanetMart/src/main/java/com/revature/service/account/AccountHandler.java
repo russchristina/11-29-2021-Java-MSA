@@ -14,16 +14,13 @@ public class AccountHandler {
     private String usernameInput;
 
     public AccountHandler(String usernameInput) {
-
-        System.out.println("success!");
         this.usernameInput = usernameInput;
-        //initiateAccount();
     }
 
     public void changeUser(CustomerAccount customerAccount) {
         AccountDisplay accountDisplay = new AccountDisplay();
         boolean getCorrectUser = true;
-
+        accountDisplay.customerDisplay(customerAccount);
         User user = chooseUser(customerAccount);
         InventoryHandler inventoryHandler = new InventoryHandler();
         Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
@@ -49,21 +46,18 @@ public class AccountHandler {
         CustomerAccount customerAccount = account instanceof CustomerAccount ? ((CustomerAccount) account) : null;
         if(customerAccount != null) {
             accountDisplay.customerDisplay(customerAccount);
-            boolean getCorrectUser = true;
 
-            User user = chooseUser(customerAccount);
-            InventoryHandler inventoryHandler = new InventoryHandler();
-            Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
-            accountDisplay.displayCurrentUser(customerAccount, user, inventory);
 
-            while(getCorrectUser){
-                if(user == null) {
-                    user = chooseUser(customerAccount);
-                }else if(user != null) getCorrectUser = false;
 
-            }
+                User user = chooseUser(customerAccount);
+                InventoryHandler inventoryHandler = new InventoryHandler();
+                Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
+                accountDisplay.displayCurrentUser(customerAccount, user, inventory);
 
-            customerUserOptions(customerAccount, user);
+                customerUserOptions(customerAccount, user);
+
+
+
         }
 
     }
@@ -77,14 +71,16 @@ public class AccountHandler {
     private User chooseUser(CustomerAccount customerAccount) {
         AccountInputHandler accountInputHandler = new AccountInputHandler();
         AccountDisplay accountDisplay = new AccountDisplay();
-        try {
-            User userChosen = accountInputHandler.inputChooseUser(customerAccount);
-
-            return userChosen;
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-            accountDisplay.customerDisplay(customerAccount);
-            chooseUser(customerAccount);
+        boolean getCorrectUser = true;
+        while(getCorrectUser) {
+            try {
+                User userChosen = accountInputHandler.inputChooseUser(customerAccount);
+                getCorrectUser = false;
+                return userChosen;
+            } catch (UserNotFoundException e) {
+                System.out.println("Ȉ̵̙͖͍͗Ǹ̶̹̺̎̓P̸̲͕̜̒͐̎Ú̷̢͍̫̀T̶̡̝͑ ̶̩̫̋̈͌I̷̡̳͔͊̐͝Ǹ̵͉͜V̸̪̺͚̇̇͝A̶̢̰̻̐̉L̵̼͆͛̔İ̴̱D̸̖̏̾ͅ");
+                e.printStackTrace();
+            }
         }
         return null;
     }

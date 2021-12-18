@@ -79,21 +79,21 @@ class ShopTest {
     @Test
     void sellPlanetTest(){
         Planet planet = new Planet(200, "soldPlanet", user, "primary");
-        shop.sellPlanet(planet, user);
+        shop.sellPlanet(planet, user, customerAccount);
         Assertions.assertTrue(planetCatalogueMap.containsKey("soldPlanet"));
     }
 
     @Test
     void sellPlanetRemovesOwnerTest(){
         Planet planet = new Planet(200, "soldPlanet", user, "primary");
-        shop.sellPlanet(planet, user);
+        shop.sellPlanet(planet, user, customerAccount);
         Assertions.assertNull(planetCatalogueMap.get("soldPlanet").getOwner());
     }
 
     @Test
     void sellPlanetRemovesUsernameTest(){
         Planet planet = new Planet(200, "soldPlanet", user, "primary");
-        shop.sellPlanet(planet, user);
+        shop.sellPlanet(planet, user, customerAccount);
         Assertions.assertNull(planetCatalogueMap.get("soldPlanet").getUsername());
     }
 

@@ -18,12 +18,14 @@ public class AccountInputHandler {
 
     public User inputChooseUser(CustomerAccount customerAccount) throws UserNotFoundException {
         Scanner sc = new Scanner(System.in);
-        String userInput = sc.nextLine();
+        boolean choosingUser = true;
+        String userInput = "";
+
+        userInput = sc.nextLine();
         if(customerAccount.getPrimaryUser().getName().contentEquals(userInput)) return customerAccount.getPrimaryUser();
         else if(customerAccount.getSecondaryUsers().get(userInput) != null) return customerAccount.getSecondaryUsers().get(userInput);
 
         throw new UserNotFoundException();
-
 
     }
 
@@ -45,15 +47,15 @@ public class AccountInputHandler {
                         InventoryDisplay inventoryDisplay = new InventoryDisplay();
                         Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
                         inventoryDisplay.displayInventory(inventory);
-                        inputChooseCustomerOptions(customerAccount, user);
-                        choosingOptions = false;
+//                        inputChooseCustomerOptions(customerAccount, user);
+                        //choosingOptions = false;
                         break;
                     case("2"):
                         System.out.println("Option 2: Open Shop");
                         ShopHandler shopHandler = new ShopHandler();
                         shopHandler.beginShopping(customerAccount, user);
-                        inputChooseCustomerOptions(customerAccount, user);
-                        choosingOptions = false;
+                        //inputChooseCustomerOptions(customerAccount, user);
+                        //choosingOptions = false;
                         break;
                     case("3"):
                         System.out.println("Option 3: Change User");

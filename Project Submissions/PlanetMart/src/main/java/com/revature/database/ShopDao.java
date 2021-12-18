@@ -17,6 +17,9 @@ public class ShopDao {
 
 
     public Planet addPlanetToCatalogue(Planet planet) {
+        if(planetCatalogueMap.containsKey(planet.getName()))
+            return null;
+
         return planetCatalogueMap.put(planet.getName(), planet);
     }
 }

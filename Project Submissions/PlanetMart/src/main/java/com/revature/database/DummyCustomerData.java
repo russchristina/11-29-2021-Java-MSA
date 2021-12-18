@@ -22,6 +22,8 @@ public class DummyCustomerData {
 
     public static List<Planet> userOwnedPlanetsList = new ArrayList<>();
 
+    public static PrimaryUser user1 = new PrimaryUser("Joleyne", 1000, "user1");
+
     static {
         usernames.add("user1");
         usernames.add("user2");
@@ -31,7 +33,6 @@ public class DummyCustomerData {
         passwords.add("pass2");
         passwords.add("pass3");
 
-        PrimaryUser user1 = new PrimaryUser("Joleyne", 1000, "user1");
         PrimaryUser user2 = new PrimaryUser("Bojo", 3142, "user2");
         PrimaryUser user3 = new PrimaryUser("HeyHo", 23124, "user3");
 
@@ -39,16 +40,11 @@ public class DummyCustomerData {
         User secondary2 = new User("Jojo", 230, "user2");
 
 
+
+
         secondaryUsers1.put("Joseph", secondary1);
         secondaryUsers2.put("Jojo", secondary2);
 
-        CustomerAccount dummyAccount1 = new CustomerAccount(secondaryUsers1, "user1", user1);
-        CustomerAccount dummyAccount2 = new CustomerAccount(secondaryUsers2, "user2", user2);
-        CustomerAccount dummyAccount3 = new CustomerAccount(secondaryUsers3, "user3", user3);
-
-        accountMap.put("user1", dummyAccount1);
-        accountMap.put("user2", dummyAccount2);
-        accountMap.put("user3", dummyAccount3);
 
 
         userOwnedPlanetsList.add(new Planet(10, "myOwnPlanet", user1, "user1"));
@@ -58,6 +54,13 @@ public class DummyCustomerData {
         userOwnedPlanetsList.add(new Planet(102, "not my problem", secondary1, "secondary1"));
         userOwnedPlanetsList.add(new Planet(13240, "merry planet 23st", secondary2, "secondary2"));
 
+        CustomerAccount dummyAccount1 = new CustomerAccount(secondaryUsers1, "user1", user1, userOwnedPlanetsList);
+        CustomerAccount dummyAccount2 = new CustomerAccount(secondaryUsers2, "user2", user2, userOwnedPlanetsList);
+        CustomerAccount dummyAccount3 = new CustomerAccount(secondaryUsers3, "user3", user3, userOwnedPlanetsList);
+
+        accountMap.put("user1", dummyAccount1);
+        accountMap.put("user2", dummyAccount2);
+        accountMap.put("user3", dummyAccount3);
 
     }
 
