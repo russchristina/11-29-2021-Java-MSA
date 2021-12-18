@@ -4,6 +4,7 @@ import com.revature.models.accounts.Account;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.users.User;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Planet {
@@ -12,6 +13,12 @@ public class Planet {
     private String name;
     private User owner;
     private String username;
+
+    private boolean goldilocksZone;
+    private int waterPercent;
+    private int averageTemperature;
+    private Map<String, Integer> atmosphere;
+
 
     public Planet(int cost, String name, User owner, String username) {
         this.cost = cost;
