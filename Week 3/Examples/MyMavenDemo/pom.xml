@@ -1,0 +1,23 @@
+<!--This file (referred to as the POM for short) is your Project Object Model. 
+	It contains important configuration information regarding your Maven project. 
+	Note the artifact ID, group ID, and version ID. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.revature</groupId>
+	<artifactId>MyMavenDemo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<!-- How do I tell Maven which dependencies should be downloaded on my behalf? 
+		I can just specify the dependencies by using the "dependencies" tag and giving 
+		project coordinates. -->
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.3.1</version>
+		</dependency>
+	</dependencies>
+</project>
