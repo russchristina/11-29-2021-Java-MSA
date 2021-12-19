@@ -18,7 +18,7 @@ public class MarkovChain {
 
     public StringBuilder generateParagraph(){
         StringBuilder paragraph = new StringBuilder();
-        for(int i = 0; i < (int)(Math.random()*12)+6 ; i++){
+        for(int i = 0; i < (int)(Math.random()*8)+4 ; i++){
             paragraph.append(generateSentence());
         }
 
@@ -27,7 +27,7 @@ public class MarkovChain {
 
     public StringBuilder generateStartOfSentence(){
         List<String> randomStartList = getWords(randomStart);
-        return new StringBuilder(randomStartList.get((int)(Math.random()*randomStartList.size())) + " ");
+        return new StringBuilder("..." + randomStartList.get((int)(Math.random()*randomStartList.size())) + " ");
     }
 
     public StringBuilder generateSentence() {
@@ -38,7 +38,7 @@ public class MarkovChain {
         List<String> verbList = getWords(verbs);
         List<String> pronounList = getWords(pronouns);
 
-        StringBuilder sentence = new StringBuilder();
+        StringBuilder sentence = new StringBuilder("...");
         int randomWordType = 0;
         boolean previousNoun = false;
         boolean previousAdjective = false;
@@ -51,7 +51,7 @@ public class MarkovChain {
         int connectiveProb = 10;
         int adjectiveProb = 15;
         int verbProb = 15;
-        for(int i = 0; i < (int)(Math.random()* 20) + 10; i++){
+        for(int i = 0; i < (int)(Math.random()* 4) + 3; i++){
 
             if(previousNoun){
                 nounProb = 0;
@@ -153,7 +153,7 @@ public class MarkovChain {
 
         }
 
-        sentence.append("\n");
+        sentence.append("...\n");
 
         return generateStartOfSentence().append(sentence);
     }

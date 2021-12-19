@@ -8,13 +8,7 @@ Fire
 Plant
 story
 friendship
-son
-hair
-highway
-meat
-gate
 confusion
-wedding
 tension
 guest
 youth
@@ -23,19 +17,12 @@ buyer
 relation
 injury
 fortune
-election
 engineering
 cancer
-pie
-cheek
 warning
-revenue
-scene
 system
 arrival
 replacement
-army
-apartment
 teaching
 law
 mode
@@ -54,28 +41,20 @@ moon
 existence
 satellite
 universe
-apollo
 astronomy
 gravity
 galaxy
 hydrogen
 planetary
-jupiter
-juliet
 cosmic
 planets
 saturn
-titan
 telescope
 asteroid
 comet
-neptune
-solar system
 cosmos
 astronomers
 galactic
-pluto
-extraterrestrial
 starship
 galaxies
 moons
@@ -85,95 +64,54 @@ helium
 milky way
 uranus
 supernova
-aphelion
 asteroid belt
 interplanetary
-metallicity
 exoplanet
 extragalactic
 extrasolar
 planetary system
 cosmic ray
-charon
 nebula
-callisto
-jovian
 quasar
 spiral galaxy
-hesperus
 brown dwarf
 star cluster
 neutron star
 prehistory
-renaissance
 historical
 record
 culture
 antiquity
 geography
-saracen
 humanities
 book
 life
-case history
 narrative
 science
 experience
 biography
 historic period
-renascence
-etymology
-herodotus
-thucydides
 philosophy
 prehistoric
 art
-ancient greek
 ago
-career
-society
-literature
-fresh
-modern
 young
-newly
-late
-early
-novel
-original
-inexperienced
-recent
-current
 newborn
-recently
 other
-unused
-parvenu
 revolutionary
 newfangled
 linguistics
 baby
-untried
 century
 origins
 modern
-one
 lesson
-decade
-nation
 heritage
 globular cluster
 celestial body
-magellanic cloud
-andromeda galaxy
 interstellar space
-nereid
 dwarf galaxy
 planetoids
-chasm
-Niobium
-Heliocentric
-heliosphere
 Heavenly Body
 Planetesimals
 Planetfall

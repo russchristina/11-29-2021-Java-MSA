@@ -2,23 +2,20 @@ package com.revature.models.shop;
 
 import com.revature.models.shop.generator.MarkovChain;
 
+import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
-public class Life {
+public class Life implements Serializable {
 
-    protected int technologyLevel;
-    protected long population;
-    protected String name;
+    private int technologyLevel;
+    private long population;
+    private String name;
 
     public Life(String name, long population, int technologyLevel) {
         this.name = name;
         this.population = population;
         this.technologyLevel = technologyLevel;
-    }
-
-    public StringBuilder getCommunication(){
-        MarkovChain markovChain = new MarkovChain();
-        return markovChain.generateParagraph();
     }
 
     public int getTechnologyLevel() {
@@ -43,5 +40,27 @@ public class Life {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Life)) return false;
+        Life life = (Life) o;
+        return getTechnologyLevel() == life.getTechnologyLevel() && getPopulation() == life.getPopulation() && getName().equals(life.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTechnologyLevel(), getPopulation(), getName());
+    }
+
+    @Override
+    public String toString() {
+        return "{\"Life\":{"
+                + "\"technologyLevel\":\"" + technologyLevel + "\""
+                + ", \"population\":\"" + population + "\""
+                + ", \"name\":\"" + name + "\""
+                + "}}";
     }
 }

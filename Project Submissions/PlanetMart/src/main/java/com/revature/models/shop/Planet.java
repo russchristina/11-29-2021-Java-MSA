@@ -4,10 +4,11 @@ import com.revature.models.accounts.Account;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.users.User;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-public class Planet {
+public class Planet implements Serializable {
 
     private Life lifeForm;
     private int cost;

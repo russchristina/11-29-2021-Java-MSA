@@ -5,6 +5,7 @@ import com.revature.models.accounts.Account;
 import com.revature.database.AccountDao;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
+import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 import com.revature.models.exceptions.UserNotFoundException;
 import com.revature.service.shop.InventoryHandler;
@@ -19,19 +20,11 @@ public class AccountHandler {
 
     public void changeUser(CustomerAccount customerAccount) {
         AccountDisplay accountDisplay = new AccountDisplay();
-        boolean getCorrectUser = true;
         accountDisplay.customerDisplay(customerAccount);
         User user = chooseUser(customerAccount);
         InventoryHandler inventoryHandler = new InventoryHandler();
         Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
         accountDisplay.displayCurrentUser(customerAccount, user, inventory);
-
-        while(getCorrectUser){
-            if(user == null) {
-                user = chooseUser(customerAccount);
-            }else if(user != null) getCorrectUser = false;
-
-        }
 
         customerUserOptions(customerAccount, user);
     }
@@ -47,13 +40,10 @@ public class AccountHandler {
         if(customerAccount != null) {
             accountDisplay.customerDisplay(customerAccount);
 
-
-
                 User user = chooseUser(customerAccount);
                 InventoryHandler inventoryHandler = new InventoryHandler();
                 Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
                 accountDisplay.displayCurrentUser(customerAccount, user, inventory);
-
                 customerUserOptions(customerAccount, user);
 
 
