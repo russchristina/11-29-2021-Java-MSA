@@ -1,0 +1,199 @@
+Planet
+King
+Space
+Desert
+Ocean
+Water
+Fire
+Plant
+story
+friendship
+son
+hair
+highway
+meat
+gate
+confusion
+wedding
+tension
+guest
+youth
+length
+buyer
+relation
+injury
+fortune
+election
+engineering
+cancer
+pie
+cheek
+warning
+revenue
+scene
+system
+arrival
+replacement
+army
+apartment
+teaching
+law
+mode
+requirement
+celebration
+leader
+appointment
+strategy
+context
+activity
+science
+world
+star
+sun
+moon
+existence
+satellite
+universe
+apollo
+astronomy
+gravity
+galaxy
+hydrogen
+planetary
+jupiter
+juliet
+cosmic
+planets
+saturn
+titan
+telescope
+asteroid
+comet
+neptune
+solar system
+cosmos
+astronomers
+galactic
+pluto
+extraterrestrial
+starship
+galaxies
+moons
+stardust
+nebula
+helium
+milky way
+uranus
+supernova
+aphelion
+asteroid belt
+interplanetary
+metallicity
+exoplanet
+extragalactic
+extrasolar
+planetary system
+cosmic ray
+charon
+nebula
+callisto
+jovian
+quasar
+spiral galaxy
+hesperus
+brown dwarf
+star cluster
+neutron star
+prehistory
+renaissance
+historical
+record
+culture
+antiquity
+geography
+saracen
+humanities
+book
+life
+case history
+narrative
+science
+experience
+biography
+historic period
+renascence
+etymology
+herodotus
+thucydides
+philosophy
+prehistoric
+art
+ancient greek
+ago
+career
+society
+literature
+fresh
+modern
+young
+newly
+late
+early
+novel
+original
+inexperienced
+recent
+current
+newborn
+recently
+other
+unused
+parvenu
+revolutionary
+newfangled
+linguistics
+baby
+untried
+century
+origins
+modern
+one
+lesson
+decade
+nation
+heritage
+globular cluster
+celestial body
+magellanic cloud
+andromeda galaxy
+interstellar space
+nereid
+dwarf galaxy
+planetoids
+chasm
+Niobium
+Heliocentric
+heliosphere
+Heavenly Body
+Planetesimals
+Planetfall
+planetside
+proto-planet
+trans-lunar
+sublunary
+microcosmic
+planet-wide
+trans-orbital
+Planemo
+exoplanet
+wander-star
+sub-planetary
+anti-planet
+super-planet
+dirt-spider
+planetless
+planetward
+exo-comet
+space-based
+geo-heliocentric
+landscape
