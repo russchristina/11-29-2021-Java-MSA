@@ -50,7 +50,8 @@ public class ShopInputHandler {
         boolean sellingPlanet = true;
 
         while(sellingPlanet){
-            System.out.println("\nType a valid planet name or type n to leave");
+            if(sellingPlanet) System.out.println("\nType a valid planet name or type n to leave");
+
             userInput = sc.nextLine();
 
             for (Planet planet : inventory.getPlanetOwnedList()) {

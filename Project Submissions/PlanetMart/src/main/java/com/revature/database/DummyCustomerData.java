@@ -4,6 +4,7 @@ import com.revature.models.accounts.Account;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
+import com.revature.models.shop.generator.PlanetGenerator;
 import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 
@@ -22,9 +23,11 @@ public class DummyCustomerData {
 
     public static List<Planet> userOwnedPlanetsList = new ArrayList<>();
 
-    public static PrimaryUser user1 = new PrimaryUser("Joleyne", 1000, "user1");
+    public static PrimaryUser user1 = new PrimaryUser("Joleyne", 10234500, "user1");
 
     static {
+        PlanetGenerator planetGenerator = new PlanetGenerator();
+
         usernames.add("user1");
         usernames.add("user2");
         usernames.add("user3");
@@ -33,11 +36,11 @@ public class DummyCustomerData {
         passwords.add("pass2");
         passwords.add("pass3");
 
-        PrimaryUser user2 = new PrimaryUser("Bojo", 3142, "user2");
-        PrimaryUser user3 = new PrimaryUser("HeyHo", 23124, "user3");
+        PrimaryUser user2 = new PrimaryUser("Bojo", 315442, "user2");
+        PrimaryUser user3 = new PrimaryUser("HeyHo", 231234, "user3");
 
-        User secondary1 = new User("Joseph", 10, "user1");
-        User secondary2 = new User("Jojo", 230, "user2");
+        User secondary1 = new User("Joseph", 63453, "user1");
+        User secondary2 = new User("Jojo", 230345, "user2");
 
 
 
@@ -46,13 +49,36 @@ public class DummyCustomerData {
         secondaryUsers2.put("Jojo", secondary2);
 
 
+        Planet planet1 = planetGenerator.generateRandomPlanet();
+        planet1.setOwner(user1);
+        planet1.setUsername("user1");
 
-        userOwnedPlanetsList.add(new Planet(10, "myOwnPlanet", user1, "user1"));
-        userOwnedPlanetsList.add(new Planet(102, "PlanetPOlanet", user1, "user1"));
-        userOwnedPlanetsList.add(new Planet(1042, "metyyas THe 1st", user2, "user2"));
-        userOwnedPlanetsList.add(new Planet(1230, "Little big planet", user3, "user3"));
-        userOwnedPlanetsList.add(new Planet(102, "not my problem", secondary1, "secondary1"));
-        userOwnedPlanetsList.add(new Planet(13240, "merry planet 23st", secondary2, "secondary2"));
+        Planet planet2 = planetGenerator.generateRandomPlanet();
+        planet2.setOwner(user2);
+        planet2.setUsername("user2");
+
+        Planet planet3 = planetGenerator.generateRandomPlanet();
+        planet3.setOwner(user2);
+        planet3.setUsername("user2");
+
+        Planet planet4 = planetGenerator.generateRandomPlanet();
+        planet4.setOwner(user3);
+        planet4.setUsername("user3");
+
+        Planet planet5 = planetGenerator.generateRandomPlanet();
+        planet5.setOwner(secondary1);
+        planet5.setUsername("secondary1");
+
+        Planet planet6 = planetGenerator.generateRandomPlanet();
+        planet6.setOwner(secondary2);
+        planet6.setUsername("secondary2");
+
+        userOwnedPlanetsList.add(planet1);
+        userOwnedPlanetsList.add(planet2);
+        userOwnedPlanetsList.add(planet3);
+        userOwnedPlanetsList.add(planet4);
+        userOwnedPlanetsList.add(planet5);
+        userOwnedPlanetsList.add(planet6);
 
         CustomerAccount dummyAccount1 = new CustomerAccount(secondaryUsers1, "user1", user1, userOwnedPlanetsList);
         CustomerAccount dummyAccount2 = new CustomerAccount(secondaryUsers2, "user2", user2, userOwnedPlanetsList);

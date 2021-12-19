@@ -15,13 +15,13 @@ public class PlanetGenerator {
 
     public static void main(String[] args) {
         PlanetGenerator planetGenerator = new PlanetGenerator();
-        planetGenerator.generateRandomPlanet();
+        Planet planet = planetGenerator.generateRandomPlanet();
     }
-    public void generateRandomPlanet(){
+    public Planet generateRandomPlanet(){
 
 
         //StringBuilder name = generateName();
-        String name = generateGas();
+        String name = generateNameSimple();
         boolean goldiLocksZone = isGoldilocksZone();
         int waterPercent = generateWater(goldiLocksZone);
         int averageTemperature = generateAverageTemperature(goldiLocksZone, waterPercent);
@@ -31,22 +31,22 @@ public class PlanetGenerator {
 
         int value = calculateValue(goldiLocksZone, waterPercent, averageTemperature, atmosphere, lifeForm);
 
+        return new Planet(name, goldiLocksZone,waterPercent, averageTemperature, atmosphere, lifeForm, value, null, null);
 
-
-        System.out.println(name);
-        System.out.println("Goldilocks Zone? " + goldiLocksZone);
-        System.out.println("Water: " + waterPercent + "%");
-        System.out.println("Average Surface Temperature: " + averageTemperature +" celcius");
-        System.out.println("Planet Atmosphere: ");
-        atmosphere.forEach((gas, amount) -> {
-            System.out.println(gas + " - " + amount + "%");
-        });
-        if(lifeForm != null){
-            System.out.println("\nLIFE FORM\n");
-            System.out.printf("Name: %s\nPopulation: %d\nTechnology Level: %d\n\n", lifeForm.getName(), lifeForm.getPopulation(), lifeForm.getTechnologyLevel());
-        }
-
-        System.out.println("Value: " + value);
+//        System.out.println(name);
+//        System.out.println("Goldilocks Zone? " + goldiLocksZone);
+//        System.out.println("Water: " + waterPercent + "%");
+//        System.out.println("Average Surface Temperature: " + averageTemperature +" celcius");
+//        System.out.println("Planet Atmosphere: ");
+//        atmosphere.forEach((gas, amount) -> {
+//            System.out.println(gas + " - " + amount + "%");
+//        });
+//        if(lifeForm != null){
+//            System.out.println("\nLIFE FORM\n");
+//            System.out.printf("Name: %s\nPopulation: %d\nTechnology Level: %d\n\n", lifeForm.getName(), lifeForm.getPopulation(), lifeForm.getTechnologyLevel());
+//        }
+//
+//        System.out.println("Value: " + value);
 
 
     }
@@ -150,7 +150,7 @@ public class PlanetGenerator {
         return atmosphere;
     }
 
-    private String generateGas() {
+    private String generateNameSimple() {
         StringBuilder gasName = new StringBuilder();
         for(int i = 0; i < (int)(Math.random()*3)+1;i++){
             gasName.append(String.valueOf(consonants[(int) (Math.random() * 20)]).toUpperCase());

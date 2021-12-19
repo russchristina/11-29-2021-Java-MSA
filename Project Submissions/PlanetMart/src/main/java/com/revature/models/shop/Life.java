@@ -1,5 +1,7 @@
 package com.revature.models.shop;
 
+import com.revature.models.shop.generator.MarkovChain;
+
 import java.util.Map;
 
 public class Life {
@@ -12,6 +14,11 @@ public class Life {
         this.name = name;
         this.population = population;
         this.technologyLevel = technologyLevel;
+    }
+
+    public StringBuilder getCommunication(){
+        MarkovChain markovChain = new MarkovChain();
+        return markovChain.generateParagraph();
     }
 
     public int getTechnologyLevel() {

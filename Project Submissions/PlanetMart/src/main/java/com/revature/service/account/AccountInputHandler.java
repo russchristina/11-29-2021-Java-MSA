@@ -47,6 +47,7 @@ public class AccountInputHandler {
                         InventoryDisplay inventoryDisplay = new InventoryDisplay();
                         Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
                         inventoryDisplay.displayInventory(inventory);
+                        inventoryHandler.chooseOptions(customerAccount, user, inventory, sc);
 //                        inputChooseCustomerOptions(customerAccount, user);
                         //choosingOptions = false;
                         break;

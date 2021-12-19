@@ -2,6 +2,7 @@ package com.revature.database;
 
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
+import com.revature.models.shop.generator.PlanetGenerator;
 import com.revature.models.users.User;
 
 import java.util.ArrayList;
@@ -14,15 +15,16 @@ public class DummyShopData {
     public static Map<String, Planet> planetCatalogueMap = new HashMap();
 
     static {
-        Planet testPlanet = new Planet(1, "testPlanet", null, null);
-        Planet removePlanet = new Planet(1, "removeMe", null, null);
-        Planet expensivePlanet = new Planet(99999, "expensivePlanet", null, null);
-        Planet addPlanet = new Planet(1, "addPlanet", null, null);
+        PlanetGenerator planetGenerator = new PlanetGenerator();
+        Planet testPlanet = planetGenerator.generateRandomPlanet();
+        Planet removePlanet = planetGenerator.generateRandomPlanet();
+        Planet expensivePlanet = planetGenerator.generateRandomPlanet();
+        Planet addPlanet = planetGenerator.generateRandomPlanet();
 
-        planetCatalogueMap.put("testPlanet", testPlanet);
-        planetCatalogueMap.put("removePlanet", removePlanet);
-        planetCatalogueMap.put("expensivePlanet", expensivePlanet);
-        planetCatalogueMap.put("addPlanet", addPlanet);
+        planetCatalogueMap.put(testPlanet.getName(), testPlanet);
+        planetCatalogueMap.put(removePlanet.getName(), removePlanet);
+        planetCatalogueMap.put(expensivePlanet.getName(), expensivePlanet);
+        planetCatalogueMap.put(addPlanet.getName(), addPlanet);
 
 
     }

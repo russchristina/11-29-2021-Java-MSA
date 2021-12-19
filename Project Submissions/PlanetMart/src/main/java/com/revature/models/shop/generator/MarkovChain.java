@@ -9,23 +9,14 @@ import java.util.Map;
 
 public class MarkovChain {
 
-    File nouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\nouns.txt");
-    File adjectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\adjectives.txt");
-    File connectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\connectives.txt");
-    File verbs = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\verbs.txt");
-    File pronouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\pronouns.txt");
-    File randomStart = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\randomPhraseBegin.txt");
+    private File nouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\nouns.txt");
+    private File adjectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\adjectives.txt");
+    private File connectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\connectives.txt");
+    private File verbs = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\verbs.txt");
+    private File pronouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\pronouns.txt");
+    private File randomStart = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\randomPhraseBegin.txt");
 
-    public static void main(String[] args) {
-
-
-        MarkovChain markovChain = new MarkovChain();
-
-        StringBuilder randomParagraph = markovChain.generateParagraph();
-        System.out.println(randomParagraph);
-    }
-
-    private StringBuilder generateParagraph(){
+    public StringBuilder generateParagraph(){
         StringBuilder paragraph = new StringBuilder();
         for(int i = 0; i < (int)(Math.random()*12)+6 ; i++){
             paragraph.append(generateSentence());
@@ -34,12 +25,12 @@ public class MarkovChain {
         return paragraph;
     }
 
-    private StringBuilder generateStartOfSentence(){
+    public StringBuilder generateStartOfSentence(){
         List<String> randomStartList = getWords(randomStart);
         return new StringBuilder(randomStartList.get((int)(Math.random()*randomStartList.size())) + " ");
     }
 
-    private StringBuilder generateSentence() {
+    public StringBuilder generateSentence() {
 
         List<String> nounList = getWords(nouns);
         List<String> adjectivesList = getWords(adjectives);
