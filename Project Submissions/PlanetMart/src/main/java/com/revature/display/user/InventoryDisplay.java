@@ -16,7 +16,7 @@ public class InventoryDisplay {
             System.out.println("\nPlanet: " + planet.getName());
             System.out.println("Goldilocks Zone? " + planet.isGoldilocksZone());
             System.out.println("Water: " + planet.getWaterPercent() + "%");
-            System.out.println("Average Surface Temperature: " + planet.getAverageTemperature() +" celcius");
+            System.out.println("Average Surface Temperature: " + planet.getAverageTemperature() +" Kelvin : " + (planet.getAverageTemperature()-273) + " Celcius");
             System.out.println("Planet Atmosphere: ");
             planet.getAtmosphere().forEach((gas, amount) -> {
                 System.out.println(gas + " - " + amount + "%");

@@ -13,7 +13,7 @@ import static com.revature.database.DummyCustomerData.userOwnedPlanetsList;
 
 public class AccountDao {
 
-    //add, modify, read, delete
+    //Create Read Update Delete
 
     public Account getAccount(String username){
         return DummyCustomerData.accountMap.get(username);
