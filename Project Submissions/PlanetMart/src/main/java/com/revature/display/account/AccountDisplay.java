@@ -54,4 +54,9 @@ public class AccountDisplay {
             System.out.println("9. Remove User\n");
         }
     }
+
+    public void chooseUserDisplay(CustomerAccount customerAccount) {
+        System.out.println("Hello " + customerAccount.getUsername());
+        System.out.print("Please choose a User:");
+    }
 }

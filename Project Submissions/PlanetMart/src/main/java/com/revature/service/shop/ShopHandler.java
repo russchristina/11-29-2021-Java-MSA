@@ -20,48 +20,45 @@ import java.util.Scanner;
 public class ShopHandler {
 
     private final Logger log = LoggerFactory.getLogger(ShopHandler.class);
+    protected final Scanner sc = new Scanner(System.in);
+    protected final ShopInputHandler shopInputHandler = new ShopInputHandler();
+    protected final PlanetShopDisplay planetShopDisplay = new PlanetShopDisplay();
+    protected final AccountInputHandler accountInputHandler = new AccountInputHandler();
+    protected final StringBuilder input = new StringBuilder();
 
-    public ShopHandler() {
-
-    }
+    public ShopHandler() {}
 
     public void beginShopping(CustomerAccount customerAccount, User user) {
         Shop shop = new Shop(DummyShopData.planetCatalogueMap);
-        Scanner sc = new Scanner(System.in);
-        ShopInputHandler shopInputHandler = new ShopInputHandler();
         boolean choosingOptions = true;
-        PlanetShopDisplay planetShopDisplay = new PlanetShopDisplay();
         planetShopDisplay.displayShop(shop);
-
-        while(choosingOptions){
-
+        do {
             System.out.println("\n1. Buy a planet");
             System.out.println("2. Sell a planet");
             System.out.println("3. Return");
-
-            String chosenOption = sc.nextLine().trim();
-            switch(chosenOption){
-                case("1"):
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+            switch (input.toString()) {
+                case ("1"):
                     System.out.println("\nOption 1: Buy a Planet");
                     shopInputHandler.buyAPlanet(customerAccount, user, sc, shop);
                     choosingOptions = false;
                     break;
-                case("2"):
+                case ("2"):
                     System.out.println("\nOption 2: Sell a Planet");
                     shopInputHandler.sellAPlanet(customerAccount, user, sc, shop);
                     choosingOptions = false;
                     break;
-                case("3"):
+                case ("3"):
                     System.out.println("\nOption 3: Return");
-                    AccountInputHandler accountInputHandler = new AccountInputHandler();
                     accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
                     choosingOptions = false;
                     break;
                 default:
-                    System.out.println("\nȈ̵̙͖͍͗Ǹ̶̹̺̎̓P̸̲͕̜̒͐̎Ú̷̢͍̫̀T̶̡̝͑ ̶̩̫̋̈͌I̷̡̳͔͊̐͝Ǹ̵͉͜V̸̪̺͚̇̇͝A̶̢̰̻̐̉L̵̼͆͛̔İ̴̱D̸̖̏̾ͅ\n");
+                    System.out.println("\nInput invalid, please try again.\n");
                     break;
             }
-
-        }
+        } while (choosingOptions);
     }
 }
+

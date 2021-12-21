@@ -15,66 +15,55 @@ import java.util.Scanner;
 public class ShopInputHandler {
 
     private final Logger log = LoggerFactory.getLogger(ShopInputHandler.class);
+    protected final AccountInputHandler accountInputHandler = new AccountInputHandler();
+    protected final StringBuilder input = new StringBuilder();
+    protected final InventoryHandler inventoryHandler = new InventoryHandler();
+    protected final InventoryDisplay inventoryDisplay = new InventoryDisplay();
 
     public void buyAPlanet(CustomerAccount customerAccount, User user, Scanner sc, Shop shop) {
-        AccountInputHandler accountInputHandler = new AccountInputHandler();
-        String userInput = "";
         boolean buyingPlanet = true;
-
-        while(buyingPlanet){
+        do {
             System.out.println("Type a valid planet name or type n to leave");
-            userInput = sc.nextLine();
-            if(shop.getPlanetCatalogueMap().containsKey(userInput)) {
-                shop.buyPlanet(customerAccount, userInput, user);
+            input.append(sc.nextLine());
+            if (shop.getPlanetCatalogueMap().containsKey(input)) {
+                shop.buyPlanet(customerAccount, input.toString(), user);
                 buyingPlanet = false;
-                System.out.println("Successful purchase of Planet: " + userInput);
+                System.out.println("Successful purchase of Planet: " + input + "\n");
                 accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
-                break;
-            }if(userInput.trim().contentEquals("n")){
-                buyingPlanet = false;
-                accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
-                break;
             }
-
-        }
-
-
-
+            if (input.toString().trim().contentEquals("n")) {
+                buyingPlanet = false;
+                accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
+            }
+        } while (buyingPlanet);
     }
 
     public void sellAPlanet(CustomerAccount customerAccount, User user, Scanner sc, Shop shop) {
-        InventoryHandler inventoryHandler = new InventoryHandler();
-        InventoryDisplay inventoryDisplay = new InventoryDisplay();
-        AccountInputHandler accountInputHandler = new AccountInputHandler();
         Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
         inventoryDisplay.displayInventory(inventory);
-
-        String userInput = "";
         boolean sellingPlanet = true;
-
-        while(sellingPlanet){
-            if(sellingPlanet) System.out.println("\nType a valid planet name or type n to leave");
-
-            userInput = sc.nextLine();
-
+        do {
+            input.setLength(0);
+            input.append(sc.nextLine());
             for (Planet planet : inventory.getPlanetOwnedList()) {
-                if(planet.getName().contentEquals(userInput)){
+                if (planet.getName().contentEquals(input)) {
                     shop.sellPlanet(planet, user, customerAccount);
                     sellingPlanet = false;
-                    System.out.println("Successful sale of Planet: " + userInput);
+                    System.out.println("Successful sale of Planet: " + input);
                     accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
                     break;
                 }
-
             }
-            if(userInput.trim().contentEquals("n")) {
+            if (input.toString().trim().contentEquals("n")) {
                 sellingPlanet = false;
                 accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
                 break;
+            }else{
+                System.out.println("\nType a valid planet name or type n to leave");
             }
-
-        }
-
-
+        } while (sellingPlanet);
     }
+
+
 }
+

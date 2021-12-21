@@ -14,31 +14,30 @@ import java.util.Scanner;
 
 public class LifeInputHandler {
 
+    protected final StringBuilder input = new StringBuilder();
+    protected final LifeDisplay lifeDisplay = new LifeDisplay();
+
     private final Logger log = LoggerFactory.getLogger(LifeInputHandler.class);
 
     public void communicate(Scanner sc, User user, Inventory inventory) {
-        String userInput = "";
-        LifeDisplay lifeDisplay = new LifeDisplay();
         boolean communicating = true;
-
-        while(communicating){
+        do {
             System.out.println("\nType a valid planet name or type n to leave");
-            userInput = sc.nextLine();
-
+            input.append(sc.nextLine().trim());
             for (Planet planet : inventory.getPlanetOwnedList()) {
-                if(planet.getLifeForm() != null){
+                if (planet.getLifeForm() != null) {
                     lifeDisplay.communicateWithLife(planet.getLifeForm(), user);
                     communicating = false;
                     break;
                 }
-
-            }if(userInput.trim().contentEquals("n")) {
-                communicating = false;
-                break;
             }
-            if(communicating)System.out.println("\nLife not found...\n");
+            if (input.toString().contentEquals("n")) {
+                System.out.println("\n...LEAVING...\n");
+                communicating = false;
+            }
+            if (communicating) System.out.println("\n...Life not found...\n");
 
-        }
+        } while (communicating);
     }
 
     public void terraform(Scanner sc, User user, Inventory inventory, CustomerAccount customerAccount) {

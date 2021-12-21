@@ -17,9 +17,12 @@ import java.util.Scanner;
 public class InventoryHandler {
 
     private final Logger log = LoggerFactory.getLogger(InventoryHandler.class);
+    public final List<Planet> usersPlanets = new ArrayList<>();
+    protected final LifeInputHandler lifeInputHandler = new LifeInputHandler();
+    protected final AccountInputHandler accountInputHandler = new AccountInputHandler();
 
     public Inventory generateUserInventory(CustomerAccount account, User user) {
-        List<Planet> usersPlanets = new ArrayList<>();
+        usersPlanets.clear();
         for (Planet planet : account.getPlanetsFromDao()) {
             try{
                 if(planet.getOwner().getName().contentEquals(user.getName()))
@@ -33,11 +36,13 @@ public class InventoryHandler {
     }
 
     public void addToBalance(CustomerAccount customerAccount, User user) {
+        //ADD TO BALANCE
+        //MAKE THIS
     }
 
     public void chooseOptions(CustomerAccount customerAccount, User user, Inventory inventory, Scanner sc) {
         System.out.println("\nChoose options");
-        LifeInputHandler lifeInputHandler = new LifeInputHandler();
+
         boolean choosingOptions = true;
         while(choosingOptions){
 
@@ -59,12 +64,11 @@ public class InventoryHandler {
                     break;
                 case("3"):
                     System.out.println("\nOption 3: Return");
-                    AccountInputHandler accountInputHandler = new AccountInputHandler();
                     accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
                     choosingOptions = false;
                     break;
                 default:
-                    System.out.println("\nȈ̵̙͖͍͗Ǹ̶̹̺̎̓P̸̲͕̜̒͐̎Ú̷̢͍̫̀T̶̡̝͑ ̶̩̫̋̈͌I̷̡̳͔͊̐͝Ǹ̵͉͜V̸̪̺͚̇̇͝A̶̢̰̻̐̉L̵̼͆͛̔İ̴̱D̸̖̏̾ͅ\n");
+                    System.out.println("\nInput invalid, try again.\n");
                     break;
             }
 
