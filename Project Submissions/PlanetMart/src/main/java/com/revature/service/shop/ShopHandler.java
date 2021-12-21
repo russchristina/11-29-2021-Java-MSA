@@ -11,12 +11,15 @@ import com.revature.models.users.User;
 import com.revature.service.account.AccountHandler;
 import com.revature.service.account.AccountInputHandler;
 import com.revature.service.login.LoginInputHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Scanner;
 
 public class ShopHandler {
 
+    private final Logger log = LoggerFactory.getLogger(ShopHandler.class);
 
     public ShopHandler() {
 

@@ -7,10 +7,14 @@ import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
 import com.revature.models.users.User;
 import com.revature.service.shop.InventoryHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class LifeInputHandler {
+
+    private final Logger log = LoggerFactory.getLogger(LifeInputHandler.class);
 
     public void communicate(Scanner sc, User user, Inventory inventory) {
         String userInput = "";

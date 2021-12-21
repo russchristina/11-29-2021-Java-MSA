@@ -7,12 +7,16 @@ import com.revature.models.shop.Planet;
 import com.revature.models.users.User;
 import com.revature.service.account.AccountInputHandler;
 import com.revature.service.account.LifeInputHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class InventoryHandler {
+
+    private final Logger log = LoggerFactory.getLogger(InventoryHandler.class);
 
     public Inventory generateUserInventory(CustomerAccount account, User user) {
         List<Planet> usersPlanets = new ArrayList<>();
@@ -21,7 +25,8 @@ public class InventoryHandler {
                 if(planet.getOwner().getName().contentEquals(user.getName()))
                     usersPlanets.add(planet);
             }catch(NullPointerException e){
-                e.printStackTrace();
+                System.out.println("Planet not found.\nPlease try again.\n");
+                log.debug(e.toString());
             }
         }
         return new Inventory(usersPlanets);

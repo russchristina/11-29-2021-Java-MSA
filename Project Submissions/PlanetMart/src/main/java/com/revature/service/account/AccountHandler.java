@@ -9,8 +9,12 @@ import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 import com.revature.models.exceptions.UserNotFoundException;
 import com.revature.service.shop.InventoryHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AccountHandler {
+
+    private final Logger log = LoggerFactory.getLogger(AccountHandler.class);
 
     private String usernameInput;
 
@@ -68,8 +72,9 @@ public class AccountHandler {
                 getCorrectUser = false;
                 return userChosen;
             } catch (UserNotFoundException e) {
-                System.out.println("Ȉ̵̙͖͍͗Ǹ̶̹̺̎̓P̸̲͕̜̒͐̎Ú̷̢͍̫̀T̶̡̝͑ ̶̩̫̋̈͌I̷̡̳͔͊̐͝Ǹ̵͉͜V̸̪̺͚̇̇͝A̶̢̰̻̐̉L̵̼͆͛̔İ̴̱D̸̖̏̾ͅ");
-                e.printStackTrace();
+                System.out.println("User not found.\n" +
+                        "Please try again.\n");
+                log.debug(e.toString());
             }
         }
         return null;

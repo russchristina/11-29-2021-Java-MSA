@@ -2,52 +2,32 @@ package com.revature.models.shop.generator;
 
 import com.revature.models.shop.Life;
 import com.revature.models.shop.Planet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PlanetGenerator {
 
+    private final Logger log = LoggerFactory.getLogger(PlanetGenerator.class);
+
     private char[] consonants = {'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'};
     private char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     private String[] gases = {"Water", "Oxygen", "Hydrogen", "Nitrogen", "Argon", "Helium", "Carbon Dioxide", "Methane", "Chlorine"};
 
 
-    public static void main(String[] args) {
-        PlanetGenerator planetGenerator = new PlanetGenerator();
-        Planet planet = planetGenerator.generateRandomPlanet();
-    }
     public Planet generateRandomPlanet(){
 
-
-        //StringBuilder name = generateName();
         String name = generateNameSimple();
         boolean goldiLocksZone = isGoldilocksZone();
         int waterPercent = generateWater(goldiLocksZone);
         int averageTemperature = generateAverageTemperature(goldiLocksZone, waterPercent);
         Map<String, Integer> atmosphere = generateAtmosphere(goldiLocksZone, waterPercent);
-
         Life lifeForm = generateLife(goldiLocksZone,waterPercent,averageTemperature,atmosphere);
-
         int value = calculateValue(goldiLocksZone, waterPercent, averageTemperature, atmosphere, lifeForm);
 
         return new Planet(name, goldiLocksZone,waterPercent, averageTemperature, atmosphere, lifeForm, value, null, null);
-
-//        System.out.println(name);
-//        System.out.println("Goldilocks Zone? " + goldiLocksZone);
-//        System.out.println("Water: " + waterPercent + "%");
-//        System.out.println("Average Surface Temperature: " + averageTemperature +" celcius");
-//        System.out.println("Planet Atmosphere: ");
-//        atmosphere.forEach((gas, amount) -> {
-//            System.out.println(gas + " - " + amount + "%");
-//        });
-//        if(lifeForm != null){
-//            System.out.println("\nLIFE FORM\n");
-//            System.out.printf("Name: %s\nPopulation: %d\nTechnology Level: %d\n\n", lifeForm.getName(), lifeForm.getPopulation(), lifeForm.getTechnologyLevel());
-//        }
-//
-//        System.out.println("Value: " + value);
-
 
     }
 
@@ -71,9 +51,9 @@ public class PlanetGenerator {
         if(waterPercent > 70) waterPercentMultipllier -= 3;
         if(waterPercent < 10) waterPercentMultipllier -= 8;
 
-        if(averageTemperature <= 0) temperatureMultiplier = -5;
-        if(averageTemperature <= -50) temperatureMultiplier = -1;
-        if(averageTemperature > 100) temperatureMultiplier = 1;
+        if(averageTemperature <= 273) temperatureMultiplier = 1;
+        if(averageTemperature <= 323) temperatureMultiplier = 2;
+        if(averageTemperature > 373) temperatureMultiplier = 1;
 
         if(atmosphere.containsKey("Oxygen")) gasBonus = 100;
 
@@ -84,9 +64,7 @@ public class PlanetGenerator {
 
         if(lifeForm != null) return suitableForLifePlanet * lifeFormMultiplier;
         if(goldiLocksZone) return suitableForLifePlanet;
-        if(averageTemperature != 0)return (baseValue) + (waterPercent * waterPercentMultipllier) + (averageTemperature * temperatureMultiplier) + gasBonus;
-
-        return (baseValue) + (waterPercent * waterPercentMultipllier) + (nonZeroAverageTemp * temperatureMultiplier) + gasBonus;
+        return (baseValue) + (waterPercent * waterPercentMultipllier) + (averageTemperature * temperatureMultiplier) + gasBonus;
     }
 
     private Map<String,Integer> generateAtmosphere(boolean goldiLocksZone, int waterPercent) {
@@ -160,9 +138,9 @@ public class PlanetGenerator {
     }
 
     private int generateAverageTemperature(boolean goldiLocksZone, int waterPercent) {
-        if(goldiLocksZone) return (int)(Math.random()*50)+10;
-        if(waterPercent >= 10) return ((int)(Math.random()*300)-273);
-        return ((int)(Math.random()*700)-273);
+        if(goldiLocksZone) return (int)(Math.random()*50)+273;
+        if(waterPercent >= 10) return ((int)(Math.random()*300)+100);
+        return ((int)(Math.random()*972)+1);
     }
 
     private int generateWater(boolean goldiLocksZone) {

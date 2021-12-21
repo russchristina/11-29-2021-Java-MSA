@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Inventory {
+
     private List<Planet> planetOwnedList = new ArrayList<>();
 
     public Inventory(List<Planet> planetOwnedList) {
@@ -16,7 +17,6 @@ public class Inventory {
     }
 
     public List<Planet> getPlanetOwnedList() {
-
         return planetOwnedList;
     }
 

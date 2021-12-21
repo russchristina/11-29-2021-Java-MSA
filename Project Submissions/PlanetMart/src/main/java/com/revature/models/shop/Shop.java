@@ -7,10 +7,14 @@ import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
 import com.revature.models.users.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public class Shop {
+
+    private final Logger log = LoggerFactory.getLogger(Shop.class);
 
     private Map<String, Planet> planetCatalogueMap;
 
@@ -40,7 +44,9 @@ public class Shop {
             planet.setOwner(user);
             planet.setUsername(user.getPrimaryUsername());
         } catch (NegativeAmountException | InsufficientFundsException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            log.debug(e.toString());
+            System.out.println("\nPlease try again.\n");
             return false;
         }
 
@@ -68,7 +74,8 @@ public class Shop {
                 customerAccount.getPlanetsFromDao();
                 return true;
             } catch (NegativeAmountException e) {
-                e.printStackTrace();
+                System.out.println("Error: Negative amount for Planet\nPlease try again.");
+                log.error(e.toString());
             }
 
         }

@@ -1,5 +1,8 @@
 package com.revature.models.shop.generator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageTranscoder;
 import java.io.*;
 import java.util.ArrayList;
@@ -9,12 +12,14 @@ import java.util.Map;
 
 public class MarkovChain {
 
-    private File nouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\nouns.txt");
-    private File adjectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\adjectives.txt");
-    private File connectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\connectives.txt");
-    private File verbs = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\verbs.txt");
-    private File pronouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\pronouns.txt");
-    private File randomStart = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\randomPhraseBegin.txt");
+    private final Logger log = LoggerFactory.getLogger(MarkovChain.class);
+
+    private final File nouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\nouns.txt");
+    private final File adjectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\adjectives.txt");
+    private final File connectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\connectives.txt");
+    private final File verbs = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\verbs.txt");
+    private final File pronouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\pronouns.txt");
+    private final File randomStart = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\randomPhraseBegin.txt");
 
     public StringBuilder generateParagraph(){
         StringBuilder paragraph = new StringBuilder();
@@ -162,8 +167,6 @@ public class MarkovChain {
 
         List<String> nounsList = new ArrayList<>();
         try(FileReader reader = new FileReader(file); BufferedReader buffReader = new BufferedReader(reader)) {
-            //Again, this is more recommended for reading in bytes for images.
-//			FileInputStream fis = new FileInputStream(myFile);
 
             while(buffReader.ready()) {
                 nounsList.add(buffReader.readLine());

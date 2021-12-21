@@ -12,10 +12,14 @@ import com.revature.models.exceptions.UserNotFoundException;
 import com.revature.service.login.LoginInputHandler;
 import com.revature.service.shop.InventoryHandler;
 import com.revature.service.shop.ShopHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class AccountInputHandler {
+
+    private final Logger log = LoggerFactory.getLogger(AccountInputHandler.class);
 
     public User inputChooseUser(CustomerAccount customerAccount) throws UserNotFoundException {
         Scanner sc = new Scanner(System.in);

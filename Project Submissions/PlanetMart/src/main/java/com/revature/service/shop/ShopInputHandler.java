@@ -7,11 +7,14 @@ import com.revature.models.shop.Planet;
 import com.revature.models.shop.Shop;
 import com.revature.models.users.User;
 import com.revature.service.account.AccountInputHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class ShopInputHandler {
 
+    private final Logger log = LoggerFactory.getLogger(ShopInputHandler.class);
 
     public void buyAPlanet(CustomerAccount customerAccount, User user, Scanner sc, Shop shop) {
         AccountInputHandler accountInputHandler = new AccountInputHandler();

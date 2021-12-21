@@ -6,10 +6,14 @@ import com.revature.database.UserCredentialsDao;
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
 public class UserLoginHandler {
+
+    private final Logger log = LoggerFactory.getLogger(UserLoginHandler.class);
 
     private String username;
     private String password;
@@ -43,12 +47,8 @@ public class UserLoginHandler {
     }
 
     public boolean createAccount(String newUser, String password) throws DuplicateUsernameException {
-        try{
-            if(userCredentialsDao.usernameDuplicateCheck(newUser, password)) return true;
-        }catch (DuplicateUsernameException e){
-            throw e;
-        }
-        return false;
+        if(userCredentialsDao.usernameDuplicateCheck(newUser, password)) return true;
+        else throw new DuplicateUsernameException("Duplicate Username");
     }
 
     @Override
