@@ -1,25 +1,21 @@
 package com.revature.model;
 
-import java.util.List;
-
-public class Recipe {
+public class Author {
 
 	private int id;
 	private String name;
-	private int cookTimeInMinutes;
-	private Author author;
-	private List<Ingredient> ingredients;
+	private String specialty;
 
-	public Recipe() {
+	public Author() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Recipe(int id, String name, int cookTimeInMinutes) {
+	public Author(int id, String name, String specialty) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.cookTimeInMinutes = cookTimeInMinutes;
+		this.specialty = specialty;
 	}
 
 	public int getId() {
@@ -38,21 +34,21 @@ public class Recipe {
 		this.name = name;
 	}
 
-	public int getCookTimeInMinutes() {
-		return cookTimeInMinutes;
+	public String getSpecialty() {
+		return specialty;
 	}
 
-	public void setCookTimeInMinutes(int cookTimeInMinutes) {
-		this.cookTimeInMinutes = cookTimeInMinutes;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + cookTimeInMinutes;
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((specialty == null) ? 0 : specialty.hashCode());
 		return result;
 	}
 
@@ -64,9 +60,7 @@ public class Recipe {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Recipe other = (Recipe) obj;
-		if (cookTimeInMinutes != other.cookTimeInMinutes)
-			return false;
+		Author other = (Author) obj;
 		if (id != other.id)
 			return false;
 		if (name == null) {
@@ -74,11 +68,17 @@ public class Recipe {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (specialty == null) {
+			if (other.specialty != null)
+				return false;
+		} else if (!specialty.equals(other.specialty))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Recipe [id=" + id + ", name=" + name + ", cookTimeInMinutes=" + cookTimeInMinutes + "]";
+		return "Author [id=" + id + ", name=" + name + ", specialty=" + specialty + "]";
 	}
+
 }

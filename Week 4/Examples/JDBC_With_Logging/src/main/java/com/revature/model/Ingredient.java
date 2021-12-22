@@ -1,25 +1,26 @@
 package com.revature.model;
 
-import java.util.List;
-
-public class Recipe {
+public class Ingredient {
 
 	private int id;
 	private String name;
-	private int cookTimeInMinutes;
-	private Author author;
-	private List<Ingredient> ingredients;
+	/**
+	 * Sweet, spicy, umami, salty
+	 */
+	private String flavor;
+	private float cost;
 
-	public Recipe() {
+	public Ingredient() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Recipe(int id, String name, int cookTimeInMinutes) {
+	public Ingredient(int id, String name, String flavor, float cost) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.cookTimeInMinutes = cookTimeInMinutes;
+		this.flavor = flavor;
+		this.cost = cost;
 	}
 
 	public int getId() {
@@ -38,19 +39,28 @@ public class Recipe {
 		this.name = name;
 	}
 
-	public int getCookTimeInMinutes() {
-		return cookTimeInMinutes;
+	public String getFlavor() {
+		return flavor;
 	}
 
-	public void setCookTimeInMinutes(int cookTimeInMinutes) {
-		this.cookTimeInMinutes = cookTimeInMinutes;
+	public void setFlavor(String flavor) {
+		this.flavor = flavor;
+	}
+
+	public float getCost() {
+		return cost;
+	}
+
+	public void setCost(float cost) {
+		this.cost = cost;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + cookTimeInMinutes;
+		result = prime * result + Float.floatToIntBits(cost);
+		result = prime * result + ((flavor == null) ? 0 : flavor.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -64,8 +74,13 @@ public class Recipe {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Recipe other = (Recipe) obj;
-		if (cookTimeInMinutes != other.cookTimeInMinutes)
+		Ingredient other = (Ingredient) obj;
+		if (Float.floatToIntBits(cost) != Float.floatToIntBits(other.cost))
+			return false;
+		if (flavor == null) {
+			if (other.flavor != null)
+				return false;
+		} else if (!flavor.equals(other.flavor))
 			return false;
 		if (id != other.id)
 			return false;
@@ -79,6 +94,6 @@ public class Recipe {
 
 	@Override
 	public String toString() {
-		return "Recipe [id=" + id + ", name=" + name + ", cookTimeInMinutes=" + cookTimeInMinutes + "]";
+		return "Ingredient [id=" + id + ", name=" + name + ", flavor=" + flavor + ", cost=" + cost + "]";
 	}
 }
