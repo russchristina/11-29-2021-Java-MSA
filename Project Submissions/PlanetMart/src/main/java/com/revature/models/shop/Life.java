@@ -1,9 +1,6 @@
 package com.revature.models.shop;
 
-import com.revature.models.shop.generator.MarkovChain;
-
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 
 public class Life implements Serializable {
@@ -13,7 +10,8 @@ public class Life implements Serializable {
     private long population;
     private String name;
 
-    public Life(String name, long population, int technologyLevel) {
+    public Life(int id,String name, long population, int technologyLevel) {
+        this.id = id;
         this.name = name;
         this.population = population;
         this.technologyLevel = technologyLevel;

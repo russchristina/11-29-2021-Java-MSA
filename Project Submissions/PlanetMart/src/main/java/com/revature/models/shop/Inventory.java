@@ -20,10 +20,6 @@ public class Inventory {
         return planetOwnedList;
     }
 
-    public void setPlanetOwnedList(List<Planet> planetList) {
-        this.planetOwnedList = planetOwnedList;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -10,12 +10,9 @@ import java.util.Objects;
 
 public class CustomerAccount extends Account{
 
-    //private Map<String, User> secondaryUsers;
     private List<User> users;
     private int primaryUserId;
     public List<Planet> planets;
-
-    private final int maxSecondaryAccounts = 5;
 
     public CustomerAccount(int id, String username, List<User> users,int primaryUserId, List<Planet> planets) {
         super(id, username);
@@ -57,7 +54,7 @@ public class CustomerAccount extends Account{
     }
 
     public int getMaxSecondaryAccounts() {
-        return maxSecondaryAccounts;
+        return 5;
     }
 
 }

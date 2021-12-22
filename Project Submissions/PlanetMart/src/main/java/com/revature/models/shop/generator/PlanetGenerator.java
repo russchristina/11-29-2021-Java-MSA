@@ -10,8 +10,6 @@ import java.util.Map;
 
 public class PlanetGenerator {
 
-    private final Logger log = LoggerFactory.getLogger(PlanetGenerator.class);
-
     private char[] consonants = {'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'};
     private char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     private String[] gases = {"Water", "Oxygen", "Hydrogen", "Nitrogen", "Argon", "Helium", "Carbon Dioxide", "Methane", "Chlorine"};
@@ -33,7 +31,7 @@ public class PlanetGenerator {
 
     private Life generateLife(boolean goldiLocksZone, int waterPercent, int averageTemperature, Map<String, Integer> atmosphere) {
         if(goldiLocksZone && waterPercent >= 5 && averageTemperature >= 20 && averageTemperature <= 60){
-            Life life = new Life(generateName().toString(), (long)(Math.random()*20_000_000) + 100_000, (int)(Math.random()*4));
+            Life life = new Life(0, generateName().toString(), (long)(Math.random()*20_000_000) + 100_000, (int)(Math.random()*4));
             return life;
         }
         return null;
@@ -46,7 +44,6 @@ public class PlanetGenerator {
         int temperatureMultiplier = 10;
         int gasBonus = 0;
         int lifeFormMultiplier = 3;
-        int nonZeroAverageTemp = 1;
 
         if(waterPercent > 70) waterPercentMultipllier -= 3;
         if(waterPercent < 10) waterPercentMultipllier -= 8;
@@ -134,7 +131,7 @@ public class PlanetGenerator {
             gasName.append(String.valueOf(consonants[(int) (Math.random() * 20)]).toUpperCase());
         }
         gasName.append('-');
-        return gasName.append(String.valueOf((int)(Math.random()*100 + 20))).toString();
+        return gasName.append((int) (Math.random() * 100 + 20)).toString();
     }
 
     private int generateAverageTemperature(boolean goldiLocksZone, int waterPercent) {
@@ -171,7 +168,7 @@ public class PlanetGenerator {
     }
 
     private StringBuilder buildName(int randomNameNumber, int vowelConstant) {
-        int consonantOrVowel = 0;
+        int consonantOrVowel;
         StringBuilder name = new StringBuilder();
         for(int i = 0; i < randomNameNumber; i++){
             consonantOrVowel = (int)(Math.random()*20)+1;

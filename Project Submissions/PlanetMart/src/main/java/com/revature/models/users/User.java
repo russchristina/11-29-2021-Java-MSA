@@ -21,12 +21,15 @@ public class User {
 
     public int addFunds(int amount) throws NegativeAmountException {
         if(amount < 0) throw new NegativeAmountException();
+        //DOA Interaction - update
         return balance += amount;
+
     }
 
     public int removeFunds(int amount) throws NegativeAmountException, InsufficientFundsException {
         if(amount <= 0) throw new NegativeAmountException();
         if(amount > balance) throw new InsufficientFundsException("balance is less than amount removing");
+        //DOA Interaction - update
         return balance -= amount;
     }
 
@@ -43,6 +46,7 @@ public class User {
     }
 
     public void setName(String name) {
+        //DOA Interaction - update
         this.name = name;
     }
 
@@ -51,6 +55,7 @@ public class User {
     }
 
     public void setBalance(int balance) {
+        //DOA Interaction - update
         this.balance = balance;
     }
 }

@@ -7,7 +7,6 @@ import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
 import com.revature.models.users.User;
-import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,13 +20,6 @@ public class Shop {
 
     public Shop(Map<String, Planet> planetCatalogueMap) {
         this.planetCatalogueMap = planetCatalogueMap;
-    }
-
-    public Shop() {
-        if(planetCatalogueMap.isEmpty()){
-            ShopHandler shopHandler = new ShopHandler();
-            setPlanetCatalogueMap(getPlanetCatalogueMap());
-        }
     }
 
     public Map<String, Planet> getPlanetCatalogueMap() {
@@ -44,6 +36,7 @@ public class Shop {
         ShopDao sDao = new ShopDao();
         AccountDao aDao = new AccountDao();
         try {
+            //DOA Interaction - update
             user.removeFunds(planet.getCost());
             planet.setOwner(user);
             planet.setUsername(customerAccount.getUsername());
@@ -56,6 +49,7 @@ public class Shop {
 
         if(sDao.removePlanetFromMap(planetChosen) != null
                 && aDao.addPlanetToUserOwnedList(planet) != null) {
+            //DOA Interaction - Create
             setPlanetCatalogueMap(DummyShopData.planetCatalogueMap);
             customerAccount.getPlanets();
             return true;
@@ -63,7 +57,7 @@ public class Shop {
         return false;
     }
 
-    public boolean sellPlanet(Planet planet, User user, CustomerAccount customerAccount) {
+    public void sellPlanet(Planet planet, User user, CustomerAccount customerAccount) {
         ShopDao sDao = new ShopDao();
         AccountDao aDao = new AccountDao();
 
@@ -74,15 +68,14 @@ public class Shop {
             setPlanetCatalogueMap(DummyShopData.planetCatalogueMap);
             aDao.removePlanetFromOwnedList(planet);
             try {
+                //DOA Interaction - update
                 user.addFunds(planet.getCost());
                 customerAccount.getPlanets();
-                return true;
             } catch (NegativeAmountException e) {
                 System.out.println("Error: Negative amount for Planet\nPlease try again.");
                 log.error(e.toString());
             }
 
         }
-        return false;
     }
 }

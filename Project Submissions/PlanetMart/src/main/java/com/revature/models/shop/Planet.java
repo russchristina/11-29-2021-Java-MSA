@@ -1,7 +1,5 @@
 package com.revature.models.shop;
 
-import com.revature.models.accounts.Account;
-import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.users.User;
 
 import java.io.Serializable;

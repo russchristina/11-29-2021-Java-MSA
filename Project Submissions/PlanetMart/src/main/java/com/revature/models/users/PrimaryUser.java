@@ -35,6 +35,7 @@ public class PrimaryUser extends User{
 
         User user = new User(DummyCustomerData.users1.size(), name, 0);
         account.addUser(user);
+        //DOA Interaction - Create
         return user;
     }
 
@@ -45,6 +46,7 @@ public class PrimaryUser extends User{
         for (User user : users) {
             if(user.getName().contentEquals(name)){
                 users.remove(user);
+                //DOA Interaction - delete
                 return true;
             }
         }
@@ -58,6 +60,7 @@ public class PrimaryUser extends User{
             if(user.getName().contentEquals(name)){
                 try {
                     user.addFunds(removeFunds(amount));
+                    //DOA Interaction - update
                     return user.getBalance();
                 } catch (NegativeAmountException e) {
                     System.out.println("\nNegative amount not allowed.\n");
@@ -90,6 +93,7 @@ public class PrimaryUser extends User{
 
         try {
             user2.addFunds(user1.removeFunds(amount));
+            //DOA Interaction - Update
             return user2.getBalance();
         } catch (NegativeAmountException | InsufficientFundsException e) {
             log.debug(e.toString());
@@ -107,6 +111,7 @@ public class PrimaryUser extends User{
 
         try {
             addFunds(userTransfering.removeFunds(amount));
+            //DOA Interaction - update
             return getBalance();
         } catch (NegativeAmountException | InsufficientFundsException e) {
             log.debug(e.toString());
@@ -120,7 +125,7 @@ public class PrimaryUser extends User{
         if(name.trim().contentEquals("") || name.isEmpty()) throw new EmptyInputException("Empty name");
         if(name.contentEquals(getName()) || users.contains(name)) throw new RepeatedNameOfUserException();
         setName(name);
-
+        //DOA Interaction - Update
         return getName();
     }
 
@@ -137,6 +142,7 @@ public class PrimaryUser extends User{
 
         if(changingUser == null) throw new UserNotFoundException();
         changingUser.setName(newName);
+        //DOA Interaction - Update
         return changingUser.getName();
     }
 
