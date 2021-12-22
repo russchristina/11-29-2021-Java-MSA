@@ -1,11 +1,9 @@
 package com.revature.service.shop;
 
-import com.revature.models.accounts.Account;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
 import com.revature.models.users.User;
-import com.revature.service.account.AccountInputHandler;
 import com.revature.service.account.LifeInputHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,21 +15,21 @@ import java.util.Scanner;
 public class InventoryHandler {
 
     private final Logger log = LoggerFactory.getLogger(InventoryHandler.class);
-    public final List<Planet> usersPlanets = new ArrayList<>();
+    public List<Planet> usersPlanets = new ArrayList<>();
     protected final LifeInputHandler lifeInputHandler = new LifeInputHandler();
-    protected final AccountInputHandler accountInputHandler = new AccountInputHandler();
 
     public Inventory generateUserInventory(CustomerAccount account, User user) {
-        usersPlanets.clear();
-        for (Planet planet : account.getPlanetsFromDao()) {
+        List<Planet> newUserPlanetList = new ArrayList<>();
+        for (Planet planet : account.getPlanets()) {
             try{
                 if(planet.getOwner().getName().contentEquals(user.getName()))
-                    usersPlanets.add(planet);
+                    newUserPlanetList.add(planet);
             }catch(NullPointerException e){
                 System.out.println("Planet not found.\nPlease try again.\n");
                 log.debug(e.toString());
             }
         }
+        usersPlanets = newUserPlanetList;
         return new Inventory(usersPlanets);
     }
 
@@ -64,7 +62,6 @@ public class InventoryHandler {
                     break;
                 case("3"):
                     System.out.println("\nOption 3: Return");
-                    accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
                     choosingOptions = false;
                     break;
                 default:

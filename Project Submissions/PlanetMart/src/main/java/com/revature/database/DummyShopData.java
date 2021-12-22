@@ -1,13 +1,9 @@
 package com.revature.database;
 
-import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
 import com.revature.models.shop.generator.PlanetGenerator;
-import com.revature.models.users.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DummyShopData {
@@ -25,7 +21,6 @@ public class DummyShopData {
         planetCatalogueMap.put(removePlanet.getName(), removePlanet);
         planetCatalogueMap.put(expensivePlanet.getName(), expensivePlanet);
         planetCatalogueMap.put(addPlanet.getName(), addPlanet);
-
 
     }
 

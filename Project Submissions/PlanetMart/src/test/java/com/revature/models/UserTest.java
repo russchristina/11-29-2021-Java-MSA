@@ -16,7 +16,7 @@ class UserTest {
 
     @BeforeAll
     public void userGenerator(){
-        this.genericUser = new User("name", 10, "primary");
+        this.genericUser = new User(0, "name", 10);
     }
 
     @Test
@@ -26,7 +26,7 @@ class UserTest {
 
     @Test
     void addFundsReturnsCorrectBalanceTest() {
-        User user = new User("name", 10, "primary");
+        User user = new User(0, "name", 10);
         try {
             Assertions.assertEquals(110 ,user.addFunds(100));
         } catch (NegativeAmountException e) {
@@ -36,13 +36,13 @@ class UserTest {
 
     @Test
     void removeNegativeFundsThrowExceptionTest() {
-        User user = new User("name", 10, "primary");
+        User user = new User(0,"name", 10);
         Assertions.assertThrows(NegativeAmountException.class, () -> user.removeFunds(-100));
     }
 
     @Test
     void removeFundsInsufficientExceptionTest() {
-        User user = new User("name", 10, "primary");
+        User user = new User(0,"name", 10);
         Assertions.assertThrows(InsufficientFundsException.class, () -> user.removeFunds(100));
     }
 

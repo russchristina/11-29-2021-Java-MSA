@@ -1,28 +1,19 @@
 package com.revature.models.users;
 
-import com.revature.database.AccountDao;
-import com.revature.database.ShopDao;
-import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
-import com.revature.models.shop.Inventory;
-import com.revature.models.shop.Planet;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class User {
 
+
+    protected int id;
     protected String name;
     protected int balance;
-    protected String primaryUsername;
 
-    public User(String name, int balance, String primaryUsername) {
+    public User(int id, String name, int balance) {
+        this.id = id;
         this.name = name;
         this.balance = balance;
-        this.primaryUsername = primaryUsername;
     }
 
     public User() {
@@ -39,6 +30,13 @@ public class User {
         return balance -= amount;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -54,13 +52,5 @@ public class User {
 
     public void setBalance(int balance) {
         this.balance = balance;
-    }
-
-    public String getPrimaryUsername() {
-        return primaryUsername;
-    }
-
-    public void setPrimaryUsername(String primaryUsername) {
-        this.primaryUsername = primaryUsername;
     }
 }

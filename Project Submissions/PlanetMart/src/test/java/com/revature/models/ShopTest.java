@@ -2,10 +2,12 @@ package com.revature.models;
 
 
 import com.revature.database.DummyCustomerData;
+import com.revature.database.DummyShopData;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
 import com.revature.models.shop.Shop;
+import com.revature.models.shop.generator.PlanetGenerator;
 import com.revature.models.users.User;
 import com.revature.service.shop.InventoryHandler;
 import org.junit.jupiter.api.Assertions;
@@ -27,9 +29,9 @@ class ShopTest {
 
     @BeforeAll
     public void initiateVariables(){
-        this.user = DummyCustomerData.secondaryUsers1.get("Joseph");
+        this.user = new User(1, "user", 10000);
         this.shop = new Shop(planetCatalogueMap);
-        this.customerAccount = (CustomerAccount) DummyCustomerData.accountMap.get("user1");
+        this.customerAccount = (CustomerAccount) DummyCustomerData.accounts.get(0);
 
         InventoryHandler inventoryHandler = new InventoryHandler();
         this.inventory = inventoryHandler.generateUserInventory(customerAccount,user);
@@ -38,25 +40,36 @@ class ShopTest {
 
     @Test
     void buyPlanetTest(){
-
-        Assertions.assertTrue(shop.buyPlanet(customerAccount, "testPlanet", user));
+        PlanetGenerator planetGenerator = new PlanetGenerator();
+        Planet planet = planetGenerator.generateRandomPlanet();
+        planetCatalogueMap.put(planet.getName(), planet);
+        Assertions.assertTrue(shop.buyPlanet(customerAccount, planet.getName(), user));
     }
 
     @Test
     void throwInsufficientFundsForBuyingPlanetExceptionTest(){
-        Assertions.assertFalse(shop.buyPlanet(customerAccount, "expensivePlanet", user));
+        PlanetGenerator planetGenerator = new PlanetGenerator();
+        Planet planet = planetGenerator.generateRandomPlanet();
+        planet.setCost(10000000);
+        planetCatalogueMap.put(planet.getName(), planet);
+        Assertions.assertFalse(shop.buyPlanet(customerAccount, planet.getName(), user));
     }
 
     @Test
     void boughtPlanetRemovedFromCatalogueTest(){
-        shop.buyPlanet(customerAccount, "removePlanet", user);
-        Assertions.assertFalse(planetCatalogueMap.containsKey("removePlanet"));
+        PlanetGenerator planetGenerator = new PlanetGenerator();
+        Planet planet = planetGenerator.generateRandomPlanet();
+        planetCatalogueMap.put(planet.getName(), planet);
+        shop.buyPlanet(customerAccount, planet.getName(), user);
+        Assertions.assertFalse(planetCatalogueMap.containsKey(planet.getName()));
     }
 
     @Test
     void boughtPlanetAddedToUserOwnedMapTest(){
-        Planet planet = planetCatalogueMap.get("addPlanet");
-        shop.buyPlanet(customerAccount, "addPlanet", user);
+        PlanetGenerator planetGenerator = new PlanetGenerator();
+        Planet planet = planetGenerator.generateRandomPlanet();
+        planetCatalogueMap.put(planet.getName(), planet);
+        shop.buyPlanet(customerAccount, planet.getName(), user);
         Assertions.assertTrue(userOwnedPlanetsList.contains(planet));
     }
 

@@ -7,6 +7,7 @@ import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
 import com.revature.models.users.User;
+import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,10 @@ public class Shop {
     }
 
     public Shop() {
-
+        if(planetCatalogueMap.isEmpty()){
+            ShopHandler shopHandler = new ShopHandler();
+            setPlanetCatalogueMap(getPlanetCatalogueMap());
+        }
     }
 
     public Map<String, Planet> getPlanetCatalogueMap() {
@@ -42,7 +46,7 @@ public class Shop {
         try {
             user.removeFunds(planet.getCost());
             planet.setOwner(user);
-            planet.setUsername(user.getPrimaryUsername());
+            planet.setUsername(customerAccount.getUsername());
         } catch (NegativeAmountException | InsufficientFundsException e) {
             System.out.println(e.getMessage());
             log.debug(e.toString());
@@ -53,7 +57,7 @@ public class Shop {
         if(sDao.removePlanetFromMap(planetChosen) != null
                 && aDao.addPlanetToUserOwnedList(planet) != null) {
             setPlanetCatalogueMap(DummyShopData.planetCatalogueMap);
-            customerAccount.getPlanetsFromDao();
+            customerAccount.getPlanets();
             return true;
         }
         return false;
@@ -71,7 +75,7 @@ public class Shop {
             aDao.removePlanetFromOwnedList(planet);
             try {
                 user.addFunds(planet.getCost());
-                customerAccount.getPlanetsFromDao();
+                customerAccount.getPlanets();
                 return true;
             } catch (NegativeAmountException e) {
                 System.out.println("Error: Negative amount for Planet\nPlease try again.");

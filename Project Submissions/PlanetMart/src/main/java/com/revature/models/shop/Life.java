@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class Life implements Serializable {
 
+    protected int id;
     private int technologyLevel;
     private long population;
     private String name;

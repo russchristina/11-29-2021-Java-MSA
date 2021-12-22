@@ -10,81 +10,55 @@ import java.util.Objects;
 
 public class CustomerAccount extends Account{
 
-    private Map<String, User> secondaryUsers;
-    private PrimaryUser primaryUser;
+    //private Map<String, User> secondaryUsers;
+    private List<User> users;
+    private int primaryUserId;
+    public List<Planet> planets;
+
     private final int maxSecondaryAccounts = 5;
-    public List<Planet> planetsFromDao;
 
-    public CustomerAccount(Map<String, User> secondaryUsers, String username, PrimaryUser primaryUser, List<Planet> planetsFromDao) {
-        super(username);
-        this.secondaryUsers = secondaryUsers;
-        this.primaryUser = primaryUser;
-        this.planetsFromDao = planetsFromDao;
+    public CustomerAccount(int id, String username, List<User> users,int primaryUserId, List<Planet> planets) {
+        super(id, username);
+        this.users = users;
+        this.primaryUserId = primaryUserId;
+        this.planets = planets;
     }
-
-    public List<Planet> getPlanetsFromDao() {
-        return planetsFromDao;
-    }
-
-    private void setPlanetsFromDao(List<Planet> planetsFromDao) {
-        this.planetsFromDao = planetsFromDao;
-    }
-
 
     public CustomerAccount() {
         super();
     }
 
-
-    public Map<String, User> getSecondaryUsers() {
-        return secondaryUsers;
+    public int getPrimaryUserId() {
+        return primaryUserId;
     }
 
-    public void setSecondaryUsers(Map<String, User> secondaryUsers) {
-        this.secondaryUsers = secondaryUsers;
+    public void setPrimaryUserId(int primaryUserId) {
+        this.primaryUserId = primaryUserId;
     }
 
-    public PrimaryUser getPrimaryUser() {
-        return primaryUser;
+    public List<Planet> getPlanets() {
+        return planets;
     }
 
-    public void setPrimaryUser(PrimaryUser primaryUser) {
-        this.primaryUser = primaryUser;
+    private void setPlanets(List<Planet> planets) {
+        this.planets = planets;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
     }
 
     public int getMaxSecondaryAccounts() {
         return maxSecondaryAccounts;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomerAccount)) return false;
-        CustomerAccount that = (CustomerAccount) o;
-        return getMaxSecondaryAccounts() == that.getMaxSecondaryAccounts() && getSecondaryUsers().equals(that.getSecondaryUsers()) && getUsername().equals(that.getUsername()) && getPrimaryUser().equals(that.getPrimaryUser());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getSecondaryUsers(), getUsername(), getPrimaryUser(), getMaxSecondaryAccounts());
-    }
-
-    @Override
-    public String toString() {
-        return "{\"CustomerAccount\":{"
-                + "\"secondaryUsers\":" + secondaryUsers
-                + ", \"username\":\"" + username + "\""
-                + ", \"primaryUser\":" + primaryUser
-                + ", \"maxSecondaryAccounts\":\"" + maxSecondaryAccounts + "\""
-                + "}}";
-    }
 }
 

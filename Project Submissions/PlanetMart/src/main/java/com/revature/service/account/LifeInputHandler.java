@@ -22,6 +22,7 @@ public class LifeInputHandler {
     public void communicate(Scanner sc, User user, Inventory inventory) {
         boolean communicating = true;
         do {
+            input.setLength(0);
             System.out.println("\nType a valid planet name or type n to leave");
             input.append(sc.nextLine().trim());
             for (Planet planet : inventory.getPlanetOwnedList()) {

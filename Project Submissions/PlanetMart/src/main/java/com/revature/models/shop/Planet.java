@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class Planet implements Serializable {
 
+    protected int id;
     private Life lifeForm;
     private int cost;
     private String name;

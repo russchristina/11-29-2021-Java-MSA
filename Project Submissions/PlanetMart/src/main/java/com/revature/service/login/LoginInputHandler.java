@@ -1,13 +1,16 @@
 package com.revature.service.login;
 
 import com.revature.database.UserCredentialsDao;
-import com.revature.service.account.AccountHandler;
-import com.revature.service.exceptions.EmptyInputException;
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.database.exceptions.IncorrectAccountCredentialsException;
+import com.revature.display.account.AccountDisplay;
 import com.revature.display.login.LoginDisplay;
-import org.jetbrains.annotations.NotNull;
+import com.revature.display.user.InventoryDisplay;
+import com.revature.models.exceptions.UserNotFoundException;
+import com.revature.service.account.AccountHandler;
+import com.revature.service.shop.InventoryHandler;
+import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +19,25 @@ import java.util.Scanner;
 public class LoginInputHandler {
     private final Logger log = LoggerFactory.getLogger(LoginInputHandler.class);
 
-    protected final StringBuilder username = new StringBuilder();
-    protected final StringBuilder password = new StringBuilder();
-    protected final StringBuilder input = new StringBuilder();
-    protected final LoginDisplay loginDisplay = new LoginDisplay();
-    protected final Scanner sc = new Scanner(System.in);
+    public final Scanner sc;
+    public final StringBuilder input;
+    public final InventoryDisplay inventoryDisplay;
+    public final AccountDisplay accountDisplay;
+    public final StringBuilder username = new StringBuilder();
+    public final StringBuilder password = new StringBuilder();
+    public final LoginDisplay loginDisplay;
 
-    protected final UserCredentialsDao userCredentialsDao = new UserCredentialsDao();
+
+    public final UserCredentialsDao userCredentialsDao = new UserCredentialsDao();
+
+    public LoginInputHandler(){
+        sc = new Scanner(System.in);
+        input = new StringBuilder();
+        inventoryDisplay = new InventoryDisplay();
+        accountDisplay = new AccountDisplay();
+        loginDisplay = new LoginDisplay();
+    }
+
 
     public static void main(String[] args) {
         LoginInputHandler login = new LoginInputHandler();
@@ -110,7 +125,7 @@ public class LoginInputHandler {
                     AccountHandler accountHandler = new AccountHandler();
                     accountHandler.initiateAccount(username.toString());
                 }
-            } catch (EmptyUserCredentialDataException | IncorrectAccountCredentialsException e) {
+            } catch (EmptyUserCredentialDataException e) {
                 System.out.println("Invalid input.\n" +
                         "Please try again.");
                 log.debug(e.toString());
@@ -119,9 +134,8 @@ public class LoginInputHandler {
     }
 
 
-    public boolean authenticateAccountCredentials(String username, String password) throws IncorrectAccountCredentialsException, EmptyUserCredentialDataException {
-        if(!userCredentialsDao.userCredentialCheck(username, password)) throw new IncorrectAccountCredentialsException();
-        return true;
+    public boolean authenticateAccountCredentials(String username, String password) throws EmptyUserCredentialDataException {
+        return userCredentialsDao.userCredentialCheck(username, password);
     }
 
     public boolean createAccount(StringBuilder username, StringBuilder password) throws DuplicateUsernameException {

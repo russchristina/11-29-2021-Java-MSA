@@ -11,15 +11,23 @@ import com.revature.service.shop.InventoryHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 public class AccountHandler {
     private final Logger log = LoggerFactory.getLogger(AccountHandler.class);
 
-    private final AccountDao aDao = new AccountDao();
-    private final AccountDisplay accountDisplay = new AccountDisplay();
-    private final AccountInputHandler accountInputHandler = new AccountInputHandler();
-    private final InventoryHandler inventoryHandler = new InventoryHandler();
+    public final AccountDao aDao;
+    public final AccountDisplay accountDisplay;
+    public final AccountInputHandler accountInputHandler;
+    public final InventoryHandler inventoryHandler;
 
-    public AccountHandler(){};
+    public AccountHandler(){
+        aDao = new AccountDao();
+        accountDisplay = new AccountDisplay();
+        accountInputHandler = new AccountInputHandler();
+        inventoryHandler = new InventoryHandler();
+
+    };
 
     public void changeUser(CustomerAccount customerAccount) {
         User user = chooseUser(customerAccount);
@@ -30,7 +38,13 @@ public class AccountHandler {
     }
 
     public void initiateAccount(String username) {
-        Account account = aDao.getAccount(username);
+        Account account = null;
+        try {
+            account = aDao.getAccount(username);
+        } catch (AccountNotFoundException e) {
+            log.error(e.toString());
+            System.out.println("\nAccount not found, try again.\n");
+        }
         CustomerAccount customerAccount = account instanceof CustomerAccount ? ((CustomerAccount) account) : null;
         if(customerAccount != null) {
             accountDisplay.customerDisplay(customerAccount);
@@ -43,7 +57,6 @@ public class AccountHandler {
 
     private User chooseUser(CustomerAccount customerAccount) {
         do {
-            accountDisplay.chooseUserDisplay(customerAccount);
             try {
                 return accountInputHandler.inputChooseUser(customerAccount);
             } catch (UserNotFoundException e) {

@@ -16,15 +16,15 @@ public class UserCredentialsDaoTest {
     @BeforeAll
     public void InstantiateClass(){
         this.userCredentialsDao = new UserCredentialsDao();
-        this.existingUsername = DummyCustomerData.usernames.iterator().next();
-        this.existingPassword = DummyCustomerData.passwords.get(0);
+        this.existingUsername = "user1";
+        this.existingPassword = "pass1";
     }
     
     @Test
     void userCredentialSuccessTest() {
         try {
             Assertions.assertTrue(userCredentialsDao.userCredentialCheck(existingUsername, existingPassword));
-        } catch (IncorrectAccountCredentialsException | EmptyUserCredentialDataException e) {
+        } catch (EmptyUserCredentialDataException e) {
             e.printStackTrace();
         }
     }
@@ -43,12 +43,7 @@ public class UserCredentialsDaoTest {
 
     @Test
     void usernameDataCheckEmptyDatabaseExceptionNotThrownTest() {
-        Assertions.assertDoesNotThrow(() -> userCredentialsDao.usernameCheck(existingUsername));
-    }
-
-    @Test
-    void passwordDataCheckEmptyDatabaseExceptionNotThrownTest() {
-        Assertions.assertDoesNotThrow(() -> userCredentialsDao.passwordCheck(existingPassword));
+        Assertions.assertDoesNotThrow(() -> userCredentialsDao.userCheck(existingUsername, existingPassword));
     }
 
     @Test
@@ -59,6 +54,11 @@ public class UserCredentialsDaoTest {
 
     @Test
     void addNewAccountSuccessTest() {
-        Assertions.assertTrue(userCredentialsDao.addNewAccount("newUser", "newPass"));
+        userCredentialsDao.addNewAccount("newUser", "newPass");
+        try {
+            Assertions.assertTrue(userCredentialsDao.userCredentialCheck("newUser", "newPass"));
+        } catch (EmptyUserCredentialDataException e) {
+            e.printStackTrace();
+        }
     }
 }

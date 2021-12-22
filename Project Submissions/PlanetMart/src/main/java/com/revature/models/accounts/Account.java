@@ -3,15 +3,15 @@ package com.revature.models.accounts;
 import java.util.Objects;
 
 public abstract class Account {
-    protected String username;
 
-    public Account(String username) {
+    protected int id;
+    protected String username;
+    public Account(int id, String username) {
+        this.id = id;
         this.username = username;
     }
 
-    public Account() {
-
-    }
+    public Account() {}
 
     public String getUsername() {
         return username;

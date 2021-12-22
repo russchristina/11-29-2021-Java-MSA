@@ -13,8 +13,9 @@ class InventoryHandlerTest {
 
     @Test
     void generateUserInventoryTest() {
-        CustomerAccount account = (CustomerAccount) DummyCustomerData.accountMap.get("user1");
-        User user = account.getSecondaryUsers().get("Joseph");
+        CustomerAccount account = new CustomerAccount();
+
+        User user = new User();
         InventoryHandler inventoryHandler = new InventoryHandler();
         Assertions.assertTrue(inventoryHandler.generateUserInventory(account, user) instanceof Inventory);
     }
