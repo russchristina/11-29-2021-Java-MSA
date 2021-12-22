@@ -7,7 +7,7 @@ public class UserAccounts {
     final private static Map<String, String> accountHash = new HashMap<>();
     String a;
 public UserAccounts(){
-    accountHash.put("1Glizzard Wizzard","GlizzWizz");
+    accountHash.put("Glizzard Wizzard","GlizzWizz");
     a = accountHash.get("Glizzard Wizzard");
 
 }

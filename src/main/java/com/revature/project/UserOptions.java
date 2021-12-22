@@ -8,17 +8,17 @@ public class UserOptions {
 
 
     public void newAccount() {
-        Scanner test = new Scanner(System.in);
+        Scanner newUser = new Scanner(System.in);
         UserAccounts allAccounts= new UserAccounts();
         switch (MainDisplay.getUnregisteredDecision()) {
             case 1: //Create New Account and return to login screen
                 System.out.println("Enter desired username.");
-                String newUsername = test.nextLine();
+                String newUsername = newUser.nextLine();
                 System.out.println("Enter desired password");
-                String newPassword = test.nextLine();
+                String newPassword = newUser.nextLine();
                 allAccounts.newEntry(newUsername, newPassword);
                 System.out.println("Thank you for signing up! Returning to login page.");
-                MainDisplay.getUsername();
+//                MainDisplay.getUsername();
                 MainDisplay mainDisplay = new MainDisplay();
 
                 break;
@@ -30,7 +30,7 @@ public class UserOptions {
                 break;
             case 3: //Return to login page
                 System.out.println("Thank you for visiting. Goodbye! ");
-                test.close();
+                newUser.close();
 
                 break;
 
@@ -63,17 +63,17 @@ public class UserOptions {
 //    GetKey key = new GetKey();
 //
 //    public void newAccount() {
-//        Scanner test = new Scanner(System.in);
+//        Scanner newUser = new Scanner(System.in);
 //        UserAccounts allAccounts = new UserAccounts();
 //        switch (MainDisplay.getUnregisteredDecision()) {
 //            case 1:
-//                MainDisplay.getUsername() = test.nextLine();
+//                MainDisplay.getUsername() = newUser.nextLine();
 //                value.getValue(MainDisplay.getUsername());
 //                // Testing Username Input
 //                if (key.hasKey(MainDisplay.getUsername(), allAccounts)) {
 //                    value.getValue(MainDisplay.getUsername());
 //                    System.out.println("Enter Password: ");
-//                    MainDisplay.getPassword() = test.nextLine();
+//                    MainDisplay.getPassword() = newUser.nextLine();
 //                    }
 //                    if (MainDisplay.getPassword().equals(GetValue.getAccountPassword()))
 //                        System.out.println("Welcome, " + MainDisplay.getUsername() + "! Type in number corresponding to the desired" +
@@ -82,15 +82,15 @@ public class UserOptions {
 //                    break;
 //                    case 2: //Create New Account and return to login screen
 //                        System.out.println("Enter desired username.");
-//                        String newUsername = test.nextLine();
+//                        String newUsername = newUser.nextLine();
 //                        System.out.println("Enter desired password");
-//                        String newPassword = test.nextLine();
+//                        String newPassword = newUser.nextLine();
 //                        allAccounts.newEntry(newUsername, newPassword);
 //                        System.out.println("Thank you for signing up! Returning to login page.");
 //                        MainDisplay.getUsername();
 //                        System.out.println(MainDisplay.getUsername());
 //                        MainDisplay mainDisplay = new MainDisplay();
-//                        test.close();
+//                        newUser.close();
 //                        break;
 //                    case 3: //Return to login page
 //                        System.out.println("Returning to Login Page: ");
