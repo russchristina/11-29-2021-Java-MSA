@@ -1,6 +1,7 @@
 package com.revature.repository;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,17 +22,24 @@ public class IngredientRepositoryImpl implements IngredientRepository{
 
 	@Override
 	public void save(Ingredient ingredient) {
-		
-		final String SQL = "insert into ingredient values(" 
-		+ ingredient.getId() + ", '" + ingredient.getName() + "', '" + ingredient.getFlavor()
-		+ "')";
+		/*
+		 * When you use a PreparedStatement, you parameterize the values/inputs in the
+		 * SQL string:
+		 */
+		final String SQL = "insert into ingredient values(default, ?, ?)";
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		
 		try {
 			conn = ConnectionFactory.getConnection();
-			stmt = conn.createStatement();
-			stmt.execute(SQL);
+			/*
+			 * The values of the parameters in a PreparedStatement are supplied later after
+			 * the statement has been compiled.
+			 */
+			stmt = conn.prepareStatement(SQL);
+			stmt.setString(1, ingredient.getName());
+			stmt.setString(2, ingredient.getFlavor());
+			stmt.execute();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
