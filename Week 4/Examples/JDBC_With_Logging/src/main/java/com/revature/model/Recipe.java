@@ -1,10 +1,14 @@
 package com.revature.model;
 
+import java.util.List;
+
 public class Recipe {
 
 	private int id;
 	private String name;
 	private int cookTimeInMinutes;
+	private Author author;
+	private List<Ingredient> ingredients;
 
 	public Recipe() {
 		super();
