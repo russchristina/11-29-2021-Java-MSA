@@ -1,4 +1,4 @@
-package com.revature.database.DAO;
+package com.revature.repository.DAOInterface;
 
 
 import com.revature.models.accounts.EmployeeAccount;

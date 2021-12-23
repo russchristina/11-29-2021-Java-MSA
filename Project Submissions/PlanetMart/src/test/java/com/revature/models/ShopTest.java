@@ -2,11 +2,10 @@ package com.revature.models;
 
 
 import com.revature.database.DummyCustomerData;
-import com.revature.database.DummyShopData;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
-import com.revature.models.shop.Shop;
+import com.revature.service.shop.Shop;
 import com.revature.models.shop.generator.PlanetGenerator;
 import com.revature.models.users.User;
 import com.revature.service.shop.InventoryHandler;

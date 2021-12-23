@@ -5,19 +5,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Inventory {
+    private int id;
+    private int balance;
 
-    private List<Planet> planetOwnedList = new ArrayList<>();
-
-    public Inventory(List<Planet> planetOwnedList) {
-        this.planetOwnedList = planetOwnedList;
-    }
-
-    public Inventory() {
-
-    }
-
-    public List<Planet> getPlanetOwnedList() {
-        return planetOwnedList;
+    @Override
+    public String toString() {
+        return "{\"Inventory\":{"
+                + "\"id\":\"" + id + "\""
+                + ", \"balance\":\"" + balance + "\""
+                + "}}";
     }
 
     @Override
@@ -25,18 +21,32 @@ public class Inventory {
         if (this == o) return true;
         if (!(o instanceof Inventory)) return false;
         Inventory inventory = (Inventory) o;
-        return getPlanetOwnedList().equals(inventory.getPlanetOwnedList());
+        return getId() == inventory.getId() && getBalance() == inventory.getBalance();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPlanetOwnedList());
+        return Objects.hash(getId(), getBalance());
     }
 
-    @Override
-    public String toString() {
-        return "{\"Inventory\":{"
-                + "\"planetList\":" + planetOwnedList
-                + "}}";
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public Inventory(int id, int balance) {
+        this.id = id;
+        this.balance = balance;
     }
 }

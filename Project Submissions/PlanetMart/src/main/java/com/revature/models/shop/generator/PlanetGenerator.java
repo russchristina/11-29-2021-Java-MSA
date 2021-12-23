@@ -1,9 +1,9 @@
 package com.revature.models.shop.generator;
 
+import com.revature.models.shop.AtmosphereComposition;
 import com.revature.models.shop.Life;
 import com.revature.models.shop.Planet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.revature.models.shop.TemporaryPlanet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,53 +15,24 @@ public class PlanetGenerator {
     private String[] gases = {"Water", "Oxygen", "Hydrogen", "Nitrogen", "Argon", "Helium", "Carbon Dioxide", "Methane", "Chlorine"};
 
 
-    public Planet generateRandomPlanet(){
+    public TemporaryPlanet generateRandomPlanet(){
 
-        String name = generateNameSimple();
         boolean goldiLocksZone = isGoldilocksZone();
         int waterPercent = generateWater(goldiLocksZone);
         int averageTemperature = generateAverageTemperature(goldiLocksZone, waterPercent);
         Map<String, Integer> atmosphere = generateAtmosphere(goldiLocksZone, waterPercent);
-        Life lifeForm = generateLife(goldiLocksZone,waterPercent,averageTemperature,atmosphere);
-        int value = calculateValue(goldiLocksZone, waterPercent, averageTemperature, atmosphere, lifeForm);
 
-        return new Planet(name, goldiLocksZone,waterPercent, averageTemperature, atmosphere, lifeForm, value, null, null);
+        Life lifeForm = generateLife(goldiLocksZone,waterPercent,averageTemperature);
 
+        return new TemporaryPlanet(generateNameSimple(), lifeForm,0, goldiLocksZone, waterPercent, averageTemperature, atmosphere );
     }
 
-    private Life generateLife(boolean goldiLocksZone, int waterPercent, int averageTemperature, Map<String, Integer> atmosphere) {
+    private Life generateLife(boolean goldiLocksZone, int waterPercent, int averageTemperature) {
         if(goldiLocksZone && waterPercent >= 5 && averageTemperature >= 20 && averageTemperature <= 60){
             Life life = new Life(0, generateName().toString(), (long)(Math.random()*20_000_000) + 100_000, (int)(Math.random()*4));
             return life;
         }
         return null;
-    }
-
-    private int calculateValue(boolean goldiLocksZone, int waterPercent, int averageTemperature, Map<String, Integer> atmosphere, Life lifeForm) {
-        int baseValue = 100;
-        int goldilocksMultiplier = 5;
-        int waterPercentMultipllier = 10;
-        int temperatureMultiplier = 10;
-        int gasBonus = 0;
-        int lifeFormMultiplier = 3;
-
-        if(waterPercent > 70) waterPercentMultipllier -= 3;
-        if(waterPercent < 10) waterPercentMultipllier -= 8;
-
-        if(averageTemperature <= 273) temperatureMultiplier = 1;
-        if(averageTemperature <= 323) temperatureMultiplier = 2;
-        if(averageTemperature > 373) temperatureMultiplier = 1;
-
-        if(atmosphere.containsKey("Oxygen")) gasBonus = 100;
-
-        int suitableForLifePlanet = (baseValue * goldilocksMultiplier) +
-                (waterPercent * waterPercentMultipllier)
-                + (averageTemperature * temperatureMultiplier)
-                + gasBonus;
-
-        if(lifeForm != null) return suitableForLifePlanet * lifeFormMultiplier;
-        if(goldiLocksZone) return suitableForLifePlanet;
-        return (baseValue) + (waterPercent * waterPercentMultipllier) + (averageTemperature * temperatureMultiplier) + gasBonus;
     }
 
     private Map<String,Integer> generateAtmosphere(boolean goldiLocksZone, int waterPercent) {

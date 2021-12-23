@@ -1,71 +1,60 @@
 package com.revature.models.shop;
 
-import java.io.Serializable;
+import java.util.Map;
 import java.util.Objects;
 
-public class Planet implements Serializable {
+public class TemporaryPlanet {
 
-    private int id;
-    private int lifeId;
     private String name;
+    private Life lifeform;
     private int userId;
     private boolean goldilocksZone;
     private int waterPercent;
     private int averageTemperature;
-    private int atmosphereId;
+    private Map<String, Integer> atmosphere;
 
-    public Planet(int id, int lifeId, String name, int userId, boolean goldilocksZone, int waterPercent, int averageTemperature, int atmosphereId) {
-        this.id = id;
-        this.lifeId = lifeId;
+    public TemporaryPlanet(String name, Life lifeform, int userId, boolean goldilocksZone, int waterPercent, int averageTemperature, Map<String, Integer> atmosphere) {
         this.name = name;
+        this.lifeform = lifeform;
         this.userId = userId;
         this.goldilocksZone = goldilocksZone;
         this.waterPercent = waterPercent;
         this.averageTemperature = averageTemperature;
-        this.atmosphereId = atmosphereId;
+        this.atmosphere = atmosphere;
     }
 
     @Override
     public String toString() {
-        return "{\"Planet\":{"
-                + "\"id\":\"" + id + "\""
-                + ", \"lifeId\":\"" + lifeId + "\""
-                + ", \"name\":\"" + name + "\""
+        return "{\"TemporaryPlanet\":{"
+                + "\"name\":\"" + name + "\""
+                + ", \"lifeform\":" + lifeform
                 + ", \"userId\":\"" + userId + "\""
                 + ", \"goldilocksZone\":\"" + goldilocksZone + "\""
                 + ", \"waterPercent\":\"" + waterPercent + "\""
                 + ", \"averageTemperature\":\"" + averageTemperature + "\""
-                + ", \"atmosphereId\":\"" + atmosphereId + "\""
+                + ", \"atmosphere\":" + atmosphere
                 + "}}";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Planet)) return false;
-        Planet planet = (Planet) o;
-        return getId() == planet.getId() && getLifeId() == planet.getLifeId() && getUserId() == planet.getUserId() && isGoldilocksZone() == planet.isGoldilocksZone() && getWaterPercent() == planet.getWaterPercent() && getAverageTemperature() == planet.getAverageTemperature() && getAtmosphereId() == planet.getAtmosphereId() && Objects.equals(getName(), planet.getName());
+        if (!(o instanceof TemporaryPlanet)) return false;
+        TemporaryPlanet that = (TemporaryPlanet) o;
+        return getUserId() == that.getUserId() && isGoldilocksZone() == that.isGoldilocksZone() && getWaterPercent() == that.getWaterPercent() && getAverageTemperature() == that.getAverageTemperature() && Objects.equals(getName(), that.getName()) && Objects.equals(getLifeform(), that.getLifeform()) && Objects.equals(getAtmosphere(), that.getAtmosphere());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLifeId(), getName(), getUserId(), isGoldilocksZone(), getWaterPercent(), getAverageTemperature(), getAtmosphereId());
+        return Objects.hash(getName(), getLifeform(), getUserId(), isGoldilocksZone(), getWaterPercent(), getAverageTemperature(), getAtmosphere());
     }
 
-    public int getId() {
-        return id;
+    public Life getLifeform() {
+        return lifeform;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getLifeId() {
-        return lifeId;
-    }
-
-    public void setLifeId(int lifeId) {
-        this.lifeId = lifeId;
+    public void setLifeform(Life lifeform) {
+        this.lifeform = lifeform;
     }
 
     public String getName() {
@@ -108,11 +97,11 @@ public class Planet implements Serializable {
         this.averageTemperature = averageTemperature;
     }
 
-    public int getAtmosphereId() {
-        return atmosphereId;
+    public Map<String, Integer> getAtmosphere() {
+        return atmosphere;
     }
 
-    public void setAtmosphereId(int atmosphereId) {
-        this.atmosphereId = atmosphereId;
+    public void setAtmosphere(Map<String, Integer> atmosphere) {
+        this.atmosphere = atmosphere;
     }
 }

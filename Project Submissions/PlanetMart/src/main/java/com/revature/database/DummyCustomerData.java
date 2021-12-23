@@ -1,6 +1,5 @@
 package com.revature.database;
 
-import com.revature.models.accounts.Account;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Planet;
 import com.revature.models.shop.generator.PlanetGenerator;

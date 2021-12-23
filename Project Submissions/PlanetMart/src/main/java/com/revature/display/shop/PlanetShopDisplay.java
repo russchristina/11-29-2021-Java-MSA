@@ -1,7 +1,6 @@
 package com.revature.display.shop;
 
-import com.revature.models.shop.Planet;
-import com.revature.models.shop.Shop;
+import com.revature.service.shop.Shop;
 
 public class PlanetShopDisplay {
 

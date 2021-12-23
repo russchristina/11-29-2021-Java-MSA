@@ -5,16 +5,24 @@ import java.util.Objects;
 
 public class Life implements Serializable {
 
-    protected int id;
-    private int technologyLevel;
-    private long population;
+    private int id;
     private String name;
+    private long population;
+    private int technologyLevel;
 
-    public Life(int id,String name, long population, int technologyLevel) {
+    public Life(int id, String name, long population, int technologyLevel) {
         this.id = id;
         this.name = name;
         this.population = population;
         this.technologyLevel = technologyLevel;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getTechnologyLevel() {
@@ -46,20 +54,21 @@ public class Life implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Life)) return false;
         Life life = (Life) o;
-        return getTechnologyLevel() == life.getTechnologyLevel() && getPopulation() == life.getPopulation() && getName().equals(life.getName());
+        return getId() == life.getId() && getPopulation() == life.getPopulation() && getTechnologyLevel() == life.getTechnologyLevel() && Objects.equals(getName(), life.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTechnologyLevel(), getPopulation(), getName());
+        return Objects.hash(getId(), getName(), getPopulation(), getTechnologyLevel());
     }
 
     @Override
     public String toString() {
         return "{\"Life\":{"
-                + "\"technologyLevel\":\"" + technologyLevel + "\""
-                + ", \"population\":\"" + population + "\""
+                + "\"id\":\"" + id + "\""
                 + ", \"name\":\"" + name + "\""
+                + ", \"population\":\"" + population + "\""
+                + ", \"technologyLevel\":\"" + technologyLevel + "\""
                 + "}}";
     }
 }

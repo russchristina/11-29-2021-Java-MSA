@@ -10,16 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 
-public class PrimaryUser extends User{
+public class PrimaryUser{
 
     protected final Logger log = LoggerFactory.getLogger(PrimaryUser.class);
-
-    protected String username;
-
-    public PrimaryUser(int id, String name, int balance, String username) {
-        super(id, name, balance);
-        this.username = username;
-    }
 
     public User addSecondaryUser(String name, CustomerAccount account) throws EmptyInputException, RepeatedNameOfUserException, MaxSecondaryUsersException {
         if(name.trim().contentEquals("") || name.isEmpty()) throw new EmptyInputException("Empty name");
@@ -34,7 +27,7 @@ public class PrimaryUser extends User{
         }
 
         User user = new User(DummyCustomerData.users1.size(), name, 0);
-        account.addUser(user);
+//        account.addUser(user);
         //DOA Interaction - Create
         return user;
     }

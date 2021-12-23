@@ -1,28 +1,27 @@
 package com.revature.models.accounts;
 
 import com.revature.models.shop.Planet;
-import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public class CustomerAccount extends Account{
+public class CustomerAccount {
 
-    private List<User> users;
+    private int customerAccountId;
     private int primaryUserId;
-    public List<Planet> planets;
 
-    public CustomerAccount(int id, String username, List<User> users,int primaryUserId, List<Planet> planets) {
-        super(id, username);
-        this.users = users;
+    public CustomerAccount(int customerAccountId, int primaryUserId) {
+        this.customerAccountId = customerAccountId;
         this.primaryUserId = primaryUserId;
-        this.planets = planets;
     }
 
-    public CustomerAccount() {
-        super();
+    public int getCustomerAccountId() {
+        return customerAccountId;
+    }
+
+    public void setCustomerAccountId(int customerAccountId) {
+        this.customerAccountId = customerAccountId;
     }
 
     public int getPrimaryUserId() {
@@ -33,24 +32,25 @@ public class CustomerAccount extends Account{
         this.primaryUserId = primaryUserId;
     }
 
-    public List<Planet> getPlanets() {
-        return planets;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomerAccount)) return false;
+        CustomerAccount that = (CustomerAccount) o;
+        return getCustomerAccountId() == that.getCustomerAccountId() && getPrimaryUserId() == that.getPrimaryUserId();
     }
 
-    private void setPlanets(List<Planet> planets) {
-        this.planets = planets;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomerAccountId(), getPrimaryUserId());
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public void addUser(User user){
-        this.users.add(user);
+    @Override
+    public String toString() {
+        return "{\"CustomerAccount\":{"
+                + "\"customerAccountId\":\"" + customerAccountId + "\""
+                + ", \"primaryUserId\":\"" + primaryUserId + "\""
+                + "}}";
     }
 
     public int getMaxSecondaryAccounts() {

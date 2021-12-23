@@ -1,44 +1,20 @@
 package com.revature.models.users;
 
-import com.revature.models.exceptions.InsufficientFundsException;
-import com.revature.models.exceptions.NegativeAmountException;
-
 public class User {
 
+    private int userId;
+    private String name;
+    private int inventoryId;
+    private int customerAccountId;
 
-    protected int id;
-    protected String name;
-    protected int balance;
-
-    public User(int id, String name, int balance) {
-        this.id = id;
+    public User(int userId, String name, int inventoryId, int customerAccountId) {
+        this.userId = userId;
         this.name = name;
-        this.balance = balance;
+        this.inventoryId = inventoryId;
+        this.customerAccountId = customerAccountId;
     }
 
     public User() {
-    }
-
-    public int addFunds(int amount) throws NegativeAmountException {
-        if(amount < 0) throw new NegativeAmountException();
-        //DOA Interaction - update
-        return balance += amount;
-
-    }
-
-    public int removeFunds(int amount) throws NegativeAmountException, InsufficientFundsException {
-        if(amount <= 0) throw new NegativeAmountException();
-        if(amount > balance) throw new InsufficientFundsException("balance is less than amount removing");
-        //DOA Interaction - update
-        return balance -= amount;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -46,16 +22,31 @@ public class User {
     }
 
     public void setName(String name) {
-        //DOA Interaction - update
         this.name = name;
     }
 
-    public int getBalance() {
-        return balance;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setBalance(int balance) {
-        //DOA Interaction - update
-        this.balance = balance;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
+
+    public int getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(int inventoryId) {
+        this.inventoryId = inventoryId;
+    }
+
+    public int getCustomerAccountId() {
+        return customerAccountId;
+    }
+
+    public void setCustomerAccountId(int customerAccountId) {
+        this.customerAccountId = customerAccountId;
+    }
+
 }

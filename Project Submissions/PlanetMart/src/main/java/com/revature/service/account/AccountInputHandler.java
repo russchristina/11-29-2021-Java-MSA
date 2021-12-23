@@ -7,7 +7,7 @@ import com.revature.display.user.InventoryDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.UserNotFoundException;
 import com.revature.models.shop.Inventory;
-import com.revature.models.shop.Shop;
+import com.revature.service.shop.Shop;
 import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 import com.revature.service.login.LoginInputHandler;
@@ -15,7 +15,6 @@ import com.revature.service.shop.InventoryHandler;
 import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.security.provider.SHA;
 
 import java.util.Scanner;
 

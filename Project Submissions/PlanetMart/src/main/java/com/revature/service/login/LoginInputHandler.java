@@ -1,16 +1,14 @@
 package com.revature.service.login;
 
-import com.revature.database.UserCredentialsDao;
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
-import com.revature.database.exceptions.IncorrectAccountCredentialsException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.display.login.LoginDisplay;
 import com.revature.display.user.InventoryDisplay;
-import com.revature.models.exceptions.UserNotFoundException;
+import com.revature.models.users.User;
+import com.revature.models.users.UserCredential;
+import com.revature.repository.UserCredentialsDAO;
 import com.revature.service.account.AccountHandler;
-import com.revature.service.shop.InventoryHandler;
-import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,9 +24,6 @@ public class LoginInputHandler {
     public final StringBuilder username = new StringBuilder();
     public final StringBuilder password = new StringBuilder();
     public final LoginDisplay loginDisplay;
-
-
-    public final UserCredentialsDao userCredentialsDao = new UserCredentialsDao();
 
     public LoginInputHandler(){
         sc = new Scanner(System.in);
@@ -120,10 +115,11 @@ public class LoginInputHandler {
                 username.append(sc.nextLine()).trimToSize();
                 loginDisplay.printLoginDisplayPassword();
                 password.append(sc.nextLine()).trimToSize();
-                if (authenticateAccountCredentials(username.toString(), password.toString())) {
+                UserCredential userCredential = authenticateAccountCredentials(username.toString(), password.toString());
+                if (userCredential != null) {
                     loggingIn = false;
                     AccountHandler accountHandler = new AccountHandler();
-                    accountHandler.initiateAccount(username.toString());
+                    accountHandler.initiateAccount(userCredential);
                 }
             } catch (EmptyUserCredentialDataException e) {
                 System.out.println("Invalid input.\n" +
@@ -134,13 +130,30 @@ public class LoginInputHandler {
     }
 
 
-    public boolean authenticateAccountCredentials(String username, String password) throws EmptyUserCredentialDataException {
-        return userCredentialsDao.userCredentialCheck(username, password);
+    public UserCredential authenticateAccountCredentials(String username, String password) throws EmptyUserCredentialDataException {
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+        UserCredential userCredential = userCredentialsDAO.getUserCredentialByUsername(username);
+        if(userCredential.getPassword().contentEquals(password)) return userCredential;
+        return null;
     }
 
     public boolean createAccount(StringBuilder username, StringBuilder password) throws DuplicateUsernameException {
-        if(userCredentialsDao.usernameDuplicateCheck(username.toString(), password.toString())) return true;
-        else throw new DuplicateUsernameException("Duplicate Username");
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+        if(userCredentialsDAO.getUserCredentialByUsername(username.toString()) == null){
+            System.out.print("FIRST NAME:");
+            input.setLength(0);
+            String firstName = input.append(sc.nextLine().trim()).toString();
+            System.out.print("LAST NAME:");
+            input.setLength(0);
+            String lastName = input.append(sc.nextLine().trim()).toString();
+            userCredentialsDAO.addUserCredential(new UserCredential(0,
+                    username.toString(),
+                    password.toString(),
+                    firstName,
+                    lastName));
+            return userCredentialsDAO.getUserCredentialByUsername(username.toString()) != null;
+        }
+        return false;
     }
 
 }

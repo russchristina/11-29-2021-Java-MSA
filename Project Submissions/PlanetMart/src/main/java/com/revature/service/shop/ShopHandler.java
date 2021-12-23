@@ -1,12 +1,10 @@
 package com.revature.service.shop;
 
-import com.revature.database.DummyShopData;
 import com.revature.display.shop.PlanetShopDisplay;
 import com.revature.display.user.InventoryDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Planet;
-import com.revature.models.shop.Shop;
 import com.revature.models.shop.generator.PlanetGenerator;
 import com.revature.models.users.User;
 import com.revature.service.account.AccountInputHandler;
@@ -14,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 

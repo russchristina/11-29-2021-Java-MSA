@@ -1,4 +1,4 @@
-package com.revature.models.shop;
+package com.revature.service.shop;
 
 import com.revature.database.AccountDao;
 import com.revature.database.DummyShopData;
@@ -6,6 +6,9 @@ import com.revature.database.ShopDao;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.exceptions.NegativeAmountException;
+import com.revature.models.shop.Life;
+import com.revature.models.shop.Planet;
+import com.revature.models.shop.TemporaryPlanet;
 import com.revature.models.users.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,4 +81,38 @@ public class Shop {
 
         }
     }
+
+    public int calculateValueOfPlanet(TemporaryPlanet planet) {
+        int baseValue = 100;
+        int goldilocksMultiplier = 5;
+        int waterPercentMultipllier = 10;
+        int temperatureMultiplier = 10;
+        int gasBonus = 0;
+        int lifeFormMultiplier = 3;
+
+        int averageTemperature = planet.getAverageTemperature();
+        int waterPercent = planet.getWaterPercent();
+        boolean goldilock = planet.isGoldilocksZone();
+        Life lifeform = planet.getLifeform();
+
+
+        if(waterPercent > 70) waterPercentMultipllier -= 3;
+        if(waterPercent < 10) waterPercentMultipllier -= 8;
+
+        if(averageTemperature <= 273) temperatureMultiplier = 1;
+        if(averageTemperature <= 323) temperatureMultiplier = 2;
+        if(averageTemperature > 373) temperatureMultiplier = 1;
+
+        if(planet.getAtmosphere().containsKey("Oxygen")) gasBonus = 100;
+
+        int suitableForLifePlanet = (baseValue * goldilocksMultiplier) +
+                (waterPercent * waterPercentMultipllier)
+                + (averageTemperature * temperatureMultiplier)
+                + gasBonus;
+
+        if(lifeform != null) return suitableForLifePlanet * lifeFormMultiplier;
+        if(goldilock) return suitableForLifePlanet;
+        return (baseValue) + (waterPercent * waterPercentMultipllier) + (averageTemperature * temperatureMultiplier) + gasBonus;
+    }
+
 }
