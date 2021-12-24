@@ -180,8 +180,26 @@ public class IngredientRepositoryImpl implements IngredientRepository{
 
 	@Override
 	public void update(Ingredient ingredient) {
-		// TODO Auto-generated method stub
+
+		final String SQL = "update ingredient set "
+				+ "ingredient_name = ? where ingredient_id = ?";
+	
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		
+		try {
+			conn = ConnectionFactory.getConnection();
+			stmt = conn.prepareStatement(SQL);
+			stmt.setString(1, ingredient.getName());
+			stmt.setInt(2, ingredient.getId());
+			stmt.execute();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ConnectionClosers.closeConnection(conn);
+			ConnectionClosers.closeStatement(stmt);
+		}
 	}
 
 	@Override
