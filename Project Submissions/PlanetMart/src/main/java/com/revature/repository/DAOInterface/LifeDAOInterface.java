@@ -18,5 +18,5 @@ public interface LifeDAOInterface {
     void updateLifeTechnologyLevel(int lifeId, int technologyLevel);
 
     void deleteLifeById(int id);
-    void addLife(String name, int population, int technologyLevel);
+    void addLife(String name, int population, int technologyLevel, int planetId);
 }

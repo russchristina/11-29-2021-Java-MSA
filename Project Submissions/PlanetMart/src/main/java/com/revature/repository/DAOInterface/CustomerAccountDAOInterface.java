@@ -7,10 +7,11 @@ import java.util.List;
 
 public interface CustomerAccountDAOInterface {
 
-    public List<CustomerAccount> getAllCustomerAccounts();
-    public List<CustomerAccount> getCustomerAccountsByPrimaryUserId(int id);
-    public void updateCustomerAccountById(int id);
-    public void deleteCustomerAccountById(int id);
-    public void addCustomerAccount(int primaryUserId);
+    List<CustomerAccount> getAllCustomerAccounts();
+    List<CustomerAccount> getCustomerAccountsByUserCredentialId(int id);
+    List<CustomerAccount> getCustomerAccountsByPrimaryUserId(int id);
+
+    void deleteCustomerAccountById(int id);
+    void addCustomerAccount(int primaryUserId);
 
 }

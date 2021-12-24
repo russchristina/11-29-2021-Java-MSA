@@ -44,11 +44,14 @@ public class CustomerUserDAO implements CustomerUsersDAOInterface {
 
         final String SQL = "select * from customer_users where customer_account_id = ?";
 
-
+        ResultSet resultSet = null;
         try(Connection connection = ConnectionFactory.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL)
+            PreparedStatement statement = connection.prepareStatement(SQL)
         ){
+
+            statement.setInt(1, customerAccountId);
+            resultSet = statement.executeQuery();
+
             while(resultSet.next()){
                 customerAccountUsers.add(
                         new User(

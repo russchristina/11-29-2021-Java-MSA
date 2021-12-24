@@ -1,19 +1,39 @@
 package com.revature.models.accounts;
 
-import com.revature.models.shop.Planet;
-import com.revature.models.users.User;
-
-import java.util.List;
 import java.util.Objects;
 
 public class CustomerAccount {
 
     private int customerAccountId;
+    private int userCredentialId;
     private int primaryUserId;
 
-    public CustomerAccount(int customerAccountId, int primaryUserId) {
+    public CustomerAccount(int customerAccountId, int userCredentialId, int primaryUserId) {
         this.customerAccountId = customerAccountId;
+        this.userCredentialId = userCredentialId;
         this.primaryUserId = primaryUserId;
+    }
+
+    @Override
+    public String toString() {
+        return "{\"CustomerAccount\":{"
+                + "\"customerAccountId\":\"" + customerAccountId + "\""
+                + ", \"userCredentialId\":\"" + userCredentialId + "\""
+                + ", \"primaryUserId\":\"" + primaryUserId + "\""
+                + "}}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomerAccount)) return false;
+        CustomerAccount that = (CustomerAccount) o;
+        return getCustomerAccountId() == that.getCustomerAccountId() && getUserCredentialId() == that.getUserCredentialId() && getPrimaryUserId() == that.getPrimaryUserId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomerAccountId(), getUserCredentialId(), getPrimaryUserId());
     }
 
     public int getCustomerAccountId() {
@@ -24,33 +44,20 @@ public class CustomerAccount {
         this.customerAccountId = customerAccountId;
     }
 
+    public int getUserCredentialId() {
+        return userCredentialId;
+    }
+
+    public void setUserCredentialId(int userCredentialId) {
+        this.userCredentialId = userCredentialId;
+    }
+
     public int getPrimaryUserId() {
         return primaryUserId;
     }
 
     public void setPrimaryUserId(int primaryUserId) {
         this.primaryUserId = primaryUserId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomerAccount)) return false;
-        CustomerAccount that = (CustomerAccount) o;
-        return getCustomerAccountId() == that.getCustomerAccountId() && getPrimaryUserId() == that.getPrimaryUserId();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getCustomerAccountId(), getPrimaryUserId());
-    }
-
-    @Override
-    public String toString() {
-        return "{\"CustomerAccount\":{"
-                + "\"customerAccountId\":\"" + customerAccountId + "\""
-                + ", \"primaryUserId\":\"" + primaryUserId + "\""
-                + "}}";
     }
 
     public int getMaxSecondaryAccounts() {

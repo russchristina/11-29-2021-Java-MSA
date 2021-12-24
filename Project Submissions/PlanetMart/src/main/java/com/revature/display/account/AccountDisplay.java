@@ -1,62 +1,46 @@
 package com.revature.display.account;
 
-import com.revature.display.user.InventoryDisplay;
 import com.revature.models.accounts.CustomerAccount;
-import com.revature.models.shop.Inventory;
-import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
+
+import java.util.List;
 
 public class AccountDisplay {
 
-    public void displayAccountName(String username){
-        System.out.printf("Welcome %s \n",username);
+    public void displayCustomerBasicOptions(CustomerAccount customerAccount, User user) {
+        System.out.println("\nSECONDARY USER OPTIONS");
+        System.out.println("1. Open Inventory");
+        System.out.println("2. Open Shop");
+        System.out.println("3. Change User");
+        System.out.println("4. Add to Balance");
+        System.out.println("5. Logout\n");
     }
 
-    public void displayAccountBalance(int balance){
-        System.out.printf("Balance: $%d \n", balance);
+    public void displayCustomerUpgradedOptions(CustomerAccount customerAccount, User user) {
+        System.out.println("\nPRIMARY USER OPTIONS");
+        System.out.println("1. Open Inventory");
+        System.out.println("2. Open Shop");
+        System.out.println("3. Change User");
+        System.out.println("4. Add to Balance");
+        System.out.println("5. Logout");
+        System.out.println("6. Add User");
+        System.out.println("7. Transfer Funds");
+        System.out.println("8. Change User names");
+        System.out.println("9. Remove User");
+        System.out.println("10. Add Account");
     }
 
+    public void displayCustomerAccount(CustomerAccount customerAccount) {
+        System.out.println("\nAccount ID: " + customerAccount.getCustomerAccountId());
+    }
 
-    public void customerDisplay(CustomerAccount customerAccount) {
-        System.out.printf("Welcome %s \n",customerAccount.getUsername());
-        for (User user : customerAccount.getUsers()) {
-            if((user instanceof PrimaryUser)) System.out.printf("Primary User:\n%s \n", user.getName());
+    public void displayUsers(List<User> users) {
+        for (User user : users) {
+
+            System.out.println("\nUSER ID: " + user.getUserId());
+            System.out.println("USER NAME: " + user.getName());
+
         }
-        System.out.println("Secondary Users: ");
-        if(customerAccount.getUsers().size() < 2)System.out.println("None...");
-        for (User user : customerAccount.getUsers()) {
-            if(!(user instanceof PrimaryUser)) System.out.println(user.getName());
-        }
-        System.out.print("Enter User name to choose: ");
-    }
 
-    public void displayCurrentUser(CustomerAccount account, User userChosen, Inventory inventory) {
-        System.out.printf("Hello %s \n", userChosen.getName());
-        System.out.printf("Balance: %d \n", userChosen.getBalance());
-        System.out.printf("Planets Owned: %d \n", inventory.getPlanetOwnedList().size());
-
-    }
-
-    public void displayCustomerOptions(CustomerAccount customerAccount, User user) {
-
-        if(user instanceof PrimaryUser){
-            System.out.println("\nPRIMARY USER OPTIONS");
-            System.out.println("1. Open Inventory");
-            System.out.println("2. Open Shop");
-            System.out.println("3. Change User");
-            System.out.println("4. Add to Balance");
-            System.out.println("5. Logout");
-            System.out.println("6. Request Account Deletion");
-            System.out.println("7. Transfer Funds");
-            System.out.println("8. Change user names");
-            System.out.println("9. Remove User\n");
-            return;
-        }
-            System.out.println("\nSECONDARY USER OPTIONS");
-            System.out.println("1. Open Inventory");
-            System.out.println("2. Open Shop");
-            System.out.println("3. Change User");
-            System.out.println("4. Add to Balance");
-            System.out.println("5. Logout\n");
     }
 }

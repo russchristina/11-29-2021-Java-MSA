@@ -29,25 +29,35 @@ public class PlanetGenerator {
 
     private Life generateLife(boolean goldiLocksZone, int waterPercent, int averageTemperature) {
         if(goldiLocksZone && waterPercent >= 5 && averageTemperature >= 20 && averageTemperature <= 60){
-            Life life = new Life(0, generateName().toString(), (long)(Math.random()*20_000_000) + 100_000, (int)(Math.random()*4));
+            Life life = new Life(0, generateName().toString(), (int)(Math.random()*20_000_000) + 100_000, (int)(Math.random()*4), 0);
             return life;
         }
         return null;
     }
 
     private Map<String,Integer> generateAtmosphere(boolean goldiLocksZone, int waterPercent) {
-        Map<String, Integer> atmosphere = new HashMap<>();
+        Map<String, Integer> atmosphereComposition = new HashMap<>();
+        atmosphereComposition.put("Water", 0);
+        atmosphereComposition.put("Oxygen", 0);
+        atmosphereComposition.put("Hydrogen", 0);
+        atmosphereComposition.put("Nitrogen", 0);
+        atmosphereComposition.put("Argon", 0);
+        atmosphereComposition.put("Helium", 0);
+        atmosphereComposition.put("Carbon Dioxide", 0);
+        atmosphereComposition.put("Methane", 0);
+        atmosphereComposition.put("Chlorine", 0);
+        atmosphereComposition.put("Unknown", 0);
         int max = 100;
         int gasesAvailable = (int)(Math.random()*3)+2;
-        int input = 0;
+        int input;
         int gasAvailable = 0;
-        String gas = "";
+        String gas;
         boolean generatingGases = true;
         boolean getReasonableNumber = true;
         if(goldiLocksZone || waterPercent >= 30){
             int waterAmount = (int)(Math.random()*30 + 10);
             max -= waterAmount;
-            atmosphere.put("Water", waterAmount);
+            atmosphereComposition.replace("Water", 0, waterAmount);
         }
 
 
@@ -57,25 +67,25 @@ public class PlanetGenerator {
             while(generatingGases){
                 input = (int)(Math.random()*8);
                 gas = gases[input];
-                if(!atmosphere.containsKey(gases)){
+                if(!atmosphereComposition.containsKey(gases)){
 
                     if(!getReasonableNumber) getReasonableNumber = true;
 
                     if(i == gasAvailable -1){
-                        atmosphere.put(gas, max);
+                        atmosphereComposition.replace(gas, 0, max);
                         getReasonableNumber = false;
                     }
                     while(getReasonableNumber){
                         loopCounter++;
                         gasAvailable = max - ((int)(Math.random()*60 + i));
                         if(gasAvailable >= 10 & gasAvailable <= 60){
-                            atmosphere.put(gas, gasAvailable);
+                            atmosphereComposition.replace(gas,0, gasAvailable);
                             max -= gasAvailable;
                             generatingGases = false;
                             getReasonableNumber = false;
                         }
                         if(loopCounter >= 25){
-                            atmosphere.put(gas, max);
+                            atmosphereComposition.replace(gas,0,max);
                             getReasonableNumber = false;
                             generatingGases = false;
                             break;
@@ -87,13 +97,13 @@ public class PlanetGenerator {
         if(max> 0) {
             int maximum = 100;
             int runningTotal = 0;
-            for (Map.Entry<String, Integer> entry : atmosphere.entrySet()) {
+            for (Map.Entry<String, Integer> entry : atmosphereComposition.entrySet()) {
                 Integer integer = entry.getValue();
                 runningTotal += integer;
             }
-            if(maximum-runningTotal != 0) atmosphere.put("Unknown",maximum-runningTotal );
+            if(maximum-runningTotal != 0) atmosphereComposition.replace("Unknown",0,maximum-runningTotal );
         }
-        return atmosphere;
+        return atmosphereComposition;
     }
 
     private String generateNameSimple() {

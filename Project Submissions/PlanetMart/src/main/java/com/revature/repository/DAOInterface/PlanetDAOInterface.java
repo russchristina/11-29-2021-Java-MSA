@@ -1,6 +1,7 @@
 package com.revature.repository.DAOInterface;
 
 import com.revature.models.shop.Planet;
+import com.revature.models.shop.TemporaryPlanet;
 
 import java.util.List;
 
@@ -14,6 +15,6 @@ public interface PlanetDAOInterface {
     void updatePlanetAverageTemp(int planetId, int averageTemp);
 
     void deletePlanetById(int id);
-    void addPlanet(Planet planet);
+    void addPlanet(TemporaryPlanet planet);
 
 }

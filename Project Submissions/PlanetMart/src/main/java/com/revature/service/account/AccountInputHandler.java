@@ -1,14 +1,7 @@
 package com.revature.service.account;
 
-import com.revature.database.DummyShopData;
 import com.revature.display.account.AccountDisplay;
-import com.revature.display.login.LoginDisplay;
-import com.revature.display.user.InventoryDisplay;
 import com.revature.models.accounts.CustomerAccount;
-import com.revature.models.exceptions.UserNotFoundException;
-import com.revature.models.shop.Inventory;
-import com.revature.service.shop.Shop;
-import com.revature.models.users.PrimaryUser;
 import com.revature.models.users.User;
 import com.revature.service.login.LoginInputHandler;
 import com.revature.service.shop.InventoryHandler;
@@ -21,45 +14,22 @@ import java.util.Scanner;
 public class AccountInputHandler {
 
     protected final Logger log = LoggerFactory.getLogger(AccountInputHandler.class);
-    public final Scanner sc;
-    public final StringBuilder input;
-    public final InventoryDisplay inventoryDisplay;
-    public final AccountDisplay accountDisplay;
-    public final LoginDisplay loginDisplay;
-
-    public AccountInputHandler() {
-        sc = new Scanner(System.in);
-        input = new StringBuilder();
-        inventoryDisplay = new InventoryDisplay();
-        accountDisplay = new AccountDisplay();
-        loginDisplay = new LoginDisplay();
-    }
-
-
-    public User inputChooseUser(CustomerAccount customerAccount) throws UserNotFoundException {
-        input.setLength(0);
-        input.append(sc.nextLine());
-
-        for (User user : customerAccount.getUsers()) {
-            if(user.getName().contentEquals(input)) return user;
-        }
-        throw new UserNotFoundException();
-    }
+    public final Scanner sc = new Scanner(System.in);
+    public final StringBuilder input = new StringBuilder();
 
     public void inputChooseCustomerOptions(CustomerAccount customerAccount, User user) {
         boolean choosingOptions = true;
         InventoryHandler inventoryHandler = new InventoryHandler();
-        ShopHandler shopHandler = new ShopHandler();
         AccountHandler accountHandler = new AccountHandler();
-        LoginInputHandler loginInputHandler = new LoginInputHandler();
-        Shop shop = new Shop(DummyShopData.planetCatalogueMap);
-        if(user instanceof PrimaryUser){
+        AccountDisplay accountDisplay = new AccountDisplay();
+        if(user.getUserId() == customerAccount.getPrimaryUserId()){
             inputChooseCustomerOptionsPrimary(customerAccount, user);
             return;
         }
 
         do {
-            accountDisplay.displayCustomerOptions(customerAccount, user);
+
+            accountDisplay.displayCustomerBasicOptions(customerAccount, user);
             System.out.println("Choose an option:");
             input.setLength(0);
             input.append(sc.nextLine().trim());
@@ -67,32 +37,27 @@ public class AccountInputHandler {
             switch (input.toString()) {
                 case ("1"):
                     System.out.println("Option 1: Open Inventory");
-
-                    Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
-                    inventoryDisplay.displayInventory(inventory);
-                    inventoryHandler.chooseOptions(customerAccount, user, inventory, sc);
-                    //inputChooseCustomerOptions(customerAccount, user);
-                    //choosingOptions = false;
+                    inventoryHandler.openInventory(customerAccount, user);
                     break;
                 case ("2"):
                     System.out.println("Option 2: Open Shop");
-                    shopHandler.beginShopping(customerAccount, user, shop);
-                    //inputChooseCustomerOptions(customerAccount, user);
-                    //choosingOptions = false;
+                    ShopHandler shopHandler = new ShopHandler();
+                    shopHandler.beginShopping(customerAccount, user);
                     break;
                 case ("3"):
                     System.out.println("Option 3: Change User");
-                    accountHandler.changeUser(customerAccount);
                     choosingOptions = false;
+                    accountHandler.changeUser(customerAccount);
                     break;
                 case ("4"):
                     System.out.println("Option 4: Add to Balance");
-                    inventoryHandler.addToBalance(customerAccount, user);
-                    choosingOptions = false;
+                    inventoryHandler.manageBalance(customerAccount, user);
                     break;
                 case ("5"):
                     System.out.println("Option 5: Logout");
                     choosingOptions = false;
+                    System.out.println("\nLOGGING OUT\n");
+                    LoginInputHandler loginInputHandler = new LoginInputHandler();
                     loginInputHandler.firstStage();
                     break;
                 default:
@@ -105,60 +70,59 @@ public class AccountInputHandler {
     private void inputChooseCustomerOptionsPrimary(CustomerAccount customerAccount, User user) {
         boolean choosingOptions = true;
         InventoryHandler inventoryHandler = new InventoryHandler();
-        ShopHandler shopHandler = new ShopHandler();
         AccountHandler accountHandler = new AccountHandler();
-        LoginInputHandler loginInputHandler = new LoginInputHandler();
-        Shop shop = new Shop(DummyShopData.planetCatalogueMap);
+        AccountDisplay accountDisplay = new AccountDisplay();
+
             do {
-                accountDisplay.displayCustomerOptions(customerAccount, user);
+                accountDisplay.displayCustomerUpgradedOptions(customerAccount, user);
                 System.out.println("Choose an option:");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 switch (input.toString()) {
                     case ("1"):
                         System.out.println("Option 1: Open Inventory");
-                        Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
-                        inventoryDisplay.displayInventory(inventory);
-                        inventoryHandler.chooseOptions(customerAccount, user, inventory, sc);
-//                        inputChooseCustomerOptions(customerAccount, user);
-                        //choosingOptions = false;
+                        inventoryHandler.openInventory(customerAccount, user);
                         break;
                     case ("2"):
                         System.out.println("Option 2: Open Shop");
-                        shopHandler.beginShopping(customerAccount, user, shop);
-                        //inputChooseCustomerOptions(customerAccount, user);
-                        //choosingOptions = false;
+                        ShopHandler shopHandler = new ShopHandler();
+                        shopHandler.beginShopping(customerAccount, user);
                         break;
                     case ("3"):
                         System.out.println("Option 3: Change User");
-                        accountHandler.changeUser(customerAccount);
                         choosingOptions = false;
+                        accountHandler.changeUser(customerAccount);
                         break;
                     case ("4"):
                         System.out.println("Option 4: Add to Balance");
-                        inventoryHandler.addToBalance(customerAccount, user);
-//                    choosingOptions = false;
+                        inventoryHandler.manageBalance(customerAccount, user);
                         break;
                     case ("5"):
                         System.out.println("Option 5: Logout");
                         choosingOptions = false;
+                        System.out.println("\nLOGGING OUT\n");
+                        LoginInputHandler loginInputHandler = new LoginInputHandler();
                         loginInputHandler.firstStage();
                         break;
                     case ("6"):
-                        System.out.println("Option 6: Request Account Deletion");
-                        choosingOptions = false;
+                        System.out.println("Option 6: Add User");
+                        accountHandler.addUser(user, customerAccount);
                         break;
                     case ("7"):
                         System.out.println("Option 7: Transfer Funds");
-//                    choosingOptions = false;
+                        inventoryHandler.transferFunds(customerAccount, user);
                         break;
                     case ("8"):
                         System.out.println("Option 8: Change user names");
-//                    choosingOptions = false;
+                        accountHandler.changeUserNames(user, customerAccount);
                         break;
                     case ("9"):
                         System.out.println("Option 9: Remove User");
-//                    choosingOptions = false;
+                        accountHandler.removeUser(user, customerAccount);
+                        break;
+                    case ("10"):
+                        System.out.println("Option 9: Add Account");
+                        accountHandler.addAccount(user, customerAccount);
                         break;
                     default:
                         System.out.println("\nInput a valid choice.\n");

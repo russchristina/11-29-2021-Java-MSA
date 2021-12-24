@@ -1,61 +1,60 @@
 package com.revature.service.shop;
 
 import com.revature.display.shop.PlanetShopDisplay;
-import com.revature.display.user.InventoryDisplay;
 import com.revature.models.accounts.CustomerAccount;
+import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.shop.Inventory;
-import com.revature.models.shop.Planet;
-import com.revature.models.shop.generator.PlanetGenerator;
+import com.revature.models.shop.TemporaryPlanet;
 import com.revature.models.users.User;
-import com.revature.service.account.AccountInputHandler;
+import com.revature.repository.InventoryDAO;
+import com.revature.utility.PlanetToTempPlanet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
 
 public class ShopHandler {
 
     private final Logger log = LoggerFactory.getLogger(ShopHandler.class);
-    protected final AccountInputHandler accountInputHandler = new AccountInputHandler();
     protected final StringBuilder input = new StringBuilder();
     protected final Scanner sc = new Scanner(System.in);
-    protected final InventoryHandler inventoryHandler = new InventoryHandler();
-    protected final InventoryDisplay inventoryDisplay = new InventoryDisplay();
-    protected final PlanetGenerator planetGenerator = new PlanetGenerator();
 
     protected final PlanetShopDisplay planetShopDisplay = new PlanetShopDisplay();
 
-    public void beginShopping(CustomerAccount customerAccount, User user, Shop shop) {
+    public void beginShopping(CustomerAccount customerAccount, User user) {
         boolean choosingOptions = true;
+        Shop shop = new Shop();
+
+        List<TemporaryPlanet> planetsForSale = shop.planetsForSale();
 
         do {
-            planetShopDisplay.displayShop(shop);
+
+            planetShopDisplay.displayPlanetsForSale(planetsForSale);
+
             System.out.println("\n1. Buy a planet");
             System.out.println("2. Sell a planet");
             System.out.println("3. Get new Options");
             System.out.println("4. Return");
+
             input.setLength(0);
             input.append(sc.nextLine().trim());
             switch (input.toString()) {
                 case ("1"):
                     System.out.println("\nOption 1: Buy a Planet");
-                    buyAPlanet(customerAccount, user, sc, shop);
-                    choosingOptions = false;
+                    buyPlanet(customerAccount, user, shop, planetsForSale);
                     break;
                 case ("2"):
                     System.out.println("\nOption 2: Sell a Planet");
-                    sellAPlanet(customerAccount, user, sc, shop);
-                    choosingOptions = false;
+                    sellPlanet(customerAccount, user, shop, planetsForSale);
                     break;
                 case ("3"):
                     System.out.println("\nOption 3: Get new Options");
-                    refreshShop(shop);
+                    planetsForSale.clear();
+                    planetsForSale = shop.planetsForSale();
                     break;
                 case ("4"):
                     System.out.println("\nOption 3: Return");
-                    accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
                     choosingOptions = false;
                     break;
                 default:
@@ -63,57 +62,78 @@ public class ShopHandler {
                     break;
             }
         } while (choosingOptions);
+
+
+
     }
 
-    public void buyAPlanet(CustomerAccount customerAccount, User user, Scanner sc, Shop shop) {
+    private void sellPlanet(CustomerAccount customerAccount, User user, Shop shop, List<TemporaryPlanet> planetsForSale) {
+
+        InventoryDAO iDao = new InventoryDAO();
+        List<TemporaryPlanet> temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+
+        Inventory inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+
+        if(inventory != null){
+            System.out.println("\nBALANCE:");
+            System.out.println(inventory.getBalance());
+        }
+        System.out.println(temporaryPlanetList);
+
+        boolean sellingPlanet = true;
+        do {
+            input.setLength(0);
+            System.out.println("Type a valid planet name or type n to leave");
+            input.append(sc.nextLine());
+
+            for (TemporaryPlanet planet : temporaryPlanetList) {
+                if(planet.getName().contentEquals(input)){
+                    shop.sellPlanet(planet, user, temporaryPlanetList, planetsForSale, inventory);
+                    sellingPlanet = false;
+                    System.out.println("Successful Sale of Planet: " + input + "\n");
+                    System.out.print("BALANCE: ");
+                    System.out.println(inventory.getBalance());
+                    break;
+                }
+            }
+            if (input.toString().trim().toLowerCase().contentEquals("n")) {
+                sellingPlanet = false;
+            }
+        } while (sellingPlanet);
+
+
+    }
+
+    private void buyPlanet(CustomerAccount customerAccount, User user, Shop shop, List<TemporaryPlanet> planetsForSale) {
+
+        InventoryDAO iDao = new InventoryDAO();
+        Inventory inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
         boolean buyingPlanet = true;
         do {
             input.setLength(0);
             System.out.println("Type a valid planet name or type n to leave");
             input.append(sc.nextLine());
-            if (shop.getPlanetCatalogueMap().containsKey(input.toString())) {
-                shop.buyPlanet(customerAccount, input.toString(), user);
-                buyingPlanet = false;
-                System.out.println("Successful purchase of Planet: " + input + "\n");
+
+            for (TemporaryPlanet planet : planetsForSale) {
+                if(planet.getName().contentEquals(input)){
+                    try {
+                        shop.buyPlanet(planet, user, planetsForSale, inventory);
+                    } catch (InsufficientFundsException e) {
+                        log.info(e.toString());
+                        System.out.println("\nINSUFFICIENT FUNDS\n");
+                    }
+                    buyingPlanet = false;
+                    System.out.println("Successful purchase of Planet: " + input + "\n");
+                    System.out.print("BALANCE: ");
+                    System.out.println(inventory.getBalance());
+                    break;
+                }
             }
             if (input.toString().trim().toLowerCase().contentEquals("n")) {
                 buyingPlanet = false;
             }
         } while (buyingPlanet);
+
     }
-
-    public void sellAPlanet(CustomerAccount customerAccount, User user, Scanner sc, Shop shop) {
-        System.out.println("\nYour Inventory\n");
-        Inventory inventory = inventoryHandler.generateUserInventory(customerAccount, user);
-        inventoryDisplay.displayInventory(inventory);
-        boolean sellingPlanet = true;
-        do {
-            System.out.println("\nType a valid planet name or type n to leave");
-            input.setLength(0);
-            input.append(sc.nextLine());
-            for (Planet planet : inventory.getPlanetOwnedList()) {
-                if (planet.getName().contentEquals(input.toString())) {
-                    shop.sellPlanet(planet, user, customerAccount);
-                    sellingPlanet = false;
-                    System.out.println("Successful sale of Planet: " + input);
-                    break;
-                }
-            }
-            if (input.toString().trim().contentEquals("n")) {
-                break;
-            }
-        } while (sellingPlanet);
-    }
-
-    public void refreshShop(Shop shop){
-        Map<String, Planet> planetCatalogueMap = new HashMap();
-        for(int i = 0; i < 5; i++){
-            Planet planet = planetGenerator.generateRandomPlanet();
-            planetCatalogueMap.put(planet.getName(), planet);
-        }
-        shop.setPlanetCatalogueMap(planetCatalogueMap);
-    }
-
-
 }
 

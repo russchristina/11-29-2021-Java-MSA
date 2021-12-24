@@ -4,14 +4,13 @@ import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.display.login.LoginDisplay;
-import com.revature.display.user.InventoryDisplay;
-import com.revature.models.users.User;
 import com.revature.models.users.UserCredential;
 import com.revature.repository.UserCredentialsDAO;
 import com.revature.service.account.AccountHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.Scanner;
 
 public class LoginInputHandler {
@@ -19,7 +18,7 @@ public class LoginInputHandler {
 
     public final Scanner sc;
     public final StringBuilder input;
-    public final InventoryDisplay inventoryDisplay;
+
     public final AccountDisplay accountDisplay;
     public final StringBuilder username = new StringBuilder();
     public final StringBuilder password = new StringBuilder();
@@ -28,7 +27,6 @@ public class LoginInputHandler {
     public LoginInputHandler(){
         sc = new Scanner(System.in);
         input = new StringBuilder();
-        inventoryDisplay = new InventoryDisplay();
         accountDisplay = new AccountDisplay();
         loginDisplay = new LoginDisplay();
     }
@@ -125,6 +123,9 @@ public class LoginInputHandler {
                 System.out.println("Invalid input.\n" +
                         "Please try again.");
                 log.debug(e.toString());
+            } catch (AccountNotFoundException e) {
+                log.error(e.toString());
+                System.out.println("\nAccount not found...\n");
             }
         } while (loggingIn);
     }
