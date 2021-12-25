@@ -12,6 +12,6 @@ public interface CustomerAccountDAOInterface {
     List<CustomerAccount> getCustomerAccountsByPrimaryUserId(int id);
 
     void deleteCustomerAccountById(int id);
-    void addCustomerAccount(int primaryUserId);
+    void addCustomerAccount(int userCredentialId, int primaryUserId);
 
 }

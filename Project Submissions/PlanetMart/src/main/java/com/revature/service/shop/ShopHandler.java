@@ -121,6 +121,7 @@ public class ShopHandler {
                     } catch (InsufficientFundsException e) {
                         log.info(e.toString());
                         System.out.println("\nINSUFFICIENT FUNDS\n");
+                        return;
                     }
                     buyingPlanet = false;
                     System.out.println("Successful purchase of Planet: " + input + "\n");

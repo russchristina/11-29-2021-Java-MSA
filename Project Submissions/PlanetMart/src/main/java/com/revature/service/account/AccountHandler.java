@@ -1,5 +1,6 @@
 package com.revature.service.account;
 
+import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
@@ -10,6 +11,7 @@ import com.revature.repository.CustomerAccountDAO;
 import com.revature.repository.CustomerUserDAO;
 import com.revature.repository.EmployeeAccountDAO;
 import com.revature.repository.InventoryDAO;
+import com.revature.service.exceptions.EmptyInputException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,7 @@ public class AccountHandler {
     private final Scanner sc = new Scanner(System.in);
     AccountDisplay accountDisplay = new AccountDisplay();
 
-    public void changeUser(CustomerAccount customerAccount) {
+    public void changeUser(CustomerAccount customerAccount, UserCredential username) {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         AccountInputHandler accountInputHandler = new AccountInputHandler();
 
@@ -40,7 +42,7 @@ public class AccountHandler {
                 input.append(sc.nextLine().trim());
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
-                        accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
+                        accountInputHandler.inputChooseCustomerOptions(customerAccount, user, username);
                         chooseUser = false;
                         break;
 
@@ -55,6 +57,7 @@ public class AccountHandler {
     public void initiateAccount(UserCredential username) throws AccountNotFoundException {
         CustomerAccountDAO cDao = new CustomerAccountDAO();
         EmployeeAccountDAO eDao = new EmployeeAccountDAO();
+        AccountInputHandler accountInputHandler = new AccountInputHandler();
         List<CustomerAccount> customerAccountList = cDao.getCustomerAccountsByPrimaryUserId(username.getId());
         EmployeeAccount employeeAccount = eDao.getEmployeeAccountsById(username.getId());
         boolean chooseAccount = true;
@@ -71,7 +74,7 @@ public class AccountHandler {
                 input.append(sc.nextLine().trim());
                 for (CustomerAccount customerAccount : customerAccountList) {
                     if(String.valueOf(customerAccount.getCustomerAccountId()).contentEquals(input)){
-                        chooseUser(customerAccount);
+                        chooseUser(customerAccount, username);
                         chooseAccount = false;
                         break;
                     }
@@ -80,14 +83,22 @@ public class AccountHandler {
         }
 
         if(employeeAccount != null){
-            System.out.println(employeeAccount);
-            //DO SOMETHING WITH EMPLOYEE
+            if(employeeAccount.getEmployeeId() == employeeAccount.getAdminId()) {
+                accountInputHandler.inputChooseAdminOption(employeeAccount, username);
+            }else{
+
+                accountInputHandler.inputChooseEmployeeOption(employeeAccount, username);
+
+            }
+
+
+            return;
         }
 
         throw new AccountNotFoundException("username is not attached to any account");
     }
 
-    private void chooseUser(CustomerAccount customerAccount) {
+    private void chooseUser(CustomerAccount customerAccount, UserCredential username) {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         AccountInputHandler accountInputHandler = new AccountInputHandler();
 
@@ -104,7 +115,7 @@ public class AccountHandler {
                 input.append(sc.nextLine().trim());
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
-                        accountInputHandler.inputChooseCustomerOptions(customerAccount, user);
+                        accountInputHandler.inputChooseCustomerOptions(customerAccount, user, username);
                         chooseUser = false;
                         break;
 
@@ -120,7 +131,7 @@ public class AccountHandler {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
         boolean chooseUser = true;
-        System.out.println(users);
+        accountDisplay.displayUsers(users);
 
         if(!users.isEmpty()){
 
@@ -174,18 +185,48 @@ public class AccountHandler {
         }
     }
 
-    public void addUser(User user, CustomerAccount customerAccount) {
+    public void addUser(User user, CustomerAccount customerAccount) throws EmptyInputException, DuplicateUsernameException {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         InventoryDAO inventoryDAO = new InventoryDAO();
 
         boolean addingUser = true;
+        boolean inputtingName = true;
 
         do{
-            System.out.println("\nINPUT NEW USER NAME...");
-            input.setLength(0);
-            input.append(sc.nextLine().trim());
+            do{
+                System.out.println("\nINPUT NEW USER NAME...");
+                input.setLength(0);
+                input.append(sc.nextLine().trim());
+                if(input.toString().contentEquals("")) throw new EmptyInputException("Name cannot be empty.");
+                for (User user1 : cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId())) {
+                    if(user1.getName().contentEquals(input.toString())) throw new DuplicateUsernameException("User with that name already exists.");
+                }
+                inputtingName = false;
+            }while(inputtingName);
+
             inventoryDAO.addInventory(new Inventory(0, 0));
 
+            List<Inventory> inventories = inventoryDAO.getAllInventories();
+            int inventoryId = inventories.get(inventories.size()-1).getId();
+
+            cUDao.addUser(input.toString(), inventoryId, customerAccount.getCustomerAccountId());
+            addingUser = false;
         }while(addingUser);
+
+    }
+
+    public void addAccount(User user, CustomerAccount customerAccount, UserCredential username) {
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+        customerAccountDAO.addCustomerAccount(username.getId(), customerAccount.getPrimaryUserId());
+        List<CustomerAccount> customerAccountList = customerAccountDAO.getCustomerAccountsByUserCredentialId(username.getId());
+        int customerAccountId = customerAccountList.get(customerAccountList.size()-1).getCustomerAccountId();
+        customerUserDAO.addUser(user.getName(), user.getInventoryId(), customerAccountId);
+
+        int newUserId = customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(0).getUserId();
+
+        customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, newUserId);
+
+        System.out.println("ADDED CUSTOMER ACCOUNT");
     }
 }

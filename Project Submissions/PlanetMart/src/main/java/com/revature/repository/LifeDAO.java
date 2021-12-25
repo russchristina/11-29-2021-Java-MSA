@@ -241,7 +241,7 @@ public class LifeDAO implements LifeDAOInterface {
 
     @Override
     public void addLife(String name, int population, int technologyLevel, int planetId) {
-        final String SQL = "insert into life_forms values( default, ?, ?, ?, ?";
+        final String SQL = "insert into life_forms values( default, ?, ?, ?, ?)";
 
         try(
                 Connection connection = ConnectionFactory.getConnection();

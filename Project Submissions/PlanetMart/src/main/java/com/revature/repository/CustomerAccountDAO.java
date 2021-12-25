@@ -128,17 +128,35 @@ public class CustomerAccountDAO implements CustomerAccountDAOInterface {
     }
 
     @Override
-    public void addCustomerAccount(int primaryUserId) {
-        final String SQL = "insert into customer_account values(default, ?";
+    public void addCustomerAccount(int userCredentialId, int primaryUserId) {
+        final String SQL = "insert into customer_account values(default, ?, ?)";
 
         try(
                 Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL)
         ){
-            statement.setInt(1, primaryUserId);
+            statement.setInt(1, userCredentialId);
+            statement.setInt(2, primaryUserId);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public void updateCustomerAccountPrimaryId(int customerAccountId, int newUserId) {
+        final String SQL = "update customer_account set primary_user_id = ? where customer_account_id = ?";
+
+        try(
+                Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL)
+                ){
+            statement.setInt(1, newUserId);
+            statement.setInt(2, customerAccountId);
+            statement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
     }
 }

@@ -141,8 +141,8 @@ public class CustomerUserDAO implements CustomerUsersDAOInterface {
     }
 
     @Override
-    public void addUser(String name, Inventory inventory, CustomerAccount customerAccount) {
-        final String SQL = "insert into customer_users values( default, ?, ?, ?";
+    public void addUser(String name, int inventoryId, int customerAccountId) {
+        final String SQL = "insert into customer_users values( default, ?, ?, ?)";
 
         try(
                 Connection connection = ConnectionFactory.getConnection();
@@ -150,8 +150,8 @@ public class CustomerUserDAO implements CustomerUsersDAOInterface {
         ) {
 
             statement.setString(1, name);
-            statement.setInt(2, inventory.getId());
-            statement.setInt(3, customerAccount.getCustomerAccountId());
+            statement.setInt(2, inventoryId);
+            statement.setInt(3, customerAccountId);
             statement.execute();
 
         } catch (SQLException throwables) {

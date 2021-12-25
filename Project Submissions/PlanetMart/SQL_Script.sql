@@ -47,7 +47,7 @@ admin_id integer references employee_account(employee_id)
 create table customer_inventory(
 
 inventory_id serial primary key,
-balance numeric not null check (balance >= 0),
+balance numeric not null check (balance >= 0)
 
 );
 
@@ -92,8 +92,8 @@ chlorine numeric not null
 );
 
 alter table atmosphere_content add column user_id integer references customer_users(user_id);
-alter table atmosphere_content add column planet_id integer references planets(planet_id)
-
+alter table atmosphere_content add column planet_id integer references planets(planet_id);
+alter table atmosphere_content add column unknown numeric not null;
 
 create table life_forms(
 
@@ -106,3 +106,26 @@ technology_level numeric not null
 
 alter table life_forms add column user_id integer references customer_users(user_id);
 alter table life_forms add column planet_id integer references planets(planet_id)
+
+
+alter table customer_account add column user_credential_id integer references user_credentials(id);
+alter table customer_account add column primary_user_id integer references customer_users(user_id);
+
+
+
+insert into user_credentials values(default, 'user1', 'pass1', 'John', 'Doe'), (default, 'user2', 'pass2', 'Johno', 'Doeo'), (default, 'user3', 'pass3', 'Mohn', 'Noe'), (default, 'user4', 'pass4', 'Lee', 'dEe');
+
+insert into employee_account values(default, 3, 1), (default, 4, 1);
+insert into customer_account values(default, 1), (default, 2);
+
+
+insert into customer_users values(default, 'John', 1, 1), (default, 'Johno', 2, 2); 
+
+insert into customer_inventory values(default, 10000), (default, 41232), (default, 12314), (default, 12355);
+
+insert into customer_users values(default, 'Maria', 3, 1), (default, 'Ruben', 4, 2);
+
+
+alter table customer_users add constraint inventoryKey foreign key (inventory_id) references customer_inventory(inventory_id);
+
+truncate table atmosphere_content cascade

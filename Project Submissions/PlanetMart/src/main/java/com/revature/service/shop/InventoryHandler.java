@@ -48,7 +48,7 @@ public class InventoryHandler {
 
     }
 
-    public void openInventory(CustomerAccount customerAccount, User user) {
+    public void openInventory(User user) {
         InventoryDAO iDao = new InventoryDAO();
         List<TemporaryPlanet> temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
 

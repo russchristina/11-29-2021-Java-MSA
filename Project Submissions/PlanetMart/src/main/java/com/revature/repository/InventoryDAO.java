@@ -146,7 +146,7 @@ public class InventoryDAO implements InventoryDAOInterface {
     @Override
     public void addInventory(Inventory inventory) {
 
-        final String SQL = "insert into customer_inventory values( default, ?";
+        final String SQL = "insert into customer_inventory values( default, ?)";
 
         try(
                 Connection connection = ConnectionFactory.getConnection();

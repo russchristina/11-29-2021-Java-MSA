@@ -175,7 +175,7 @@ public class UserCredentialsDAO implements UserCredentialDAO {
     @Override
     public void addUserCredential(UserCredential user) {
 
-        final String SQL = "insert into user_credentials values( default, ?, ?, ?, ?";
+        final String SQL = "insert into user_credentials values( default, ?, ?, ?, ?)";
 
         try(
                 Connection connection = ConnectionFactory.getConnection();

@@ -17,7 +17,7 @@ public interface CustomerUsersDAOInterface {
     void updateUserName(int userId, String name);
 
     void deleteUserById(int id);
-    void addUser(String name, Inventory inventory, CustomerAccount customerAccount);
+    void addUser(String name, int inventoryId, int customerAccountId);
 
 
 }

@@ -70,7 +70,9 @@ public class Shop {
 
     public void buyPlanet(TemporaryPlanet planet, User user, List<TemporaryPlanet> planetsForSale, Inventory inventory) throws InsufficientFundsException {
         int value = calculateValueOfPlanet(planet);
-        if(inventory.getBalance()<value) throw new InsufficientFundsException();
+        if(inventory.getBalance()<value) {
+            throw new InsufficientFundsException();
+        }
 
         PlanetDAO planetDAO = new PlanetDAO();
         LifeDAO lifeDAO;

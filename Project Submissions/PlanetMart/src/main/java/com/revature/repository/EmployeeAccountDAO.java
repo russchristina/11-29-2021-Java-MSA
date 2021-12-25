@@ -39,7 +39,7 @@ public class EmployeeAccountDAO implements EmployeeAccountDAOInterface {
     public EmployeeAccount getEmployeeAccountsById(int id) {
         EmployeeAccount employeeAccount = null;
 
-        final String SQL = "select * from employee_account where employee_id = ?";
+        final String SQL = "select * from employee_account where user_id = ?";
 
         ResultSet resultSet = null;
         try(
@@ -130,7 +130,7 @@ public class EmployeeAccountDAO implements EmployeeAccountDAOInterface {
 
     @Override
     public void addEmployeeAccount(int userId, int adminId) {
-        final String SQL = "insert into employee_account values( default, ?, ?";
+        final String SQL = "insert into employee_account values( default, ?, ?)";
 
         try(
                 Connection connection = ConnectionFactory.getConnection();
