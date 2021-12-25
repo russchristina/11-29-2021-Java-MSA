@@ -1,20 +1,28 @@
 package com.revature.project;
 
+import com.revature.project.util.UserDB;
+import com.revature.project.util.UserDBImplementation;
+import com.revature.project.util.UserDB;
+import com.revature.project.util.UserDBImplementation;
+
+import java.util.Scanner;
+
 public class GetKey {
-   // MainDisplay display = new MainDisplay();
-   // UserAccounts allAccounts = new UserAccounts();
+        UserDB userDB = new UserDBImplementation();
+//        GetValue getValue = new GetValue();
+        public void findUsername(GetValue value) {
+            if (!userDB.findByName(MainDisplay.getUsername()).isEmpty()) {
+               value.passwordCheck();
 
 
-//    protected String getUsername(String a) {
-//        GetKey key = new GetKey();
-//        GetUser user = new GetUser();
-//        MainDisplay main = new MainDisplay();
-//       // if (!key.getKey(main.username).equals(" ")) ;
-//    //} else
+            }
+            else {
+                System.out.println("Username not recognized");
+                new MainDisplay();
+            }
 
-    /*
+        }
 
-     */
 
     public boolean hasKey(String display, UserAccounts allAccounts  ){
         //Tried to make username case insensitive below :(

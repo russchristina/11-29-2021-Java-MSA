@@ -1,13 +1,38 @@
+//Previous code if i goof
+//    public void passwordCheck() {
+//        Scanner passwordStream = new Scanner(System.in);
+//        if (key.hasKey(MainDisplay.getUsername(), allAccounts)) {
+//            getValue(MainDisplay.getUsername());
+//            System.out.println("Enter Password: ");
+//            String holdPassword = passwordStream.nextLine();
+//            MainDisplay.setPassword(holdPassword);
+//            if (MainDisplay.getPassword().equals(GetValue.getAccountPassword())) {
+//                System.out.println("Welcome, " + MainDisplay.getUsername() + "! Type in number corresponding to the desired" +
+//                        " action: ");
+//            } else {
+//                while (!MainDisplay.getPassword().equals(GetValue.getAccountPassword())) {
+//                        String breakNum = "3";
+//                    attempts--;
+//                    if (attempts == 0 ) {
+//                        System.out.println("Too many attempts foo :P");
+//                        break;
+//
+//                    }
+//
 package com.revature.project;
+
+import com.revature.project.util.UserDB;
+import com.revature.project.util.UserDBImplementation;
 
 import java.util.Scanner;
 
 public class GetValue {
     int attempts = 3;
     GetKey key = new GetKey();
-
     UserAccounts allAccounts = new UserAccounts();
-
+    UserDB userDB = new UserDBImplementation();
+    Scanner userScanner = new Scanner(System.in);
+    UserOptions userOptions = new UserOptions();
 
     public static String getAccountPassword() {
         return accountPassword;
@@ -16,49 +41,35 @@ public class GetValue {
     private static String accountPassword = "null";
 
     public void passwordCheck() {
-        Scanner passwordStream = new Scanner(System.in);
-        if (key.hasKey(MainDisplay.getUsername(), allAccounts)) {
-            getValue(MainDisplay.getUsername());
-            System.out.println("Enter Password: ");
-            String holdPassword = passwordStream.nextLine();
-            MainDisplay.setPassword(holdPassword);
-            if (MainDisplay.getPassword().equals(GetValue.getAccountPassword())) {
-                System.out.println("Welcome, " + MainDisplay.getUsername() + "! Type in number corresponding to the desired" +
-                        " action: ");
+        System.out.println("Enter password :D");
+        MainDisplay.setPassword(userScanner.nextLine());
+        String databasePassword = userDB.findPass(MainDisplay.getUsername()).get(2);
+        while (!databasePassword.equals(MainDisplay.getPassword())) {
+            String breakNum = "3";
+            attempts--;
+            if (attempts == 0) {
+                System.out.println("Too many attempts foo :P");
+                break;
             } else {
-                while (!MainDisplay.getPassword().equals(GetValue.getAccountPassword())) {
-                        String breakNum = "3";
-                    attempts--;
-                    if (attempts == 0 ) {
-                        System.out.println("Too many attempts foo :P");
-                        break;
+                System.out.println("Password incorrect. Please try again, or " +
+                        "please enter a number corresponding with the options " +
+                        "below : \n " +
+                        " \n 1: Create a new account \n 2: Re-enter username \n  3: Exit Application \n Attempts " +
+                        "remaining :  " + attempts);
 
-                    }
-//
-                  if(passwordStream.nextLine().equals("3"))
-                       System.out.println("closing app");
-               else
-                    System.out.println("Password incorrect. Attempts " +
-                            "remaining :  " + attempts);
-                 breakNum = passwordStream.nextLine();
-
-                }
-
-                passwordStream.nextLine();
-
+                MainDisplay.setPassword(userScanner.nextLine());
             }
-
         }
-    }
-        protected String getValue (String a){
-            if (UserAccounts.getAccountHash().containsKey(a)) {
-                GetValue.accountPassword = UserAccounts.getAccountHash().get(a);
-            }
-            return accountPassword;
-
+        if (databasePassword.equals(MainDisplay.getPassword())) {
+            userOptions.loggedIn();
         }
-
-
+        userScanner.nextLine();
     }
+
+
+}
+
+
+
 
 

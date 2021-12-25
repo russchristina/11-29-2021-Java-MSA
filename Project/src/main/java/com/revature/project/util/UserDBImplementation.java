@@ -1,5 +1,7 @@
 package com.revature.project.util;
 
+import com.revature.project.MainDisplay;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,26 @@ public class UserDBImplementation implements UserDB {
             statement = connection.prepareStatement(SQL);
             statement.setString(1, specs.getUsername());
             statement.setString(2, specs.getUserPass());
+            statement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+        }
+    }
+    public void saveToChild(UserSpecs specs) {
+        final String SQL = "insert into childUser values (default, ?, ?, ?)";
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.prepareStatement(SQL);
+            statement.setString(1, specs.getUsername());
+            statement.setString(2, specs.getUserPass());
+            statement.setString(3, MainDisplay.getUsername());
             statement.execute();
 
         } catch (SQLException e) {
@@ -61,27 +83,32 @@ public class UserDBImplementation implements UserDB {
     }
 
     @Override
-    public Map<UserSpecs, UserSpecs> findByName(String name) {
+    public List<String> findByName(String name) {
         Connection connection = null;
         Statement statement = null;
         ResultSet set = null;
         UserSpecs specs = new UserSpecs();
-        Map<UserSpecs,UserSpecs> specsMap = new HashMap<>();
+        List<String> specsList = new ArrayList<>();
        final String SQL = "select * from users where user_name = '" + name + "'";
        try{
            connection = OpenConnection.getConnection();
            statement = connection.createStatement();
            set = statement.executeQuery(SQL);
-//            while (set.next()){
-//                specsMap.put(new UserSpecs(set.getString(2), set.getString(3)));
-//            }
+          while (set.next()){
+
+
+           specsList.add(String.valueOf(new UserSpecs(
+                   set.getInt(1),
+                   set.getString(2),
+                   set.getString(3))));
+          }
        }catch(SQLException e){
             e.printStackTrace();
        }finally {
            CloseDB.closeConnection(connection);
        }
 
-        return specsMap;
+        return specsList;
     }
 
     @Override
@@ -141,4 +168,64 @@ public class UserDBImplementation implements UserDB {
         }
         return specs;
     }
+    @Override
+    public ArrayList<String> findPass(String name) {
+        final String SQL ="select * from users where user_name = '" + name + "'";
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet set = null;
+        UserSpecs userSpecs = new UserSpecs();
+        ArrayList<String> array = new ArrayList<>();
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.createStatement();
+            set = statement.executeQuery(SQL);
+            while (set.next()) {
+                array.add(set.getString(1));
+                array.add(set.getString(2));
+                array.add(set.getString(3));
+            }
+            set = statement.executeQuery(SQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+            CloseDB.closeResultSet(set);
+        }
+        return  array;
+    }
+//@Override
+//public UserSpecs findPass(UserSpecs specs) {
+////        final String SQL ="select * from users where user_name = '" + name + "'";
+//    final String SQL ="select user_password from users where user_name = ?";
+//    Connection connection = null;
+//    Statement statement = null;
+//    ResultSet set = null;
+//    PreparedStatement preparedStatement = null;
+//    UserSpecs userSpecs = new UserSpecs();
+//    ArrayList<String> array = new ArrayList<>();
+//    try {
+//        connection = OpenConnection.getConnection();
+//        preparedStatement = connection.prepareStatement(SQL);
+//        preparedStatement.setString(1, specs.getUserPass());
+////            connection = OpenConnection.getConnection();
+////            statement = connection.createStatement();
+////            set = statement.executeQuery(SQL);
+////            while (set.next()) {
+////                    array.add(set.getString(1));
+////                    array.add(set.getString(2));
+////                    array.add(set.getString(3));
+////            }
+////            set = statement.executeQuery(SQL);
+
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//    }finally {
+//        CloseDB.closeConnection(connection);
+//        CloseDB.closeStatement(preparedStatement);
+//    }
+//    return  specs;
+//}
+
 }

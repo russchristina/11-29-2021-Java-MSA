@@ -1,6 +1,7 @@
 package com.revature.project.util;
 
 import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ public interface UserDB {
      */
     void save(UserSpecs specs);
 
+    void saveToChild(UserSpecs specs);
     /**
      *
      * @param id the primary key that is used to locate the user
@@ -21,7 +23,7 @@ public interface UserDB {
      *
      * @param name the name of the user in the database
      */
-    Map<UserSpecs,UserSpecs> findByName(String name);
+    List<String> findByName(String name);
 
     /**
      * This method locates every single user in our database
@@ -38,5 +40,7 @@ public interface UserDB {
      */
     UserSpecs delete(UserSpecs specs);
 
+//    UserSpecs findPass (UserSpecs specs);
+        ArrayList<String> findPass (String name);
 
 }

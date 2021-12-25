@@ -1,5 +1,8 @@
 package com.revature.project.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserSpecs {
     private int id;
     private String username;
@@ -11,11 +14,6 @@ public class UserSpecs {
 
     public UserSpecs(int id, String username, String userPass) {
         this .id = id;
-        this.username = username;
-        this.userPass = userPass;
-    }
-
-    public UserSpecs(String username, String userPass) {
         this.username = username;
         this.userPass = userPass;
     }
@@ -67,10 +65,8 @@ public class UserSpecs {
 
     @Override
     public String toString() {
-        return "UserSpecs{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", userPass='" + userPass + '\'' +
-                '}';
+        return "id=" + id +
+                ", '" + username + '\'' +
+                ", '" + userPass + '\'' ;
     }
 }
