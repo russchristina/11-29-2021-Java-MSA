@@ -23,7 +23,6 @@ public interface UserDB {
      *
      * @param name the name of the user in the database
      */
-    List<String> findByName(String name);
 
     /**
      * This method locates every single user in our database
@@ -41,6 +40,7 @@ public interface UserDB {
     UserSpecs delete(UserSpecs specs);
 
 //    UserSpecs findPass (UserSpecs specs);
-        ArrayList<String> findPass (String name);
+    ArrayList<String> findInfo (String name);
+UserSpecs updateFunds(UserSpecs specs);
 
 }

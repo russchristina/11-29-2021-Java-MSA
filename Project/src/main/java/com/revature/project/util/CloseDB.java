@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CloseDB {
+
     public static void closeConnection(Connection connection){
       try{
           connection.close();

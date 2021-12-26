@@ -43,7 +43,7 @@ public class GetValue {
     public void passwordCheck() {
         System.out.println("Enter password :D");
         MainDisplay.setPassword(userScanner.nextLine());
-        String databasePassword = userDB.findPass(MainDisplay.getUsername()).get(2);
+        String databasePassword = userDB.findInfo(MainDisplay.getUsername()).get(2);
         while (!databasePassword.equals(MainDisplay.getPassword())) {
             String breakNum = "3";
             attempts--;

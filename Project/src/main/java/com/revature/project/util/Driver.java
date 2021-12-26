@@ -18,14 +18,17 @@ public class Driver {
 //            testing = test.toArray(new String[test.size()]);
 //        System.out.println(Arrays.toString(testing));
 //        System.out.println(testing.length);
-
-
+//        System.out.println(userDB.findInfo("Jason"));
+//        System.out.println(userDB.findInfo("Jason").size());
+//        UserSpecs userSpecs = new UserSpecs(11, "Jason", "Epstein", 44444);
+//            userDB.delete(userSpecs);
+            UserSpecs userSpecs1 = new UserSpecs(0, "Blickman", "idfkbro", 50040);
+            userDB.updateFunds(userSpecs1);
+        System.out.println(userDB.findAll());
 
 //        System.out.println(userDB.findById(2));
-//      UserSpecs userSpecs = new UserSpecs(0, "Jeff", "Epstein");
 //        userDB.save(userSpecs);
 //    UserSpecs toDelete = new UserSpecs(14, "null", "null");
-//    userDB.delete(toDelete);
 
 
     }

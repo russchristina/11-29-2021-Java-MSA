@@ -11,7 +11,7 @@ public class GetKey {
         UserDB userDB = new UserDBImplementation();
 //        GetValue getValue = new GetValue();
         public void findUsername(GetValue value) {
-            if (!userDB.findByName(MainDisplay.getUsername()).isEmpty()) {
+            if (!userDB.findInfo(MainDisplay.getUsername()).isEmpty()) {
                value.passwordCheck();
 
 
