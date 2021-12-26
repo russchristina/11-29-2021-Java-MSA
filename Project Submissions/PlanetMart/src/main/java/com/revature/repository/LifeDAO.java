@@ -226,7 +226,7 @@ public class LifeDAO implements LifeDAOInterface {
 
     @Override
     public void deleteLifeById(int id) {
-        final String SQL = "delete * from life_forms where life_id = ?";
+        final String SQL = "delete from life_forms where life_id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {

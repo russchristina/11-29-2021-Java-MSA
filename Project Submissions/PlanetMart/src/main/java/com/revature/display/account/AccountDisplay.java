@@ -3,6 +3,9 @@ package com.revature.display.account;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
 import com.revature.models.users.User;
+import com.revature.models.users.UserCredential;
+import com.revature.repository.CustomerUserDAO;
+import com.revature.repository.UserCredentialsDAO;
 
 import java.util.List;
 
@@ -36,11 +39,17 @@ public class AccountDisplay {
         System.out.println("\nAccount ID: " + customerAccount.getCustomerAccountId());
     }
 
-    public void displayUsers(List<User> users) {
-        for (User user : users) {
+    public void displayUsers(List<User> users, CustomerAccount customerAccounts) {
 
-            System.out.println("\nUSER ID: " + user.getUserId());
-            System.out.println("USER NAME: " + user.getName());
+        for (User user : users) {
+            if(user.getUserId() == customerAccounts.getPrimaryUserId()){
+                System.out.println("\nPRIMARY USER ID: " + user.getUserId());
+                System.out.println("USER NAME: " + user.getName());
+            }else{
+                System.out.println("\nSECONDARY USER ID: " + user.getUserId());
+                System.out.println("USER NAME: " + user.getName());
+            }
+
 
         }
 
@@ -68,5 +77,37 @@ public class AccountDisplay {
         System.out.println("8. Alter Account Info");
         System.out.println("9. Alter User Info\n");
 
+    }
+
+
+    public void displayEmployeeAccountInformation(List<EmployeeAccount> employeeAccounts) {
+        System.out.println("\nEMPLOYEE ACCOUNT INFORMATION\n");
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+
+        for (EmployeeAccount employeeAccount : employeeAccounts) {
+            System.out.println("EMPLOYEE ACCOUNT ID: " + employeeAccount.getEmployeeId());
+            System.out.println("EMPLOYEE ADMIN ID: " + employeeAccount.getAdminId());
+            System.out.println("EMPLOYEE NAME: " + userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getFirstName()
+                    + " "
+                    +userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getLastName());
+
+        }
+    }
+
+    public void displayAllUsers(List<CustomerAccount> allCustomerAccounts) {
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+        AccountDisplay accountDisplay = new AccountDisplay();
+        for (CustomerAccount customerAccount : allCustomerAccounts) {
+            accountDisplay.displayCustomerAccount(customerAccount);
+            for (User user : customerUserDAO.getAllUsersByCustomerId(customerAccount.getCustomerAccountId())) {
+                if(user.getUserId() == customerAccount.getPrimaryUserId()){
+                    System.out.println("\nPRIMARY USER ID: " + user.getUserId());
+                    System.out.println("USER NAME: " + user.getName());
+                }else{
+                    System.out.println("\nSECONDARY USER ID: " + user.getUserId());
+                    System.out.println("USER NAME: " + user.getName());
+                }
+            }
+        }
     }
 }

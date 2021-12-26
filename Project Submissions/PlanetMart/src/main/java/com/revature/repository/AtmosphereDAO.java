@@ -120,7 +120,7 @@ public class AtmosphereDAO implements AtomsphereDAOInterface {
     }
 
     public void deleteAtmosphereByPlanetId(int planetId) {
-        final String SQL = "delete * from atmosphere_content where planet_id = ?";
+        final String SQL = "delete from atmosphere_content where planet_id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {

@@ -132,7 +132,7 @@ public class PlanetDAO implements PlanetDAOInterface {
 
     @Override
     public void deletePlanetById(int id) {
-        final String SQL = "delete * from planets where planet_id = ?";
+        final String SQL = "delete from planets where planet_id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {

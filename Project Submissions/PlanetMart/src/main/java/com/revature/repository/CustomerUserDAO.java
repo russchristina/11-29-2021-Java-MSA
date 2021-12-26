@@ -127,7 +127,7 @@ public class CustomerUserDAO implements CustomerUsersDAOInterface {
 
     @Override
     public void deleteUserById(int id) {
-        final String SQL = "delete * from customer_users where user_id = ?";
+        final String SQL = "delete from customer_users where user_id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {

@@ -12,6 +12,7 @@ import com.revature.repository.CustomerUserDAO;
 import com.revature.repository.EmployeeAccountDAO;
 import com.revature.repository.InventoryDAO;
 import com.revature.service.exceptions.EmptyInputException;
+import com.revature.service.shop.InventoryHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,7 @@ public class AccountHandler {
 
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
         boolean chooseUser = true;
-        accountDisplay.displayUsers(users);
+        accountDisplay.displayUsers(users, customerAccount);
 
         if(!users.isEmpty()){
 
@@ -45,7 +46,6 @@ public class AccountHandler {
                         accountInputHandler.inputChooseCustomerOptions(customerAccount, user, username);
                         chooseUser = false;
                         break;
-
                     }
                 }
             }while(chooseUser);
@@ -86,15 +86,10 @@ public class AccountHandler {
             if(employeeAccount.getEmployeeId() == employeeAccount.getAdminId()) {
                 accountInputHandler.inputChooseAdminOption(employeeAccount, username);
             }else{
-
                 accountInputHandler.inputChooseEmployeeOption(employeeAccount, username);
-
             }
-
-
             return;
         }
-
         throw new AccountNotFoundException("username is not attached to any account");
     }
 
@@ -102,13 +97,11 @@ public class AccountHandler {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         AccountInputHandler accountInputHandler = new AccountInputHandler();
 
-
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
         boolean chooseUser = true;
-        accountDisplay.displayUsers(users);
+        accountDisplay.displayUsers(users, customerAccount);
 
         if(!users.isEmpty()){
-
             do{
                 System.out.println("\nCHOOSE USER NUMBER");
                 input.setLength(0);
@@ -118,11 +111,9 @@ public class AccountHandler {
                         accountInputHandler.inputChooseCustomerOptions(customerAccount, user, username);
                         chooseUser = false;
                         break;
-
                     }
                 }
             }while(chooseUser);
-
         }
     }
 
@@ -131,14 +122,18 @@ public class AccountHandler {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
         boolean chooseUser = true;
-        accountDisplay.displayUsers(users);
+        accountDisplay.displayUsers(users, customerAccount);
 
         if(!users.isEmpty()){
 
             do{
-                System.out.println("\nCHOOSE USER NUMBER");
+                System.out.println("\nCHOOSE USER NUMBER OR N TO RETURN");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
+                if(input.toString().contentEquals("N")){
+                    System.out.println("RETURNING");
+                    return;
+                }
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
 
@@ -162,13 +157,17 @@ public class AccountHandler {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
         boolean chooseUser = true;
-        System.out.println(users);
+        accountDisplay.displayUsers(users, customerAccount);
 
         if(!users.isEmpty()){
             do{
-                System.out.println("\nCHOOSE USER NUMBER");
+                System.out.println("\nCHOOSE USER NUMBER OR TYPE N TO LEAVE");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
+                if(input.toString().contentEquals("N")){
+                    System.out.println("RETURNING");
+                    return;
+                }
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
                         if(user.getUserId() == pUser.getUserId()) {
@@ -194,9 +193,13 @@ public class AccountHandler {
 
         do{
             do{
-                System.out.println("\nINPUT NEW USER NAME...");
+                System.out.println("\nINPUT NEW USER NAME OR N TO LEAVE...");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
+                if(input.toString().contentEquals("N")){
+                    System.out.println("RETURNING");
+                    return;
+                }
                 if(input.toString().contentEquals("")) throw new EmptyInputException("Name cannot be empty.");
                 for (User user1 : cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId())) {
                     if(user1.getName().contentEquals(input.toString())) throw new DuplicateUsernameException("User with that name already exists.");
@@ -228,5 +231,151 @@ public class AccountHandler {
         customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, newUserId);
 
         System.out.println("ADDED CUSTOMER ACCOUNT");
+    }
+
+    public void changeAccountData(EmployeeAccount employeeAccount, UserCredential username) {
+
+        AccountDisplay accountDisplay = new AccountDisplay();
+        InventoryHandler inventoryHandler = new InventoryHandler();
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+
+        boolean chooseAccount = true;
+
+        do{
+            System.out.println("\nINPUT ACCOUNT NUMBER OR N TO RETURN");
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+            if(input.toString().contentEquals("N")){
+                System.out.println("RETURNING");
+                return;
+            }
+            try{
+                int customerId = Integer.parseInt(input.toString());
+                CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(Integer.parseInt(input.toString()));
+                List<User> users = customerUserDAO.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
+                accountDisplay.displayCustomerAccount(customerAccount);
+
+                boolean changeData = true;
+
+                do{
+                    System.out.println("\nCHOOSE OPTION");
+                    System.out.println("1. Change Primary User Id");
+                    System.out.println("2. Return\n");
+
+                    try{
+                        input.setLength(0);
+                        input.append(sc.nextLine().trim());
+                        switch(input.toString()){
+                            case ("1"):
+                                accountDisplay.displayUsers(users, customerAccount);
+                                changeAccountPrimaryUser(users, customerAccount);
+                                break;
+                            case("2"):
+                                changeData = false;
+                                System.out.println("RETURNING");
+                                break;
+                            default:
+                                System.out.println("\nINVALID INPUT\n");
+                                break;
+                        }
+
+                    }catch (NumberFormatException e){
+                        log.debug(e.toString());
+                        System.out.println("\nTYPE A VALID NUMBER\n");
+                    }
+                }while(changeData);
+                chooseAccount = false;
+            }catch (NumberFormatException e){
+                log.debug(e.toString());
+                System.out.println("\nTYPE A VALID NUMBER\n");
+            }
+        }while(chooseAccount);
+    }
+
+    private void changeAccountPrimaryUser(List<User> users, CustomerAccount customerAccount) {
+        boolean changeAccount = true;
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+
+        do{
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+            System.out.println("INPUT NEW PRIMARY USER ID OR N TO LEAVE");
+            try{
+                if(input.toString().contentEquals("N")) return;
+                int newPrimaryUserId = Integer.parseInt(input.toString());
+                if(newPrimaryUserId == customerAccount.getPrimaryUserId()) {
+                    System.out.println("REPEATED PRIMARY USER");
+                    break;
+                }
+                customerAccountDAO.updateCustomerAccountPrimaryId(customerAccount.getCustomerAccountId(), newPrimaryUserId);
+                changeAccount = false;
+            } catch (NumberFormatException e){
+                log.debug(e.toString());
+                System.out.println("\nINVALID INPUT");
+            }
+        }while (changeAccount);
+    }
+
+    public void changeUserData(EmployeeAccount employeeAccount, UserCredential username) {
+        AccountDisplay accountDisplay = new AccountDisplay();
+        InventoryHandler inventoryHandler = new InventoryHandler();
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+
+        boolean chooseUser = true;
+
+        do{
+            accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
+            System.out.println("\nINPUT USER NUMBER");
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+
+            try{
+                int userId = Integer.parseInt(input.toString());
+                User user = customerUserDAO.getUserById(userId);
+
+                boolean changeData = true;
+
+                do{
+                    System.out.println("\nCHOOSE OPTION");
+                    System.out.println("1. Change User Name");
+                    System.out.println("2. Change User Balance");
+                    System.out.println("3. Delete User");
+                    System.out.println("4. Return\n");
+
+                    try{
+                        input.setLength(0);
+                        input.append(sc.nextLine().trim());
+                        switch(input.toString()){
+                            case ("1"):
+                                changeUserNames(user, customerAccountDAO.getCustomerAccountById(user.getCustomerAccountId()));
+                                break;
+                            case("2"):
+                                inventoryHandler.manageBalance(customerAccountDAO.getCustomerAccountById(user.getCustomerAccountId()), user);
+                                break;
+                            case("3"):
+                                removeUser(user, customerAccountDAO.getCustomerAccountById(user.getCustomerAccountId()));
+                                break;
+                            case("4"):
+                                changeData = false;
+                                System.out.println("RETURNING");
+                                break;
+                            default:
+                                System.out.println("\nINVALID INPUT\n");
+                                break;
+                        }
+
+                    }catch (NumberFormatException e){
+                        log.debug(e.toString());
+                        System.out.println("\nTYPE A VALID NUMBER\n");
+                    }
+                }while(changeData);
+                chooseUser = false;
+            }catch (NumberFormatException e){
+                log.debug(e.toString());
+                System.out.println("\nTYPE A VALID NUMBER\n");
+            }
+        }while(chooseUser);
     }
 }

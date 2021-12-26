@@ -195,4 +195,41 @@ public class UserCredentialsDAO implements UserCredentialDAO {
 
 
     }
+
+    public UserCredential getUserCredentialById(int userId) {
+        UserCredential userCredential = null;
+
+        final String SQL = "select * from user_credentials where id = ?";
+
+        ResultSet resultSet = null;
+        try(
+                Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL)
+
+        ){
+            statement.setInt(1, userId);
+
+            resultSet = statement.executeQuery();
+
+            if(resultSet.next()) userCredential = new UserCredential(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5)
+            );
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                assert resultSet != null;
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return userCredential;
+    }
 }

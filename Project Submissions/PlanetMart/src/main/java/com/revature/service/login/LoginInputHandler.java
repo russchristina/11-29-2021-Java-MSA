@@ -4,13 +4,19 @@ import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.database.exceptions.EmptyUserCredentialDataException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.display.login.LoginDisplay;
+import com.revature.models.accounts.CustomerAccount;
+import com.revature.models.shop.Inventory;
 import com.revature.models.users.UserCredential;
+import com.revature.repository.CustomerAccountDAO;
+import com.revature.repository.CustomerUserDAO;
+import com.revature.repository.InventoryDAO;
 import com.revature.repository.UserCredentialsDAO;
 import com.revature.service.account.AccountHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 public class LoginInputHandler {
@@ -140,6 +146,9 @@ public class LoginInputHandler {
 
     public boolean createAccount(StringBuilder username, StringBuilder password) throws DuplicateUsernameException {
         UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+        InventoryDAO inventoryDAO = new InventoryDAO();
         if(userCredentialsDAO.getUserCredentialByUsername(username.toString()) == null){
             System.out.print("FIRST NAME:");
             input.setLength(0);
@@ -152,7 +161,16 @@ public class LoginInputHandler {
                     password.toString(),
                     firstName,
                     lastName));
-            return userCredentialsDAO.getUserCredentialByUsername(username.toString()) != null;
+            int userCredentialId = userCredentialsDAO.getUserCredentialByUsername(username.toString()).getId();
+            inventoryDAO.addInventory(new Inventory(0, 0));
+            List<Inventory> inventoryList = inventoryDAO.getAllInventories();
+            customerAccountDAO.addCustomerAccount(userCredentialId, 0);
+            List<CustomerAccount> customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
+            int customerAccountId = customerAccounts.get(customerAccounts.size()-1).getCustomerAccountId();
+            customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size()-1).getId(), customerAccountId);
+            customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(customerUserDAO.getAllUsersByCustomerId(customerAccountId).size()-1).getUserId());
+            System.out.println("CREATED ACCOUNT");
+            System.out.println("CUSTOMER ACCOUNT ID: " + customerAccountId);
         }
         return false;
     }

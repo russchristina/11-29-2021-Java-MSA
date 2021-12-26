@@ -128,4 +128,22 @@ insert into customer_users values(default, 'Maria', 3, 1), (default, 'Ruben', 4,
 
 alter table customer_users add constraint inventoryKey foreign key (inventory_id) references customer_inventory(inventory_id);
 
-truncate table atmosphere_content cascade
+delete from customer_account where customer_account_id = 6;
+delete from customer_users where user_id = 11;
+
+
+truncate customer_users cascade;
+
+alter table customer_users drop column inventory_id;
+alter table customer_users drop column customer_account_id;
+alter table customer_users add column inventory_id integer references customer_inventory(inventory_id) on delete cascade;
+alter table customer_users add column customer_account_id integer references customer_account(customer_account_id) on delete cascade;
+
+alter table customer_account drop column user_credential_id;
+alter table customer_account drop column primary_user_id;
+
+alter table customer_account add column user_credential_id integer references user_credentials(id) on delete cascade;
+alter table customer_account add column primary_user_id integer;
+
+
+

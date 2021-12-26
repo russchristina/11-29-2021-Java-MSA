@@ -4,10 +4,11 @@ import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
+import com.revature.models.shop.AtmosphereComposition;
+import com.revature.models.shop.Planet;
 import com.revature.models.users.User;
 import com.revature.models.users.UserCredential;
-import com.revature.repository.CustomerAccountDAO;
-import com.revature.repository.CustomerUserDAO;
+import com.revature.repository.*;
 import com.revature.service.exceptions.EmptyInputException;
 import com.revature.service.login.LoginInputHandler;
 import com.revature.service.shop.InventoryHandler;
@@ -180,7 +181,7 @@ public class AccountInputHandler {
                     break;
                 case ("3"):
                     System.out.println("Option 3: View all Users");
-                    accountDisplay.displayUsers(customerUserDAO.getAllCustomerUsers());
+                    accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
                     break;
                 case ("4"):
                     System.out.println("Option 4: View User Information");
@@ -188,7 +189,7 @@ public class AccountInputHandler {
                     break;
                 case ("5"):
                     System.out.println("Option 5: Delete Account");
-
+                    deleteAccount(employeeAccount, username);
                     break;
                 case ("6"):
                     System.out.println("Option 6: Logout");
@@ -202,6 +203,34 @@ public class AccountInputHandler {
                     break;
             }
         } while (choosingOptions);
+
+    }
+
+    private void deleteAccount(EmployeeAccount employeeAccount, UserCredential username) {
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+        InventoryDAO inventoryDAO = new InventoryDAO();
+        PlanetDAO planetDAO = new PlanetDAO();
+        AtmosphereDAO atmosphereDAO = new AtmosphereDAO();
+        LifeDAO lifeDAO = new LifeDAO();
+        int planetId = 0;
+        boolean chooseAccount = true;
+
+        do{
+            System.out.println("\nINPUT ACCOUNT NUMBER");
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+
+            try{
+                int customerId = Integer.parseInt(input.toString());
+                customerAccountDAO.deleteCustomerAccountById(customerId);
+
+                chooseAccount = false;
+            }catch (NumberFormatException e){
+                log.debug(e.toString());
+                System.out.println("\nTYPE A VALID NUMBER\n");
+            }
+        }while(chooseAccount);
 
     }
 
@@ -232,6 +261,7 @@ public class AccountInputHandler {
     private void viewCustomerAccountInformation() {
 
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         AccountDisplay accountDisplay = new AccountDisplay();
 
         boolean chooseAccount = true;
@@ -243,8 +273,9 @@ public class AccountInputHandler {
 
             try{
                 int customerId = Integer.parseInt(input.toString());
+                CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(customerId);
                 List<User> users = customerUserDAO.getAllUsersByCustomerId(customerId);
-                accountDisplay.displayUsers(users);
+                accountDisplay.displayUsers(users, customerAccount);
                 chooseAccount = false;
             }catch (NumberFormatException e){
                 log.debug(e.toString());
@@ -255,7 +286,66 @@ public class AccountInputHandler {
     }
 
     public void inputChooseAdminOption(EmployeeAccount employeeAccount, UserCredential username) {
+
+        boolean choosingOptions = true;
+        EmployeeAccountDAO employeeAccountDAO = new EmployeeAccountDAO();
+        AccountHandler accountHandler = new AccountHandler();
         AccountDisplay accountDisplay = new AccountDisplay();
-        accountDisplay.displayAdminAccount(employeeAccount);
+        CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
+        CustomerUserDAO customerUserDAO = new CustomerUserDAO();
+
+        do {
+            accountDisplay.displayAdminAccount(employeeAccount);
+
+            System.out.println("Choose an option:");
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+
+            switch (input.toString()) {
+                case ("1"):
+                    System.out.println("Option 1: View all Customer Accounts");
+                    for (CustomerAccount customerAccount : customerAccountDAO.getAllCustomerAccounts()) {
+                        accountDisplay.displayCustomerAccount(customerAccount);
+                    }
+                    break;
+                case ("2"):
+                    System.out.println("Option 2: View Customer Account Information");
+                    viewCustomerAccountInformation();
+                    break;
+                case ("3"):
+                    System.out.println("Option 3: View all Users");
+                    accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
+                    break;
+                case ("4"):
+                    System.out.println("Option 4: View User Information");
+                    viewUserInformation(username);
+                    break;
+                case ("5"):
+                    System.out.println("Option 5: Delete Account");
+                    deleteAccount(employeeAccount, username);
+                    break;
+                case ("6"):
+                    System.out.println("Option 6: Logout");
+                    choosingOptions = false;
+                    System.out.println("\nLOGGING OUT\n");
+                    LoginInputHandler loginInputHandler = new LoginInputHandler();
+                    loginInputHandler.firstStage();
+                    break;
+                case ("7"):
+                    List<EmployeeAccount> employeeAccounts = employeeAccountDAO.getAllEmployeeAccounts();
+                    accountDisplay.displayEmployeeAccountInformation(employeeAccounts);
+                    break;
+                case ("8"):
+                    accountHandler.changeAccountData(employeeAccount, username);
+                    break;
+                case ("9"):
+                    accountHandler.changeUserData(employeeAccount, username);
+                    break;
+                default:
+                    System.out.println("\nInput a valid choice.\n");
+                    break;
+            }
+        } while (choosingOptions);
+
     }
 }

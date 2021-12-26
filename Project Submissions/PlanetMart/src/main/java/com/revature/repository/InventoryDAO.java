@@ -72,40 +72,6 @@ public class InventoryDAO implements InventoryDAOInterface {
 
     }
 
-    public Inventory getInventoryByUserId(int id){
-        Inventory inventory = null;
-
-        final String SQL = "select * from customer_inventory where user_id = ?";
-
-        ResultSet resultSet = null;
-        try(
-                Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL)
-
-        ){
-            statement.setInt(1, id);
-
-            resultSet = statement.executeQuery();
-
-            if(resultSet.next()) inventory = new Inventory(
-                    resultSet.getInt(1),
-                    resultSet.getInt(2)
-            );
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            try {
-                assert resultSet != null;
-                resultSet.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return inventory;
-    }
-
 
     @Override
     public void updateInventoryBalance(int id, int newBalance) {
@@ -130,7 +96,7 @@ public class InventoryDAO implements InventoryDAOInterface {
 
     @Override
     public void deleteInventoryById(int id) {
-        final String SQL = "delete * from customer_inventory where inventory_id = ?";
+        final String SQL = "delete from customer_inventory where inventory_id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {
