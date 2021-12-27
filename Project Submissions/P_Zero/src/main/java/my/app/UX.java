@@ -118,10 +118,12 @@ public class UX {
 			if (total > 0 && total <= Driver.account.getBalance()) {
 				Driver.account.setBalance(Driver.account.getBalance() - total);
 				Driver.aa.save();
-				System.out.println("\n...You bought " + amount + " " + input 
-						+ "(s) for $" + total + "\n");
+				
 				transactionLogger.info(Driver.account.getUsername() + " bought "
 						+ amount + " " + input + "(s) for " + total);
+				
+				System.out.println("\n...You bought " + amount + " " + input 
+						+ "(s) for $" + total + "\n");
 			}
 			if (amount == 0) {
 				this.shop();
