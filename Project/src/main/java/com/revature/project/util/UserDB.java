@@ -1,10 +1,7 @@
 package com.revature.project.util;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface UserDB {
     /**
@@ -28,19 +25,23 @@ public interface UserDB {
      * This method locates every single user in our database
      */
     List<UserSpecs> findAll();
-
+    List<ChildUserSpecs> findAllChildren();
+    List<EmployeeUserSpecs> findAllEmployees();
     /**
      *change user info
      */
     void update(UserSpecs specs);
 
-    /**
-     * delete user
-     */
-    UserSpecs delete(UserSpecs specs);
-
+    //delete users, child users of main users, and employees of the business
+    void delete(UserSpecs specs);
+    ChildUserSpecs deleteAllChildren(ChildUserSpecs specs);
+    ChildUserSpecs deleteChild(ChildUserSpecs specs);
+    EmployeeUserSpecs deleteEmployee(EmployeeUserSpecs specs);
 //    UserSpecs findPass (UserSpecs specs);
     ArrayList<String> findInfo (String name);
-UserSpecs updateFunds(UserSpecs specs);
+    ArrayList<String> findChildInfo (String name);
+    ArrayList<String> findEmployeeInfo(String name);
+
+    void updateFunds(UserSpecs specs);
 
 }

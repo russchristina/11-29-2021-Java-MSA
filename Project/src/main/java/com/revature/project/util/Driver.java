@@ -22,11 +22,21 @@ public class Driver {
 //        System.out.println(userDB.findInfo("Jason").size());
 //        UserSpecs userSpecs = new UserSpecs(11, "Jason", "Epstein", 44444);
 //            userDB.delete(userSpecs);
-            UserSpecs userSpecs1 = new UserSpecs(0, "Blickman", "idfkbro", 50040);
-            userDB.updateFunds(userSpecs1);
-        System.out.println(userDB.findAll());
+//            UserSpecs userSpecs1 = new UserSpecs(0, "Blickman", "idfkbro", 50040);
+//            userDB.updateFunds(userSpecs1);
+////        System.out.println(userDB.findAll());
+//String b = String.valueOf(userDB.findChildInfo("John").get(3));
+//        System.out.println(b);
 
-//        System.out.println(userDB.findById(2));
+//        int a = Integer.parseInt(userDB.findInfo("iluvfries").get(0));
+//        UserSpecs specs = new UserSpecs(a, "","",0);
+//        userDB.delete(specs);
+        System.out.println(userDB.findAll());
+        System.out.println(userDB.findAllChildren());
+        System.out.println(userDB.findAllEmployees());
+        String a = String.valueOf(userDB.findChildInfo(""));
+ChildUserSpecs childUserSpecs = new ChildUserSpecs(0,"","","");
+        //        System.out.println(userDB.findById(2));
 //        userDB.save(userSpecs);
 //    UserSpecs toDelete = new UserSpecs(14, "null", "null");
 

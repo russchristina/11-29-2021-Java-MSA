@@ -1,7 +1,6 @@
 package com.revature.project;
 
-import com.revature.project.util.UserDB;
-import com.revature.project.util.UserDBImplementation;
+import com.revature.project.util.*;
 import com.revature.project.util.UserDB;
 import com.revature.project.util.UserDBImplementation;
 
@@ -13,10 +12,12 @@ public class GetKey {
         public void findUsername(GetValue value) {
             if (!userDB.findInfo(MainDisplay.getUsername()).isEmpty()) {
                value.passwordCheck();
-
-
+            }else if(!userDB.findChildInfo(MainDisplay.getUsername()).isEmpty()) {
+                value.childPasswordCheck();
+            }else if (!userDB.findEmployeeInfo(MainDisplay.getUsername()).isEmpty()){
+                value.employeePasswordCheck();
             }
-            else {
+           else {
                 System.out.println("Username not recognized");
                 new MainDisplay();
             }

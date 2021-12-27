@@ -29,7 +29,7 @@ public class UserDBImplementation implements UserDB {
     }
 
     public void saveToChild(UserSpecs specs) {
-        final String SQL = "insert into childUser values (default, ?, ?, ?)";
+        final String SQL = "insert into childUsers values (default, ?, ?, ?)";
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -82,6 +82,7 @@ public class UserDBImplementation implements UserDB {
         return userSpecs;
     }
 
+    //Implementation using List. Deprecated because this stores all values into one index.
 //    @Override
 //    public List<String> findByName(String name) {
 //        Connection connection = null;
@@ -146,6 +147,72 @@ public class UserDBImplementation implements UserDB {
         }
 
     }
+    @Override
+    public List<ChildUserSpecs> findAllChildren() {
+        //Setup all the stuff you will need here
+        final String SQL = "select * from childusers";
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet set = null;
+        List<ChildUserSpecs> userInfo = new ArrayList<>();
+        {
+            try {
+                connection = OpenConnection.getConnection();
+                stmt = connection.createStatement();
+                set = stmt.executeQuery(SQL);
+                while (set.next()) {
+                    userInfo.add(new ChildUserSpecs(
+                            set.getInt(1),
+                            set.getString(2),
+                            set.getString(3),
+                            set.getString(4)));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                CloseDB.closeConnection(connection);
+                CloseDB.closeResultSet(set);
+                CloseDB.closeStatement(stmt);
+            }
+
+            return userInfo;
+        }
+
+    }
+    @Override
+    public List<EmployeeUserSpecs> findAllEmployees() {
+        //Setup all the stuff you will need here
+        final String SQL = "select * from employee";
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet set = null;
+        List<EmployeeUserSpecs> userInfo = new ArrayList<>();
+        {
+            try {
+                connection = OpenConnection.getConnection();
+                stmt = connection.createStatement();
+                set = stmt.executeQuery(SQL);
+                while (set.next()) {
+                    userInfo.add(new EmployeeUserSpecs(
+                            set.getInt(1),
+                            set.getString(2),
+                            set.getString(3),
+                            set.getBoolean(4)));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                CloseDB.closeConnection(connection);
+                CloseDB.closeResultSet(set);
+                CloseDB.closeStatement(stmt);
+            }
+
+            return userInfo;
+        }
+
+    }
 
     @Override
     public void update(UserSpecs specs) {
@@ -155,8 +222,64 @@ public class UserDBImplementation implements UserDB {
 
 
     @Override
-    public UserSpecs delete(UserSpecs specs) {
+    public void delete(UserSpecs specs) {
         final String SQL = "delete from users where user_id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.prepareStatement(SQL);
+            statement.setInt(1, specs.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+        }
+    }
+    @Override
+    public ChildUserSpecs deleteAllChildren(ChildUserSpecs specs) {
+        final String SQL = "delete from childusers where child_admin = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.prepareStatement(SQL);
+            statement.setString(1, specs.getUsername());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+        }
+        return specs;
+    }
+    @Override
+    public ChildUserSpecs deleteChild(ChildUserSpecs specs) {
+        final String SQL = "delete from childusers where user_id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.prepareStatement(SQL);
+            statement.setInt(1, specs.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+        }
+        return specs;
+    }
+    @Override
+    public EmployeeUserSpecs deleteEmployee(EmployeeUserSpecs specs) {
+        final String SQL = "delete from employee where user_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -201,9 +324,65 @@ public class UserDBImplementation implements UserDB {
         }
         return array;
     }
+    @Override
+    public ArrayList<String> findChildInfo(String name) {
+        final String SQL = "select * from childusers where user_name = '" + name + "'";
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet set = null;
+        ArrayList<String> array = new ArrayList<>();
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.createStatement();
+            set = statement.executeQuery(SQL);
+            while (set.next()) {
+                array.add(set.getString(1));
+                array.add(set.getString(2));
+                array.add(set.getString(3));
+                array.add(String.valueOf(set.getString(4)));
+            }
+            set = statement.executeQuery(SQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+            CloseDB.closeResultSet(set);
+        }
+        return array;
+    }
+    @Override
+    public ArrayList<String> findEmployeeInfo(String name) {
+        final String SQL = "select * from employee where user_name = '" + name + "'";
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet set = null;
+        ArrayList<String> array = new ArrayList<>();
+        try {
+            connection = OpenConnection.getConnection();
+            statement = connection.createStatement();
+            set = statement.executeQuery(SQL);
+            while (set.next()) {
+                array.add(set.getString(1));
+                array.add(set.getString(2));
+                array.add(set.getString(3));
+                array.add(String.valueOf(set.getBoolean(4)));
+            }
+            set = statement.executeQuery(SQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(statement);
+            CloseDB.closeResultSet(set);
+        }
+        return array;
+    }
+
+
 
     @Override
-    public UserSpecs updateFunds(UserSpecs specs) {
+    public void updateFunds(UserSpecs specs) {
         final  String SQL = "update users set user_funds = ? where user_name = ? ";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -219,7 +398,7 @@ public class UserDBImplementation implements UserDB {
             CloseDB.closeConnection(connection);
             CloseDB.closeStatement(preparedStatement);
         }
-        return specs;
+
     }
 //@Override
 //public UserSpecs findInfo(UserSpecs specs) {

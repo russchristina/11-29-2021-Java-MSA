@@ -46,8 +46,9 @@ public class MainDisplay {
     public MainDisplay() {
 
 //        Scanner Start and username declaration
-        System.out.println("Welcome to the Glizzy Gallery. Please enter your username, or select a number from " +
-                "the choices below : \n 1: Create a new account \n 2: Reload Application \n 3: Exit Application");
+        System.out.println("Welcome to the Glizzy Gallery. Please enter your username(case sensitive)" +
+                ", or select a number from the choices below :" +
+                " \n 1: Create a new account \n 2: Reload Application \n 3: Exit Application");
         if (userInput.hasNextInt()) {
             unregisteredDecision = userInput.nextInt();
             userOptions.newAccount();

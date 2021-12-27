@@ -1,25 +1,21 @@
 package com.revature.project.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class UserSpecs {
+public class ChildUserSpecs {
     private int id;
     private String username;
     private String userPass;
-    private int userFunds;
-    private int childAdmin;
-    private boolean isAdmin;
+    private String childAdmin;
 
-    public UserSpecs() {
+
+    public ChildUserSpecs() {
         super();
     }
 
-    public UserSpecs(int id, String username, String userPass, int userFunds) {
+    public ChildUserSpecs(int id, String username, String userPass,String childAdmin) {
         this .id = id;
         this.username = username;
         this.userPass = userPass;
-        this.userFunds = userFunds;
+        this.childAdmin = childAdmin;
     }
 
 
@@ -47,26 +43,19 @@ public class UserSpecs {
         this.userPass = userPass;
     }
 
-    public int getUserFunds() {
-        return userFunds;
-    }
-
-    public void setUserFunds(int userFunds) {
-        this.userFunds = userFunds;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserSpecs userSpecs = (UserSpecs) o;
+        ChildUserSpecs that = (ChildUserSpecs) o;
 
-        if (getId() != userSpecs.getId()) return false;
-        if (getUserFunds() != userSpecs.getUserFunds()) return false;
-        if (getUsername() != null ? !getUsername().equals(userSpecs.getUsername()) : userSpecs.getUsername() != null)
+        if (getId() != that.getId()) return false;
+        if (getUsername() != null ? !getUsername().equals(that.getUsername()) : that.getUsername() != null)
             return false;
-        return getUserPass() != null ? getUserPass().equals(userSpecs.getUserPass()) : userSpecs.getUserPass() == null;
+        if (getUserPass() != null ? !getUserPass().equals(that.getUserPass()) : that.getUserPass() != null)
+            return false;
+        return childAdmin != null ? childAdmin.equals(that.childAdmin) : that.childAdmin == null;
     }
 
     @Override
@@ -74,7 +63,7 @@ public class UserSpecs {
         int result = getId();
         result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
         result = 31 * result + (getUserPass() != null ? getUserPass().hashCode() : 0);
-        result = 31 * result + getUserFunds();
+        result = 31 * result + (childAdmin != null ? childAdmin.hashCode() : 0);
         return result;
     }
 
@@ -83,7 +72,6 @@ public class UserSpecs {
         return "{" + id  + ",'"
                 + username + '\'' + ",'"
                 + userPass + '\'' + ", $" +
-                String.format("%,d",userFunds) +  "}\n";
+                childAdmin +   "}\n";
     }
-
 }

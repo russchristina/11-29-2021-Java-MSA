@@ -1,25 +1,21 @@
 package com.revature.project.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class UserSpecs {
+public class EmployeeUserSpecs {
     private int id;
     private String username;
     private String userPass;
-    private int userFunds;
-    private int childAdmin;
     private boolean isAdmin;
 
-    public UserSpecs() {
+
+    public EmployeeUserSpecs() {
         super();
     }
 
-    public UserSpecs(int id, String username, String userPass, int userFunds) {
+    public EmployeeUserSpecs(int id, String username, String userPass, boolean isAdmin) {
         this .id = id;
         this.username = username;
         this.userPass = userPass;
-        this.userFunds = userFunds;
+        this.isAdmin = isAdmin;
     }
 
 
@@ -47,26 +43,18 @@ public class UserSpecs {
         this.userPass = userPass;
     }
 
-    public int getUserFunds() {
-        return userFunds;
-    }
-
-    public void setUserFunds(int userFunds) {
-        this.userFunds = userFunds;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserSpecs userSpecs = (UserSpecs) o;
+        EmployeeUserSpecs that = (EmployeeUserSpecs) o;
 
-        if (getId() != userSpecs.getId()) return false;
-        if (getUserFunds() != userSpecs.getUserFunds()) return false;
-        if (getUsername() != null ? !getUsername().equals(userSpecs.getUsername()) : userSpecs.getUsername() != null)
+        if (getId() != that.getId()) return false;
+        if (isAdmin != that.isAdmin) return false;
+        if (getUsername() != null ? !getUsername().equals(that.getUsername()) : that.getUsername() != null)
             return false;
-        return getUserPass() != null ? getUserPass().equals(userSpecs.getUserPass()) : userSpecs.getUserPass() == null;
+        return getUserPass() != null ? getUserPass().equals(that.getUserPass()) : that.getUserPass() == null;
     }
 
     @Override
@@ -74,7 +62,7 @@ public class UserSpecs {
         int result = getId();
         result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
         result = 31 * result + (getUserPass() != null ? getUserPass().hashCode() : 0);
-        result = 31 * result + getUserFunds();
+        result = 31 * result + (isAdmin ? 1 : 0);
         return result;
     }
 
@@ -83,7 +71,6 @@ public class UserSpecs {
         return "{" + id  + ",'"
                 + username + '\'' + ",'"
                 + userPass + '\'' + ", $" +
-                String.format("%,d",userFunds) +  "}\n";
+                isAdmin +  "}\n";
     }
-
 }
