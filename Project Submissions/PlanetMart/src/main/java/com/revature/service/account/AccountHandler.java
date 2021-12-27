@@ -2,26 +2,30 @@ package com.revature.service.account;
 
 import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.display.account.AccountDisplay;
+import com.revature.display.login.LoginDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.users.User;
 import com.revature.models.users.UserCredential;
-import com.revature.repository.CustomerAccountDAO;
-import com.revature.repository.CustomerUserDAO;
-import com.revature.repository.EmployeeAccountDAO;
-import com.revature.repository.InventoryDAO;
+import com.revature.repository.*;
+import com.revature.repository.Exception.*;
 import com.revature.service.exceptions.EmptyInputException;
 import com.revature.service.shop.InventoryHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.soap.SOAPBinding;
 import javax.security.auth.login.AccountNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class AccountHandler {
-    private final Logger log = LoggerFactory.getLogger(AccountHandler.class);
+    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
+    private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
+
     private final StringBuilder input = new StringBuilder();
     private final Scanner sc = new Scanner(System.in);
     AccountDisplay accountDisplay = new AccountDisplay();
@@ -58,8 +62,22 @@ public class AccountHandler {
         CustomerAccountDAO cDao = new CustomerAccountDAO();
         EmployeeAccountDAO eDao = new EmployeeAccountDAO();
         AccountInputHandler accountInputHandler = new AccountInputHandler();
-        List<CustomerAccount> customerAccountList = cDao.getCustomerAccountsByPrimaryUserId(username.getId());
-        EmployeeAccount employeeAccount = eDao.getEmployeeAccountsById(username.getId());
+        List<CustomerAccount> customerAccountList = null;
+        try {
+            customerAccountList = cDao.getCustomerAccountsByUserCredentialId(username.getId());
+        } catch (InvalidUserCredentialException | SQLException e){
+            debugLogger.debug(e.toString());
+        }
+        EmployeeAccount employeeAccount = null;
+        try {
+            employeeAccount = eDao.getEmployeeAccountsByUserId(username.getId());
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nDATABASE ERROR, RESTART APPLICATION IF ERROR PERSISTS");
+        } catch (InvalidUserCredentialException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID USER CREDENTIAL\n");
+        }
         boolean chooseAccount = true;
 
 
@@ -141,8 +159,13 @@ public class AccountHandler {
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         cUDao.updateUserName(user.getUserId(), input.toString());
-                        System.out.println("USER NAME CHANGED TO: " + cUDao.getUserById(user.getUserId()).getName());
-
+                        try {
+                            System.out.println("USER NAME CHANGED TO: " + cUDao.getUserById(user.getUserId()).getName());
+                        } catch (InvalidUserIdException e) {
+                            debugLogger.debug(e.toString());
+                            System.out.println("\nUSER ID ERROR\n");
+                        }
+                        transactionLogger.info("USER NAME CHANGED\n" + "USER ID: " + user.getUserId() + "\nUSER NEW NAME: " + user.getName());
                         chooseUser = false;
                         break;
                     }
@@ -174,8 +197,14 @@ public class AccountHandler {
                             System.out.println("\nCANNOT DELETE CURRENT USER");
                             break;
                         }
-                        cUDao.deleteUserById(user.getUserId());
+                        try {
+                            cUDao.deleteUserById(user.getUserId());
+                        } catch (InvalidUserIdException e) {
+                            debugLogger.debug(e.toString());
+                            System.out.println("\nUSER NOT VALID\n");
+                        }
                         System.out.println("\nUSER HAS BEEN DELETED");
+                        transactionLogger.info("USER DELETED\n" + "ACCOUNT ID: " + customerAccount.getCustomerAccountId() + "\nFORMER USER ID: " + user.getUserId());
                         chooseUser = false;
                         break;
                     }
@@ -212,23 +241,46 @@ public class AccountHandler {
             List<Inventory> inventories = inventoryDAO.getAllInventories();
             int inventoryId = inventories.get(inventories.size()-1).getId();
 
-            cUDao.addUser(input.toString(), inventoryId, customerAccount.getCustomerAccountId());
+            try {
+                cUDao.addUser(input.toString(), inventoryId, customerAccount.getCustomerAccountId());
+            } catch (InvalidCustomerAccountIdException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
+            } catch (InvalidInventoryIdException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID INVENTORY ID\n");
+            }
+            transactionLogger.info("ADDED USER\n" + "ACCOUNT ID: " + customerAccount.getCustomerAccountId());
             addingUser = false;
         }while(addingUser);
 
     }
 
-    public void addAccount(User user, CustomerAccount customerAccount, UserCredential username) {
+    public void addAccount(User user, CustomerAccount customerAccount, UserCredential username) throws SQLException, InvalidUserCredentialException {
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
-        customerAccountDAO.addCustomerAccount(username.getId(), customerAccount.getPrimaryUserId());
+        try {
+            customerAccountDAO.addCustomerAccount(username.getId(), customerAccount.getPrimaryUserId());
+        } catch (InvalidPrimaryUserException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID PRIMARY USER ID\n");
+        }
         List<CustomerAccount> customerAccountList = customerAccountDAO.getCustomerAccountsByUserCredentialId(username.getId());
         int customerAccountId = customerAccountList.get(customerAccountList.size()-1).getCustomerAccountId();
-        customerUserDAO.addUser(user.getName(), user.getInventoryId(), customerAccountId);
+        try {
+            customerUserDAO.addUser(user.getName(), user.getInventoryId(), customerAccountId);
+        } catch (InvalidCustomerAccountIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
 
         int newUserId = customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(0).getUserId();
 
         customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, newUserId);
+        transactionLogger.info("ADDED ACCOUNT" + "\nNEW ACCOUNT ID: " + customerAccountId + "\nPrimary User ID: " + user.getUserId());
 
         System.out.println("ADDED CUSTOMER ACCOUNT");
     }
@@ -281,13 +333,13 @@ public class AccountHandler {
                         }
 
                     }catch (NumberFormatException e){
-                        log.debug(e.toString());
+                        debugLogger.debug(e.toString());
                         System.out.println("\nTYPE A VALID NUMBER\n");
                     }
                 }while(changeData);
                 chooseAccount = false;
             }catch (NumberFormatException e){
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("\nTYPE A VALID NUMBER\n");
             }
         }while(chooseAccount);
@@ -309,9 +361,11 @@ public class AccountHandler {
                     break;
                 }
                 customerAccountDAO.updateCustomerAccountPrimaryId(customerAccount.getCustomerAccountId(), newPrimaryUserId);
+                transactionLogger.info("EMPLOYEE ALTERATION" + "\nCUSTOMER ACCOUNT PRIMARY USER CHANGED" + "\nACCOUNT ID: " + customerAccount.getCustomerAccountId()
+                + "\nNEW PRIMARY USER ID: " + newPrimaryUserId);
                 changeAccount = false;
             } catch (NumberFormatException e){
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("\nINVALID INPUT");
             }
         }while (changeAccount);
@@ -367,15 +421,138 @@ public class AccountHandler {
                         }
 
                     }catch (NumberFormatException e){
-                        log.debug(e.toString());
+                        debugLogger.debug(e.toString());
                         System.out.println("\nTYPE A VALID NUMBER\n");
                     }
                 }while(changeData);
                 chooseUser = false;
             }catch (NumberFormatException e){
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("\nTYPE A VALID NUMBER\n");
+            } catch (InvalidUserIdException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID USER ID\n");
             }
         }while(chooseUser);
+    }
+
+    public void addEmployeeAccount(EmployeeAccount employeeAccount, UserCredential username) {
+        boolean creatingAccount = true;
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+        EmployeeAccountDAO employeeAccountDAO = new EmployeeAccountDAO();
+        StringBuilder employeeUsername = new StringBuilder();
+        StringBuilder employeePassword = new StringBuilder();
+        LoginDisplay loginDisplay = new LoginDisplay();
+        do {
+            employeeUsername.setLength(0);
+            employeePassword.setLength(0);
+            loginDisplay.printCreateEmployeeAccountDisplay();
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+            switch (input.toString()) {
+                case ("1"):
+                    System.out.print("USERNAME:");
+                    employeeUsername.append(sc.nextLine()).trimToSize();
+                    System.out.print("PASSWORD:");
+                    employeePassword.append(sc.nextLine()).trimToSize();
+
+                    if(userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()) == null){
+                        System.out.print("FIRST NAME:");
+                        input.setLength(0);
+                        String firstName = input.append(sc.nextLine().trim()).toString();
+                        System.out.print("LAST NAME:");
+                        input.setLength(0);
+                        String lastName = input.append(sc.nextLine().trim()).toString();
+                        userCredentialsDAO.addUserCredential(new UserCredential(0,
+                                employeeUsername.toString(),
+                                employeePassword.toString(),
+                                firstName,
+                                lastName));
+
+                        int userCredentialId = userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()).getId();
+                        try {
+                            employeeAccountDAO.addEmployeeAccount(userCredentialId, employeeAccount.getAdminId());
+                        } catch (SQLException e) {
+                            debugLogger.debug(e.toString());
+                        } catch (InvalidAdminIdException e) {
+                            debugLogger.debug(e.toString());
+                        } catch (InvalidUserCredentialException e) {
+                            debugLogger.debug(e.toString());
+                        }
+                    }
+                    System.out.println("\nSUCCESSFUL CREATION OF EMPLOYEE ACCOUNT\n");
+                    creatingAccount = false;
+                    break;
+                case ("2"):
+                    System.out.println("Returning to Login.");
+                    creatingAccount = false;
+                    break;
+                default:
+                    System.out.println("Type a valid input.");
+                    break;
+            }
+        } while (creatingAccount);
+    }
+
+    public void addAdminAccount(EmployeeAccount employeeAccount, UserCredential username) {
+        boolean creatingAccount = true;
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+        EmployeeAccountDAO employeeAccountDAO = new EmployeeAccountDAO();
+        StringBuilder employeeUsername = new StringBuilder();
+        StringBuilder employeePassword = new StringBuilder();
+        LoginDisplay loginDisplay = new LoginDisplay();
+        do {
+            employeeUsername.setLength(0);
+            employeePassword.setLength(0);
+            loginDisplay.printCreateAdminAccountDisplay();
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+            switch (input.toString()) {
+                case ("1"):
+                    System.out.print("USERNAME:");
+                    employeeUsername.append(sc.nextLine()).trimToSize();
+                    System.out.print("PASSWORD:");
+                    employeePassword.append(sc.nextLine()).trimToSize();
+
+                    if(userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()) == null){
+                        System.out.print("FIRST NAME:");
+                        input.setLength(0);
+                        String firstName = input.append(sc.nextLine().trim()).toString();
+                        System.out.print("LAST NAME:");
+                        input.setLength(0);
+                        String lastName = input.append(sc.nextLine().trim()).toString();
+                        userCredentialsDAO.addUserCredential(new UserCredential(0,
+                                employeeUsername.toString(),
+                                employeePassword.toString(),
+                                firstName,
+                                lastName));
+
+                        int userCredentialId = userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()).getId();
+                        try {
+                            employeeAccountDAO.addEmployeeAccount(userCredentialId, employeeAccount.getAdminId());
+                            int employeeId = employeeAccountDAO.getEmployeeAccountsByUserId(userCredentialId).getEmployeeId();
+                            employeeAccountDAO.updateEmployeeAdmin(employeeId, employeeId);
+                        } catch (SQLException e) {
+                            debugLogger.debug(e.toString());
+                        } catch (InvalidAdminIdException e) {
+                            debugLogger.debug(e.toString());
+                        } catch (InvalidUserCredentialException e) {
+                            debugLogger.debug(e.toString());
+                        } catch (InvalidEmployeeAccountIdException e) {
+                            debugLogger.debug(e.toString());
+                        }
+                    }
+                    System.out.println("\nSUCCESSFUL CREATION OF ADMIN ACCOUNT\n");
+                    creatingAccount = false;
+                    break;
+                case ("2"):
+                    System.out.println("Returning to Login.");
+                    creatingAccount = false;
+                    break;
+                default:
+                    System.out.println("Type a valid input.");
+                    break;
+            }
+        } while (creatingAccount);
     }
 }

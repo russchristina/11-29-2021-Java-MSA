@@ -5,14 +5,18 @@ import com.revature.models.shop.Planet;
 import com.revature.models.shop.TemporaryPlanet;
 import com.revature.repository.DAOInterface.PlanetDAOInterface;
 import com.revature.utility.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlanetDAO implements PlanetDAOInterface {
+
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
     @Override
-    public List<Planet> getAllPlanets() {
+    public List<Planet> getAllPlanets() throws SQLException {
         List<Planet> planets = new ArrayList<>();
 
         final String SQL = "select * from planets";
@@ -31,8 +35,6 @@ public class PlanetDAO implements PlanetDAOInterface {
                                 resultSet.getInt(5),
                                 resultSet.getInt(6)));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
 
         return planets;
@@ -40,7 +42,7 @@ public class PlanetDAO implements PlanetDAOInterface {
     }
 
     @Override
-    public List<Planet> getPlanetsByUserId(int userId) {
+    public List<Planet> getPlanetsByUserId(int userId) throws SQLException {
 
         List<Planet> planets = new ArrayList<>();
 
@@ -66,20 +68,18 @@ public class PlanetDAO implements PlanetDAOInterface {
                                 resultSet.getInt(5),
                                 resultSet.getInt(6)));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 resultSet.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                debugLogger.debug(e.toString());
             }
         }
         return planets;
     }
 
     @Override
-    public void updatePlanetGoldilockZone(int planetId, boolean isGoldilockZone) {
+    public void updatePlanetGoldilockZone(int planetId, boolean isGoldilockZone) throws SQLException {
         final String SQL = "update planets set goldilocks_zone = ? where planet_id = ?";
 
         try(
@@ -90,14 +90,12 @@ public class PlanetDAO implements PlanetDAOInterface {
             statement.setInt(2, planetId);
             statement.execute();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
 
     }
 
     @Override
-    public void updatePlanetWaterPercent(int planetId, int waterPercent) {
+    public void updatePlanetWaterPercent(int planetId, int waterPercent) throws SQLException {
         final String SQL = "update planets set water_percent = ? where planet_id = ?";
 
         try(
@@ -108,13 +106,11 @@ public class PlanetDAO implements PlanetDAOInterface {
             statement.setInt(2, planetId);
             statement.execute();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Override
-    public void updatePlanetAverageTemp(int planetId, int averageTemp) {
+    public void updatePlanetAverageTemp(int planetId, int averageTemp) throws SQLException {
         final String SQL = "update planets set average_temp = ? where planet_id = ?";
 
         try(
@@ -125,13 +121,11 @@ public class PlanetDAO implements PlanetDAOInterface {
             statement.setInt(2, planetId);
             statement.execute();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Override
-    public void deletePlanetById(int id) {
+    public void deletePlanetById(int id) throws SQLException {
         final String SQL = "delete from planets where planet_id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
@@ -140,13 +134,11 @@ public class PlanetDAO implements PlanetDAOInterface {
             statement.setInt(1, id);
             statement.execute();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
     @Override
-    public void addPlanet(TemporaryPlanet planet) {
+    public void addPlanet(TemporaryPlanet planet) throws SQLException {
         final String SQL = "insert into planets values( default, ?, ?, ?, ? ,?)";
 
         try(
@@ -161,13 +153,11 @@ public class PlanetDAO implements PlanetDAOInterface {
             statement.setInt(5, planet.getAverageTemperature());
             statement.execute();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
 
-    public int getPlanetIdByName(String name) {
+    public int getPlanetIdByName(String name) throws SQLException {
         int planetId = 0;
 
         final String SQL = "select * from planets where planet_name = ?";
@@ -185,20 +175,18 @@ public class PlanetDAO implements PlanetDAOInterface {
             if(resultSet.next()) planetId = resultSet.getInt(1);
 
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
+        }  finally {
             try {
                 assert resultSet != null;
                 resultSet.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                debugLogger.debug(e.toString());
             }
         }
         return planetId;
     }
 
-    public Planet getPlanetsById(int planetId) {
+    public Planet getPlanetsById(int planetId) throws SQLException {
         Planet planet = null;
 
         final String SQL = "select * from planets where planet_id = ?";
@@ -223,16 +211,31 @@ public class PlanetDAO implements PlanetDAOInterface {
                         resultSet.getInt(6)
                 );
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         } finally {
             try {
                 assert resultSet != null;
                 resultSet.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                debugLogger.debug(e.toString());
             }
         }
         return planet;
+    }
+
+    public boolean readPlanetId(int id) throws SQLException {
+        boolean success = false;
+
+        final String SQL = "select * from planets where planet_id = ?";
+
+        ResultSet resultSet = null;
+        try(Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL)
+        ){
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            if(resultSet.next()) success = true;
+        }
+
+        return success;
     }
 }

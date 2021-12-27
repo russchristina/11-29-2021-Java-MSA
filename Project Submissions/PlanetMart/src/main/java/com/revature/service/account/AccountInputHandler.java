@@ -4,11 +4,12 @@ import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
-import com.revature.models.shop.AtmosphereComposition;
-import com.revature.models.shop.Planet;
 import com.revature.models.users.User;
 import com.revature.models.users.UserCredential;
 import com.revature.repository.*;
+import com.revature.repository.Exception.InvalidCustomerAccountIdException;
+import com.revature.repository.Exception.InvalidUserCredentialException;
+import com.revature.repository.Exception.InvalidUserIdException;
 import com.revature.service.exceptions.EmptyInputException;
 import com.revature.service.login.LoginInputHandler;
 import com.revature.service.shop.InventoryHandler;
@@ -17,12 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class AccountInputHandler {
 
-    protected final Logger log = LoggerFactory.getLogger(AccountInputHandler.class);
+    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
+    private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
+
     public final Scanner sc = new Scanner(System.in);
     public final StringBuilder input = new StringBuilder();
 
@@ -118,9 +123,11 @@ public class AccountInputHandler {
                         try {
                             accountHandler.addUser(user, customerAccount);
                         } catch (EmptyInputException e) {
-                            log.debug(e.toString());
+                            debugLogger.debug(e.toString());
+                            System.out.println("\nEMPTY INPUT, TRY AGAIN\n");
                         } catch (DuplicateUsernameException e) {
-                            log.debug(e.toString());
+                            debugLogger.debug(e.toString());
+                            System.out.println("\nDUPLICATE USERNAME, TRY AGAIN\n");
                         }
                         break;
                     case ("7"):
@@ -137,7 +144,13 @@ public class AccountInputHandler {
                         break;
                     case ("10"):
                         System.out.println("Option 10: Add Account");
-                        accountHandler.addAccount(user, customerAccount, username);
+                        try {
+                            accountHandler.addAccount(user, customerAccount, username);
+                        } catch (SQLException e) {
+
+                        } catch (InvalidUserCredentialException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case ("11"):
                         System.out.println("Option 11: Change Account");
@@ -227,8 +240,11 @@ public class AccountInputHandler {
 
                 chooseAccount = false;
             }catch (NumberFormatException e){
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("\nTYPE A VALID NUMBER\n");
+            } catch (InvalidCustomerAccountIdException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
             }
         }while(chooseAccount);
 
@@ -251,8 +267,11 @@ public class AccountInputHandler {
                     inventoryHandler.openInventory(user);
                     chooseUser = false;
                 }catch (NumberFormatException e){
-                    log.debug(e.toString());
+                    debugLogger.debug(e.toString());
                     System.out.println("\nTYPE A VALID NUMBER\n");
+                } catch (InvalidUserIdException e) {
+                    debugLogger.debug(e.toString());
+                    System.out.println("\nINVALID USER ID\n");
                 }
 
             }while(chooseUser);
@@ -278,7 +297,7 @@ public class AccountInputHandler {
                 accountDisplay.displayUsers(users, customerAccount);
                 chooseAccount = false;
             }catch (NumberFormatException e){
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("\nTYPE A VALID NUMBER\n");
             }
         }while(chooseAccount);
@@ -332,14 +351,25 @@ public class AccountInputHandler {
                     loginInputHandler.firstStage();
                     break;
                 case ("7"):
+                    System.out.println("Option 7: View All Employee Accounts");
                     List<EmployeeAccount> employeeAccounts = employeeAccountDAO.getAllEmployeeAccounts();
                     accountDisplay.displayEmployeeAccountInformation(employeeAccounts);
                     break;
                 case ("8"):
+                    System.out.println("Option 8: Change Account Data");
                     accountHandler.changeAccountData(employeeAccount, username);
                     break;
                 case ("9"):
+                    System.out.println("Option 9: Change User Data");
                     accountHandler.changeUserData(employeeAccount, username);
+                    break;
+                case ("10"):
+                    System.out.println("Option 10: Add Employee Account");
+                    accountHandler.addEmployeeAccount(employeeAccount, username);
+                    break;
+                case ("11"):
+                    System.out.println("Option 11: Add Admin Account");
+                    accountHandler.addAdminAccount(employeeAccount, username);
                     break;
                 default:
                     System.out.println("\nInput a valid choice.\n");

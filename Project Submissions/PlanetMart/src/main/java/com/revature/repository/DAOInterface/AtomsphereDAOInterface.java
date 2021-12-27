@@ -1,12 +1,11 @@
 package com.revature.repository.DAOInterface;
 
 import com.revature.models.shop.AtmosphereComposition;
-import com.revature.models.shop.Inventory;
+import com.revature.repository.Exception.NoPlanetFoundException;
 
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
 
 public interface AtomsphereDAOInterface {
 
-    AtmosphereComposition getAtmosphereCompositionByPlanetId(int planetId);
+    AtmosphereComposition getAtmosphereCompositionByPlanetId(int planetId) throws SQLException, NoPlanetFoundException;
 }

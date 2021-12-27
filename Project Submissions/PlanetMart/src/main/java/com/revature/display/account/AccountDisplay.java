@@ -75,7 +75,9 @@ public class AccountDisplay {
         System.out.println("6. Logout");
         System.out.println("7. View all Employee Accounts");
         System.out.println("8. Alter Account Info");
-        System.out.println("9. Alter User Info\n");
+        System.out.println("9. Alter User Info");
+        System.out.println("10. Add Employee Account");
+        System.out.println("11. Add Admin Account\n");
 
     }
 

@@ -21,6 +21,10 @@ public class Planet implements Serializable {
         this.averageTemperature = averageTemperature;
     }
 
+    public Planet() {
+
+    }
+
     @Override
     public String toString() {
         return "{\"Planet\":{"

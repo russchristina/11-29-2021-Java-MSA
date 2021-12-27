@@ -7,20 +7,24 @@ import com.revature.display.login.LoginDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.users.UserCredential;
-import com.revature.repository.CustomerAccountDAO;
-import com.revature.repository.CustomerUserDAO;
-import com.revature.repository.InventoryDAO;
-import com.revature.repository.UserCredentialsDAO;
+import com.revature.repository.*;
+import com.revature.repository.Exception.InvalidCustomerAccountIdException;
+import com.revature.repository.Exception.InvalidInventoryIdException;
+import com.revature.repository.Exception.InvalidPrimaryUserException;
+import com.revature.repository.Exception.InvalidUserCredentialException;
 import com.revature.service.account.AccountHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class LoginInputHandler {
-    private final Logger log = LoggerFactory.getLogger(LoginInputHandler.class);
+    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
+    private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
 
     public final Scanner sc;
     public final StringBuilder input;
@@ -64,7 +68,7 @@ public class LoginInputHandler {
                         break;
                 }
             }catch (Exception e){
-                log.error(e.toString());
+                errorLogger.error(e.toString());
                 System.out.println("Error.\n" + "Restart the Application.\n");
                 input.setLength(0);
             }
@@ -93,7 +97,7 @@ public class LoginInputHandler {
                         }
                     } catch (DuplicateUsernameException e) {
                         System.out.println("Duplicate username, try again or type N to leave.");
-                        log.debug(e.toString());
+                        debugLogger.debug(e.toString());
                     }
                     break;
                 case ("2"):
@@ -106,7 +110,6 @@ public class LoginInputHandler {
             }
         } while (creatingAccount);
     }
-
 
     private void loginAccount(LoginDisplay loginDisplay) {
 
@@ -128,14 +131,13 @@ public class LoginInputHandler {
             } catch (EmptyUserCredentialDataException e) {
                 System.out.println("Invalid input.\n" +
                         "Please try again.");
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
             } catch (AccountNotFoundException e) {
-                log.error(e.toString());
+                errorLogger.error(e.toString());
                 System.out.println("\nAccount not found...\n");
             }
         } while (loggingIn);
     }
-
 
     public UserCredential authenticateAccountCredentials(String username, String password) throws EmptyUserCredentialDataException {
         UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
@@ -164,13 +166,43 @@ public class LoginInputHandler {
             int userCredentialId = userCredentialsDAO.getUserCredentialByUsername(username.toString()).getId();
             inventoryDAO.addInventory(new Inventory(0, 0));
             List<Inventory> inventoryList = inventoryDAO.getAllInventories();
-            customerAccountDAO.addCustomerAccount(userCredentialId, 0);
-            List<CustomerAccount> customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
+            try {
+                customerAccountDAO.addCustomerAccount(userCredentialId, 0);
+            } catch (InvalidPrimaryUserException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID PRIMARY USER ID");
+            } catch (SQLException throwables) {
+                debugLogger.debug(throwables.toString());
+            } catch (InvalidUserCredentialException e) {
+                debugLogger.debug(e.toString());
+            }
+            List<CustomerAccount> customerAccounts = null;
+            try {
+                customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
+            } catch (InvalidUserCredentialException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID USER CREDENTIAL\n");
+            } catch (SQLException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nDATABASE ERROR\n");
+            } catch (Exception e){
+                errorLogger.error(e.toString());
+                System.out.println("\nERROR IN APPLICATON, IF ISSUES PERSIST, PLEASE RESTART\n");
+            }
             int customerAccountId = customerAccounts.get(customerAccounts.size()-1).getCustomerAccountId();
-            customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size()-1).getId(), customerAccountId);
+            try {
+                customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size()-1).getId(), customerAccountId);
+            } catch (InvalidCustomerAccountIdException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
+            } catch (InvalidInventoryIdException e) {
+                debugLogger.debug(e.toString());
+                System.out.println("\nINVALID INVENTORY ID\n");
+            }
             customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(customerUserDAO.getAllUsersByCustomerId(customerAccountId).size()-1).getUserId());
             System.out.println("CREATED ACCOUNT");
             System.out.println("CUSTOMER ACCOUNT ID: " + customerAccountId);
+            transactionLogger.info("CUSTOMER ACCOUNT CREATED ID: " + customerAccountId);
         }
         return false;
     }

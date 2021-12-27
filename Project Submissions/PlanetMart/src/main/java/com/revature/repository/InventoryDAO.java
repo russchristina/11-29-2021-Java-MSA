@@ -1,15 +1,22 @@
 package com.revature.repository;
 
 
+import com.revature.models.exceptions.NegativeAmountException;
 import com.revature.models.shop.Inventory;
 import com.revature.repository.DAOInterface.InventoryDAOInterface;
+import com.revature.repository.Exception.DuplicateInventoryIdException;
+import com.revature.repository.Exception.InvalidInventoryIdException;
 import com.revature.utility.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryDAO implements InventoryDAOInterface {
+
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
 
     @Override
     public List<Inventory> getAllInventories() {
@@ -37,8 +44,9 @@ public class InventoryDAO implements InventoryDAOInterface {
     }
 
     @Override
-    public Inventory getInventoryByInventoryId(int id) {
+    public Inventory getInventoryByInventoryId(int id) throws InvalidInventoryIdException {
         Inventory inventory = null;
+
 
         final String SQL = "select * from customer_inventory where inventory_id = ?";
 
@@ -72,11 +80,12 @@ public class InventoryDAO implements InventoryDAOInterface {
 
     }
 
-
     @Override
-    public void updateInventoryBalance(int id, int newBalance) {
+    public void updateInventoryBalance(int id, int newBalance) throws InvalidInventoryIdException, NegativeAmountException {
         final String SQL = "update customer_inventory set balance = ? where inventory_id = ?";
 
+        if(!checkInventoryId(id)) throw new InvalidInventoryIdException("Invalid Inventory ID");
+        if(newBalance<0) throw new NegativeAmountException("Negative Balance");
         try(
                 Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL)
@@ -95,9 +104,9 @@ public class InventoryDAO implements InventoryDAOInterface {
 
 
     @Override
-    public void deleteInventoryById(int id) {
+    public void deleteInventoryById(int id) throws InvalidInventoryIdException {
         final String SQL = "delete from customer_inventory where inventory_id = ?";
-
+        if(!checkInventoryId(id)) throw new InvalidInventoryIdException("Invalid Inventory ID");
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {
 
@@ -110,9 +119,10 @@ public class InventoryDAO implements InventoryDAOInterface {
     }
 
     @Override
-    public void addInventory(Inventory inventory) {
+    public void addInventory(Inventory inventory) throws DuplicateInventoryIdException{
 
         final String SQL = "insert into customer_inventory values( default, ?)";
+        if(checkInventoryId(inventory.getId())) throw new DuplicateInventoryIdException("Inventory Already Exists");
 
         try(
                 Connection connection = ConnectionFactory.getConnection();
@@ -125,5 +135,18 @@ public class InventoryDAO implements InventoryDAOInterface {
             throwables.printStackTrace();
         }
 
+    }
+
+    public boolean checkInventoryId(int inventoryId) {
+        boolean success = false;
+        Inventory inventory = null;
+        try{
+            inventory = getInventoryByInventoryId(inventoryId);
+
+        }catch (Exception e){
+            debugLogger.debug(e.toString());
+        }
+        if(inventory != null) success = true;
+        return success;
     }
 }

@@ -6,17 +6,23 @@ import com.revature.models.shop.Inventory;
 import com.revature.models.shop.TemporaryPlanet;
 import com.revature.models.users.User;
 import com.revature.repository.CustomerUserDAO;
+import com.revature.repository.Exception.InvalidInventoryIdException;
 import com.revature.repository.InventoryDAO;
+import com.revature.repository.Exception.NoPlanetFoundException;
 import com.revature.utility.PlanetToTempPlanet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class InventoryHandler {
 
-    private final Logger log = LoggerFactory.getLogger(InventoryHandler.class);
+    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
+    private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
+
     private final StringBuilder input = new StringBuilder();
     private final Scanner sc = new Scanner(System.in);
 
@@ -34,25 +40,44 @@ public class InventoryHandler {
                 try{
                     amount = Integer.parseInt(input.toString());
                     if(amount >= 0) inputtingMoney = false;
-
                 } catch (NumberFormatException e) {
-                    log.debug(e.toString());
+                    debugLogger.debug(e.toString());
                     System.out.println("INVALID INPUT");
                     amount = 0;
                 }
         }
         inventory.setBalance(inventory.getBalance()+amount);
-        inventoryDAO.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        try {
+            inventoryDAO.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
         System.out.println("\nNEW BALANCE...");
         System.out.println(inventory.getBalance());
+        transactionLogger.info("BALANCE INPUT: " + amount +
+                "\nUSER ID: " + user.getUserId() + "\nINVENTORY ID: " + inventory.getId() +
+                "\nINVENTORY BALANCE: " + inventory.getBalance());
 
     }
 
     public void openInventory(User user) {
         InventoryDAO iDao = new InventoryDAO();
-        List<TemporaryPlanet> temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+        List<TemporaryPlanet> temporaryPlanetList = null;
+        try {
+            temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+        } catch (NoPlanetFoundException e) {
+            errorLogger.error(e.toString());
+        }
 
-        Inventory inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        Inventory inventory = null;
+        try {
+            inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+        }
 
         if(inventory != null){
             System.out.println("\nBALANCE:");
@@ -63,7 +88,12 @@ public class InventoryHandler {
 
     public void manageBalance(CustomerAccount customerAccount, User user) {
         InventoryDAO inventoryDAO = new InventoryDAO();
-        Inventory inventory = inventoryDAO.getInventoryByInventoryId(user.getInventoryId());
+        Inventory inventory = null;
+        try {
+            inventory = inventoryDAO.getInventoryByInventoryId(user.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+        }
         boolean choosingOptions = true;
 
 
@@ -113,15 +143,23 @@ public class InventoryHandler {
                 if(amount >= 0 && inventory.getBalance() >= amount) inputtingMoney = false;
 
             } catch (NumberFormatException e) {
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("INVALID INPUT");
                 amount = 0;
             }
         }
         inventory.setBalance(inventory.getBalance()-amount);
-        inventoryDAO.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        try {
+            inventoryDAO.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
         System.out.println("\nNEW BALANCE...");
         System.out.println(inventory.getBalance());
+        transactionLogger.info("BALANCE INPUT: " + amount +
+                "\nUSER ID: " + user.getUserId() + "\nINVENTORY ID: " + inventory.getId() +
+                "\nINVENTORY BALANCE: " + inventory.getBalance());
     }
 
     public void transferFunds(CustomerAccount customerAccount, User user) {
@@ -138,7 +176,11 @@ public class InventoryHandler {
         for (User user1 : users) {
             System.out.println(user1.getUserId());
             System.out.println(user1.getName());
-            System.out.println(inventoryDAO.getInventoryByInventoryId(user1.getInventoryId()).getBalance());
+            try {
+                System.out.println(inventoryDAO.getInventoryByInventoryId(user1.getInventoryId()).getBalance());
+            } catch (InvalidInventoryIdException e) {
+                debugLogger.debug(e.toString());
+            }
         }
         System.out.println(users);
         if(!users.isEmpty()){
@@ -158,7 +200,12 @@ public class InventoryHandler {
                             for (User user2 : users) {
                                 System.out.println(user2.getUserId());
                                 System.out.println(user2.getName());
-                                System.out.println(inventoryDAO.getInventoryByInventoryId(user2.getInventoryId()).getBalance());
+                                try {
+                                    System.out.println(inventoryDAO.getInventoryByInventoryId(user2.getInventoryId()).getBalance());
+                                } catch (InvalidInventoryIdException e) {
+                                    debugLogger.debug(e.toString());
+                                    System.out.println("\nINVALID INVENTORY ID\n");
+                                }
                             }
                             input.setLength(0);
                             input.append(sc.nextLine().trim());
@@ -184,8 +231,20 @@ public class InventoryHandler {
 
     private void multipleUserTransfer(User firstUser, User secondUser) {
         InventoryDAO inventoryDAO = new InventoryDAO();
-        Inventory firstInventory = inventoryDAO.getInventoryByInventoryId(firstUser.getInventoryId());
-        Inventory secondInventory = inventoryDAO.getInventoryByInventoryId(secondUser.getInventoryId());
+        Inventory firstInventory = null;
+        try {
+            firstInventory = inventoryDAO.getInventoryByInventoryId(firstUser.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID FIRST INVENTORY\n");
+        }
+        Inventory secondInventory = null;
+        try {
+            secondInventory = inventoryDAO.getInventoryByInventoryId(secondUser.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID SECOND INVENTORY\n");
+        }
 
         System.out.println(firstUser.getName() + " BALANCE " + firstInventory.getBalance());
         System.out.println(secondUser.getName() + " BALANCE " + secondInventory.getBalance());
@@ -202,22 +261,35 @@ public class InventoryHandler {
                 if(amount >= 0 && firstInventory.getBalance() >= amount) inputtingMoney = false;
 
             } catch (NumberFormatException e) {
-                log.debug(e.toString());
+                debugLogger.debug(e.toString());
                 System.out.println("INVALID INPUT");
                 amount = 0;
             }
         }
         firstInventory.setBalance(firstInventory.getBalance()-amount);
-        inventoryDAO.updateInventoryBalance(firstInventory.getId(), firstInventory.getBalance());
+        try {
+            inventoryDAO.updateInventoryBalance(firstInventory.getId(), firstInventory.getBalance());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
         System.out.println("\nNEW BALANCE FOR...");
         System.out.println(firstUser.getName());
         System.out.println(firstInventory.getBalance());
 
         secondInventory.setBalance(secondInventory.getBalance()+amount);
-        inventoryDAO.updateInventoryBalance(secondInventory.getId(), secondInventory.getBalance());
+        try {
+            inventoryDAO.updateInventoryBalance(secondInventory.getId(), secondInventory.getBalance());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
         System.out.println("\nNEW BALANCE FOR...");
         System.out.println(secondUser.getName());
         System.out.println(secondInventory.getBalance());
+        transactionLogger.info("BALANCE TRANSFER BETWEEN USERS" + "\nUSER 1 ID: " + firstUser.getUserId() + "\nAMOUNT REMOVED: " + amount +
+                "\nUSER 2 ID: " + secondUser.getUserId() + "\nINVENTORY 1 ID: " + firstInventory.getId() + "\nINVENTORY 1 BALANCE: " + firstInventory.getBalance() +
+                "\nINVENTORY 2 ID: " + secondInventory.getId() + "\nINVENTORY 2 BALANCE: " + secondInventory.getBalance());
 
     }
     }

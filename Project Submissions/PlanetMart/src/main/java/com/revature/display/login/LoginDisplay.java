@@ -14,7 +14,7 @@ public class LoginDisplay {
     }
 
     public void printLoginDisplayPassword() {
-        System.out.print("Password:");
+        System.out.print("PASSWORD:");
     }
 
     public void printCreateAccountDisplay() {
@@ -25,5 +25,19 @@ public class LoginDisplay {
 
     }
 
+    public void printCreateEmployeeAccountDisplay() {
+        System.out.println("CREATE EMPLOYEE ACCOUNT");
+        System.out.println("Input options");
+        System.out.println("1. Continue to account Creation");
+        System.out.println("2. Return");
 
+    }
+
+
+    public void printCreateAdminAccountDisplay() {
+        System.out.println("CREATE ADMIN ACCOUNT");
+        System.out.println("Input options");
+        System.out.println("1. Continue to account Creation");
+        System.out.println("2. Return");
+    }
 }

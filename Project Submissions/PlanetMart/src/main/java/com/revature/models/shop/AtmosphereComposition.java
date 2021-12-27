@@ -15,6 +15,10 @@ public class AtmosphereComposition {
         this.planetId = planetId;
     }
 
+    public AtmosphereComposition() {
+
+    }
+
     @Override
     public String toString() {
         return "{\"AtmosphereComposition\":{"

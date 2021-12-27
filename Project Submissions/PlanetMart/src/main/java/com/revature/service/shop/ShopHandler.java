@@ -6,17 +6,23 @@ import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.TemporaryPlanet;
 import com.revature.models.users.User;
+import com.revature.repository.Exception.InvalidInventoryIdException;
 import com.revature.repository.InventoryDAO;
+import com.revature.repository.Exception.NoPlanetFoundException;
 import com.revature.utility.PlanetToTempPlanet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class ShopHandler {
 
-    private final Logger log = LoggerFactory.getLogger(ShopHandler.class);
+    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
+    private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
+
     protected final StringBuilder input = new StringBuilder();
     protected final Scanner sc = new Scanner(System.in);
 
@@ -70,9 +76,19 @@ public class ShopHandler {
     private void sellPlanet(CustomerAccount customerAccount, User user, Shop shop, List<TemporaryPlanet> planetsForSale) {
 
         InventoryDAO iDao = new InventoryDAO();
-        List<TemporaryPlanet> temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+        List<TemporaryPlanet> temporaryPlanetList = null;
+        try {
+            temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+        } catch (SQLException | NoPlanetFoundException e) {
+            debugLogger.debug(e.toString());
+        }
 
-        Inventory inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        Inventory inventory = null;
+        try {
+            inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+        }
 
         if(inventory != null){
             System.out.println("\nBALANCE:");
@@ -107,7 +123,12 @@ public class ShopHandler {
     private void buyPlanet(CustomerAccount customerAccount, User user, Shop shop, List<TemporaryPlanet> planetsForSale) {
 
         InventoryDAO iDao = new InventoryDAO();
-        Inventory inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        Inventory inventory = null;
+        try {
+            inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+        }
         boolean buyingPlanet = true;
         do {
             input.setLength(0);
@@ -119,7 +140,7 @@ public class ShopHandler {
                     try {
                         shop.buyPlanet(planet, user, planetsForSale, inventory);
                     } catch (InsufficientFundsException e) {
-                        log.info(e.toString());
+                        transactionLogger.info(e.toString());
                         System.out.println("\nINSUFFICIENT FUNDS\n");
                         return;
                     }
@@ -127,6 +148,8 @@ public class ShopHandler {
                     System.out.println("Successful purchase of Planet: " + input + "\n");
                     System.out.print("BALANCE: ");
                     System.out.println(inventory.getBalance());
+                    transactionLogger.info("Planet Purchase " + input +
+                            "\nUser ID: " + user.getUserId() + "\nAccount ID: " + customerAccount.getCustomerAccountId());
                     break;
                 }
             }

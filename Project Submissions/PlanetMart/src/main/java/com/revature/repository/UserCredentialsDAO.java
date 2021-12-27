@@ -196,6 +196,24 @@ public class UserCredentialsDAO implements UserCredentialDAO {
 
     }
 
+    @Override
+    public boolean readUserCredentials(int id) throws SQLException {
+        boolean success = false;
+
+        final String SQL = "select * from user_credentials where id = ?";
+
+        ResultSet resultSet = null;
+        try(Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL)
+        ){
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            if(resultSet.next()) success = true;
+        }
+
+        return success;
+    }
+
     public UserCredential getUserCredentialById(int userId) {
         UserCredential userCredential = null;
 

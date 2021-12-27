@@ -1,6 +1,6 @@
 package com.revature.models.exceptions;
 
-public class NegativeAmountException extends Exception {
+public class NegativeAmountException extends RuntimeException {
     public NegativeAmountException() {
     }
 

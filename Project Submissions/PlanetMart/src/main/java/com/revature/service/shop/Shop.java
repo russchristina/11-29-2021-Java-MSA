@@ -7,13 +7,13 @@ import com.revature.models.shop.Planet;
 import com.revature.models.shop.TemporaryPlanet;
 import com.revature.models.shop.generator.PlanetGenerator;
 import com.revature.models.users.User;
-import com.revature.repository.AtmosphereDAO;
-import com.revature.repository.InventoryDAO;
-import com.revature.repository.LifeDAO;
-import com.revature.repository.PlanetDAO;
+import com.revature.repository.*;
+import com.revature.repository.Exception.InvalidInventoryIdException;
+import com.revature.repository.Exception.NoPlanetFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +21,9 @@ import java.util.Map;
 
 public class Shop {
 
-    private final Logger log = LoggerFactory.getLogger(Shop.class);
-
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
+    private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
+    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
 
     public int calculateValueOfPlanet(TemporaryPlanet planet) {
         int baseValue = 100;
@@ -64,7 +65,6 @@ public class Shop {
         for(int i = 0; i < 5; i++){
             temporaryPlanetList.add(planetGenerator.generateRandomPlanet());
         }
-
         return temporaryPlanetList;
     }
 
@@ -80,8 +80,19 @@ public class Shop {
         InventoryDAO iDao = new InventoryDAO();
 
         planet.setUserId(user.getUserId());
-        planetDAO.addPlanet(planet);
-        int planetId = planetDAO.getPlanetIdByName(planet.getName());
+        try {
+            planetDAO.addPlanet(planet);
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nFAILED TO ADD PLANET, TRY AGAIN.\n");
+        }
+        int planetId = 0;
+        try {
+            planetId = planetDAO.getPlanetIdByName(planet.getName());
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nFAILED TO GET PLANET ID\n");
+        }
 
         if(planet.getLifeform() != null){
             Life life = planet.getLifeform();
@@ -92,11 +103,26 @@ public class Shop {
         Map<String, Integer> atmosphereComposition = new HashMap<>();
         Map<String, Integer> atmFromPlanet = planet.getAtmosphere();
 
-        atmosphereDAO.addAtmosphereComposition(planet.getAtmosphere(), planetId);
+        try {
+            atmosphereDAO.addAtmosphereComposition(planet.getAtmosphere(), planetId);
+        } catch (SQLException throwables) {
+            debugLogger.debug(throwables.toString());
+            System.out.println("\nERROR, ISSUE WITH ADDING ATMOSPHERE TO DATABASE\n");
+        }catch (Exception e){
+            errorLogger.error(e.toString());
+            System.out.println("\nERROR, IF ISSUES ARISE PLEASE RESTART APPLICATION\n");
+        }
 
         planetsForSale.remove(planet);
         inventory.setBalance(inventory.getBalance() - value);
-        iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        try {
+            iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
+        transactionLogger.info("PLANET Purchased ID: " + planetId +
+                "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
     }
 
     public void sellPlanet(TemporaryPlanet planet, User user, List<TemporaryPlanet> temporaryPlanetList, List<TemporaryPlanet> planetsForSale, Inventory inventory) {
@@ -106,21 +132,51 @@ public class Shop {
         AtmosphereDAO atmosphereDAO = new AtmosphereDAO();
         InventoryDAO iDao = new InventoryDAO();
 
-        int planetId = planetDAO.getPlanetIdByName(planet.getName());
-        Planet planetDB = planetDAO.getPlanetsById(planetId);
+        int planetId = 0;
+        try {
+            planetId = planetDAO.getPlanetIdByName(planet.getName());
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nFAILED TO GET PLANET ID BY NAME, TRY AGAIN.\n");
+        }
+        try {
+            Planet planetDB = planetDAO.getPlanetsById(planetId);
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nFAILED TO GET PLANET FROM PLANET ID, TRY AGAIN.\n");
+        }
 
         if(planet.getLifeform() != null){
             lifeDAO = new LifeDAO();
             lifeDAO.deleteLifeByPlanetId(planetId);
         }
 
-        atmosphereDAO.deleteAtmosphereByPlanetId(planetId);
-        planetDAO.deletePlanetById(planetId);
+        try {
+            atmosphereDAO.deleteAtmosphereByPlanetId(planetId);
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nFAILED TO DELETE ATMOSPHERE OF PLANET\n");
+        } catch (NoPlanetFoundException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nNO PLANET FOUND ERROR\n");
+        }
+        try {
+            planetDAO.deletePlanetById(planetId);
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nFAILED TO DELETE PLANET, TRY AGAIN\n");
+        }
 
         inventory.setBalance(inventory.getBalance()+value);
-        iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        try {
+            iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+            System.out.println("\nINVALID INVENTORY ID\n");
+        }
 
         temporaryPlanetList.add(planet);
-
+        transactionLogger.info("PLANET SOLD ID: " + planetId +
+                "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
     }
 }
