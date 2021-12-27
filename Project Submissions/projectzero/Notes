@@ -1,0 +1,37 @@
+/*
+	 * fields needed for Customer:
+	 * 
+	 * String username
+	 * String password
+	 * 		need key value pair for login?
+	 * int account balance (only positive)
+	 * 
+	 * int Street # (solo?)
+	 * String address (combo w/ street #?)
+	 * String city
+	 * String state
+	 * String phone #
+	 * 
+	 * fields needed for Transaction:
+	 * 
+	 * String brand name
+	 * String item name / type
+	 * int price
+	 * String date
+	 * 
+	 * 
+	 * 
+	 * methods? needed
+	 * 
+	 * new customer sign up
+	 * customer log in
+	 * customer add secondary customer
+	 * customer add to balance
+	 * customer remove from balance
+	 * customer transfer between accounts
+	 * customer make transaction
+	 * 
+	 * 
+	 * employees can view all customer info and cancel accounts
+	 * admins can view and edit customer info, also cancel 
+	 */
