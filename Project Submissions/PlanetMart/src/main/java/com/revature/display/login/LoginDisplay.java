@@ -3,13 +3,15 @@ package com.revature.display.login;
 public class LoginDisplay {
 
     public void printWelcomeOptions() {
-        System.out.println("1. Login to Account");
-        System.out.println("2. Create Account");
+        System.out.println("1. LOGIN TO ACCOUNT");
+        System.out.println("2. CREATE NEW CUSTOMER ACCOUNT");
+        System.out.println("3. EXIT APPLICATION");
 
     }
 
     public void printLoginDisplayUsername() {
         System.out.println("LOGIN");
+        System.out.println("TYPE N TO RETURN");
         System.out.print("USERNAME:");
     }
 
@@ -18,10 +20,9 @@ public class LoginDisplay {
     }
 
     public void printCreateAccountDisplay() {
-        System.out.println("CREATE ACCOUNT");
-        System.out.println("Input options");
-        System.out.println("1. Continue to account Creation");
-        System.out.println("2. Return");
+        System.out.println("CREATING CUSTOMER ACCOUNT");
+        System.out.println("1. CONTINUE");
+        System.out.println("2. RETURN TO LOGIN");
 
     }
 

@@ -1,9 +1,8 @@
 package com.revature.models.shop;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class Life implements Serializable {
+public class Life {
 
     private int id;
     private String name;

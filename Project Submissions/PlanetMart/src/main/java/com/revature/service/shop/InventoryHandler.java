@@ -9,6 +9,7 @@ import com.revature.repository.CustomerUserDAO;
 import com.revature.repository.Exception.InvalidInventoryIdException;
 import com.revature.repository.InventoryDAO;
 import com.revature.repository.Exception.NoPlanetFoundException;
+import com.revature.service.account.LifeInputHandler;
 import com.revature.utility.PlanetToTempPlanet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,11 +62,12 @@ public class InventoryHandler {
 
     }
 
-    public void openInventory(User user) {
+    public void openInventory(User user, CustomerAccount customerAccount) {
         InventoryDAO iDao = new InventoryDAO();
         List<TemporaryPlanet> temporaryPlanetList = null;
+        PlanetToTempPlanet planetToTempPlanet = new PlanetToTempPlanet();
         try {
-            temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+            temporaryPlanetList = planetToTempPlanet.getUsersTemporaryPlanets(user);
         } catch (SQLException e) {
             debugLogger.debug(e.toString());
         } catch (NoPlanetFoundException e) {
@@ -84,7 +86,40 @@ public class InventoryHandler {
             System.out.println(inventory.getBalance());
         }
         PlanetDisplay.displayTemporaryPlanetList(temporaryPlanetList);
+        inventoryOptions(temporaryPlanetList, user, customerAccount);
     }
+
+    private void inventoryOptions(List<TemporaryPlanet> temporaryPlanetList, User user, CustomerAccount customerAccount) {
+
+        System.out.println("\nOPTIONS\n");
+        boolean chooseOptions = true;
+        do{
+            input.setLength(0);
+            System.out.println("1. Manage Balance");
+            System.out.println("2. Communicate With Life Form");
+            System.out.println("3. Return");
+            input.append(sc.nextLine().trim());
+            switch (input.toString()){
+                case ("1"):
+                    System.out.println("OPTION 1: Manage Balance");
+                    manageBalance(customerAccount, user);
+                    break;
+                case ("2"):
+                    System.out.println("OPTION 2: Communicate with Life Form");
+                    LifeInputHandler lifeInputHandler = new LifeInputHandler();
+                    lifeInputHandler.communicate(temporaryPlanetList, user, customerAccount);
+                    break;
+                case ("3"):
+                    System.out.println("\nRETURNING");
+                    chooseOptions = false;
+                    break;
+                default:
+                    System.out.println("\nCHOOSE A VALID OPTION");
+                    break;
+            }
+        }while(chooseOptions);
+    }
+
 
     public void manageBalance(CustomerAccount customerAccount, User user) {
         InventoryDAO inventoryDAO = new InventoryDAO();
@@ -95,7 +130,6 @@ public class InventoryHandler {
             debugLogger.debug(e.toString());
         }
         boolean choosingOptions = true;
-
 
         do{
             input.setLength(0);
@@ -123,9 +157,7 @@ public class InventoryHandler {
                     System.out.println("INVALID");
                     break;
             }
-
         }while(choosingOptions);
-
     }
 
     private void minusBalance(Inventory inventory, User user, InventoryDAO inventoryDAO) {
@@ -167,6 +199,10 @@ public class InventoryHandler {
         InventoryDAO inventoryDAO = new InventoryDAO();
 
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
+        if(users.size() < 2) {
+            System.out.println("\nNOT ENOUGH USERS TO TRANSFER FUNDS\n");
+            return;
+        }
         boolean chooseUser = true;
         boolean chooseUser2 = true;
         User firstUser = null;
@@ -227,7 +263,6 @@ public class InventoryHandler {
             }while(chooseUser);
         }
     }
-
 
     private void multipleUserTransfer(User firstUser, User secondUser) {
         InventoryDAO inventoryDAO = new InventoryDAO();
@@ -292,4 +327,31 @@ public class InventoryHandler {
                 "\nINVENTORY 2 ID: " + secondInventory.getId() + "\nINVENTORY 2 BALANCE: " + secondInventory.getBalance());
 
     }
+
+    public void openUserInventory(User user) {
+        InventoryDAO iDao = new InventoryDAO();
+        List<TemporaryPlanet> temporaryPlanetList = null;
+        PlanetToTempPlanet planetToTempPlanet = new PlanetToTempPlanet();
+        try {
+            temporaryPlanetList = planetToTempPlanet.getUsersTemporaryPlanets(user);
+        } catch (SQLException e) {
+            debugLogger.debug(e.toString());
+        } catch (NoPlanetFoundException e) {
+            errorLogger.error(e.toString());
+        }
+
+        Inventory inventory = null;
+        try {
+            inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+        } catch (InvalidInventoryIdException e) {
+            debugLogger.debug(e.toString());
+        }
+
+        if(inventory != null){
+            System.out.println("\nBALANCE:");
+            System.out.println(inventory.getBalance());
+        }
+        PlanetDisplay.displayTemporaryPlanetList(temporaryPlanetList);
+
     }
+}

@@ -2,6 +2,9 @@ package com.revature.repository;
 
 import com.revature.models.users.UserCredential;
 import com.revature.repository.DAOInterface.UserCredentialDAO;
+import com.revature.repository.Exception.DuplicateUsernameException;
+import com.revature.repository.Exception.InvalidUserCredentialIdException;
+import com.revature.service.exceptions.EmptyInputException;
 import com.revature.utility.ConnectionFactory;
 
 import java.sql.*;
@@ -37,7 +40,9 @@ public class UserCredentialsDAO implements UserCredentialDAO {
     }
 
     @Override
-    public UserCredential getUserCredentialByUsername(String username) {
+    public UserCredential getUserCredentialByUsername(String username) throws EmptyInputException {
+
+        if(username.contentEquals("")) throw new EmptyInputException("Empty username Input");
 
         UserCredential userCredential = null;
 
@@ -75,13 +80,10 @@ public class UserCredentialsDAO implements UserCredentialDAO {
         return userCredential;
     }
 
-    @Override
-    public void updateUserCredentialById(int id) {
 
-        System.out.println("Not implemented");
-    }
-
-    public void updateUserCredentialUsername(int id, String username){
+    public void updateUserCredentialUsername(int id, String username) throws EmptyInputException, SQLException {
+        if(username.contentEquals("")) throw new EmptyInputException("Username empty");
+        if(!readUserCredentials(id)) throw new InvalidUserCredentialIdException("Invalid User Credential id");
         final String SQL = "update user_credentials set username = ? where id = ?";
 
         try(
@@ -99,7 +101,11 @@ public class UserCredentialsDAO implements UserCredentialDAO {
         }
     }
 
-    public void updateUserCredentialFirstname(int id, String firstname){
+    public void updateUserCredentialFirstname(int id, String firstname) throws SQLException, EmptyInputException {
+
+        if(firstname.contentEquals("")) throw new EmptyInputException("First Name empty");
+        if(!readUserCredentials(id)) throw new InvalidUserCredentialIdException("Invalid User Credential id");
+
         final String SQL = "update user_credentials set first_name = ? where id = ?";
 
         try(
@@ -117,7 +123,11 @@ public class UserCredentialsDAO implements UserCredentialDAO {
         }
     }
 
-    public void updateUserCredentialLastname(int id, String lastname){
+    public void updateUserCredentialLastname(int id, String lastname) throws SQLException, EmptyInputException {
+
+        if(lastname.contentEquals("")) throw new EmptyInputException("Last Name empty");
+        if(!readUserCredentials(id)) throw new InvalidUserCredentialIdException("Invalid User Credential id");
+
         final String SQL = "update user_credentials set last_name = ? where id = ?";
 
         try(
@@ -136,7 +146,11 @@ public class UserCredentialsDAO implements UserCredentialDAO {
 
     }
 
-    public void updateUserCredentialPassword(int id, String password){
+    public void updateUserCredentialPassword(int id, String password) throws SQLException, EmptyInputException {
+
+        if(password.contentEquals("")) throw new EmptyInputException("Password empty");
+        if(!readUserCredentials(id)) throw new InvalidUserCredentialIdException("Invalid User Credential id");
+
         final String SQL = "update user_credentials set password = ? where id = ?";
 
         try(
@@ -156,7 +170,7 @@ public class UserCredentialsDAO implements UserCredentialDAO {
     }
 
     @Override
-    public void deleteUserCredentialById(int id) {
+    public void deleteUserCredentialByUserCredentialId(int id) {
 
         final String SQL = "delete * from user_credentials where id = ?";
 
@@ -173,27 +187,33 @@ public class UserCredentialsDAO implements UserCredentialDAO {
     }
 
     @Override
-    public void addUserCredential(UserCredential user) {
+    public void addUserCredential(UserCredential user) throws EmptyInputException {
 
-        final String SQL = "insert into user_credentials values( default, ?, ?, ?, ?)";
+        if(user.getUsername().contentEquals("")) throw new EmptyInputException("username empty");
+        if(user.getPassword().contentEquals("")) throw new EmptyInputException("password empty");
+        if(user.getFirstName().contentEquals("")) throw new EmptyInputException("Firstname empty");
+        if(user.getLastName().contentEquals("")) throw new EmptyInputException("Lastname empty");
 
-        try(
-                Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL);
-                ) {
+        try {
+            if(getUserCredentialByUsername(user.getUsername())!= null) throw new DuplicateUsernameException("username exists in datbase");
+            final String SQL = "insert into user_credentials values( default, ?, ?, ?, ?)";
 
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getLastName());
+            try(
+                    Connection connection = ConnectionFactory.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(SQL);
+            ) {
+                statement.setString(1, user.getUsername());
+                statement.setString(2, user.getPassword());
+                statement.setString(3, user.getFirstName());
+                statement.setString(4, user.getLastName());
+                statement.execute();
 
-            statement.execute();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } catch (EmptyInputException e) {
+            e.printStackTrace();
         }
-
-
     }
 
     @Override

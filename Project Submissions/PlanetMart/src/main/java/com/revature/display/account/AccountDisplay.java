@@ -16,7 +16,7 @@ public class AccountDisplay {
         System.out.println("1. Open Inventory");
         System.out.println("2. Open Shop");
         System.out.println("3. Change User");
-        System.out.println("4. Add to Balance");
+        System.out.println("4. Manage Money");
         System.out.println("5. Logout\n");
     }
 
@@ -25,7 +25,7 @@ public class AccountDisplay {
         System.out.println("1. Open Inventory");
         System.out.println("2. Open Shop");
         System.out.println("3. Change User");
-        System.out.println("4. Add to Balance");
+        System.out.println("4. Manage Money");
         System.out.println("5. Logout");
         System.out.println("6. Add User");
         System.out.println("7. Transfer Funds");
@@ -36,7 +36,8 @@ public class AccountDisplay {
     }
 
     public void displayCustomerAccount(CustomerAccount customerAccount) {
-        System.out.println("\nAccount ID: " + customerAccount.getCustomerAccountId());
+        System.out.println("\nCUSTOMER ACCOUNT ID: " + customerAccount.getCustomerAccountId());
+        System.out.println("PRIMARY USER ATTACHED TO ACCOUNT: " + customerAccount.getPrimaryUserId());
     }
 
     public void displayUsers(List<User> users, CustomerAccount customerAccounts) {
@@ -49,8 +50,6 @@ public class AccountDisplay {
                 System.out.println("\nSECONDARY USER ID: " + user.getUserId());
                 System.out.println("USER NAME: " + user.getName());
             }
-
-
         }
 
     }
@@ -80,7 +79,6 @@ public class AccountDisplay {
         System.out.println("11. Add Admin Account\n");
 
     }
-
 
     public void displayEmployeeAccountInformation(List<EmployeeAccount> employeeAccounts) {
         System.out.println("\nEMPLOYEE ACCOUNT INFORMATION\n");

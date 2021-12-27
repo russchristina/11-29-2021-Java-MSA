@@ -25,6 +25,6 @@ public class LifeDisplay {
         System.out.println("...END TRANSMISSION\n");
         System.out.println();
         for (int i = 0; i < 100; i++) System.out.print("=");
-
+        System.out.println();
     }
 }

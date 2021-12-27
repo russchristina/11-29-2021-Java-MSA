@@ -12,14 +12,14 @@ import java.util.Map;
 
 public class MarkovChain {
 
-    private final Logger log = LoggerFactory.getLogger(MarkovChain.class);
+    private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
 
-    private final File nouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\nouns.txt");
-    private final File adjectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\adjectives.txt");
-    private final File connectives = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\connectives.txt");
-    private final File verbs = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\verbs.txt");
-    private final File pronouns = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\pronouns.txt");
-    private final File randomStart = new File("C:\\Users\\Bravo\\Documents\\gitRepos\\11-29-2021-Java-MSA\\Project Submissions\\PlanetMart\\src\\main\\resources\\randomPhraseBegin.txt");
+    private final File nouns = new File("src/main/resources/nouns.txt");
+    private final File adjectives = new File("src/main/resources/adjectives.txt");
+    private final File connectives = new File("src/main/resources/connectives.txt");
+    private final File verbs = new File("src/main/resources/verbs.txt");
+    private final File pronouns = new File("src/main/resources/pronouns.txt");
+    private final File randomStart = new File("src/main/resources/randomPhraseBegin.txt");
 
     public StringBuilder generateParagraph(){
         StringBuilder paragraph = new StringBuilder();
@@ -164,17 +164,13 @@ public class MarkovChain {
     }
 
     public List<String> getWords(File file){
-
         List<String> nounsList = new ArrayList<>();
         try(FileReader reader = new FileReader(file); BufferedReader buffReader = new BufferedReader(reader)) {
-
             while(buffReader.ready()) {
                 nounsList.add(buffReader.readLine());
             }
-
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            debugLogger.debug(String.valueOf(e));
         }
         return nounsList;
     }

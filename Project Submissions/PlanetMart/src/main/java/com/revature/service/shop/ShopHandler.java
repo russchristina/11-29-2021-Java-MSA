@@ -77,8 +77,9 @@ public class ShopHandler {
 
         InventoryDAO iDao = new InventoryDAO();
         List<TemporaryPlanet> temporaryPlanetList = null;
+        PlanetToTempPlanet planetToTempPlanet = new PlanetToTempPlanet();
         try {
-            temporaryPlanetList = PlanetToTempPlanet.getUsersTemporaryPlanets(user);
+            temporaryPlanetList = planetToTempPlanet.getUsersTemporaryPlanets(user);
         } catch (SQLException | NoPlanetFoundException e) {
             debugLogger.debug(e.toString());
         }

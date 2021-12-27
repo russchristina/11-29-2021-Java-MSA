@@ -1,8 +1,6 @@
 package com.revature.models.shop.generator;
 
-import com.revature.models.shop.AtmosphereComposition;
 import com.revature.models.shop.Life;
-import com.revature.models.shop.Planet;
 import com.revature.models.shop.TemporaryPlanet;
 
 import java.util.HashMap;
@@ -21,14 +19,12 @@ public class PlanetGenerator {
         int waterPercent = generateWater(goldiLocksZone);
         int averageTemperature = generateAverageTemperature(goldiLocksZone, waterPercent);
         Map<String, Integer> atmosphere = generateAtmosphere(goldiLocksZone, waterPercent);
-
         Life lifeForm = generateLife(goldiLocksZone,waterPercent,averageTemperature);
-
         return new TemporaryPlanet(generateNameSimple(), lifeForm,0, goldiLocksZone, waterPercent, averageTemperature, atmosphere );
     }
 
     private Life generateLife(boolean goldiLocksZone, int waterPercent, int averageTemperature) {
-        if(goldiLocksZone && waterPercent >= 5 && averageTemperature >= 20 && averageTemperature <= 60){
+        if(goldiLocksZone && waterPercent >= 5 && averageTemperature >= 293 && averageTemperature <= 333){
             Life life = new Life(0, generateName().toString(), (int)(Math.random()*20_000_000) + 100_000, (int)(Math.random()*4), 0);
             return life;
         }

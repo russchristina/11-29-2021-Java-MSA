@@ -1,12 +1,12 @@
 package com.revature.service.account;
 
-import com.revature.database.exceptions.DuplicateUsernameException;
 import com.revature.display.account.AccountDisplay;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
 import com.revature.models.users.User;
 import com.revature.models.users.UserCredential;
 import com.revature.repository.*;
+import com.revature.repository.Exception.DuplicateUsernameException;
 import com.revature.repository.Exception.InvalidCustomerAccountIdException;
 import com.revature.repository.Exception.InvalidUserCredentialException;
 import com.revature.repository.Exception.InvalidUserIdException;
@@ -51,7 +51,7 @@ public class AccountInputHandler {
             switch (input.toString()) {
                 case ("1"):
                     System.out.println("Option 1: Open Inventory");
-                    inventoryHandler.openInventory(user);
+                    inventoryHandler.openInventory(user, customerAccount);
                     break;
                 case ("2"):
                     System.out.println("Option 2: Open Shop");
@@ -64,7 +64,7 @@ public class AccountInputHandler {
                     accountHandler.changeUser(customerAccount, username);
                     break;
                 case ("4"):
-                    System.out.println("Option 4: Add to Balance");
+                    System.out.println("Option 4: Manage Money");
                     inventoryHandler.manageBalance(customerAccount, user);
                     break;
                 case ("5"):
@@ -81,7 +81,7 @@ public class AccountInputHandler {
         } while (choosingOptions);
         }
 
-    private void inputChooseCustomerOptionsPrimary(CustomerAccount customerAccount, User user, UserCredential username) {
+    public void inputChooseCustomerOptionsPrimary(CustomerAccount customerAccount, User user, UserCredential username) {
         boolean choosingOptions = true;
         InventoryHandler inventoryHandler = new InventoryHandler();
         AccountHandler accountHandler = new AccountHandler();
@@ -95,7 +95,7 @@ public class AccountInputHandler {
                 switch (input.toString()) {
                     case ("1"):
                         System.out.println("Option 1: Open Inventory");
-                        inventoryHandler.openInventory(user);
+                        inventoryHandler.openInventory(user, customerAccount);
                         break;
                     case ("2"):
                         System.out.println("Option 2: Open Shop");
@@ -108,7 +108,7 @@ public class AccountInputHandler {
                         accountHandler.changeUser(customerAccount, username);
                         break;
                     case ("4"):
-                        System.out.println("Option 4: Add to Balance");
+                        System.out.println("Option 4: Manage Money");
                         inventoryHandler.manageBalance(customerAccount, user);
                         break;
                     case ("5"):
@@ -121,7 +121,7 @@ public class AccountInputHandler {
                     case ("6"):
                         System.out.println("Option 6: Add User");
                         try {
-                            accountHandler.addUser(user, customerAccount);
+                            accountHandler.addUser(customerAccount);
                         } catch (EmptyInputException e) {
                             debugLogger.debug(e.toString());
                             System.out.println("\nEMPTY INPUT, TRY AGAIN\n");
@@ -136,7 +136,7 @@ public class AccountInputHandler {
                         break;
                     case ("8"):
                         System.out.println("Option 8: Change user names");
-                        accountHandler.changeUserNames(user, customerAccount);
+                        accountHandler.changeUserNames(customerAccount);
                         break;
                     case ("9"):
                         System.out.println("Option 9: Remove User");
@@ -219,7 +219,7 @@ public class AccountInputHandler {
 
     }
 
-    private void deleteAccount(EmployeeAccount employeeAccount, UserCredential username) {
+    public void deleteAccount(EmployeeAccount employeeAccount, UserCredential username) {
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
         InventoryDAO inventoryDAO = new InventoryDAO();
@@ -250,7 +250,7 @@ public class AccountInputHandler {
 
     }
 
-    private void viewUserInformation(UserCredential username) {
+    public void viewUserInformation(UserCredential username) {
 
         CustomerUserDAO cUDao = new CustomerUserDAO();
         InventoryHandler inventoryHandler = new InventoryHandler();
@@ -264,7 +264,7 @@ public class AccountInputHandler {
                 try{
                     int userId = Integer.parseInt(input.toString());
                     User user = cUDao.getUserById(userId);
-                    inventoryHandler.openInventory(user);
+                    inventoryHandler.openUserInventory(user);
                     chooseUser = false;
                 }catch (NumberFormatException e){
                     debugLogger.debug(e.toString());
@@ -277,14 +277,13 @@ public class AccountInputHandler {
             }while(chooseUser);
     }
 
-    private void viewCustomerAccountInformation() {
+    public void viewCustomerAccountInformation() {
 
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         AccountDisplay accountDisplay = new AccountDisplay();
 
         boolean chooseAccount = true;
-
         do{
             System.out.println("\nINPUT ACCOUNT NUMBER");
             input.setLength(0);
@@ -301,7 +300,6 @@ public class AccountInputHandler {
                 System.out.println("\nTYPE A VALID NUMBER\n");
             }
         }while(chooseAccount);
-
     }
 
     public void inputChooseAdminOption(EmployeeAccount employeeAccount, UserCredential username) {
@@ -365,11 +363,21 @@ public class AccountInputHandler {
                     break;
                 case ("10"):
                     System.out.println("Option 10: Add Employee Account");
-                    accountHandler.addEmployeeAccount(employeeAccount, username);
+                    try {
+                        accountHandler.addEmployeeAccount(employeeAccount, username);
+                    } catch (EmptyInputException e) {
+                        debugLogger.debug(String.valueOf(e));
+                        System.out.println("\nEMPTY INPUT REGISTERED, TRY AGAIN\n");
+                    }
                     break;
                 case ("11"):
                     System.out.println("Option 11: Add Admin Account");
-                    accountHandler.addAdminAccount(employeeAccount, username);
+                    try {
+                        accountHandler.addAdminAccount(employeeAccount, username);
+                    } catch (EmptyInputException e) {
+                        debugLogger.debug(String.valueOf(e));
+                        System.out.println("\nEMPTY INPUT REGISTERED, TRY AGAIN\n");
+                    }
                     break;
                 default:
                     System.out.println("\nInput a valid choice.\n");

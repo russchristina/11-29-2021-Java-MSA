@@ -102,7 +102,7 @@ public class AtmosphereDAO implements AtomsphereDAOInterface {
         if(atmosphereMap.size() != 10) throw new InvalidMapException("Atmosphere Map provided is of size " + atmosphereMap.size());
 
         PlanetDAO planetDAO = new PlanetDAO();
-        if(!planetDAO.readPlanetId(planetId)) throw new NoPlanetFoundException("Planet with ID: " + planetId + " not in database.");
+        if(planetDAO.readPlanetId(planetId)) throw new NoPlanetFoundException("Planet with ID: " + planetId + " not in database.");
 
 
         try(
@@ -130,7 +130,7 @@ public class AtmosphereDAO implements AtomsphereDAOInterface {
         final String SQL = "delete from atmosphere_content where planet_id = ?";
         PlanetDAO planetDAO = new PlanetDAO();
 
-        if(!planetDAO.readPlanetId(planetId)) throw new NoPlanetFoundException("Planet with ID: " + planetId + " not in database.");
+        if(planetDAO.readPlanetId(planetId)) throw new NoPlanetFoundException("Planet with ID: " + planetId + " not in database.");
 
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {
