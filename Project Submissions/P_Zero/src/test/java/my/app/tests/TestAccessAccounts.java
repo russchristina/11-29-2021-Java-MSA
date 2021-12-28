@@ -1,6 +1,7 @@
 package my.app.tests;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import my.app.AccessAccounts;
 import my.app.Account;
