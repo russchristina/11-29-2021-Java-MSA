@@ -122,7 +122,6 @@ public class AtmosphereDAO implements AtomsphereDAOInterface {
             statement.setInt(10, atmosphereMap.get("Unknown"));
             statement.setInt(11, planetId);
             statement.execute();
-
         }
     }
 

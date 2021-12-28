@@ -6,5 +6,7 @@ public class CreateShapes {
 
     public String indent = "                                                            ";
 
+    public String shortIndent = "                                 ";
 
+    public String largeIndent = "                                                                                             ";
 }

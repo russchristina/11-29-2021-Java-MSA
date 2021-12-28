@@ -1,5 +1,6 @@
 package com.revature.service.shop;
 
+import com.revature.display.utility.CreateShapes;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.shop.Inventory;
 import com.revature.models.shop.Life;
@@ -26,6 +27,7 @@ public class Shop {
     private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
     private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
     private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    CreateShapes createShapes = new CreateShapes();
 
     public int calculateValueOfPlanet(TemporaryPlanet planet) {
         int baseValue = 100;
@@ -64,7 +66,7 @@ public class Shop {
         List<TemporaryPlanet> temporaryPlanetList = new ArrayList<>();
         PlanetGenerator planetGenerator = new PlanetGenerator();
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 10; i++){
             temporaryPlanetList.add(planetGenerator.generateRandomPlanet());
         }
         return temporaryPlanetList;
@@ -88,13 +90,15 @@ public class Shop {
             if(planet.getLifeform() != null){
                 Life life = planet.getLifeform();
                 lifeDAO.addLife(life.getName(), life.getPopulation(), life.getTechnologyLevel(), planetId);
-                atmosphereDAO.addAtmosphereComposition(planet.getAtmosphere(), planetId);
                 planetsForSale.remove(planet);
                 inventory.setBalance(inventory.getBalance() - value);
                 iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
-                transactionLogger.info("PLANET Purchased ID: " + planetId +
-                        "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
+                System.out.println(createShapes.indent + "SUCCESS!");
+
             }
+            atmosphereDAO.addAtmosphereComposition(planet.getAtmosphere(), planetId);
+            transactionLogger.info("PLANET Purchased ID: " + planetId +
+                    " USER ID: " + user.getUserId() + " BALANCE: " + inventory.getBalance());
         } catch (SQLException e) {
                 debugLogger.debug(String.valueOf(e));
                 System.out.println("\nDATABASE ERROR\nTRY AGAIN.\n");
@@ -110,7 +114,7 @@ public class Shop {
         }
     }
 
-    public void sellPlanet(TemporaryPlanet planet, User user, List<TemporaryPlanet> temporaryPlanetList, List<TemporaryPlanet> planetsForSale, Inventory inventory) {
+    public void sellPlanet(TemporaryPlanet planet, User user, List<TemporaryPlanet> temporaryPlanetList, Inventory inventory) {
         int value = calculateValueOfPlanet(planet);
         PlanetDAO planetDAO = new PlanetDAO();
         LifeDAO lifeDAO;
@@ -130,7 +134,7 @@ public class Shop {
             inventory.setBalance(inventory.getBalance()+value);
             iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
             temporaryPlanetList.add(planet);
-            planetsForSale.add(planet);
+            System.out.println(createShapes.indent + "SUCCESS!");
             transactionLogger.info("PLANET SOLD ID: " + planetId +
                     "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
         } catch (SQLException e) {

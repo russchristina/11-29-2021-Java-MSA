@@ -33,94 +33,98 @@ public class AccountInputHandler {
     CreateShapes createShapes = new CreateShapes();
 
     public void inputChooseCustomerOptions(CustomerAccount customerAccount, User user, UserCredential username) {
-        boolean choosingOptions = true;
+        boolean choosingOPTIONs = true;
         InventoryHandler inventoryHandler = new InventoryHandler();
         AccountHandler accountHandler = new AccountHandler();
         AccountDisplay accountDisplay = new AccountDisplay();
         if(user.getUserId() == customerAccount.getPrimaryUserId()){
-            inputChooseCustomerOptionsPrimary(customerAccount, user, username);
+            inputChooseCustomerOPTIONsPrimary(customerAccount, user, username);
             return;
         }
 
         do {
 
             accountDisplay.displayCustomerBasicOptions(customerAccount, user);
-            System.out.print(createShapes.indent + "Choose an option:");
+            System.out.println(createShapes.indent + "CHOOSE AN OPTION:");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
             switch (input.toString()) {
                 case ("1"):
-                    System.out.println(createShapes.indent + "Option 1: Open Inventory");
+                    System.out.println(createShapes.indent + "OPTION 1: INVENTORY");
                     inventoryHandler.openInventory(user, customerAccount);
                     break;
                 case ("2"):
-                    System.out.println(createShapes.indent + "Option 2: Open Shop");
+                    System.out.println(createShapes.indent + "OPTION 2: SHOP");
                     ShopHandler shopHandler = new ShopHandler();
                     shopHandler.beginShopping(customerAccount, user);
                     break;
                 case ("3"):
-                    System.out.println(createShapes.indent + "Option 3: Change User");
-                    choosingOptions = false;
+                    System.out.println(createShapes.indent + "OPTION 3: CHANGE USER");
+                    choosingOPTIONs = false;
                     accountHandler.changeUser(customerAccount, username);
                     break;
                 case ("4"):
-                    System.out.println(createShapes.indent + "Option 4: Manage Money");
+                    System.out.println(createShapes.indent + "OPTION 4: MANAGE MONEY");
                     inventoryHandler.manageBalance(customerAccount, user);
                     break;
                 case ("5"):
-                    System.out.println(createShapes.indent + "Option 5: Logout");
-                    choosingOptions = false;
+                    System.out.println(createShapes.indent + "OPTION 5: LOGOUT");
+                    choosingOPTIONs = false;
+                    System.out.println();
                     System.out.println(createShapes.indent + "LOGGING OUT");
                     LoginInputHandler loginInputHandler = new LoginInputHandler();
                     loginInputHandler.firstStage();
                     break;
                 default:
-                    System.out.println(createShapes.indent + "Input a valid choice.");
+                    System.out.println(createShapes.indent + "INPUT VALID CHOICE");
                     break;
             }
-        } while (choosingOptions);
+        } while (choosingOPTIONs);
         }
 
-    public void inputChooseCustomerOptionsPrimary(CustomerAccount customerAccount, User user, UserCredential username) {
-        boolean choosingOptions = true;
+    public void inputChooseCustomerOPTIONsPrimary(CustomerAccount customerAccount, User user, UserCredential username) {
+        boolean choosingOPTIONs = true;
         InventoryHandler inventoryHandler = new InventoryHandler();
         AccountHandler accountHandler = new AccountHandler();
         AccountDisplay accountDisplay = new AccountDisplay();
 
             do {
                 accountDisplay.displayCustomerUpgradedOptions(customerAccount, user);
-                System.out.println(createShapes.indent + "Choose an option:");
+                System.out.println(createShapes.indent + "CHOOSE AN OPTION: ");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 switch (input.toString()) {
                     case ("1"):
-                        System.out.println(createShapes.indent + "Option 1: Open Inventory");
+                        System.out.println(createShapes.indent + "OPTION 1: INVENTORY");
                         inventoryHandler.openInventory(user, customerAccount);
                         break;
                     case ("2"):
-                        System.out.println(createShapes.indent + "Option 2: Open Shop");
+                        System.out.println(createShapes.indent + "OPTION 2: SHOP");
                         ShopHandler shopHandler = new ShopHandler();
                         shopHandler.beginShopping(customerAccount, user);
                         break;
                     case ("3"):
-                        System.out.println(createShapes.indent + "Option 3: Change User");
-                        choosingOptions = false;
+                        System.out.println(createShapes.indent + "OPTION 3: CHANGE USER");
+                        choosingOPTIONs = false;
                         accountHandler.changeUser(customerAccount, username);
                         break;
                     case ("4"):
-                        System.out.println(createShapes.indent + "Option 4: Manage Money");
+                        System.out.println(createShapes.indent + "OPTION 4: MANAGE MONEY");
                         inventoryHandler.manageBalance(customerAccount, user);
                         break;
                     case ("5"):
-                        System.out.println(createShapes.indent + "Option 5: Logout");
-                        choosingOptions = false;
+                        System.out.println(createShapes.indent + "OPTION 5: LOGOUT");
+                        choosingOPTIONs = false;
+                        System.out.println();
                         System.out.println(createShapes.indent + "LOGGING OUT");
                         LoginInputHandler loginInputHandler = new LoginInputHandler();
                         loginInputHandler.firstStage();
                         break;
                     case ("6"):
-                        System.out.println(createShapes.indent + "Option 6: Add User");
+                        System.out.println(createShapes.indent + "OPTION 6: ADD USER");
                         try {
                             accountHandler.addUser(customerAccount);
                         } catch (EmptyInputException e) {
@@ -132,19 +136,19 @@ public class AccountInputHandler {
                         }
                         break;
                     case ("7"):
-                        System.out.println(createShapes.indent + "Option 7: Transfer Funds");
+                        System.out.println(createShapes.indent + "OPTION 7: TRANSFER FUNDS BETWEEN USERS");
                         inventoryHandler.transferFunds(customerAccount, user);
                         break;
                     case ("8"):
-                        System.out.println(createShapes.indent + "Option 8: Change user names");
+                        System.out.println(createShapes.indent + "OPTION 8: CHANGE NAME OF USER");
                         accountHandler.changeUserNames(customerAccount);
                         break;
                     case ("9"):
-                        System.out.println(createShapes.indent + "Option 9: Remove User");
+                        System.out.println(createShapes.indent + "OPTION 9: REMOVE USER");
                         accountHandler.removeUser(user, customerAccount);
                         break;
                     case ("10"):
-                        System.out.println(createShapes.indent + "Option 10: Add Account");
+                        System.out.println(createShapes.indent + "OPTION 10: ADD ACCOUNT");
                         try {
                             accountHandler.addAccount(user, customerAccount, username);
                         } catch (SQLException e) {
@@ -154,21 +158,21 @@ public class AccountInputHandler {
                         }
                         break;
                     case ("11"):
-                        System.out.println(createShapes.indent + "Option 11: Change Account");
+                        System.out.println(createShapes.indent + "OPTION 11: CHANGE CURRENT ACCOUNT");
                         try {
                             accountHandler.initiateAccount(username);
                         } catch (AccountNotFoundException e) {
                             e.printStackTrace();
                         }
                     default:
-                        System.out.println(createShapes.indent + "Input a valid choice.");
+                        System.out.println(createShapes.indent + "INPUT A VALID CHOICE");
                         break;
                 }
-            } while (choosingOptions);
+            } while (choosingOPTIONs);
     }
 
     public void inputChooseEmployeeOption(EmployeeAccount employeeAccount, UserCredential username) {
-        boolean choosingOptions = true;
+        boolean choosingOPTIONs = true;
         InventoryHandler inventoryHandler = new InventoryHandler();
         AccountHandler accountHandler = new AccountHandler();
         AccountDisplay accountDisplay = new AccountDisplay();
@@ -178,39 +182,41 @@ public class AccountInputHandler {
         do {
             accountDisplay.displayEmployeeAccount(employeeAccount);
 
-            System.out.println(createShapes.indent + "Choose an option:");
+            System.out.println(createShapes.indent + "CHOOSE AN OPTION: ");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
             switch (input.toString()) {
                 case ("1"):
-                    System.out.println(createShapes.indent + "Option 1: View all Customer Accounts");
+                    System.out.println(createShapes.indent + "OPTION 1: VIEW ALL CUSTOMER ACCOUNTS");
                     for (CustomerAccount customerAccount : customerAccountDAO.getAllCustomerAccounts()) {
                         accountDisplay.displayCustomerAccount(customerAccount);
                     }
                     break;
                 case ("2"):
-                    System.out.println(createShapes.indent + "Option 2: View Customer Account Information");
+                    System.out.println(createShapes.indent + "OPTION 2: VIEW SPECIFIC CUSTOMER ACCOUNT INFORMATION");
                     viewCustomerAccountInformation();
                     break;
                 case ("3"):
-                    System.out.println(createShapes.indent + "Option 3: View all Users");
+                    System.out.println(createShapes.indent + "OPTION 3: VIEW ALL USERS");
                     accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
                     break;
                 case ("4"):
-                    System.out.println(createShapes.indent + "Option 4: View User Information");
+                    System.out.println(createShapes.indent + "OPTION 4: VIEW SPECIFIC USER INFORMATION");
                     viewUserInformation(username);
                     break;
                 case ("5"):
-                    System.out.println(createShapes.indent + "Option 5: WIPE ACCOUNT FROM HISTORY");
+                    System.out.println(createShapes.indent + "OPTION 5: WIPE ACCOUNT FROM HISTORY");
                     deleteAccountTotally(employeeAccount, username);
                     break;
                 case ("6"):
-                    System.out.println(createShapes.indent + "Option 6: Delete Specific Account");
+                    System.out.println(createShapes.indent + "OPTION 6: DELETE SPECIFIC ACCOUNT");
                     deleteSpecificAccount();
+                    break;
                 case ("7"):
-                    System.out.println(createShapes.indent + "Option 7: Logout");
-                    choosingOptions = false;
+                    System.out.println(createShapes.indent + "OPTION 7: LOGOUT");
+                    choosingOPTIONs = false;
                     System.out.println(createShapes.indent + "LOGGING OUT");
                     LoginInputHandler loginInputHandler = new LoginInputHandler();
                     loginInputHandler.firstStage();
@@ -219,7 +225,7 @@ public class AccountInputHandler {
                     System.out.println(createShapes.indent + "Input a valid choice.");
                     break;
             }
-        } while (choosingOptions);
+        } while (choosingOPTIONs);
     }
 
     private void deleteSpecificAccount() {
@@ -227,6 +233,7 @@ public class AccountInputHandler {
         boolean chooseAccount = true;
         do{
             System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
@@ -259,6 +266,7 @@ public class AccountInputHandler {
 
         do{
             System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
                 int customerId = Integer.parseInt(input.toString());
@@ -268,7 +276,8 @@ public class AccountInputHandler {
 
                 List<User> users = customerUserDAO.getAllUsersByCustomerId(customerId);
 
-                System.out.println(createShapes.indent + "THIS WILL DELETE ALL INFORMATION RELATED TO ACCOUNT AND USERPROCEEDING WILL DELETE THE USER CREDENTIAL AND THEY WILL BE UNABLE TO LOGIN EXCEPT BY MAKING A NEW ACCOUNTTYPE Y TO PROCEEDTYPE N TO CANCEL AND RETURN");
+                System.out.println(createShapes.indent + "THIS WILL DELETE ALL INFORMATION RELATED TO ACCOUNT AND USER");
+                System.out.println(createShapes.shortIndent + "PROCEEDING WILL DELETE THE USER CREDENTIAL AND THEY WILL BE UNABLE TO LOGIN EXCEPT BY MAKING A NEW ACCOUNTTYPE Y TO PROCEEDTYPE N TO CANCEL AND RETURN");
                 do{
                     input.setLength(0);
                     input.append(sc.nextLine());
@@ -327,6 +336,7 @@ public class AccountInputHandler {
 
             do{
                 System.out.println(createShapes.indent + "CHOOSE USER NUMBER");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 try{
@@ -354,6 +364,7 @@ public class AccountInputHandler {
         boolean chooseAccount = true;
         do{
             System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
@@ -372,7 +383,7 @@ public class AccountInputHandler {
 
     public void inputChooseAdminOption(EmployeeAccount employeeAccount, UserCredential username) {
 
-        boolean choosingOptions = true;
+        boolean choosingOPTIONs = true;
         EmployeeAccountDAO employeeAccountDAO = new EmployeeAccountDAO();
         AccountHandler accountHandler = new AccountHandler();
         AccountDisplay accountDisplay = new AccountDisplay();
@@ -382,58 +393,61 @@ public class AccountInputHandler {
         do {
             accountDisplay.displayAdminAccount(employeeAccount);
 
-            System.out.println(createShapes.indent + "Choose an option:");
+            System.out.println(createShapes.indent + "CHOOSE AN OPTION:");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
             switch (input.toString()) {
                 case ("1"):
-                    System.out.println(createShapes.indent + "Option 1: View all Customer Accounts");
+                    System.out.println(createShapes.indent + "OPTION 1: VIEW ALL CUSTOMER ACCOUNTS");
                     for (CustomerAccount customerAccount : customerAccountDAO.getAllCustomerAccounts()) {
                         accountDisplay.displayCustomerAccount(customerAccount);
                     }
                     break;
                 case ("2"):
-                    System.out.println(createShapes.indent + "Option 2: View Customer Account Information");
+                    System.out.println(createShapes.indent + "OPTION 2: VIEW SPECIFIC CUSTOMER ACCOUNT INFORMATION");
                     viewCustomerAccountInformation();
                     break;
                 case ("3"):
-                    System.out.println(createShapes.indent + "Option 3: View all Users");
+                    System.out.println(createShapes.indent + "OPTION 3: VIEW ALL USERS");
                     accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
                     break;
                 case ("4"):
-                    System.out.println(createShapes.indent + "Option 4: View User Information");
+                    System.out.println(createShapes.indent + "OPTION 4: VIEW SPECIFIC USER INFORMATION");
                     viewUserInformation(username);
                     break;
                 case ("5"):
-                    System.out.println(createShapes.indent + "Option 5: WIPE ACCOUNT FROM HISTORY");
+                    System.out.println(createShapes.indent + "OPTION 5: WIPE ACCOUNT FROM HISTORY");
                     deleteAccountTotally(employeeAccount, username);
                     break;
                 case ("6"):
-                    System.out.println(createShapes.indent + "Option 6: Delete Specific Account");
+                    System.out.println(createShapes.indent + "OPTION 6: DELETE SPECIFIC ACCOUNT");
                     deleteSpecificAccount();
+                    break;
                 case ("7"):
-                    System.out.println(createShapes.indent + "Option 7: Logout");
-                    choosingOptions = false;
+                    System.out.println(createShapes.indent + "OPTION 7: LOGOUT");
+                    choosingOPTIONs = false;
+                    System.out.println();
                     System.out.println(createShapes.indent + "LOGGING OUT");
                     LoginInputHandler loginInputHandler = new LoginInputHandler();
                     loginInputHandler.firstStage();
                     break;
                 case ("8"):
-                    System.out.println(createShapes.indent + "Option 8: View All Employee Accounts");
+                    System.out.println(createShapes.indent + "OPTION 8: VIEW ALL EMPLOYEE ACCOUNTS");
                     List<EmployeeAccount> employeeAccounts = employeeAccountDAO.getAllEmployeeAccounts();
                     accountDisplay.displayEmployeeAccountInformation(employeeAccounts);
                     break;
                 case ("9"):
-                    System.out.println(createShapes.indent + "Option 9: Change Account Data");
+                    System.out.println(createShapes.indent + "OPTION 9: ALTER ACCOUNT DATA");
                     accountHandler.changeAccountData(employeeAccount, username);
                     break;
                 case ("10"):
-                    System.out.println(createShapes.indent + "Option 10: Change User Data");
+                    System.out.println(createShapes.indent + "OPTION 10: ALTER USER DATA");
                     accountHandler.changeUserData(employeeAccount, username);
                     break;
                 case ("11"):
-                    System.out.println(createShapes.indent + "Option 11: Add Employee Account");
+                    System.out.println(createShapes.indent + "OPTION 11: ADD EMPLOYEE ACCOUNT");
                     try {
                         accountHandler.addEmployeeAccount(employeeAccount, username);
                     } catch (EmptyInputException e) {
@@ -442,7 +456,7 @@ public class AccountInputHandler {
                     }
                     break;
                 case ("12"):
-                    System.out.println(createShapes.indent + "Option 12: Add Admin Account");
+                    System.out.println(createShapes.indent + "OPTION 12: ADD ADMIN ACCOUNT");
                     try {
                         accountHandler.addAdminAccount(employeeAccount, username);
                     } catch (EmptyInputException e) {
@@ -454,7 +468,7 @@ public class AccountInputHandler {
                     System.out.println(createShapes.indent + "Input a valid choice.");
                     break;
             }
-        } while (choosingOptions);
+        } while (choosingOPTIONs);
 
     }
 }

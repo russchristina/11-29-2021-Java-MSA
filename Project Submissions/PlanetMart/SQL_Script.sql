@@ -63,13 +63,11 @@ select * from customer_inventory;
 create table planets(
 
 planet_id serial primary key,
-life_form_id integer references life_forms(life_id),
 planet_name varchar not null,
-planet_user_id integer references customer_users(user_id),
+planet_user_id integer references customer_users(user_id) on delete cascade,
 goldilocks_zone boolean,
 water_percent numeric,
-average_temp numeric,
-atmosphere_composition integer references atmosphere_content(atmosphere_id)
+average_temp numeric
 
 );
 
@@ -87,7 +85,9 @@ argon numeric not null,
 helium numeric not null,
 carbon_dioxide numeric not null,
 methane numeric not null,
-chlorine numeric not null
+chlorine numeric not null,
+unknown numeric not null,
+planet_id integer
 
 );
 
@@ -100,7 +100,8 @@ create table life_forms(
 life_id serial primary key,
 life_name varchar not null,
 population numeric not null check (population > 0),
-technology_level numeric not null
+technology_level numeric not null,
+planet_id integer
 
 );
 
@@ -128,8 +129,7 @@ insert into customer_users values(default, 'Maria', 3, 1), (default, 'Ruben', 4,
 
 alter table customer_users add constraint inventoryKey foreign key (inventory_id) references customer_inventory(inventory_id);
 
-delete from customer_account where customer_account_id = 6;
-delete from customer_users where user_id = 11;
+
 
 
 truncate customer_users cascade;
@@ -146,4 +146,4 @@ alter table customer_account add column user_credential_id integer references us
 alter table customer_account add column primary_user_id integer;
 
 
-
+alter table planets drop column planet+

@@ -1,5 +1,6 @@
 package com.revature.service.shop;
 
+import com.revature.display.account.LifeDisplay;
 import com.revature.display.shop.PlanetDisplay;
 import com.revature.display.utility.CreateShapes;
 import com.revature.models.accounts.CustomerAccount;
@@ -30,7 +31,8 @@ public class InventoryHandler {
     PlanetDisplay planetDisplay = new PlanetDisplay();
 
     CreateShapes createShapes = new CreateShapes();
-
+    ShopHandler shopHandler = new ShopHandler();
+    Shop shop = new Shop();
 
     public void addToBalance(Inventory inventory, User user, InventoryDAO inventoryDAO) {
         System.out.println(createShapes.indent + "BALANCE...");
@@ -71,57 +73,116 @@ public class InventoryHandler {
         List<TemporaryPlanet> temporaryPlanetList = null;
         PlanetToTempPlanet planetToTempPlanet = new PlanetToTempPlanet();
         try {
+            System.out.println(createShapes.indent + "LOADING");
+            System.out.println();
             temporaryPlanetList = planetToTempPlanet.getUsersTemporaryPlanets(user);
-        } catch (SQLException e) {
+            Inventory inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+
+            if(inventory != null){
+                planetDisplay.displayInventoryOpen(temporaryPlanetList, inventory);
+
+            }
+            inventoryOptions(temporaryPlanetList, user, customerAccount, inventory);
+
+        } catch (SQLException | InvalidInventoryIdException e) {
             debugLogger.debug(e.toString());
         } catch (NoPlanetFoundException e) {
             errorLogger.error(e.toString());
         }
-
-        Inventory inventory = null;
-        try {
-            inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
-        } catch (InvalidInventoryIdException e) {
-            debugLogger.debug(e.toString());
-        }
-
-        if(inventory != null){
-            System.out.println(createShapes.indent + "BALANCE:");
-            System.out.println(createShapes.indent + inventory.getBalance());
-        }
-        planetDisplay.displayTemporaryPlanetList(temporaryPlanetList);
-        inventoryOptions(temporaryPlanetList, user, customerAccount);
     }
 
-    private void inventoryOptions(List<TemporaryPlanet> temporaryPlanetList, User user, CustomerAccount customerAccount) {
+    private void inventoryOptions(List<TemporaryPlanet> temporaryPlanetList, User user, CustomerAccount customerAccount, Inventory inventory) {
 
-        System.out.println(createShapes.indent + "OPTIONS");
         boolean chooseOptions = true;
         do{
+            System.out.println();
+            System.out.println(createShapes.border);
+            System.out.println(createShapes.indent + "INVENTORY OPTIONS");
             input.setLength(0);
-            System.out.println(createShapes.indent + "1. Manage Balance");
-            System.out.println(createShapes.indent + "2. Communicate With Life Form");
-            System.out.println(createShapes.indent + "3. Return");
+            System.out.println(createShapes.indent + "1. VIEW PLANET DETAILS");
+            System.out.println(createShapes.indent + "2. MANAGE BALANCE");
+            System.out.println(createShapes.indent + "3. COMMUNICATE WITH PLANET");
+            System.out.println(createShapes.indent + "4. SELL PLANET");
+            System.out.println(createShapes.indent + "5. RETURN");
+
+            System.out.print(createShapes.indent + "-> ");
             input.append(sc.nextLine().trim());
             switch (input.toString()){
                 case ("1"):
-                    System.out.println(createShapes.indent + "OPTION 1: Manage Balance");
-                    manageBalance(customerAccount, user);
+                    System.out.println(createShapes.indent + "OPTION 1: VIEW PLANET DETAILS");
+                    inventoryPlanetDetailView(temporaryPlanetList, user, customerAccount, inventory);
                     break;
                 case ("2"):
-                    System.out.println(createShapes.indent + "OPTION 2: Communicate with Life Form");
+                    System.out.println(createShapes.indent + "OPTION 2: MANAGE BALANCE");
+                    manageBalance(customerAccount, user);
+                    break;
+                case ("3"):
+                    System.out.println(createShapes.indent + "OPTION 3: COMMUNICATE WITH PLANET");
                     LifeInputHandler lifeInputHandler = new LifeInputHandler();
                     lifeInputHandler.communicate(temporaryPlanetList, user, customerAccount);
                     break;
-                case ("3"):
+                case ("4"):
+                    System.out.println("OPTION 4: SELL PLANET");
+                    shopHandler.sellPlanet(customerAccount, user, new Shop());
+                case ("5"):
                     System.out.println(createShapes.indent + "RETURNING");
                     chooseOptions = false;
-                    break;
+                    return;
                 default:
                     System.out.println(createShapes.indent + "CHOOSE A VALID OPTION");
                     break;
             }
         }while(chooseOptions);
+    }
+
+    private void inventoryPlanetDetailView(List<TemporaryPlanet> temporaryPlanetList, User user, CustomerAccount customerAccount, Inventory inventory) {
+        System.out.println(createShapes.border);
+        boolean inputting = true;
+        boolean choosingOptions = true;
+
+        do {
+            System.out.println(createShapes.indent + "PLANET DETAILED VIEW");
+            System.out.println(createShapes.indent + "INPUT VALID PLANET NAME OR N TO RETURN");
+            System.out.print(createShapes.indent + "-> ");
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+            if (input.toString().contentEquals("N")) return;
+
+                for (TemporaryPlanet temporaryPlanet : temporaryPlanetList) {
+                    if(input.toString().contentEquals(temporaryPlanet.getName())){
+                        planetDisplay.viewPlanetDetails(temporaryPlanetList, temporaryPlanet);
+                        System.out.println(createShapes.border);
+                        System.out.println(createShapes.indent + "1. COMMUNICATE WITH PLANET");
+                        System.out.println(createShapes.indent + "2. SELL PLANET");
+                        System.out.println(createShapes.indent + "3. RETURN");
+
+                        while(choosingOptions){
+                            System.out.print(createShapes.indent + "-> ");
+                            input.setLength(0);
+                            input.append(sc.nextLine().trim());
+                            switch (input.toString()){
+                                case("1"):
+                                    LifeDisplay lifeDisplay = new LifeDisplay();
+                                    lifeDisplay.communicateWithLife(temporaryPlanet.getLifeform(), user);
+                                    choosingOptions = false;
+                                    break;
+                                case("2"):
+                                    shop.sellPlanet(temporaryPlanet, user, temporaryPlanetList, inventory);
+                                    choosingOptions = false;
+                                    break;
+                                case("3"):
+                                    choosingOptions = false;
+                                    return;
+                                default:
+                                    System.out.println(createShapes.indent + "INPUT VALID OPTION");
+                                    break;
+                            }
+                        }
+                    }
+                }
+            } while(inputting);
+
+
     }
 
     public void manageBalance(CustomerAccount customerAccount, User user) {

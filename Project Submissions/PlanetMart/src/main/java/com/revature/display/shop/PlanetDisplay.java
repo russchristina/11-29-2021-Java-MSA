@@ -1,8 +1,10 @@
 package com.revature.display.shop;
 
 import com.revature.display.utility.CreateShapes;
+import com.revature.models.shop.Inventory;
 import com.revature.models.shop.TemporaryPlanet;
 import com.revature.service.shop.Shop;
+import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,7 +21,24 @@ public class PlanetDisplay {
     protected final Scanner sc = new Scanner(System.in);
     CreateShapes createShapes = new CreateShapes();
     private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
+    Shop shop = new Shop();
 
+    public void displayInventoryOpen(List<TemporaryPlanet> temporaryPlanetList, Inventory inventory){
+        System.out.println(createShapes.border);
+        System.out.println(createShapes.indent + "INVENTORY");
+        System.out.println();
+        System.out.println(createShapes.indent + "BALANCE: " + inventory.getBalance());
+
+        System.out.println(createShapes.indent + "OWNED PLANETS");
+        Iterator<TemporaryPlanet> planetIterator = temporaryPlanetList.iterator();
+        while(planetIterator.hasNext()){
+            TemporaryPlanet planet = planetIterator.next();
+            System.out.println(createShapes.indent + "NAME - " + planet.getName());
+            System.out.println(createShapes.indent + "VALUE - " + shop.calculateValueOfPlanet(planet));
+            if(planet.getLifeform() != null) System.out.println(createShapes.indent + "CIVILIZATION - " + planet.getLifeform().getName());
+            System.out.println();
+        }
+    }
 
     public void displayTemporaryPlanetList(List<TemporaryPlanet> temporaryPlanetList) {
         System.out.println(createShapes.border);
@@ -115,6 +135,37 @@ public class PlanetDisplay {
                 errorLogger.error(String.valueOf(e));
             }
         }
+
+    }
+
+    public void viewPlanetDetails(List<TemporaryPlanet> temporaryPlanetList, TemporaryPlanet temporaryPlanet) {
+        int planetNumberInList = temporaryPlanetList.indexOf(temporaryPlanet);
+
+        if(planetNumberInList > 20) planetNumberInList = 20;
+
+        System.out.println(createShapes.border);
+        System.out.println(createShapes.indent + "PLANET DETAILS");
+        System.out.println(createShapes.border);
+        System.out.println(createShapes.largeIndent + "PLANET: " + temporaryPlanet.getName());
+        System.out.println(createShapes.largeIndent + "GOLDILOCK ZONE? " + temporaryPlanet.isGoldilocksZone());
+        System.out.println(createShapes.largeIndent + "WATER: " + temporaryPlanet.getWaterPercent() + "%");
+        System.out.println(createShapes.largeIndent + "AVERAGE SURFACE TEMPERATURE: " + temporaryPlanet.getAverageTemperature() +" K : " + (temporaryPlanet.getAverageTemperature()-273) + " C");
+        System.out.println(createShapes.largeIndent + "PLANET ATMOSPHERE COMPOSITION: ");
+        temporaryPlanet.getAtmosphere().forEach((gas, amount) -> {
+            if (amount > 0) System.out.println(createShapes.largeIndent + gas + " - " + amount + "%");
+        });
+
+        if (temporaryPlanet.getLifeform() != null) {
+            displayPlanetArt(planetNumberInList);
+            System.out.println();
+            System.out.println(createShapes.largeIndent + "LIFE-FORM");
+            System.out.println(createShapes.largeIndent + "NAME: " + temporaryPlanet.getLifeform().getName());
+            System.out.println(createShapes.largeIndent + "POPULATION: " + temporaryPlanet.getLifeform().getPopulation());
+            System.out.println(createShapes.largeIndent + "TECHNOLOGY LEVEL: " + temporaryPlanet.getLifeform().getTechnologyLevel());
+        } else{
+            displayPlanetArt(planetNumberInList);
+        }
+
 
     }
 }

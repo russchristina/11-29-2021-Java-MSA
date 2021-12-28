@@ -87,7 +87,7 @@ public class LoginInputHandler {
             password.setLength(0);
             try {
                 System.out.println(createShapes.border);
-                System.out.println(createShapes.indent + "INPUT NEW LOGIN CREDENTIALSTYPE N TO LEAVE");
+                System.out.println(createShapes.indent + "INPUT NEW LOGIN CREDENTIALS OR TYPE N TO LEAVE");
                 System.out.println(createShapes.border);
                 System.out.print(createShapes.indent+"USERNAME:");
                 username.append(sc.nextLine()).trimToSize();
@@ -201,10 +201,9 @@ public class LoginInputHandler {
                 input.setLength(0);
                 String firstName = input.append(sc.nextLine().trim()).toString();
                 System.out.print(createShapes.indent+"LAST NAME:");
-                System.out.println(createShapes.border);
                 input.setLength(0);
                 String lastName = input.append(sc.nextLine().trim()).toString();
-
+                System.out.println(createShapes.border);
                 userCredentialsDAO.addUserCredential(new UserCredential(0,
                         username.toString(),
                         password.toString(),

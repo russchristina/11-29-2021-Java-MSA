@@ -21,11 +21,22 @@ public class MarkovChain {
     private final File pronouns = new File("src/main/resources/pronouns.txt");
     private final File randomStart = new File("src/main/resources/randomPhraseBegin.txt");
 
+    private final File markovText = new File("src/main/resources/MarkovText.txt");
+
     public StringBuilder generateParagraph(){
         StringBuilder paragraph = new StringBuilder();
         for(int i = 0; i < (int)(Math.random()*8)+4 ; i++){
             paragraph.append(generateSentence());
         }
+
+        try (FileWriter fileWriter = new FileWriter(markovText);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
+
+            bufferedWriter.write(String.valueOf(paragraph));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return paragraph;
     }

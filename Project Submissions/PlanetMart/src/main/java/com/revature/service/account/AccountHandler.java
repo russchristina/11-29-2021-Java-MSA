@@ -40,7 +40,8 @@ public class AccountHandler {
 
         if(!users.isEmpty()){
             do{
-                System.out.print(createShapes.indent + "CHOOSE USER NUMBER: ");
+                System.out.println(createShapes.indent + "CHOOSE USER NUMBER: ");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 for (User user : users) {
@@ -67,15 +68,19 @@ public class AccountHandler {
             try {
                 employeeAccount = eDao.getEmployeeAccountsByUserId(username.getId());
                 if(!customerAccountList.isEmpty()){
+                    System.out.println(createShapes.border);
                     for (CustomerAccount customerAccount : customerAccountList) {
                         accountDisplay.displayCustomerAccount(customerAccount);
                     }
                     do {
-                        System.out.print(createShapes.indent + "TYPE ACCOUNT NUMBER: ");
+                        System.out.println();
+                        System.out.println(createShapes.indent + "TYPE ACCOUNT NUMBER: ");
+                        System.out.print(createShapes.indent + "-> ");
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         for (CustomerAccount customerAccount : customerAccountList) {
                             if(String.valueOf(customerAccount.getCustomerAccountId()).contentEquals(input)){
+                                System.out.println(createShapes.border);
                                 chooseUser(customerAccount, username);
                                 chooseAccount = false;
                                 break;
@@ -118,7 +123,9 @@ public class AccountHandler {
         accountDisplay.displayUsers(users, customerAccount);
         if(!users.isEmpty()){
             do{
-                System.out.print(createShapes.indent + "CHOOSE USER NUMBER: ");
+                System.out.println();
+                System.out.println(createShapes.indent + "CHOOSE USER NUMBER: ");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 for (User user : users) {
@@ -128,6 +135,7 @@ public class AccountHandler {
                         break;
                     }
                 }
+                System.out.println();
                 System.out.println(createShapes.indent + "INVALID INPUT");
             }while(chooseUser);
         }
@@ -141,6 +149,7 @@ public class AccountHandler {
         accountDisplay.displayUsers(users, customerAccount);
         if(!users.isEmpty()){
             do{
+                System.out.println();
                 System.out.println(createShapes.indent + "CHOOSE USER NUMBER OR N TO RETURN");
                 System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
@@ -151,7 +160,8 @@ public class AccountHandler {
                 }
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
-                        System.out.print(createShapes.indent + "CHOOSE NEW NAME:");
+                        System.out.println(createShapes.indent + "CHOOSE NEW NAME:");
+                        System.out.print(createShapes.indent + "-> ");
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         cUDao.updateUserName(user.getUserId(), input.toString());
@@ -178,7 +188,8 @@ public class AccountHandler {
 
         if(!users.isEmpty()){
             do{
-                System.out.print(createShapes.indent + "CHOOSE USER NUMBER OR TYPE N TO LEAVE");
+                System.out.println(createShapes.indent + "CHOOSE USER NUMBER OR TYPE N TO LEAVE");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 if(input.toString().contentEquals("N")){
@@ -214,7 +225,8 @@ public class AccountHandler {
         boolean addingUser = true;
 
         do{
-            System.out.print(createShapes.indent + "INPUT NEW USER NAME OR N TO LEAVE");
+            System.out.println(createShapes.indent + "INPUT NEW USER NAME OR N TO LEAVE");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
             if(input.toString().contentEquals("N")){
@@ -299,8 +311,8 @@ public class AccountHandler {
                 accountDisplay.displayCustomerAccount(customerAccount);
                 do{
                     System.out.println(createShapes.indent + "CHOOSE OPTION");
-                    System.out.println(createShapes.indent + "1. Change Primary User Id");
-                    System.out.println(createShapes.indent + "2. Return");
+                    System.out.println(createShapes.indent + "1. CHANGE PRIMARY USER ID");
+                    System.out.println(createShapes.indent + "2. RETURN");
                     try{
                         System.out.print(createShapes.indent + "-> ");
                         input.setLength(0);
@@ -345,7 +357,7 @@ public class AccountHandler {
 
         do{
 
-            System.out.print(createShapes.indent + "INPUT NEW PRIMARY USER ID OR N TO LEAVE");
+            System.out.println(createShapes.indent + "INPUT NEW PRIMARY USER ID OR N TO LEAVE");
             try{
                 System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
@@ -376,7 +388,9 @@ public class AccountHandler {
 
         do{
             accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
-            System.out.print(createShapes.indent + "INPUT USER NUMBER ");
+            System.out.println(createShapes.indent + "INPUT USER NUMBER ");
+            System.out.print(createShapes.indent + "-> ");
+
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
@@ -388,10 +402,10 @@ public class AccountHandler {
 
                 do{
                     System.out.println(createShapes.indent + "CHOOSE OPTION");
-                    System.out.println(createShapes.indent + "1. Change User Name");
-                    System.out.println(createShapes.indent + "2. Change User Balance");
-                    System.out.println(createShapes.indent + "3. Delete User");
-                    System.out.println(createShapes.indent + "4. Return");
+                    System.out.println(createShapes.indent + "1. CHANGE USER NAME");
+                    System.out.println(createShapes.indent + "2. CHANGE USER BALANCE");
+                    System.out.println(createShapes.indent + "3. DELETE USER");
+                    System.out.println(createShapes.indent + "4. RETURN");
 
                     try{
                         System.out.print(createShapes.indent + "-> ");
@@ -452,9 +466,11 @@ public class AccountHandler {
             input.append(sc.nextLine().trim());
             switch (input.toString()) {
                 case ("1"):
-                    System.out.print(createShapes.indent + "USERNAME: ");
+                    System.out.println(createShapes.indent + "USERNAME: ");
+                    System.out.print(createShapes.indent + "-> ");
                     employeeUsername.append(sc.nextLine()).trimToSize();
-                    System.out.print(createShapes.indent + "PASSWORD: ");
+                    System.out.println(createShapes.indent + "PASSWORD: ");
+                    System.out.print(createShapes.indent + "-> ");
                     employeePassword.append(sc.nextLine()).trimToSize();
 
                     if(employeeUsername.toString().contentEquals("")) throw new EmptyInputException("Empty employee username");
@@ -522,9 +538,11 @@ public class AccountHandler {
             input.append(sc.nextLine().trim());
             switch (input.toString()) {
                 case ("1"):
-                    System.out.print(createShapes.indent + "USERNAME: ");
+                    System.out.println(createShapes.indent + "USERNAME: ");
+                    System.out.print(createShapes.indent + "-> ");
                     employeeUsername.append(sc.nextLine()).trimToSize();
-                    System.out.print(createShapes.indent + "PASSWORD: ");
+                    System.out.println(createShapes.indent + "PASSWORD: ");
+                    System.out.print(createShapes.indent + "-> ");
                     employeePassword.append(sc.nextLine()).trimToSize();
                     if(employeeUsername.toString().contentEquals("")) throw new EmptyInputException("Empty employee username");
                     if(employeePassword.toString().contentEquals("")) throw new EmptyInputException("Empty employee password");

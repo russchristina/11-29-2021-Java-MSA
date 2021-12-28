@@ -34,8 +34,6 @@ public class PlanetToTempPlanet {
 
         if(!planetList.isEmpty()){
             for (Planet planet : planetList) {
-
-
                 temporaryPlanetList.add(new TemporaryPlanet(
                         planet.getName(),
                         lifeDAO.getLifeByPlanetId(planet.getId()),

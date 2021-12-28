@@ -19,11 +19,11 @@ public class AccountDisplay {
     public void displayCustomerBasicOptions(CustomerAccount customerAccount, User user) {
         System.out.println(createShapes.border);
         System.out.println(createShapes.indent + "SECONDARY USER OPTIONS");
-        System.out.println(createShapes.indent + "1. Open Inventory");
-        System.out.println(createShapes.indent + "2. Open Shop");
-        System.out.println(createShapes.indent + "3. Change User");
-        System.out.println(createShapes.indent + "4. Manage Money");
-        System.out.println(createShapes.indent + "5. Logout");
+        System.out.println(createShapes.indent + "1. INVENTORY");
+        System.out.println(createShapes.indent + "2. SHOP");
+        System.out.println(createShapes.indent + "3. CHANGE USER");
+        System.out.println(createShapes.indent + "4. MANAGE MONEY");
+        System.out.println(createShapes.indent + "5. LOGOUT");
         System.out.println(createShapes.border);
 
     }
@@ -31,33 +31,33 @@ public class AccountDisplay {
     public void displayCustomerUpgradedOptions(CustomerAccount customerAccount, User user) {
         System.out.println(createShapes.border);
         System.out.println(createShapes.indent + "PRIMARY USER OPTIONS");
-        System.out.println(createShapes.indent + "1. Open Inventory");
-        System.out.println(createShapes.indent + "2. Open Shop");
-        System.out.println(createShapes.indent + "3. Change User");
-        System.out.println(createShapes.indent + "4. Manage Money");
-        System.out.println(createShapes.indent + "5. Logout");
-        System.out.println(createShapes.indent + "6. Add User");
-        System.out.println(createShapes.indent + "7. Transfer Funds");
-        System.out.println(createShapes.indent + "8. Change User names");
-        System.out.println(createShapes.indent + "9. Remove User");
-        System.out.println(createShapes.indent + "10. Add Account");
-        System.out.println(createShapes.indent + "11. Change Account");
+        System.out.println(createShapes.indent + "1. INVENTORY");
+        System.out.println(createShapes.indent + "2. SHOP");
+        System.out.println(createShapes.indent + "3. CHANGE USER");
+        System.out.println(createShapes.indent + "4. MANAGE MONEY");
+        System.out.println(createShapes.indent + "5. LOGOUT");
+        System.out.println(createShapes.indent + "6. ADD USER");
+        System.out.println(createShapes.indent + "7. TRANSFER FUNDS BETWEEN USERS");
+        System.out.println(createShapes.indent + "8. CHANGE NAME OF USER");
+        System.out.println(createShapes.indent + "9. REMOVE USER");
+        System.out.println(createShapes.indent + "10. ADD ACCOUNT");
+        System.out.println(createShapes.indent + "11. CHANGE CURRENT ACCOUNT");
         System.out.println(createShapes.border);
 
     }
 
     public void displayCustomerAccount(CustomerAccount customerAccount) {
-        System.out.println(createShapes.border);
+        System.out.println();
         System.out.println(createShapes.indent + "CUSTOMER ACCOUNT ID: " + customerAccount.getCustomerAccountId());
         System.out.println(createShapes.indent + "PRIMARY USER ATTACHED TO ACCOUNT: " + customerAccount.getPrimaryUserId());
-        System.out.println(createShapes.border);
+        System.out.println();
     }
 
     public void displayUsers(List<User> users, CustomerAccount customerAccounts) {
         System.out.println(createShapes.border);
 
         for (User user : users) {
-            System.out.println(createShapes.border);
+            System.out.println();
             if(user.getUserId() == customerAccounts.getPrimaryUserId()){
                 System.out.println(createShapes.indent + "PRIMARY USER ID: " + user.getUserId());
                 System.out.println(createShapes.indent + "USER NAME: " + user.getName());
@@ -66,19 +66,18 @@ public class AccountDisplay {
                 System.out.println(createShapes.indent + "USER NAME: " + user.getName());
             }
         }
-        System.out.println(createShapes.border);
     }
 
     public void displayEmployeeAccount(EmployeeAccount employeeAccount) {
         System.out.println(createShapes.border);
         System.out.println(createShapes.indent + "EMPLOYEE OPTIONS");
-        System.out.println(createShapes.indent + "1. View all Customer Accounts");
-        System.out.println(createShapes.indent + "2. View Customer Account Information");
-        System.out.println(createShapes.indent + "3. View all Users");
-        System.out.println(createShapes.indent + "4. View User Information");
+        System.out.println(createShapes.indent + "1. VIEW ALL CUSTOMER ACCOUNTS");
+        System.out.println(createShapes.indent + "2. VIEW SPECIFIC CUSTOMER ACCOUNT INFORMATION");
+        System.out.println(createShapes.indent + "3. VIEW ALL USERS");
+        System.out.println(createShapes.indent + "4. VIEW SPECIFIC USER INFORMATION");
         System.out.println(createShapes.indent + "5. WIPE ACCOUNT FROM HISTORY");
-        System.out.println(createShapes.indent + "6. Delete Specific Account");
-        System.out.println(createShapes.indent + "6. Logout");
+        System.out.println(createShapes.indent + "6. DELETE SPECIFIC ACCOUNT");
+        System.out.println(createShapes.indent + "7. LOGOUT");
         System.out.println(createShapes.border);
 
     }
@@ -86,18 +85,18 @@ public class AccountDisplay {
     public void displayAdminAccount(EmployeeAccount employeeAccount) {
         System.out.println(createShapes.border);
         System.out.println(createShapes.indent + "ADMIN OPTIONS");
-        System.out.println(createShapes.indent + "1. View all Customer Accounts");
-        System.out.println(createShapes.indent + "2. View Customer Account Information");
-        System.out.println(createShapes.indent + "3. View all Users");
-        System.out.println(createShapes.indent + "4. View User Information");
+        System.out.println(createShapes.indent + "1. VIEW ALL CUSTOMER ACCOUNTS");
+        System.out.println(createShapes.indent + "2. VIEW SPECIFIC CUSTOMER ACCOUNT INFORMATION");
+        System.out.println(createShapes.indent + "3. VIEW ALL USERS");
+        System.out.println(createShapes.indent + "4. VIEW SPECIFIC USER INFORMATION");
         System.out.println(createShapes.indent + "5. WIPE ACCOUNT FROM HISTORY");
-        System.out.println(createShapes.indent + "6. Delete Specific Account");
-        System.out.println(createShapes.indent + "7. Logout");
-        System.out.println(createShapes.indent + "8. View all Employee Accounts");
-        System.out.println(createShapes.indent + "9. Alter Account");
-        System.out.println(createShapes.indent + "10. Alter User");
-        System.out.println(createShapes.indent + "11. Add Employee Account");
-        System.out.println(createShapes.indent + "12. Add Admin Account");
+        System.out.println(createShapes.indent + "6. DELETE SPECIFIC ACCOUNT");
+        System.out.println(createShapes.indent + "7. LOGOUT");
+        System.out.println(createShapes.indent + "8. VIEW ALL EMPLOYEE ACCOUNTS");
+        System.out.println(createShapes.indent + "9. ALTER ACCOUNT DATA");
+        System.out.println(createShapes.indent + "10. ALTER USER DATA");
+        System.out.println(createShapes.indent + "11. ADD EMPLOYEE ACCOUNT");
+        System.out.println(createShapes.indent + "12. ADD ADMIN ACCOUNT");
         System.out.println(createShapes.border);
 
 
