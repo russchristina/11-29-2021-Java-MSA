@@ -1,6 +1,7 @@
 package com.revature.project.util;
 
 import com.revature.project.MainDisplay;
+import com.revature.project.UserOptions;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ public class UserDBImplementation implements UserDB {
             statement.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Username already exists \n----------------------------------");
+            new MainDisplay();
         } finally {
             CloseDB.closeConnection(connection);
             CloseDB.closeStatement(statement);
@@ -42,7 +44,8 @@ public class UserDBImplementation implements UserDB {
             statement.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Username already exists\n--------------------");
+            new UserOptions().loggedIn();
         } finally {
             CloseDB.closeConnection(connection);
             CloseDB.closeStatement(statement);
@@ -259,7 +262,7 @@ public class UserDBImplementation implements UserDB {
         return specs;
     }
     @Override
-    public ChildUserSpecs deleteChild(ChildUserSpecs specs) {
+    public void deleteChild(ChildUserSpecs specs) {
         final String SQL = "delete from childusers where user_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -275,10 +278,9 @@ public class UserDBImplementation implements UserDB {
             CloseDB.closeConnection(connection);
             CloseDB.closeStatement(statement);
         }
-        return specs;
     }
     @Override
-    public EmployeeUserSpecs deleteEmployee(EmployeeUserSpecs specs) {
+    public void deleteEmployee(EmployeeUserSpecs specs) {
         final String SQL = "delete from employee where user_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -294,7 +296,6 @@ public class UserDBImplementation implements UserDB {
             CloseDB.closeConnection(connection);
             CloseDB.closeStatement(statement);
         }
-        return specs;
     }
 
     @Override
@@ -390,6 +391,121 @@ public class UserDBImplementation implements UserDB {
             connection = OpenConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, specs.getUserFunds());
+            preparedStatement.setString(2, specs.getUsername());
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(preparedStatement);
+        }
+
+    }
+    @Override
+    public void updateUserName(UserSpecs specs) {
+        final  String SQL = "update users set user_name = ? where user_id = ? ";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = OpenConnection.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, specs.getUsername());
+            preparedStatement.setInt(2, specs.getId());
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(preparedStatement);
+        }
+
+
+    }
+    @Override
+    public void updateUserPass(UserSpecs specs) {
+        final  String SQL = "update users set user_pass = ? where user_name = ? ";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = OpenConnection.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, specs.getUserPass());
+            preparedStatement.setString(2, specs.getUsername());
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(preparedStatement);
+        }
+
+    }
+    @Override
+    public void updateChildUserName(ChildUserSpecs specs) {
+        final  String SQL = "update childusers set user_name = ? where user_id = ? ";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = OpenConnection.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, specs.getUsername());
+            preparedStatement.setInt(2, specs.getId());
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(preparedStatement);
+        }
+
+    }
+    @Override
+    public void updateChildUserPass(ChildUserSpecs specs) {
+        final  String SQL = "update childusers set user_pass = ? where user_name = ? ";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = OpenConnection.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, specs.getUserPass());
+            preparedStatement.setString(2, specs.getUsername());
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(preparedStatement);
+        }
+
+    }
+    @Override
+    public void updateEmployeeUserName(EmployeeUserSpecs specs) {
+        final  String SQL = "update employee set user_name = ? where user_id = ? ";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = OpenConnection.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, specs.getUsername());
+            preparedStatement.setInt(2, specs.getId());
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CloseDB.closeConnection(connection);
+            CloseDB.closeStatement(preparedStatement);
+        }
+
+    }
+    @Override
+    public void updateEmployeeUserPass(EmployeeUserSpecs specs) {
+        final  String SQL = "update employee set user_pass = ? where user_name = ? ";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = OpenConnection.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, specs.getUserPass());
             preparedStatement.setString(2, specs.getUsername());
             preparedStatement.execute();
         }catch (SQLException e){

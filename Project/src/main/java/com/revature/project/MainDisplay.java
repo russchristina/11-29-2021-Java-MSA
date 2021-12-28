@@ -1,5 +1,7 @@
 package com.revature.project;//package com.revature.project;
 
+import org.postgresql.util.PSQLException;
+
 import java.util.Scanner;
 
 public class MainDisplay {
@@ -43,7 +45,7 @@ public class MainDisplay {
     }
 
 
-    public MainDisplay() {
+    public MainDisplay()  {
 
 //        Scanner Start and username declaration
         System.out.println("Welcome to the Glizzy Gallery. Please enter your username(case sensitive)" +

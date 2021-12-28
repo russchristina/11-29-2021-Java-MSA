@@ -2,8 +2,10 @@ package com.revature.project;
 
 import com.revature.project.util.*;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import org.postgresql.util.PSQLException;
 
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class UserOptions {
@@ -11,34 +13,46 @@ public class UserOptions {
     Scanner newUser = new Scanner(System.in);
     UserDB userDB = new UserDBImplementation();
     CustomExceptions exceptions = new CustomExceptions();
+    ModifyUsers modifyUsers = new ModifyUsers();
     int funds;
 
     public void newAccount() {
         newUser = new Scanner(System.in);
         UserAccounts allAccounts = new UserAccounts();
         switch (MainDisplay.getUnregisteredDecision()) {
-            case 1: //Create New Account and return to login screen
-                System.out.println("Enter desired username.");
-                String newUsername = newUser.nextLine();
-                System.out.println("Enter desired password");
-                String newPassword = newUser.nextLine();
-                UserSpecs userSpecs = new UserSpecs(0, newUsername, newPassword, 0);
-                data.save(userSpecs);
-                System.out.println("Thank you for signing up! Returning to login page.");
-                MainDisplay mainDisplay = new MainDisplay();
 
+               case 1: //Create New Account and return to login screen
+                    try {
+
+
+                        System.out.println("Enter desired username.");
+                        String newUsername = newUser.nextLine();
+                        System.out.println("Enter desired password");
+                        String newPassword = newUser.nextLine();
+                        UserSpecs userSpecs = new UserSpecs(0, newUsername, newPassword, 0);
+                        data.save(userSpecs);
+                        System.out.println("Thank you for signing up! Returning to login page.");
+                        MainDisplay mainDisplay = new MainDisplay();
+                    }catch (Exception e){
+                        System.out.println("Username already exists.\n------------------------------------------------");
+
+                    }
                 break;
 
 
             case 2: //Return to login page
-                mainDisplay = new MainDisplay();
+                new MainDisplay();
 
                 break;
             case 3: //Return to login page
-                System.out.println("Thank you for visiting. Goodbye! ");
-                newUser.close();
+             try{
+                 System.out.println("Thank you for visiting. Goodbye! ");
+                 newUser.close();
+                 break;
+             }catch (Exception e){
+                 System.out.println("Application Closed.");
+             }
 
-                break;
             default:
                 System.out.println("That number was not recongnized as an option. Please try again. Error code: FW662B" +
                         " \n");
@@ -52,8 +66,7 @@ public class UserOptions {
                 " desired action:\n" +
                 "1: Link new account\n" +
                 "2: Manage funds (add or remove)\n" +
-                "3: Transfer funds to linked accounts\n" +
-                "4: Log out");
+                "3: Log out\n");
         try {
             MainDisplay.setRegisterdDecision(newUser.nextInt());
 
@@ -92,19 +105,15 @@ public class UserOptions {
                                 "\n------------------------------------------------------------------------------------");
                         new UserOptions().loggedIn();
                     }
-                case 3: //Transfer funds to linked accounts
-                    break;
-                case 4: //Manage linked accounts
+                case 3: //Log Out
                     System.out.println("\nReturning to login screen." +
                             "\n------------------------------------------------------------------------------------");
                     new MainDisplay();
                     break;
-                case 5: //Log Out
-                    break;
 
                 default:
                     System.out.println("Invalid input. Only the numbers listed on the main menu are valid inputs. " +
-                            "Returning to main menu. Error code: FL09YN" +
+                            "Returning to main menu. Error code: FL0FFZ" +
                             "\n------------------------------------------------------------------------------------");
                     new UserOptions().loggedIn();
             }
@@ -134,12 +143,12 @@ public class UserOptions {
 
                 switch (MainDisplay.getRegisteredDecision()) {
                     case 1:
-                        ModifyUsers.returnUserTable();
-                        ModifyUsers.deleteMainUser();
+                        modifyUsers.returnUserTable();
+                        modifyUsers.deleteMainUser();
                         break;
                     case 2:
-                        ModifyUsers.returnChildUserTable();
-                        ModifyUsers.deleteChildUser();
+                        modifyUsers.returnChildUserTable();
+                        modifyUsers.deleteChildUser();
                         break;
                     case 3:
                         new MainDisplay();
@@ -147,7 +156,7 @@ public class UserOptions {
                     //--------------------------------------------------------------------------------------------------
                     default:
                         System.out.println("Invalid input. Only the numbers listed on the main menu are valid inputs. " +
-                                "Returning to main menu. Error code: FL09YN" +
+                                "Returning to main menu. Error code: FL09FA" +
                                 "\n------------------------------------------------------------------------------------");
                         new UserOptions().employeeLoggedIn();
                 }
@@ -173,7 +182,54 @@ public class UserOptions {
             switch (MainDisplay.getRegisteredDecision()) {
                 case 1:
                   deleteUser();
+                  break;
+                case 2:
+                    System.out.println("What would you like to edit\n" +
+                            "-----------Usernames-----------\n" +
+                            "1: Main Usernames\n" +
+                            "2: Child Usernames\n" +
+                            "3: Employee Usernames\n" +
+                            "-----------Passwords--------------\n" +
+                            "4: Main Passwords\n" +
+                            "5: Child Passwords\n" +
+                            "6: Employee Passwords\n" +
+                            "--------------Funds-------------------------\n" +
+                            "7: Main Funds");
+                        int option = newUser.nextInt();
+                        switch (option){
+                            case 1:
+                                modifyUsers.returnUserTable();
+                                modifyUsers.adminUsernameSelection(option);
+                                break;
+                            case 2:
+                                modifyUsers.returnChildUserTable();
+                                modifyUsers.adminUsernameSelection(option);
+                                break;
+                            case 3:
+                                modifyUsers.returnEmployeeTable();
+                                modifyUsers.adminUsernameSelection(option);
+                                break;
+//                     ------------------------------------------------------------------------
+                            case 4:
+                                modifyUsers.returnUserTable();
+                                modifyUsers.adminPasswordSelection(option);
+                                break;
+                            case 5:
+                                modifyUsers.returnChildUserTable();
+                                modifyUsers.adminPasswordSelection(option);
+                                break;
+                            case 6:
+                                modifyUsers.returnEmployeeTable();
+                                modifyUsers.adminPasswordSelection(option);
+                                break;
+//                        ------------------------------------------------------------------------
 
+                            case 7:
+                                modifyUsers.returnUserTable();
+                                modifyUsers.adminFundUpdate();
+                                break;
+
+                        }
                     //--------------------------------------------------------------------------------------------------
                 default:
                     System.out.println("Invalid input. Only the numbers listed on the main menu are valid inputs. " +
@@ -198,12 +254,13 @@ public class UserOptions {
     }
 
     private int returnChildFunds() {
-        String name = String.valueOf(userDB.findChildInfo("John").get(3));
+        String name = String.valueOf(userDB.findChildInfo(MainDisplay.getUsername()).get(3));
         funds = Integer.parseInt(userDB.findInfo(name).get(3));
         return funds;
     }
 
     private void addQuickMaffs(int funds) {
+
         if (funds < 0){
             System.out.println("Cannot withdraw a negative number. ");
             new UserOptions().loggedIn();
@@ -215,6 +272,7 @@ public class UserOptions {
             System.out.printf("Your new balance is " + "%,d", result);
             UserSpecs specs = new UserSpecs(0, MainDisplay.getUsername(), "null", result);
             userDB.updateFunds(specs);
+            Logs.logDeposits(funds,this.funds,result);
             System.out.println("\nReturning to main menu." +
                     "\n------------------------------------------------------------------------------------");
         }
@@ -235,6 +293,7 @@ public class UserOptions {
             System.out.printf("Your new balance is " + "%,d", result);
             UserSpecs specs = new UserSpecs(0, MainDisplay.getUsername(), "null", result);
             userDB.updateFunds(specs);
+            Logs.logWithdraws(funds,this.funds,result);
             System.out.println("\nReturning to main menu." +
                     "\n------------------------------------------------------------------------------------");
         }
@@ -260,8 +319,11 @@ public class UserOptions {
             System.out.printf("Your new balance is " + "%,d", result);
             UserSpecs specs = new UserSpecs(0, childAdmin, "null", result);
             userDB.updateFunds(specs);
+            Logs.logChildWithdraws(funds,this.funds,result);
             System.out.println("\nReturning to main menu." +
                     "\n------------------------------------------------------------------------------------");
+            new UserOptions().childLoggedIn();
+
         }
     }
 
@@ -390,20 +452,19 @@ public class UserOptions {
             userType = newUser.nextInt();
             switch (userType){
                 case 1: // Main User
-                    ModifyUsers.returnUserTable();
-                    System.out.println("Select the user ID of the user you would like to delete");
-                    ModifyUsers.deleteMainUser();
+                    modifyUsers.returnUserTable();
+                    modifyUsers.deleteMainUser();
                     break;
                 default:
                     System.out.println("Invalid input");
                 case 2: //Child User
-                    ModifyUsers.returnChildUserTable();
+                    modifyUsers.returnChildUserTable();
                     System.out.println("Select the user ID of the user you would like to delete");
 
                 break;
                 case 3:
-                    ModifyUsers.returnEmployeeTable();
-                    ModifyUsers.deleteEmployeeUser();
+                    modifyUsers.returnEmployeeTable();
+                    modifyUsers.deleteEmployeeUser();
                     break;
                 case 0:
                     new UserOptions().adminEmployeeLoggedIn();
@@ -412,8 +473,8 @@ public class UserOptions {
 
         }
         else{
-            ModifyUsers.returnChildUserTable();
-            ModifyUsers.deleteChildUser();
+            modifyUsers.returnChildUserTable();
+            modifyUsers.deleteChildUser();
         }
     }
 }

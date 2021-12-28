@@ -1,11 +1,20 @@
 package com.revature.project.util;
 
-import java.util.Arrays;
-import java.util.List;
+//import org.junit.platform.commons.logging.Logger;
+//import org.junit.platform.commons.logging.LoggerFactory;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Driver {
     public static void main(String[] args) {
-        UserDB userDB = new UserDBImplementation();
+//        UserDB userDB = new UserDBImplementation();
+        Logger myLogger = LoggerFactory.getLogger(Driver.class);
+        myLogger.debug("It aint raaaat");
+        myLogger.error("OMG");
+
 //    System.out.println(userDB.findAll().size());
 //            UserSpecs specs = new UserSpecs();
 //        System.out.println(userDB.findByName("Jeff"));
@@ -31,11 +40,18 @@ public class Driver {
 //        int a = Integer.parseInt(userDB.findInfo("iluvfries").get(0));
 //        UserSpecs specs = new UserSpecs(a, "","",0);
 //        userDB.delete(specs);
-        System.out.println(userDB.findAll());
-        System.out.println(userDB.findAllChildren());
-        System.out.println(userDB.findAllEmployees());
-        String a = String.valueOf(userDB.findChildInfo(""));
-ChildUserSpecs childUserSpecs = new ChildUserSpecs(0,"","","");
+//        System.out.println(userDB.findAll());
+//        System.out.println(userDB.findAllChildren());
+//        System.out.println(userDB.findAllEmployees());
+//        String a = String.valueOf(userDB.findChildInfo(""));
+//ChildUserSpecs childUserSpecs = new ChildUserSpecs(0,"","","");
+//UserSpecs userSpecs = new UserSpecs(0, "Rond1a", "hgchg", 0);
+
+//int ab = Integer.parseInt(userDB.findInfo("Johnny").get(0));
+//
+//        System.out.println(ab);
+//        String userPass = String.valueOf(userDB.findInfo("Jofbhnny").get(2));
+//        System.out.println(userPass);
         //        System.out.println(userDB.findById(2));
 //        userDB.save(userSpecs);
 //    UserSpecs toDelete = new UserSpecs(14, "null", "null");

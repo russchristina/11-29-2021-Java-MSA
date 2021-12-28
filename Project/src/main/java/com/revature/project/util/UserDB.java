@@ -32,11 +32,23 @@ public interface UserDB {
      */
     void update(UserSpecs specs);
 
+    void updateUserName(UserSpecs specs);
+    void updateChildUserName(ChildUserSpecs specs);
+    void updateEmployeeUserName(EmployeeUserSpecs specs);
+
+    void updateUserPass(UserSpecs specs);
+    void updateChildUserPass(ChildUserSpecs specs);
+    void updateEmployeeUserPass(EmployeeUserSpecs specs);
+
+
+
+
+
     //delete users, child users of main users, and employees of the business
     void delete(UserSpecs specs);
     ChildUserSpecs deleteAllChildren(ChildUserSpecs specs);
-    ChildUserSpecs deleteChild(ChildUserSpecs specs);
-    EmployeeUserSpecs deleteEmployee(EmployeeUserSpecs specs);
+    void deleteChild(ChildUserSpecs specs);
+    void deleteEmployee(EmployeeUserSpecs specs);
 //    UserSpecs findPass (UserSpecs specs);
     ArrayList<String> findInfo (String name);
     ArrayList<String> findChildInfo (String name);
