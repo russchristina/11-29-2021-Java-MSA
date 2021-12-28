@@ -1,43 +1,89 @@
 package com.revature.display.shop;
 
+import com.revature.display.utility.CreateShapes;
 import com.revature.models.shop.TemporaryPlanet;
 import com.revature.service.shop.Shop;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class PlanetShopDisplay {
 
+    protected final StringBuilder input = new StringBuilder();
+    protected final Scanner sc = new Scanner(System.in);
 
+    CreateShapes createShapes = new CreateShapes();
     public void displayShop(Shop shop) {
+
         System.out.println("Welcome to the Planet Shop");
         System.out.println("These are the available Planets");
 
     }
+    public void displayPlanetsForSaleSlideshow(List<TemporaryPlanet> planetsForSale) {
+        boolean checkingPlanets = true;
+        boolean getInput;
+        int planetCatalogueNumber = 0;
+        int planetCatalogueMax = planetsForSale.size() - 1;
+        PlanetDisplay planetDisplay = new PlanetDisplay();
+        System.out.println(createShapes.border);
+        System.out.println(createShapes.indent + "VIEWING PLANET CATALOGUE");
 
-    public void displayPlanetsForSale(List<TemporaryPlanet> planetsForSale) {
+        while(checkingPlanets){
+            getInput = true;
+            System.out.println(createShapes.border);
+            System.out.println(createShapes.indent + "PLANET: " + planetsForSale.get(planetCatalogueNumber).getName());
+            System.out.println(createShapes.indent + "GOLDILOCK ZONE? " + planetsForSale.get(planetCatalogueNumber).isGoldilocksZone());
+            System.out.println(createShapes.indent + "WATER: " + planetsForSale.get(planetCatalogueNumber).getWaterPercent() + "%");
+            System.out.println(createShapes.indent + "AVERAGE SURFACE TEMPERATURE: " + planetsForSale.get(planetCatalogueNumber).getAverageTemperature() +" K : " + (planetsForSale.get(planetCatalogueNumber).getAverageTemperature()-273) + " C");
+            System.out.println(createShapes.indent + "PLANET ATMOSPHERE COMPOSITION: ");
+            planetsForSale.get(planetCatalogueNumber).getAtmosphere().forEach((gas, amount) -> {
+                if(amount > 0) System.out.println(createShapes.indent + gas + " - " + amount + "%");
+            });
 
-        Shop shop = new Shop();
-
-
-        for (TemporaryPlanet planet : planetsForSale) {
-            {
-                for (int i = 0; i < 30; i++) System.out.print("=");
-                System.out.println("\nPlanet: " + planet.getName());
-                System.out.println("Goldilocks Zone? " + planet.isGoldilocksZone());
-                System.out.println("Water: " + planet.getWaterPercent() + "%");
-                System.out.println("Average Surface Temperature: " + planet.getAverageTemperature() +" Kelvin : " + (planet.getAverageTemperature()-273) + " Celcius");
-                System.out.println("Planet Atmosphere: ");
-                planet.getAtmosphere().forEach((gas, amount) -> {
-                    System.out.println(gas + " - " + amount + "%");
-                });
-                if(planet.getLifeform() != null){
-                    System.out.println("\nLIFE FORM\n");
-                    System.out.printf("Name: %s\nPopulation: %d\nTechnology Level: %d\n\n", planet.getLifeform().getName(), planet.getLifeform().getPopulation(), planet.getLifeform().getTechnologyLevel());
-                }
-
-                System.out.println("Value: " + shop.calculateValueOfPlanet(planet) + "\n");
-
+            if(planetsForSale.get(planetCatalogueNumber).getLifeform() != null){
+                System.out.println(createShapes.indent + "LIFE-FORM");
+                System.out.println(createShapes.indent + "NAME: " + planetsForSale.get(planetCatalogueNumber).getLifeform().getName());
+                System.out.println(createShapes.indent + "POPULATION: " + planetsForSale.get(planetCatalogueNumber).getLifeform().getPopulation());
+                System.out.println(createShapes.indent + "TECHNOLOGY LEVEL: " + planetsForSale.get(planetCatalogueNumber).getLifeform().getTechnologyLevel());
             }
+
+            planetDisplay.displayPlanetArt(planetCatalogueNumber);
+
+            do{
+                System.out.println(createShapes.border);
+                System.out.println(createShapes.indent + "MOVE THROUGH CATALOGUE");
+                System.out.println(createShapes.indent + "1. NEXT");
+                System.out.println(createShapes.indent + "2. PREVIOUS");
+                System.out.println(createShapes.indent + "3. RETURN");
+                input.setLength(0);
+                input.append(sc.nextLine().trim());
+                switch(input.toString()){
+                    case ("1"):
+                        if(planetCatalogueNumber == planetCatalogueMax) {
+                            System.out.println(createShapes.indent + "AT LAST PLANET");
+                            break;
+                        }
+                        planetCatalogueNumber++;
+                        getInput = false;
+                        break;
+                    case ("2"):
+                        if(planetCatalogueNumber == 0){
+                            System.out.println(createShapes.indent + "AT FIRST PLANET");
+                            break;
+                        }
+                        planetCatalogueNumber--;
+                        getInput = false;
+                        break;
+                    case ("3"):
+                        System.out.println(createShapes.indent + "RETURNING");
+                        getInput = false;
+                        checkingPlanets = false;
+                        return;
+                    default:
+                        System.out.println(createShapes.indent + "CHOOSE A VALID INPUT");
+                        break;
+                }
+            }while (getInput);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.revature.service.account;
 
 import com.revature.display.account.AccountDisplay;
 import com.revature.display.login.LoginDisplay;
+import com.revature.display.utility.CreateShapes;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
 import com.revature.models.shop.Inventory;
@@ -27,6 +28,7 @@ public class AccountHandler {
     private final StringBuilder input = new StringBuilder();
     private final Scanner sc = new Scanner(System.in);
     AccountDisplay accountDisplay = new AccountDisplay();
+    CreateShapes createShapes = new CreateShapes();
 
     public void changeUser(CustomerAccount customerAccount, UserCredential username) {
         CustomerUserDAO cUDao = new CustomerUserDAO();
@@ -38,7 +40,7 @@ public class AccountHandler {
 
         if(!users.isEmpty()){
             do{
-                System.out.println("\nCHOOSE USER NUMBER");
+                System.out.print(createShapes.indent + "CHOOSE USER NUMBER: ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 for (User user : users) {
@@ -69,7 +71,7 @@ public class AccountHandler {
                         accountDisplay.displayCustomerAccount(customerAccount);
                     }
                     do {
-                        System.out.println("\nTYPE ACCOUNT NUMBER");
+                        System.out.print(createShapes.indent + "TYPE ACCOUNT NUMBER: ");
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         for (CustomerAccount customerAccount : customerAccountList) {
@@ -79,7 +81,7 @@ public class AccountHandler {
                                 break;
                             }
                         }
-                        System.out.println("\nINPUT A VALID NUMBER\n");
+                        System.out.print(createShapes.indent + "INPUT A VALID NUMBER");
                     }while(chooseAccount);
                 }
                 if(employeeAccount != null){
@@ -93,17 +95,17 @@ public class AccountHandler {
                 throw new AccountNotFoundException("username is not attached to any account");
             } catch (SQLException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nDATABASE ERROR, RESTART APPLICATION IF ERROR PERSISTS\n");
+                System.out.println(createShapes.indent + "DATABASE ERROR, RESTART APPLICATION IF ERROR PERSISTS");
             } catch (InvalidUserCredentialException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID USER CREDENTIAL\n");
+                System.out.println(createShapes.indent + "INVALID USER CREDENTIAL");
             }
         } catch (InvalidUserCredentialException | SQLException e){
             errorLogger.error(String.valueOf(e));
-            System.out.println("\nDATABASE ERROR\nTRY AGAIN\n");
+            System.out.println(createShapes.indent + "DATABASE ERROR TRY AGAIN");
         } catch (Exception e){
             errorLogger.error(String.valueOf(e));
-            System.out.println("\nERROR\nTRY AGAIN OR RESTART IF ERROR PERSISTS\n");
+            System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART IF ERROR PERSISTS");
         }
     }
 
@@ -116,7 +118,7 @@ public class AccountHandler {
         accountDisplay.displayUsers(users, customerAccount);
         if(!users.isEmpty()){
             do{
-                System.out.println("\nCHOOSE USER NUMBER");
+                System.out.print(createShapes.indent + "CHOOSE USER NUMBER: ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 for (User user : users) {
@@ -126,7 +128,7 @@ public class AccountHandler {
                         break;
                     }
                 }
-                System.out.println("\nINVALID INPUT\n");
+                System.out.println(createShapes.indent + "INVALID INPUT");
             }while(chooseUser);
         }
     }
@@ -139,26 +141,27 @@ public class AccountHandler {
         accountDisplay.displayUsers(users, customerAccount);
         if(!users.isEmpty()){
             do{
-                System.out.println("\nCHOOSE USER NUMBER OR N TO RETURN");
+                System.out.println(createShapes.indent + "CHOOSE USER NUMBER OR N TO RETURN");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 if(input.toString().contentEquals("N")){
-                    System.out.println("RETURNING");
+                    System.out.println(createShapes.indent + "RETURNING");
                     return;
                 }
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
-                        System.out.println("\nCHOOSE NEW NAME:");
+                        System.out.print(createShapes.indent + "CHOOSE NEW NAME:");
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         cUDao.updateUserName(user.getUserId(), input.toString());
                         try {
-                            System.out.println("USER NAME CHANGED TO: " + cUDao.getUserById(user.getUserId()).getName());
+                            System.out.println(createShapes.indent + "USER NAME CHANGED TO: " + cUDao.getUserById(user.getUserId()).getName());
                             transactionLogger.info("USER NAME CHANGED: " + "USER ID: " + user.getUserId() + " USER NEW NAME: " + user.getName());
                             chooseUser = false;
                         } catch (InvalidUserIdException e) {
                             debugLogger.debug(String.valueOf(e));
-                            System.out.println("\nUSER ID ERROR\n");
+                            System.out.println(createShapes.indent + "USER ID ERROR");
                         }
                         break;
                     }
@@ -175,17 +178,17 @@ public class AccountHandler {
 
         if(!users.isEmpty()){
             do{
-                System.out.println("\nCHOOSE USER NUMBER OR TYPE N TO LEAVE");
+                System.out.print(createShapes.indent + "CHOOSE USER NUMBER OR TYPE N TO LEAVE");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
                 if(input.toString().contentEquals("N")){
-                    System.out.println("RETURNING");
+                    System.out.println(createShapes.indent + "RETURNING");
                     return;
                 }
                 for (User user : users) {
                     if (String.valueOf(user.getUserId()).contentEquals(input)) {
                         if(user.getUserId() == pUser.getUserId()) {
-                            System.out.println("\nCANNOT DELETE CURRENT USER");
+                            System.out.println(createShapes.indent + "CANNOT DELETE CURRENT USER");
                             break;
                         }
                         try {
@@ -195,9 +198,9 @@ public class AccountHandler {
                             break;
                         } catch (InvalidUserIdException e) {
                             debugLogger.debug(String.valueOf(e));
-                            System.out.println("\nUSER NOT VALID\n");
+                            System.out.println(createShapes.indent + "USER NOT VALID");
                         }
-                        System.out.println("\nUSER HAS BEEN DELETED");
+                        System.out.println(createShapes.indent + "USER HAS BEEN DELETED");
                     }
                 }
             }while(chooseUser);
@@ -211,11 +214,11 @@ public class AccountHandler {
         boolean addingUser = true;
 
         do{
-            System.out.println("\nINPUT NEW USER NAME OR N TO LEAVE");
+            System.out.print(createShapes.indent + "INPUT NEW USER NAME OR N TO LEAVE");
             input.setLength(0);
             input.append(sc.nextLine().trim());
             if(input.toString().contentEquals("N")){
-                System.out.println("RETURNING");
+                System.out.println(createShapes.indent + "RETURNING");
                 return;
             }else if(input.toString().contentEquals("")) throw new EmptyInputException("User name input empty.");
             else {
@@ -231,10 +234,10 @@ public class AccountHandler {
                     transactionLogger.info("ADDED USER: " + "ACCOUNT ID: " + customerAccount.getCustomerAccountId());
                 } catch (InvalidCustomerAccountIdException e) {
                     errorLogger.error(String.valueOf(e));
-                    System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
+                    System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
                 } catch (InvalidInventoryIdException e) {
                     errorLogger.error(String.valueOf(e));
-                    System.out.println("\nINVALID INVENTORY ID\n");
+                    System.out.println(createShapes.indent + "INVALID INVENTORY ID");
                 }
             }}while(addingUser);
     }
@@ -251,23 +254,23 @@ public class AccountHandler {
                 int newUserId = customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(0).getUserId();
                 customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, newUserId);
                 transactionLogger.info("ADDED ACCOUNT: " + "NEW ACCOUNT ID: " + customerAccountId + " PRIMARY USER ID: " + user.getUserId());
-                System.out.println("ADDED CUSTOMER ACCOUNT");
+                System.out.println(createShapes.indent + "ADDED CUSTOMER ACCOUNT");
             } catch (InvalidCustomerAccountIdException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
+                System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
             } catch (InvalidInventoryIdException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID INVENTORY ID\n");
+                System.out.println(createShapes.indent + "INVALID INVENTORY ID");
             } catch (Exception e){
                 errorLogger.error(String.valueOf(e));
-                System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
             }
         } catch (InvalidPrimaryUserException e) {
             debugLogger.debug(String.valueOf(e));
-            System.out.println("\nINVALID PRIMARY USER ID\n");
+            System.out.println(createShapes.indent + "INVALID PRIMARY USER ID");
         } catch (Exception e){
             errorLogger.error(String.valueOf(e));
-            System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+            System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
         }
 
 
@@ -280,11 +283,12 @@ public class AccountHandler {
         boolean chooseAccount = true;
 
         do{
-            System.out.println("\nINPUT ACCOUNT NUMBER OR N TO RETURN");
+            System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER OR N TO RETURN");
+            System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
             if(input.toString().contentEquals("N")){
-                System.out.println("RETURNING");
+                System.out.println(createShapes.indent + "RETURNING");
                 return;
             }
             try{
@@ -294,10 +298,11 @@ public class AccountHandler {
                 boolean changeData = true;
                 accountDisplay.displayCustomerAccount(customerAccount);
                 do{
-                    System.out.println("\nCHOOSE OPTION");
-                    System.out.println("1. Change Primary User Id");
-                    System.out.println("2. Return\n");
+                    System.out.println(createShapes.indent + "CHOOSE OPTION");
+                    System.out.println(createShapes.indent + "1. Change Primary User Id");
+                    System.out.println(createShapes.indent + "2. Return");
                     try{
+                        System.out.print(createShapes.indent + "-> ");
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         switch(input.toString()){
@@ -308,28 +313,28 @@ public class AccountHandler {
                                 break;
                             case("2"):
                                 changeData = false;
-                                System.out.println("RETURNING");
+                                System.out.println(createShapes.indent + "RETURNING");
                                 break;
                             default:
-                                System.out.println("\nINVALID INPUT\n");
+                                System.out.println(createShapes.indent + "INVALID INPUT");
                                 break;
                         }
 
                     }catch (NumberFormatException e){
                         debugLogger.debug(String.valueOf(e));
-                        System.out.println("\nTYPE A VALID NUMBER\n");
+                        System.out.println(createShapes.indent + "TYPE A VALID NUMBER");
                     } catch (Exception e){
                         errorLogger.error(String.valueOf(e));
-                        System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                        System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
                     }
                 }while(changeData);
                 chooseAccount = false;
             }catch (NumberFormatException e){
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nTYPE A VALID NUMBER\n");
+                System.out.println(createShapes.indent + "TYPE A VALID NUMBER");
             } catch (Exception e){
                 errorLogger.error(String.valueOf(e));
-                System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
             }
         }while(chooseAccount);
     }
@@ -339,23 +344,25 @@ public class AccountHandler {
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
 
         do{
-            input.setLength(0);
-            input.append(sc.nextLine().trim());
-            System.out.println("INPUT NEW PRIMARY USER ID OR N TO LEAVE");
+
+            System.out.print(createShapes.indent + "INPUT NEW PRIMARY USER ID OR N TO LEAVE");
             try{
+                System.out.print(createShapes.indent + "-> ");
+                input.setLength(0);
+                input.append(sc.nextLine().trim());
                 if(input.toString().contentEquals("N")) return;
                 int newPrimaryUserId = Integer.parseInt(input.toString());
                 if(newPrimaryUserId == customerAccount.getPrimaryUserId()) {
-                    System.out.println("REPEATED PRIMARY USER");
+                    System.out.println(createShapes.indent + "REPEATED PRIMARY USER");
                     break;
                 }
                 customerAccountDAO.updateCustomerAccountPrimaryId(customerAccount.getCustomerAccountId(), newPrimaryUserId);
                 transactionLogger.info("EMPLOYEE ALTERATION:" + " - CUSTOMER ACCOUNT PRIMARY USER CHANGED - " + "ACCOUNT ID: " + customerAccount.getCustomerAccountId()
-                + "\nNEW PRIMARY USER ID: " + newPrimaryUserId);
+                + "NEW PRIMARY USER ID: " + newPrimaryUserId);
                 changeAccount = false;
             } catch (NumberFormatException e){
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID INPUT");
+                System.out.println(createShapes.indent + "INVALID INPUT");
             }
         }while (changeAccount);
     }
@@ -369,7 +376,7 @@ public class AccountHandler {
 
         do{
             accountDisplay.displayAllUsers(customerAccountDAO.getAllCustomerAccounts());
-            System.out.println("\nINPUT USER NUMBER");
+            System.out.print(createShapes.indent + "INPUT USER NUMBER ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
@@ -380,13 +387,14 @@ public class AccountHandler {
                 boolean changeData = true;
 
                 do{
-                    System.out.println("\nCHOOSE OPTION");
-                    System.out.println("1. Change User Name");
-                    System.out.println("2. Change User Balance");
-                    System.out.println("3. Delete User");
-                    System.out.println("4. Return\n");
+                    System.out.println(createShapes.indent + "CHOOSE OPTION");
+                    System.out.println(createShapes.indent + "1. Change User Name");
+                    System.out.println(createShapes.indent + "2. Change User Balance");
+                    System.out.println(createShapes.indent + "3. Delete User");
+                    System.out.println(createShapes.indent + "4. Return");
 
                     try{
+                        System.out.print(createShapes.indent + "-> ");
                         input.setLength(0);
                         input.append(sc.nextLine().trim());
                         switch(input.toString()){
@@ -401,30 +409,30 @@ public class AccountHandler {
                                 break;
                             case("4"):
                                 changeData = false;
-                                System.out.println("RETURNING");
+                                System.out.println(createShapes.indent + "RETURNING");
                                 break;
                             default:
-                                System.out.println("\nINVALID INPUT\n");
+                                System.out.println(createShapes.indent + "INVALID INPUT");
                                 break;
                         }
                     }catch (NumberFormatException e){
                         debugLogger.debug(String.valueOf(e));
-                        System.out.println("\nTYPE A VALID NUMBER\n");
+                        System.out.println(createShapes.indent + "TYPE A VALID NUMBER");
                     } catch (Exception e){
                         errorLogger.error(String.valueOf(e));
-                        System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                        System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
                     }
                 }while(changeData);
                 chooseUser = false;
             }catch (NumberFormatException e){
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nTYPE A VALID NUMBER\n");
+                System.out.println(createShapes.indent + "TYPE A VALID NUMBER");
             } catch (InvalidUserIdException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID USER ID\n");
+                System.out.println(createShapes.indent + "INVALID USER ID");
             } catch (Exception e){
                 errorLogger.error(String.valueOf(e));
-                System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
             }
         }while(chooseUser);
     }
@@ -444,19 +452,19 @@ public class AccountHandler {
             input.append(sc.nextLine().trim());
             switch (input.toString()) {
                 case ("1"):
-                    System.out.print("USERNAME:");
+                    System.out.print(createShapes.indent + "USERNAME: ");
                     employeeUsername.append(sc.nextLine()).trimToSize();
-                    System.out.print("PASSWORD:");
+                    System.out.print(createShapes.indent + "PASSWORD: ");
                     employeePassword.append(sc.nextLine()).trimToSize();
 
                     if(employeeUsername.toString().contentEquals("")) throw new EmptyInputException("Empty employee username");
                     if(employeePassword.toString().contentEquals("")) throw new EmptyInputException("Empty employee password");
 
                     if(userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()) == null){
-                        System.out.print("FIRST NAME:");
+                        System.out.print(createShapes.indent + "FIRST NAME: ");
                         input.setLength(0);
                         String firstName = input.append(sc.nextLine().trim()).toString();
-                        System.out.print("LAST NAME:");
+                        System.out.print(createShapes.indent + "LAST NAME: ");
                         input.setLength(0);
                         String lastName = input.append(sc.nextLine().trim()).toString();
 
@@ -472,7 +480,7 @@ public class AccountHandler {
                         int userCredentialId = userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()).getId();
                         try {
                             employeeAccountDAO.addEmployeeAccount(userCredentialId, employeeAccount.getAdminId());
-                            System.out.println("\nSUCCESSFUL CREATION OF EMPLOYEE ACCOUNT\n");
+                            System.out.println(createShapes.indent + "SUCCESSFUL CREATION OF EMPLOYEE ACCOUNT");
                             creatingAccount = false;
                             transactionLogger.info("ADMIN ACTIVITY: " + " - CREATING NEW EMPLOYEE ACCOUNT - " + "ADMIN ID: " + employeeAccount.getEmployeeId() + " NEW EMPLOYEE USER CREDENTIAL ID: " + userCredentialId);
                             break;
@@ -484,16 +492,16 @@ public class AccountHandler {
                             debugLogger.debug(String.valueOf(e));
                         }catch (Exception e){
                             errorLogger.error(String.valueOf(e));
-                            System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                            System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
                         }
                     }
                     break;
                 case ("2"):
-                    System.out.println("Returning to Login.");
+                    System.out.println(createShapes.indent + "Returning to Login.");
                     creatingAccount = false;
                     break;
                 default:
-                    System.out.println("Type a valid input.");
+                    System.out.println(createShapes.indent + "Type a valid input.");
                     break;
             }
         } while (creatingAccount);
@@ -514,19 +522,19 @@ public class AccountHandler {
             input.append(sc.nextLine().trim());
             switch (input.toString()) {
                 case ("1"):
-                    System.out.print("USERNAME:");
+                    System.out.print(createShapes.indent + "USERNAME: ");
                     employeeUsername.append(sc.nextLine()).trimToSize();
-                    System.out.print("PASSWORD:");
+                    System.out.print(createShapes.indent + "PASSWORD: ");
                     employeePassword.append(sc.nextLine()).trimToSize();
                     if(employeeUsername.toString().contentEquals("")) throw new EmptyInputException("Empty employee username");
                     if(employeePassword.toString().contentEquals("")) throw new EmptyInputException("Empty employee password");
 
 
                     if(userCredentialsDAO.getUserCredentialByUsername(employeeUsername.toString()) == null){
-                        System.out.print("FIRST NAME:");
+                        System.out.print(createShapes.indent + "FIRST NAME: ");
                         input.setLength(0);
                         String firstName = input.append(sc.nextLine().trim()).toString();
-                        System.out.print("LAST NAME:");
+                        System.out.print(createShapes.indent + "LAST NAME: ");
                         input.setLength(0);
                         String lastName = input.append(sc.nextLine().trim()).toString();
 
@@ -544,34 +552,34 @@ public class AccountHandler {
                             employeeAccountDAO.addEmployeeAccount(userCredentialId, employeeAccount.getAdminId());
                             int employeeId = employeeAccountDAO.getEmployeeAccountsByUserId(userCredentialId).getEmployeeId();
                             employeeAccountDAO.updateEmployeeAdmin(employeeId, employeeId);
-                            System.out.println("\nSUCCESSFUL CREATION OF ADMIN ACCOUNT\n");
+                            System.out.println(createShapes.indent + "SUCCESSFUL CREATION OF ADMIN ACCOUNT");
                             creatingAccount = false;
                             transactionLogger.info("ADMIN ACTIVITY: " + "- CREATED NEW ADMIN ACCOUNT - " + "ADMIN RESPONSIBLE ID: " + employeeAccount.getEmployeeId() + " ADMIN CREATED ID: " + employeeId);
                             break;
                         } catch (SQLException e) {
                             debugLogger.debug(String.valueOf(e));
-                            System.out.println("\nDATABASE ERROR\n");
+                            System.out.println(createShapes.indent + "DATABASE ERROR");
                         } catch (InvalidAdminIdException e) {
                             debugLogger.debug(String.valueOf(e));
-                            System.out.println("\nINVALID ADMIN ID\n");
+                            System.out.println(createShapes.indent + "INVALID ADMIN ID");
                         } catch (InvalidUserCredentialException e) {
                             debugLogger.debug(String.valueOf(e));
-                            System.out.println("\nINVALID USER CREDENTIALS\n");
+                            System.out.println(createShapes.indent + "INVALID USER CREDENTIALS");
                         } catch (InvalidEmployeeAccountIdException e) {
                             debugLogger.debug(String.valueOf(e));
-                            System.out.println("\nINVALID EMPLOYEE ACCOUNT\n");
+                            System.out.println(createShapes.indent + "INVALID EMPLOYEE ACCOUNT");
                         } catch (Exception e){
                             errorLogger.error(String.valueOf(e));
-                            System.out.println("\nERROR\nTRY AGAIN OR RESTART APPLICATION\n");
+                            System.out.println(createShapes.indent + "ERROR TRY AGAIN OR RESTART APPLICATION");
                         }
                     }
                     break;
                 case ("2"):
-                    System.out.println("Returning to Login.");
+                    System.out.println(createShapes.indent + "Returning to Login.");
                     creatingAccount = false;
                     break;
                 default:
-                    System.out.println("Type a valid input.");
+                    System.out.println(createShapes.indent + "Type a valid input.");
                     break;
             }
         } while (creatingAccount);

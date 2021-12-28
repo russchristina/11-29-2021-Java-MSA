@@ -172,7 +172,7 @@ public class UserCredentialsDAO implements UserCredentialDAO {
     @Override
     public void deleteUserCredentialByUserCredentialId(int id) {
 
-        final String SQL = "delete * from user_credentials where id = ?";
+        final String SQL = "delete from user_credentials where id = ?";
 
         try(Connection connection = ConnectionFactory.getConnection();
         PreparedStatement statement = connection.prepareStatement(SQL)) {

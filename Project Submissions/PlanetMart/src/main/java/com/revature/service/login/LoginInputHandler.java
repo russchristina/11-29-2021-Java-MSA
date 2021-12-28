@@ -3,6 +3,7 @@ package com.revature.service.login;
 
 import com.revature.display.account.AccountDisplay;
 import com.revature.display.login.LoginDisplay;
+import com.revature.display.utility.CreateShapes;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.shop.Inventory;
 import com.revature.models.users.UserCredential;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LoginInputHandler {
+    CreateShapes createShapes = new CreateShapes();
     private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
     private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
     private final Logger errorLogger = LoggerFactory.getLogger("errorLogger");
@@ -46,12 +48,13 @@ public class LoginInputHandler {
     }
 
     public void firstStage(){
+        loginDisplay.opening();
         boolean choosingOptions = true;
-        System.out.println("WELCOME TO PLANETMART!\n");
         while (choosingOptions) {
             input.setLength(0);
             try {
                 loginDisplay.printWelcomeOptions();
+                System.out.print(createShapes.indent + "->");
                 input.append(sc.nextLine().toLowerCase().trim());
                 switch (input.toString()) {
                     case ("1"):
@@ -62,16 +65,16 @@ public class LoginInputHandler {
                         break;
                     case ("3"):
                         choosingOptions = false;
-                        System.out.println("\nGOODBYE!\n");
+                        System.out.println(createShapes.indent + "GOODBYE!");
                         System.exit(0);
                         break;
                     default:
-                        System.out.println("\nCHOOSE A VALID OPTION\n");
+                        System.out.println(createShapes.indent + "CHOOSE A VALID OPTION");
                         break;
                 }
             }catch (Exception e){
                 errorLogger.error(String.valueOf(e));
-                System.out.println("\nERROR\nRESTART APPLICATION\n");
+                System.out.println(createShapes.indent + "ERRORRESTART APPLICATION");
                 input.setLength(0);
             }
         }
@@ -82,39 +85,38 @@ public class LoginInputHandler {
         do {
             username.setLength(0);
             password.setLength(0);
-            loginDisplay.printCreateAccountDisplay();
-            input.setLength(0);
-            input.append(sc.nextLine().trim());
-            switch (input.toString()) {
-                case ("1"):
-                    try {
-                        System.out.print("USERNAME:");
-                        username.append(sc.nextLine()).trimToSize();
-                        System.out.print("PASSWORD:");
-                        password.append(sc.nextLine()).trimToSize();
-                        if (createAccount(username, password)) {
-                            System.out.println("New Account made!");
-                            System.out.println("Returning to Login.");
-                            creatingAccount = false;
-                        }
-                    } catch (DuplicateUsernameException e) {
-                        System.out.println("\nUSERNAME IS NOT VALID\n");
-                        debugLogger.debug(String.valueOf(e));
-                    }catch (EmptyUserCredentialDataException e){
-                        debugLogger.debug(String.valueOf(e));
-                        System.out.println("\nEMPTY INPUT\n");
-                    } catch (InvalidUserCredentialException e) {
-                        debugLogger.debug(String.valueOf(e));
-                        System.out.println("\nUSER CREDENTIALS TOO SHORT, MUST BE A MINIMUM 4 CHARACTERS\n");
-                    }
-                    break;
-                case ("2"):
-                    System.out.println("Returning to Login.");
+            try {
+                System.out.println(createShapes.border);
+                System.out.println(createShapes.indent + "INPUT NEW LOGIN CREDENTIALSTYPE N TO LEAVE");
+                System.out.println(createShapes.border);
+                System.out.print(createShapes.indent+"USERNAME:");
+                username.append(sc.nextLine()).trimToSize();
+                if(username.toString().contentEquals("N")) return;
+                System.out.print(createShapes.indent+"PASSWORD:");
+                password.append(sc.nextLine()).trimToSize();
+                if(password.toString().contentEquals("N")) return;
+                if (createAccount(username, password)) {
+                    System.out.println(createShapes.border);
+                    System.out.println(createShapes.indent + "NEW ACCOUNT MADE");
+                    System.out.println(createShapes.indent + "RETURNING TO LOGIN");
+                    System.out.println(createShapes.border);
                     creatingAccount = false;
-                    break;
-                default:
-                    System.out.println("Type a valid input.");
-                    break;
+                }
+            } catch (DuplicateUsernameException e) {
+                System.out.println(createShapes.border);
+                System.out.println(createShapes.indent + "USERNAME IS NOT VALID");
+                System.out.println(createShapes.border);
+                debugLogger.debug(String.valueOf(e));
+            }catch (EmptyUserCredentialDataException e){
+                System.out.println(createShapes.border);
+                debugLogger.debug(String.valueOf(e));
+                System.out.println(createShapes.indent + "EMPTY INPUT");
+                System.out.println(createShapes.border);
+            } catch (InvalidUserCredentialException e) {
+                System.out.println(createShapes.border);
+                debugLogger.debug(String.valueOf(e));
+                System.out.println(createShapes.indent + "USER CREDENTIALS TOO SHORT, MUST BE A MINIMUM 4 CHARACTERS");
+                System.out.println(createShapes.border);
             }
         } while (creatingAccount);
     }
@@ -131,6 +133,7 @@ public class LoginInputHandler {
                 if(username.toString().trim().contentEquals("N")) return;
                 loginDisplay.printLoginDisplayPassword();
                 password.append(sc.nextLine()).trimToSize();
+                if(password.toString().trim().contentEquals("N")) return;
                 UserCredential userCredential = authenticateAccountCredentials(username.toString(), password.toString());
                 if (userCredential != null) {
                     loggingIn = false;
@@ -138,21 +141,25 @@ public class LoginInputHandler {
                     accountHandler.initiateAccount(userCredential);
                 }
             } catch (EmptyUserCredentialDataException e) {
-                System.out.println("\nEMPTY INPUT\nTRY AGAIN\n");
+                System.out.println(createShapes.border);
+                System.out.println(createShapes.indent + "EMPTY INPUT TRY AGAIN");
                 debugLogger.debug(String.valueOf(e));
+                System.out.println(createShapes.border);
             } catch (AccountNotFoundException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\n\nINVALID CREDENTIALS\n\n");
-            } catch (NullPointerException e){
+                System.out.println(createShapes.border);
+                System.out.println(createShapes.indent + "INVALID CREDENTIALS");
+                System.out.println(createShapes.border);
+            } catch (NullPointerException | InvalidPasswordException e){
+                System.out.println(createShapes.border);
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID CREDENTIALS\n");
-            } catch (InvalidPasswordException e){
-                debugLogger.debug(String.valueOf(e));
-                System.out.println("\nINVALID CREDENTIALS\n");
-            }
-            catch (Exception e){
+                System.out.println(createShapes.indent + "INVALID CREDENTIALS");
+                System.out.println(createShapes.border);
+            } catch (Exception e){
+                System.out.println(createShapes.border);
                 errorLogger.error(String.valueOf(e));
-                System.out.println("\nERROR\nTRY AGAIN\n");
+                System.out.println(createShapes.indent + "ERROR TRY AGAIN");
+                System.out.println(createShapes.border);
             }
         } while (loggingIn);
     }
@@ -169,7 +176,7 @@ public class LoginInputHandler {
             userCredential = userCredentialsDAO.getUserCredentialByUsername(username);
         } catch (EmptyInputException e) {
             debugLogger.debug(String.valueOf(e));
-            System.out.println("\nEMPTY INPUT\n");
+            System.out.println(createShapes.indent + "EMPTY INPUT");
         }
         if(userCredential.getPassword().contentEquals(password)) {
             return userCredential;
@@ -189,69 +196,64 @@ public class LoginInputHandler {
 
         try {
             if(userCredentialsDAO.getUserCredentialByUsername(username.toString()) == null){
-                System.out.print("FIRST NAME:");
+                System.out.println(createShapes.border);
+                System.out.print(createShapes.indent+"FIRST NAME:");
                 input.setLength(0);
                 String firstName = input.append(sc.nextLine().trim()).toString();
-                System.out.print("LAST NAME:");
+                System.out.print(createShapes.indent+"LAST NAME:");
+                System.out.println(createShapes.border);
                 input.setLength(0);
                 String lastName = input.append(sc.nextLine().trim()).toString();
+
                 userCredentialsDAO.addUserCredential(new UserCredential(0,
                         username.toString(),
                         password.toString(),
                         firstName,
                         lastName));
-                int userCredentialId = 0;
-                try {
-                    userCredentialId = userCredentialsDAO.getUserCredentialByUsername(username.toString()).getId();
-                } catch (EmptyInputException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nEMPTY INPUT\n");
-                }
+
+                int userCredentialId = userCredentialsDAO.getUserCredentialByUsername(username.toString()).getId();
                 inventoryDAO.addInventory(new Inventory(0, 0));
                 List<Inventory> inventoryList = inventoryDAO.getAllInventories();
-                try {
-                    customerAccountDAO.addCustomerAccount(userCredentialId, 0);
-                } catch (InvalidPrimaryUserException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nINVALID PRIMARY USER ID");
-                } catch (SQLException | InvalidUserCredentialException throwables) {
-                    debugLogger.debug(String.valueOf(throwables));
-                }
-                List<CustomerAccount> customerAccounts = null;
-                try {
-                    customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
-                } catch (InvalidUserCredentialException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nINVALID USER CREDENTIAL\n");
-                } catch (SQLException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nDATABASE ERROR\n");
-                } catch (Exception e){
-                    errorLogger.error(String.valueOf(e));
-                    System.out.println("\nERROR IN APPLICATON, IF ISSUES PERSIST, PLEASE RESTART\n");
-                }
+                customerAccountDAO.addCustomerAccount(userCredentialId, 0);
+                List<CustomerAccount> customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
                 int customerAccountId = customerAccounts.get(customerAccounts.size()-1).getCustomerAccountId();
-                try {
-                    customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size()-1).getId(), customerAccountId);
-                } catch (InvalidCustomerAccountIdException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nINVALID CUSTOMER ACCOUNT ID\n");
-                } catch (InvalidInventoryIdException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nINVALID INVENTORY ID\n");
-                }
+                customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size()-1).getId(), customerAccountId);
                 customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(customerUserDAO.getAllUsersByCustomerId(customerAccountId).size()-1).getUserId());
-                System.out.println("CREATED ACCOUNT");
-                System.out.println("CUSTOMER ACCOUNT ID: " + customerAccountId);
+
+                System.out.println(createShapes.indent + "CREATED ACCOUNT");
+                System.out.println(createShapes.indent + "CUSTOMER ACCOUNT ID: " + customerAccountId);
+                System.out.println(createShapes.border);
                 transactionLogger.info("CUSTOMER ACCOUNT CREATED ID: " + customerAccountId);
             }else{
                 throw new DuplicateUsernameException("Username already exists");
             }
         } catch (EmptyInputException e) {
             debugLogger.debug(String.valueOf(e));
-            System.out.println("\nEMPTY INPUT\n");
+            System.out.println(createShapes.indent + "EMPTY INPUT");
+        } catch (InvalidPrimaryUserException e) {
+            System.out.println(createShapes.border);
+            debugLogger.debug(String.valueOf(e));
+            System.out.println(createShapes.indent + "INVALID PRIMARY USER ID");
+            System.out.println(createShapes.border);
+        } catch (SQLException | InvalidUserCredentialException throwables) {
+            debugLogger.debug(String.valueOf(throwables));
+        }catch (InvalidCustomerAccountIdException e) {
+            System.out.println(createShapes.border);
+            debugLogger.debug(String.valueOf(e));
+            System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
+            System.out.println(createShapes.border);
+        } catch (InvalidInventoryIdException e) {
+            System.out.println(createShapes.border);
+            debugLogger.debug(String.valueOf(e));
+            System.out.println(createShapes.indent + "INVALID INVENTORY ID");
+            System.out.println(createShapes.border);
+        } catch (Exception e){
+            System.out.println(createShapes.border);
+            errorLogger.error(String.valueOf(e));
+            System.out.println(createShapes.indent + "ERROR IN APPLICATON, IF ISSUES PERSIST, PLEASE RESTART");
+            System.out.println(createShapes.border);
+
         }
         return false;
     }
-
 }

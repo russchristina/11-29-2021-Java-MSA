@@ -1,6 +1,7 @@
 package com.revature.service.shop;
 
 import com.revature.display.shop.PlanetShopDisplay;
+import com.revature.display.utility.CreateShapes;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.exceptions.InsufficientFundsException;
 import com.revature.models.shop.Inventory;
@@ -28,6 +29,8 @@ public class ShopHandler {
 
     protected final PlanetShopDisplay planetShopDisplay = new PlanetShopDisplay();
 
+    CreateShapes createShapes = new CreateShapes();
+
     public void beginShopping(CustomerAccount customerAccount, User user) {
         boolean choosingOptions = true;
         Shop shop = new Shop();
@@ -36,40 +39,38 @@ public class ShopHandler {
 
         do {
 
-            planetShopDisplay.displayPlanetsForSale(planetsForSale);
+//            planetShopDisplay.displayPlanetsForSale(planetsForSale);
 
-            System.out.println("\n1. Buy a planet");
-            System.out.println("2. Sell a planet");
-            System.out.println("3. Get new Options");
-            System.out.println("4. Return");
+            System.out.println(createShapes.indent + "1. BUY A PLANET");
+            System.out.println(createShapes.indent + "2. SELL A PLANET");
+            System.out.println(createShapes.indent + "3. REFRESH CATALOGUE");
+            System.out.println(createShapes.indent + "4. RETURN");
 
             input.setLength(0);
             input.append(sc.nextLine().trim());
             switch (input.toString()) {
                 case ("1"):
-                    System.out.println("\nOption 1: Buy a Planet");
+                    System.out.println(createShapes.indent + "Option 1: BUY A PLANET");
                     buyPlanet(customerAccount, user, shop, planetsForSale);
                     break;
                 case ("2"):
-                    System.out.println("\nOption 2: Sell a Planet");
+                    System.out.println(createShapes.indent + "OPTION 2: SELL A PLANET");
                     sellPlanet(customerAccount, user, shop, planetsForSale);
                     break;
                 case ("3"):
-                    System.out.println("\nOption 3: Get new Options");
+                    System.out.println(createShapes.indent + "OPTION 3: REFRESH CATALOGUE");
                     planetsForSale.clear();
                     planetsForSale = shop.planetsForSale();
                     break;
                 case ("4"):
-                    System.out.println("\nOption 3: Return");
+                    System.out.println(createShapes.indent + "OPTION 3: RETURN");
                     choosingOptions = false;
                     break;
                 default:
-                    System.out.println("\nInput invalid, please try again.\n");
+                    System.out.println(createShapes.indent + "INVALID INPUT, TRY AGAIN");
                     break;
             }
         } while (choosingOptions);
-
-
 
     }
 
@@ -92,28 +93,28 @@ public class ShopHandler {
         }
 
         if(inventory != null){
-            System.out.println("\nBALANCE:");
-            System.out.println(inventory.getBalance());
+            System.out.println(createShapes.indent + "BALANCE:");
+            System.out.println(createShapes.indent + inventory.getBalance());
         }
-        System.out.println(temporaryPlanetList);
+        System.out.println(createShapes.indent + temporaryPlanetList);
 
         boolean sellingPlanet = true;
         do {
             input.setLength(0);
-            System.out.println("Type a valid planet name or type n to leave");
+            System.out.println(createShapes.indent + "TYPE A VALID PLANET NAME OR N TO LEAVE");
             input.append(sc.nextLine());
 
             for (TemporaryPlanet planet : temporaryPlanetList) {
                 if(planet.getName().contentEquals(input)){
                     shop.sellPlanet(planet, user, temporaryPlanetList, planetsForSale, inventory);
                     sellingPlanet = false;
-                    System.out.println("Successful Sale of Planet: " + input + "\n");
-                    System.out.print("BALANCE: ");
-                    System.out.println(inventory.getBalance());
+                    System.out.println(createShapes.indent + "SUCCESSFUL SALE OF PLANET: " + input + "");
+                    System.out.print(createShapes.indent + "BALANCE: ");
+                    System.out.println(createShapes.indent + inventory.getBalance());
                     break;
                 }
             }
-            if (input.toString().trim().toLowerCase().contentEquals("n")) {
+            if (input.toString().trim().contentEquals("N")) {
                 sellingPlanet = false;
             }
         } while (sellingPlanet);
@@ -132,9 +133,14 @@ public class ShopHandler {
         }
         boolean buyingPlanet = true;
         do {
+            planetShopDisplay.displayPlanetsForSaleSlideshow(planetsForSale);
             input.setLength(0);
-            System.out.println("Type a valid planet name or type n to leave");
+            System.out.print(createShapes.indent + "INPUT NAME OF PLANET TO BUY OR N TO LEAVE: ");
             input.append(sc.nextLine());
+            if (input.toString().trim().contentEquals("N")) {
+                buyingPlanet = false;
+                return;
+            }
 
             for (TemporaryPlanet planet : planetsForSale) {
                 if(planet.getName().contentEquals(input)){
@@ -142,21 +148,19 @@ public class ShopHandler {
                         shop.buyPlanet(planet, user, planetsForSale, inventory);
                     } catch (InsufficientFundsException e) {
                         transactionLogger.info(e.toString());
-                        System.out.println("\nINSUFFICIENT FUNDS\n");
+                        System.out.println(createShapes.indent + "INSUFFICIENT FUNDS");
                         return;
                     }
                     buyingPlanet = false;
-                    System.out.println("Successful purchase of Planet: " + input + "\n");
-                    System.out.print("BALANCE: ");
-                    System.out.println(inventory.getBalance());
+                    System.out.println(createShapes.indent + "SUCCESSFUL PURCHASE OF PLANET: " + input + "");
+                    System.out.print(createShapes.indent + "BALANCE: ");
+                    System.out.println(createShapes.indent + inventory.getBalance());
                     transactionLogger.info("Planet Purchase " + input +
-                            "\nUser ID: " + user.getUserId() + "\nAccount ID: " + customerAccount.getCustomerAccountId());
+                            "User ID: " + user.getUserId() + "Account ID: " + customerAccount.getCustomerAccountId());
                     break;
                 }
             }
-            if (input.toString().trim().toLowerCase().contentEquals("n")) {
-                buyingPlanet = false;
-            }
+
         } while (buyingPlanet);
 
     }
