@@ -27,8 +27,7 @@ public class AccessAccounts {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to retrieve a user from database...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -70,8 +69,7 @@ public class AccessAccounts {
 					);
 			}	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update retrieve account...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -94,8 +92,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update database...\n");
 		}
 	}
 
@@ -132,7 +129,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("...\nFailed to update account...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -154,8 +151,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -177,8 +173,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -199,8 +194,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -221,8 +215,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -238,13 +231,12 @@ public class AccessAccounts {
 		try {
 			conn = ConnectionFactory.getConnection();
 			stmt = conn.prepareStatement(SQL);
-			stmt.setInt(1, id);
-			stmt.setInt(2, zip);
+			stmt.setInt(1, zip);
+			stmt.setInt(2, id);
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -265,8 +257,7 @@ public class AccessAccounts {
 			stmt.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("...\nFailed to update...\n");
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
@@ -316,12 +307,12 @@ public class AccessAccounts {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("");
+			System.out.println("Failed to connect..");
+			Driver.ux.entry();
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
 			ConnectionClosers.closeResultSet(set);
-
 		}
 
 		if(Driver.aa.userPassMatch(username, password) == 0) {
@@ -382,6 +373,7 @@ public class AccessAccounts {
 
 				System.out.print("Zip code: ");
 				zipCode = Driver.scanner.nextInt();
+				
 				stmt.setInt(7, zipCode);
 				stmt.setInt(8, 0);
 				stmt.setFloat(9, 0);
@@ -392,8 +384,7 @@ public class AccessAccounts {
 				System.out.println("\n...Account Created!");
 
 			} catch (SQLException e) {
-				System.out.println("Something went wrong.");
-				e.printStackTrace();
+				System.out.println("Unable to register.. Try again");
 			} finally {
 				ConnectionClosers.closeConnection(conn);
 				ConnectionClosers.closeStatement(stmt);

@@ -64,6 +64,7 @@ public class UX {
 				+ "\t\t3) Logout\n");
 
 		int nav = 0;
+		
 		try {
 			nav = Driver.scanner.nextInt();
 		} catch (InputMismatchException e) {
@@ -128,6 +129,10 @@ public class UX {
 			if (amount == 0) {
 				this.shop();
 			}
+		} 
+		else {
+			System.out.println("Item was not found. Entries are case sensitive!");
+			
 		}
 		
 		this.shop();
@@ -251,11 +256,11 @@ public class UX {
 	
 	public void modifyAccount() {
 		System.out.println("--------------- Modify Account -----------------");
-		System.out.println("1) Change password");
-		System.out.println("2) Change name");
-		System.out.println("3) Change address");
-		System.out.println("4) New balance");
-		System.out.println("5) Exit");
+		System.out.println("\t\t1) Change password");
+		System.out.println("\t\t2) Change name");
+		System.out.println("\t\t3) Change address");
+		System.out.println("\t\t4) New balance");
+		System.out.println("\t\t5) Exit");
 		
 		String username = null;
 		int nav = 0;
@@ -324,6 +329,7 @@ public class UX {
 		Driver.aa.setStreetById(id, street);
 		Driver.aa.setStateById(id, state);
 		Driver.aa.setZipById(id, zip);
+		this.modifyAccount();
 	}
 	
 	public void setFullName(int id) {
@@ -386,7 +392,16 @@ public class UX {
 		System.out.println("0 to exit");
 		System.out.print("Amount: ");
 		
-		float amount = Driver.scanner.nextFloat();
+		float amount = 0;
+		
+		try {
+			amount = Driver.scanner.nextFloat();
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input. Try again.");
+			Driver.scanner.nextLine();
+			this.transfer();
+		}
+		
 		if (amount < 0 || amount > Driver.account.getBalance()) {
 			System.out.println("Invalid amount. Try again.");
 			this.transfer();
@@ -419,8 +434,9 @@ public class UX {
 				items.put(set.getString(1), set.getFloat(2));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Could not populate shop. Try coming back later.");
+			Driver.scanner.nextLine();
+			Driver.ux.mainMenu();
 		} finally {
 			ConnectionClosers.closeConnection(conn);
 			ConnectionClosers.closeStatement(stmt);
