@@ -73,70 +73,40 @@ public class Shop {
     public void buyPlanet(TemporaryPlanet planet, User user, List<TemporaryPlanet> planetsForSale, Inventory inventory) throws InsufficientFundsException {
         int value = calculateValueOfPlanet(planet);
         if(inventory.getBalance()<value) {
-            throw new InsufficientFundsException();
+            throw new InsufficientFundsException("User does not have enough money");
         }
 
         PlanetDAO planetDAO = new PlanetDAO();
-        LifeDAO lifeDAO;
+        LifeDAO lifeDAO = new LifeDAO();
         AtmosphereDAO atmosphereDAO = new AtmosphereDAO();
         InventoryDAO iDao = new InventoryDAO();
 
         planet.setUserId(user.getUserId());
         try {
             planetDAO.addPlanet(planet);
-            int planetId = 0;
-            try {
-                planetId = planetDAO.getPlanetIdByName(planet.getName());
-                if(planet.getLifeform() != null){
-                    Life life = planet.getLifeform();
-                    lifeDAO = new LifeDAO();
-                    try {
-                        lifeDAO.addLife(life.getName(), life.getPopulation(), life.getTechnologyLevel(), planetId);
-                    } catch (EmptyInputException e) {
-                        debugLogger.debug(String.valueOf(e));
-                        System.out.println("\nEMPTY NAME FOR LIFE\n");
-                    } catch (SQLException e) {
-                        errorLogger.error(String.valueOf(e));
-                        System.out.println("\nERROR\nTRY AGAIN\n");
-                    }
-                }
-
-                Map<String, Integer> atmosphereComposition = new HashMap<>();
-                Map<String, Integer> atmFromPlanet = planet.getAtmosphere();
-                try {
-                    atmosphereDAO.addAtmosphereComposition(planet.getAtmosphere(), planetId);
-                } catch (SQLException throwables) {
-                    debugLogger.debug(String.valueOf(throwables));
-                    System.out.println("\nERROR, ISSUE WITH ADDING ATMOSPHERE TO DATABASE\n");
-                }catch (Exception e){
-                    errorLogger.error(String.valueOf(e));
-                    System.out.println("\nERROR, IF ISSUES ARISE PLEASE RESTART APPLICATION\n");
-                }
-
+            int planetId = planetDAO.getPlanetIdByName(planet.getName());
+            if(planet.getLifeform() != null){
+                Life life = planet.getLifeform();
+                lifeDAO.addLife(life.getName(), life.getPopulation(), life.getTechnologyLevel(), planetId);
+                atmosphereDAO.addAtmosphereComposition(planet.getAtmosphere(), planetId);
                 planetsForSale.remove(planet);
                 inventory.setBalance(inventory.getBalance() - value);
-
-                try {
-                    iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
-                } catch (InvalidInventoryIdException e) {
-                    debugLogger.debug(String.valueOf(e));
-                    System.out.println("\nINVALID INVENTORY ID\n");
-                }
+                iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
                 transactionLogger.info("PLANET Purchased ID: " + planetId +
                         "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
-
-            } catch (SQLException e) {
-                debugLogger.debug(String.valueOf(e));
-                System.out.println("\nFAILED TO GET PLANET ID\n");
             }
         } catch (SQLException e) {
                 debugLogger.debug(String.valueOf(e));
-                System.out.println("\nFAILED TO ADD PLANET, TRY AGAIN.\n");
+                System.out.println("\nDATABASE ERROR\nTRY AGAIN.\n");
         }catch (EmptyInputException e) {
             debugLogger.debug(String.valueOf(e));
-            System.out.println("\nPLANET NAME EMPTY\n");
+            System.out.println("\nEMPTY INPUT\n");
         } catch (InvalidUserIdException e) {
-            e.printStackTrace();
+            debugLogger.debug(String.valueOf(e));
+            System.out.println("\nINVALID USER ID\n");
+        } catch (Exception e){
+            errorLogger.error(String.valueOf(e));
+            System.out.println("\nERROR\nIF ISSUES ARISE AGAIN PLEASE RESTART APPLICATION\n");
         }
     }
 
@@ -147,58 +117,34 @@ public class Shop {
         AtmosphereDAO atmosphereDAO = new AtmosphereDAO();
         InventoryDAO iDao = new InventoryDAO();
 
-        int planetId = 0;
+        int planetId;
         try {
             planetId = planetDAO.getPlanetIdByName(planet.getName());
+            Planet planetDB = planetDAO.getPlanetsById(planetId);
+            if(planet.getLifeform() != null) {
+                lifeDAO = new LifeDAO();
+                lifeDAO.deleteLifeByPlanetId(planetId);
+            }
+            atmosphereDAO.deleteAtmosphereByPlanetId(planetId);
+            planetDAO.deletePlanetById(planetId);
+            inventory.setBalance(inventory.getBalance()+value);
+            iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
+            temporaryPlanetList.add(planet);
+            planetsForSale.add(planet);
+            transactionLogger.info("PLANET SOLD ID: " + planetId +
+                    "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
         } catch (SQLException e) {
             debugLogger.debug(String.valueOf(e));
-            System.out.println("\nFAILED TO GET PLANET ID BY NAME, TRY AGAIN.\n");
+            System.out.println("\nDATABASE ERROR, TRY AGAIN.\n");
         } catch (EmptyInputException e) {
             debugLogger.debug(e.toString());
             System.out.println("\nEMPTY INPUT EXCEPTION\n");
-        }
-        try {
-            Planet planetDB = planetDAO.getPlanetsById(planetId);
-        } catch (SQLException e) {
-            debugLogger.debug(String.valueOf(e));
-            System.out.println("\nFAILED TO GET PLANET FROM PLANET ID, TRY AGAIN.\n");
-        }
-
-        if(planet.getLifeform() != null){
-            lifeDAO = new LifeDAO();
-            try {
-                lifeDAO.deleteLifeByPlanetId(planetId);
-            } catch (SQLException e) {
-                debugLogger.debug(String.valueOf(e));
-            }
-        }
-
-        try {
-            atmosphereDAO.deleteAtmosphereByPlanetId(planetId);
-        } catch (SQLException e) {
-            debugLogger.debug(String.valueOf(e));
-            System.out.println("\nFAILED TO DELETE ATMOSPHERE OF PLANET\n");
         } catch (NoPlanetFoundException e) {
             debugLogger.debug(String.valueOf(e));
             System.out.println("\nNO PLANET FOUND ERROR\n");
-        }
-        try {
-            planetDAO.deletePlanetById(planetId);
-        } catch (SQLException e) {
-            debugLogger.debug(String.valueOf(e));
-            System.out.println("\nFAILED TO DELETE PLANET, TRY AGAIN\n");
-        }
-
-        inventory.setBalance(inventory.getBalance()+value);
-        try {
-            iDao.updateInventoryBalance(inventory.getId(), inventory.getBalance());
         } catch (InvalidInventoryIdException e) {
             debugLogger.debug(String.valueOf(e));
             System.out.println("\nINVALID INVENTORY ID\n");
         }
-
-        temporaryPlanetList.add(planet);
-        transactionLogger.info("PLANET SOLD ID: " + planetId +
-                "\nUSER ID: " + user.getUserId() + "BALANCE: " + inventory.getBalance());
     }
 }
