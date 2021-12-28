@@ -5,7 +5,6 @@ import com.revature.display.utility.CreateShapes;
 import com.revature.models.accounts.CustomerAccount;
 import com.revature.models.accounts.EmployeeAccount;
 import com.revature.models.shop.Planet;
-import com.revature.models.shop.TemporaryPlanet;
 import com.revature.models.users.User;
 import com.revature.models.users.UserCredential;
 import com.revature.repository.*;
@@ -19,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -208,7 +208,7 @@ public class AccountInputHandler {
                     break;
                 case ("5"):
                     System.out.println(createShapes.indent + "OPTION 5: WIPE ACCOUNT FROM HISTORY");
-                    deleteAccountTotally(employeeAccount, username);
+                    deleteAccountTotally();
                     break;
                 case ("6"):
                     System.out.println(createShapes.indent + "OPTION 6: DELETE SPECIFIC ACCOUNT");
@@ -232,29 +232,50 @@ public class AccountInputHandler {
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         boolean chooseAccount = true;
         do{
-            System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER");
+            System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER OR N TO RETURN");
             System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
 
+            if(input.toString().contentEquals("N")){
+                return;
+            }
+
             int customerId = Integer.parseInt(input.toString());
+            if(!customerAccountDAO.checkCustomerAccountId(customerId)){
+                System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
+                return;
+            }
             CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(customerId);
             try{
+                int userCredentialId = customerAccount.getUserCredentialId();
+                List<CustomerAccount> customerAccountList = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
+                if(customerAccountList.size() == 1){
+                    System.out.println(createShapes.indent + "FINAL ACCOUNT OF CUSTOMER");
+                    System.out.println(createShapes.indent + "REPEAT ID TO DELETE ACCOUNT");
+                    deleteAccountTotally();
+                    System.out.println(createShapes.indent + "DONE");
+                    return;
+                }
                 customerAccountDAO.deleteCustomerAccountById(customerId);
                 chooseAccount = false;
                 transactionLogger.info("ADMIN ACTIVIY: ACCOUNT WIPE ID: " + customerAccount.getCustomerAccountId());
-                System.out.println(createShapes.indent + "COMPLETE");
+                System.out.println(createShapes.indent + "DONE");
             }catch (NumberFormatException e){
                 debugLogger.debug(e.toString());
                 System.out.println(createShapes.indent + "TYPE A VALID NUMBER");
             } catch (InvalidCustomerAccountIdException e) {
                 debugLogger.debug(e.toString());
                 System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
+            } catch (SQLException throwables) {
+                debugLogger.debug(String.valueOf(throwables));
+            } catch (InvalidUserCredentialException e) {
+                e.printStackTrace();
             }
         }while(chooseAccount);
     }
 
-    public void deleteAccountTotally(EmployeeAccount employeeAccount, UserCredential username) {
+    public void deleteAccountTotally() {
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
         InventoryDAO inventoryDAO = new InventoryDAO();
@@ -265,20 +286,31 @@ public class AccountInputHandler {
         boolean allowTermination = true;
 
         do{
-            System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER");
+            System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER OR N TO RETURN");
             System.out.print(createShapes.indent + "-> ");
             input.setLength(0);
             input.append(sc.nextLine().trim());
-                int customerId = Integer.parseInt(input.toString());
-                CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(customerId);
+
+            if(input.toString().contentEquals("N")){
+                return;
+            }
+
             try{
+                int customerId = Integer.parseInt(input.toString());
+                if(!customerAccountDAO.checkCustomerAccountId(customerId)){
+                    System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
+                    return;
+                }
+                CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(customerId);
                 List<CustomerAccount> customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(customerAccount.getUserCredentialId());
 
                 List<User> users = customerUserDAO.getAllUsersByCustomerId(customerId);
 
-                System.out.println(createShapes.indent + "THIS WILL DELETE ALL INFORMATION RELATED TO ACCOUNT AND USER");
-                System.out.println(createShapes.shortIndent + "PROCEEDING WILL DELETE THE USER CREDENTIAL AND THEY WILL BE UNABLE TO LOGIN EXCEPT BY MAKING A NEW ACCOUNTTYPE Y TO PROCEEDTYPE N TO CANCEL AND RETURN");
                 do{
+                    System.out.println(createShapes.indent + "THIS WILL DELETE ALL INFORMATION RELATED TO ACCOUNT AND USER");
+                    System.out.println(createShapes.shortIndent + "PROCEEDING WILL DELETE THE USER CREDENTIAL AND THEY WILL BE UNABLE TO LOGIN EXCEPT BY MAKING A NEW ACCOUNT");
+                    System.out.println(createShapes.indent + "TYPE Y TO PROCEED TYPE N TO CANCEL AND RETURN");
+                    System.out.print(createShapes.indent + "-> ");
                     input.setLength(0);
                     input.append(sc.nextLine());
                     switch (input.toString().trim()){
@@ -297,9 +329,22 @@ public class AccountInputHandler {
                 }while(allowTermination);
 
                     for (User user : users) {
-                        customerUserDAO.deleteUserById(user.getUserId());
-                        inventoryDAO.deleteInventoryById(user.getInventoryId());
-                        List<Planet> planets = planetDAO.getPlanetsByUserId(user.getUserId());
+                        int userId = user.getUserId();
+                        int userInventoryId = user.getInventoryId();
+                        inventoryDAO.deleteInventoryById(userInventoryId);
+                        customerUserDAO.deleteUserById(userId);
+
+                        List<Planet> planets = new ArrayList<>();
+                        try{
+                            planets = planetDAO.getPlanetsByUserId(user.getUserId());
+                        }catch (NullPointerException e){
+                            debugLogger.debug(e.toString());
+                        }
+                        if(planets.size() < 1){
+                            transactionLogger.info("ADMIN ACTIVITY: TOTAL ACCOUNT WIPE PRIMARY ACCOUNT HOLDER USER CREDENTIAL ID: " + customerAccount.getUserCredentialId());
+                            System.out.println(createShapes.indent + "COMPLETE");
+                            return;
+                        }
                         for (Planet planet : planets) {
                             planetDAO.deletePlanetById(planet.getId());
                             atmosphereDAO.deleteAtmosphereByPlanetId(planet.getId());
@@ -308,8 +353,7 @@ public class AccountInputHandler {
                         for (CustomerAccount account : customerAccounts) {
                             customerAccountDAO.deleteCustomerAccountById(account.getCustomerAccountId());
                         }
-                        transactionLogger.info("ADMIN ACTIVITY: TOTAL ACCOUNT WIPE PRIMARY ACCOUNT HOLDER USER CREDENTIAL ID: " + customerAccount.getUserCredentialId());
-                        System.out.println(createShapes.indent + "COMPLETE");
+
                     }
 
                     chooseAccount = false;
@@ -419,7 +463,7 @@ public class AccountInputHandler {
                     break;
                 case ("5"):
                     System.out.println(createShapes.indent + "OPTION 5: WIPE ACCOUNT FROM HISTORY");
-                    deleteAccountTotally(employeeAccount, username);
+                    deleteAccountTotally();
                     break;
                 case ("6"):
                     System.out.println(createShapes.indent + "OPTION 6: DELETE SPECIFIC ACCOUNT");

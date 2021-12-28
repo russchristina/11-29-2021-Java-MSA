@@ -11,11 +11,6 @@ class CustomerUserDAOTest {
     CustomerUserDAO customerUserDAO = new CustomerUserDAO();
 
     @Test
-    void deleteUserById() {
-        Assertions.assertThrows(InvalidUserIdException.class, () -> customerUserDAO.deleteUserById(-1));
-    }
-
-    @Test
     void addUserInvalidInventoryIdException() {
         Assertions.assertThrows(InvalidInventoryIdException.class, () -> customerUserDAO.addUser("Name", -1, 12));
     }

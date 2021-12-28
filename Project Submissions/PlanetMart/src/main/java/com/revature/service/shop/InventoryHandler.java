@@ -1,5 +1,6 @@
 package com.revature.service.shop;
 
+import com.revature.display.account.AccountDisplay;
 import com.revature.display.account.LifeDisplay;
 import com.revature.display.shop.PlanetDisplay;
 import com.revature.display.utility.CreateShapes;
@@ -261,6 +262,7 @@ public class InventoryHandler {
     public void transferFunds(CustomerAccount customerAccount, User user) {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         InventoryDAO inventoryDAO = new InventoryDAO();
+        AccountDisplay accountDisplay = new AccountDisplay();
 
         List<User> users = cUDao.getAllUsersByCustomerId(customerAccount.getCustomerAccountId());
         if(users.size() < 2) {
@@ -272,48 +274,59 @@ public class InventoryHandler {
         User firstUser = null;
         User secondUser = null;
 
-        System.out.println(createShapes.indent + "USERS:");
+        System.out.println(createShapes.border);
+
         for (User user1 : users) {
-            System.out.println(createShapes.indent + user1.getUserId());
-            System.out.println(createShapes.indent + user1.getName());
+            System.out.println();
+            System.out.println(createShapes.indent + "USER ID: " + user1.getUserId());
+            System.out.println(createShapes.indent + "USER NAME: " + user1.getName());
             try {
-                System.out.println(createShapes.indent + inventoryDAO.getInventoryByInventoryId(user1.getInventoryId()).getBalance());
+                System.out.println(createShapes.indent + "BALANCE: " + inventoryDAO.getInventoryByInventoryId(user1.getInventoryId()).getBalance());
             } catch (InvalidInventoryIdException e) {
                 debugLogger.debug(e.toString());
             }
         }
-        System.out.println(createShapes.indent + users);
-        if(!users.isEmpty()){
 
+        if(!users.isEmpty()){
             do{
-                System.out.println(createShapes.indent + "CHOOSE USER NUMBER");
+                System.out.println();
+                System.out.println(createShapes.indent + "CHOOSE USER NUMBER OR TYPE N TO RETURN");
+                System.out.print(createShapes.indent + "-> ");
                 input.setLength(0);
                 input.append(sc.nextLine().trim());
-                for (User cUser : users) {
 
+                if(input.toString().contentEquals("N")){
+                    return;
+                }
+                for (User cUser : users) {
                     if (String.valueOf(cUser.getUserId()).contentEquals(input)) {
                         firstUser = cUser;
                         do{
-                            System.out.println(createShapes.indent + "CHOOSE USER TO TRANSFER TO...");
+
                             users.remove(firstUser);
                             chooseUser = false;
                             for (User user2 : users) {
-                                System.out.println(createShapes.indent + user2.getUserId());
-                                System.out.println(createShapes.indent + user2.getName());
+                                System.out.println();
+                                System.out.println(createShapes.indent + "USER ID: " + user2.getUserId());
+                                System.out.println(createShapes.indent + "USER NAME: " + user2.getName());
                                 try {
-                                    System.out.println(createShapes.indent + inventoryDAO.getInventoryByInventoryId(user2.getInventoryId()).getBalance());
+                                    System.out.println(createShapes.indent + "BALANCE: " + inventoryDAO.getInventoryByInventoryId(user2.getInventoryId()).getBalance());
                                 } catch (InvalidInventoryIdException e) {
                                     debugLogger.debug(e.toString());
-                                    System.out.println(createShapes.indent + "INVALID INVENTORY ID");
                                 }
+
                             }
+                            System.out.println(createShapes.indent + "CHOOSE USER TO TRANSFER TO...");
+                            System.out.print(createShapes.indent + "-> ");
                             input.setLength(0);
                             input.append(sc.nextLine().trim());
 
                             for (User cUser2 : users) {
                                 if (String.valueOf(cUser2.getUserId()).contentEquals(input)) {
                                     secondUser = cUser2;
-                                    System.out.println(createShapes.indent + "TRANSFERRING FROM " + firstUser.getName() + " TO " + secondUser.getName());
+                                    System.out.println();
+                                    System.out.println(createShapes.indent + "TRANSFERRING FROM: " + firstUser.getName());
+                                    System.out.println(createShapes.indent + "TRANSFERRING TO: " + secondUser.getName());
                                     multipleUserTransfer(firstUser, secondUser);
                                     chooseUser2 = false;
                                     return;
@@ -321,8 +334,6 @@ public class InventoryHandler {
                             }System.out.println(createShapes.indent + "CHOOSE VALID USER NUMBER");
                             }while(chooseUser2);
                     }
-
-
                 }System.out.println(createShapes.indent + "CHOOSE VALID USER NUMBER");
             }while(chooseUser);
         }
@@ -344,16 +355,17 @@ public class InventoryHandler {
             debugLogger.debug(e.toString());
             System.out.println(createShapes.indent + "INVALID SECOND INVENTORY");
         }
-
-        System.out.println(createShapes.indent + firstUser.getName() + " BALANCE " + firstInventory.getBalance());
-        System.out.println(createShapes.indent + secondUser.getName() + " BALANCE " + secondInventory.getBalance());
-
+        System.out.println();
+        System.out.println(createShapes.indent + firstUser.getName() + " BALANCE: " + firstInventory.getBalance());
+        System.out.println(createShapes.indent + secondUser.getName() + " BALANCE: " + secondInventory.getBalance());
+        System.out.println();
         int amount = 0;
         boolean inputtingMoney = true;
 
         while(inputtingMoney){
             input.setLength(0);
             System.out.println(createShapes.indent + "HOW MUCH TO REMOVE...");
+            System.out.print(createShapes.indent + "-> ");
             input.append(sc.nextLine().trim());
             try{
                 amount = Integer.parseInt(input.toString());
@@ -372,9 +384,9 @@ public class InventoryHandler {
             debugLogger.debug(e.toString());
             System.out.println(createShapes.indent + "INVALID INVENTORY ID");
         }
-        System.out.println(createShapes.indent + "NEW BALANCE FOR...");
-        System.out.println(createShapes.indent + firstUser.getName());
-        System.out.println(createShapes.indent + firstInventory.getBalance());
+        System.out.println();
+        System.out.println(createShapes.indent + "USER ID: " + firstUser.getName());
+        System.out.println(createShapes.indent + "NEW BALANCE: " + firstInventory.getBalance());
 
         secondInventory.setBalance(secondInventory.getBalance()+amount);
         try {
@@ -383,12 +395,13 @@ public class InventoryHandler {
             debugLogger.debug(e.toString());
             System.out.println(createShapes.indent + "INVALID INVENTORY ID");
         }
-        System.out.println(createShapes.indent + "NEW BALANCE FOR...");
-        System.out.println(createShapes.indent + secondUser.getName());
-        System.out.println(createShapes.indent + secondInventory.getBalance());
-        transactionLogger.info("BALANCE TRANSFER BETWEEN USERS" + "USER 1 ID: " + firstUser.getUserId() + "AMOUNT REMOVED: " + amount +
-                "USER 2 ID: " + secondUser.getUserId() + "INVENTORY 1 ID: " + firstInventory.getId() + "INVENTORY 1 BALANCE: " + firstInventory.getBalance() +
-                "INVENTORY 2 ID: " + secondInventory.getId() + "INVENTORY 2 BALANCE: " + secondInventory.getBalance());
+        System.out.println();
+        System.out.println(createShapes.indent + "USER ID: " + secondUser.getName());
+        System.out.println(createShapes.indent + "NEW BALANCE: " + secondInventory.getBalance());
+
+        transactionLogger.info("BALANCE TRANSFER BETWEEN USERS" + "USER 1 ID: " + firstUser.getUserId() + " AMOUNT REMOVED: " + amount +
+                " USER 2 ID: " + secondUser.getUserId() + " INVENTORY 1 ID: " + firstInventory.getId() + " INVENTORY 1 BALANCE: " + firstInventory.getBalance() +
+                " INVENTORY 2 ID: " + secondInventory.getId() + " INVENTORY 2 BALANCE: " + secondInventory.getBalance());
 
     }
 
@@ -407,15 +420,14 @@ public class InventoryHandler {
         Inventory inventory = null;
         try {
             inventory = iDao.getInventoryByInventoryId(user.getInventoryId());
+            planetDisplay.displayInventoryOpen(temporaryPlanetList, inventory);
         } catch (InvalidInventoryIdException e) {
             debugLogger.debug(e.toString());
         }
 
-        if(inventory != null){
-            System.out.println(createShapes.indent + "BALANCE:");
-            System.out.println(createShapes.indent + inventory.getBalance());
-        }
-        planetDisplay.displayTemporaryPlanetList(temporaryPlanetList);
+
+
+//        planetDisplay.displayTemporaryPlanetList(temporaryPlanetList);
 
     }
 }

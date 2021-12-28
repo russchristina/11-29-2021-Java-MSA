@@ -54,7 +54,7 @@ public class LoginInputHandler {
             input.setLength(0);
             try {
                 loginDisplay.printWelcomeOptions();
-                System.out.print(createShapes.indent + "->");
+                System.out.print(createShapes.indent + "-> ");
                 input.append(sc.nextLine().toLowerCase().trim());
                 switch (input.toString()) {
                     case ("1"):
@@ -189,18 +189,21 @@ public class LoginInputHandler {
         CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO();
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
         InventoryDAO inventoryDAO = new InventoryDAO();
-        if(username.toString().trim().contentEquals("")) throw new EmptyUserCredentialDataException("Empty Username Input");
-        if(password.toString().trim().contentEquals("")) throw new EmptyUserCredentialDataException("Empty Password Input");
+        if (username.toString().trim().contentEquals(""))
+            throw new EmptyUserCredentialDataException("Empty Username Input");
+        if (password.toString().trim().contentEquals(""))
+            throw new EmptyUserCredentialDataException("Empty Password Input");
 
-        if(username.toString().trim().length() < 4 || password.toString().trim().length() < 4) throw new InvalidUserCredentialException("Inputted Credentials is too short");
+        if (username.toString().trim().length() < 4 || password.toString().trim().length() < 4)
+            throw new InvalidUserCredentialException("Inputted Credentials is too short");
 
         try {
-            if(userCredentialsDAO.getUserCredentialByUsername(username.toString()) == null){
+            if (userCredentialsDAO.getUserCredentialByUsername(username.toString()) == null) {
                 System.out.println(createShapes.border);
-                System.out.print(createShapes.indent+"FIRST NAME:");
+                System.out.print(createShapes.indent + "FIRST NAME:");
                 input.setLength(0);
                 String firstName = input.append(sc.nextLine().trim()).toString();
-                System.out.print(createShapes.indent+"LAST NAME:");
+                System.out.print(createShapes.indent + "LAST NAME:");
                 input.setLength(0);
                 String lastName = input.append(sc.nextLine().trim()).toString();
                 System.out.println(createShapes.border);
@@ -215,18 +218,20 @@ public class LoginInputHandler {
                 List<Inventory> inventoryList = inventoryDAO.getAllInventories();
                 customerAccountDAO.addCustomerAccount(userCredentialId, 0);
                 List<CustomerAccount> customerAccounts = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
-                int customerAccountId = customerAccounts.get(customerAccounts.size()-1).getCustomerAccountId();
-                customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size()-1).getId(), customerAccountId);
-                customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(customerUserDAO.getAllUsersByCustomerId(customerAccountId).size()-1).getUserId());
+                int customerAccountId = customerAccounts.get(customerAccounts.size() - 1).getCustomerAccountId();
+                customerUserDAO.addUser(firstName, inventoryList.get(inventoryList.size() - 1).getId(), customerAccountId);
+                customerAccountDAO.updateCustomerAccountPrimaryId(customerAccountId, customerUserDAO.getAllUsersByCustomerId(customerAccountId).get(customerUserDAO.getAllUsersByCustomerId(customerAccountId).size() - 1).getUserId());
 
                 System.out.println(createShapes.indent + "CREATED ACCOUNT");
                 System.out.println(createShapes.indent + "CUSTOMER ACCOUNT ID: " + customerAccountId);
                 System.out.println(createShapes.border);
                 transactionLogger.info("CUSTOMER ACCOUNT CREATED ID: " + customerAccountId);
-            }else{
+            } else {
                 throw new DuplicateUsernameException("Username already exists");
             }
-        } catch (EmptyInputException e) {
+        }catch(DuplicateUsernameException e){
+            throw new DuplicateUsernameException("Username already exists");
+        }catch (EmptyInputException e) {
             debugLogger.debug(String.valueOf(e));
             System.out.println(createShapes.indent + "EMPTY INPUT");
         } catch (InvalidPrimaryUserException e) {

@@ -109,11 +109,19 @@ public class AccountDisplay {
 
         for (EmployeeAccount employeeAccount : employeeAccounts) {
             System.out.println(createShapes.border);
-            System.out.println(createShapes.indent + "EMPLOYEE ACCOUNT ID: " + employeeAccount.getEmployeeId());
-            System.out.println(createShapes.indent + "EMPLOYEE ADMIN ID: " + employeeAccount.getAdminId());
-            System.out.println(createShapes.indent + "EMPLOYEE NAME: " + userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getFirstName()
-                    + " "
-                    +userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getLastName());
+            if(employeeAccount.getEmployeeId() == employeeAccount.getAdminId()){
+                System.out.println(createShapes.indent + "ADMIN ACCOUNT ID: " + employeeAccount.getEmployeeId());
+                System.out.println(createShapes.indent + "ADMIN NAME: " + userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getFirstName()
+                        + " "
+                        +userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getLastName());
+            }else{
+                System.out.println(createShapes.indent + "EMPLOYEE ACCOUNT ID: " + employeeAccount.getEmployeeId());
+                System.out.println(createShapes.indent + "EMPLOYEE ADMIN ID: " + employeeAccount.getAdminId());
+                System.out.println(createShapes.indent + "EMPLOYEE NAME: " + userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getFirstName()
+                        + " "
+                        +userCredentialsDAO.getUserCredentialById(employeeAccount.getUserId()).getLastName());
+            }
+
 
         }
         System.out.println(createShapes.border);
@@ -125,10 +133,9 @@ public class AccountDisplay {
         CustomerUserDAO customerUserDAO = new CustomerUserDAO();
         AccountDisplay accountDisplay = new AccountDisplay();
         for (CustomerAccount customerAccount : allCustomerAccounts) {
-            System.out.println(createShapes.border);
             accountDisplay.displayCustomerAccount(customerAccount);
             for (User user : customerUserDAO.getAllUsersByCustomerId(customerAccount.getCustomerAccountId())) {
-                System.out.println(createShapes.border);
+                System.out.println();
                 if(user.getUserId() == customerAccount.getPrimaryUserId()){
                     System.out.println(createShapes.indent + "PRIMARY USER ID: " + user.getUserId());
                     System.out.println(createShapes.indent + "USER NAME: " + user.getName());

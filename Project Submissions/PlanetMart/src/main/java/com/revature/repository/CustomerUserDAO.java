@@ -132,8 +132,6 @@ public class CustomerUserDAO implements CustomerUsersDAOInterface {
     public void deleteUserById(int id) throws InvalidUserIdException {
         final String SQL = "delete from customer_users where user_id = ?";
 
-        if(!readUserId(id)) throw new InvalidUserIdException("User ID not valid");
-
         try(Connection connection = ConnectionFactory.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL)) {
 

@@ -221,7 +221,7 @@ public class AccountHandler {
     public void addUser(CustomerAccount customerAccount) throws EmptyInputException, DuplicateUsernameException {
         CustomerUserDAO cUDao = new CustomerUserDAO();
         InventoryDAO inventoryDAO = new InventoryDAO();
-        List<Inventory> inventories = inventoryDAO.getAllInventories();
+        List<Inventory> inventories;
         boolean addingUser = true;
 
         do{
@@ -239,11 +239,13 @@ public class AccountHandler {
                         throw new DuplicateUsernameException("User with inputted name already exists.");
                 }
                 inventoryDAO.addInventory(new Inventory(0, 0));
+                inventories = inventoryDAO.getAllInventories();
                 int inventoryId = inventories.get(inventories.size() - 1).getId();
                 try {
                     cUDao.addUser(input.toString(), inventoryId, customerAccount.getCustomerAccountId());
                     addingUser = false;
                     transactionLogger.info("ADDED USER: " + "ACCOUNT ID: " + customerAccount.getCustomerAccountId());
+                    System.out.println(createShapes.indent + "NEW USER ADDED");
                 } catch (InvalidCustomerAccountIdException e) {
                     errorLogger.error(String.valueOf(e));
                     System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
