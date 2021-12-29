@@ -1,86 +1,40 @@
 package projectzero;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class VirtualDollarsAccount {
 
 	// Fields
-	private String username;
-	private String firstName;
-	private String lastName;
-	private String password;
-	private String dateOfBirth;
-	private String email;
-	private String address;
+	private int accountId;
 	private double accountBalance;
 	private boolean isTransfer = false;
-	private boolean isRemoved = false;		
+	private boolean isRemoved = false;	
+	private NumberFormat nf;
+	private UserAccountRepositoryImpl repo;
+	private Logger myLogger;
 
 	// Constructor
-	public VirtualDollarsAccount(String username, String password, double accountBalance) {
-		this.setUserName(username);
-		this.setPassword(password);
-		this.setAccountBalance(accountBalance);
-	} // End constructor
-
-	// No-arg constructor
-	public VirtualDollarsAccount() {
-
+	public VirtualDollarsAccount(int accountId, double accountBalance) {
+		this.accountId = accountId;
+		this.accountBalance = accountBalance;
+		nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		nf.setMaximumFractionDigits(2);
+		nf.setMinimumFractionDigits(2);
+		repo = new UserAccountRepositoryImpl();
+		myLogger = LoggerFactory.getLogger("infoLogger");
 	} // End constructor
 
 	// Getters/Setters
-	public String getUserName() {
-		return username;
+	public int getAccountId() {
+		return accountId;
 	}
 
-	public void setUserName(String userName) {
-		this.username = userName;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
 	}
 
 	public double getAccountBalance() {
@@ -88,7 +42,12 @@ public class VirtualDollarsAccount {
 	}
 
 	public void setAccountBalance(double accountBalance) {
-		this.accountBalance = accountBalance;
+		if(accountBalance >= 0) {
+			this.accountBalance = accountBalance;
+			repo.updateAccountData(this);
+		} else {
+			System.out.println("Value may not be less than zero.");
+		} // End else statement
 	}
 	
 	public void setIsTransfer(boolean isTransfer) {
@@ -96,26 +55,30 @@ public class VirtualDollarsAccount {
 	}
 
 	// Method to add funds
-	protected void addFunds(double n) {
+	public void addFunds(double n) {
 		if (n > 0) {
 			accountBalance = accountBalance + n;
+			repo.updateAccountData(this);
 			if (!isTransfer) {
 				System.out.println("The funds have been successfully added to the account.");
+				myLogger.info("$" + n + " has been deposited into account id: " + this.getAccountId());
 			} // End if statement
 		} else {
-			System.out.println("Value must be greater than zero.");
+			System.out.println("Value may not be less than zero.");
 		} // End else statement
 	} // End method
 
 	// Method to withdraw funds
-	protected void removeFunds(double n) {
+	public void removeFunds(double n) {
 		isRemoved = false;
 		if (n > 0) {
 			if (accountBalance - n >= 0) {
 				accountBalance = accountBalance - n;
 				isRemoved = true;
+				repo.updateAccountData(this);
 				if (!isTransfer) {
 					System.out.println("The funds have been successfully withdrawn from the account.");
+					myLogger.info("$" + n + " has been withdrawn from account id: " + this.getAccountId());
 				} // End if statement
 			} else {
 				System.out.println("Not enough funds available.");
@@ -126,25 +89,27 @@ public class VirtualDollarsAccount {
 	} // End method
 
 	// Method to handle transfers to other accounts
-	protected void transferFunds(double n, VirtualDollarsAccount v) {		
-		if (n > 0) {
-			if (accountBalance - n >= 0 && v.getAccountBalance() - n >= 0) {
-				isTransfer = true;
-				removeFunds(n);
-				if (isRemoved) {
-					v.setIsTransfer(true);
-					v.addFunds(n);	
-					v.setIsTransfer(false);
-					System.out.println("The funds have been successfully transfered.");
-				} else {
-					System.out.println("\n***Transfer aborted***\n");
-				} // End else statement
-				isTransfer = false;
+	public void transferFunds(double n, VirtualDollarsAccount v) {		
+		if (this.getAccountId() != v.getAccountId()) {
+			isTransfer = true;
+			removeFunds(n);
+			if (isRemoved) {
+				v.setIsTransfer(true);
+				v.addFunds(n);
+				v.setIsTransfer(false);
+				System.out.println("The funds have been successfully transfered.");
+				myLogger.info("$" + n + " has been transfered from account id: " + this.getAccountId() + " to account id: " + v.getAccountId());
 			} else {
-				System.out.println("Not enough funds available.");
+				System.out.println("\n***Transfer aborted***\n");
 			} // End else statement
+			isTransfer = false;
 		} else {
-			System.out.println("Value must be greater than zero.");
+			System.out.println("You may not transfer to the same or shared account.");
 		} // End else statement
 	} // End method
+	
+	@Override
+	public String toString() {
+		return "VirtualDollarsAccount [ Account Id = " + accountId + ", Account Balance = " + nf.format(accountBalance) + " ]";
+	} // End toString
 } // End class
