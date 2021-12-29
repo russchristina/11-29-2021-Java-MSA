@@ -180,7 +180,10 @@ public class UX {
 			case 5:
 				this.mainMenu();
 				break;
-		}
+			}
+		} else {
+			System.out.println("Invalid input. Try again.");
+			this.accountManager();
 		}
 	}
 	
@@ -251,6 +254,9 @@ public class UX {
 				this.entry();
 				break;
 			}
+		} else {
+			System.out.println("Invalid input. Try again.");
+			this.employee();
 		}
 	}
 	

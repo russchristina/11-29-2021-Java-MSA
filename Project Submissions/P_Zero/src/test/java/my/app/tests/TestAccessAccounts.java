@@ -33,5 +33,4 @@ public class TestAccessAccounts {
 		Assertions.assertEquals(account, new Account());
 	}
 	
-	
 }
