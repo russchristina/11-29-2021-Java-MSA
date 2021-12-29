@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<!-- determining what the format of our logging messages -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- Let's log to a file instead (or just keep both appenders).  -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.FileAppender">
+		<!--location of the file you're logging to. -->
+		<file>jdbclogs.log</file>
+		<!-- determining the format of our logging messages -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="FILE2"
+		class="ch.qos.logback.core.FileAppender">
+		<!-- location of the file you're logging to -->
+		<file>jdbclogs2.log</file>
+		<!-- determining the format of our logging messages -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- You can creating logs and give them their own logging levels -->
+	<logger name="aLogger" level="debug">
+		<appender-ref ref="FILE"/>
+	</logger>
+	
+	
+</configuration>
