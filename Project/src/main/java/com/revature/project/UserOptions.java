@@ -47,7 +47,7 @@ public class UserOptions {
             case 3: //Return to login page
              try{
                  System.out.println("Thank you for visiting. Goodbye! ");
-                 newUser.close();
+                 System.exit(0);
                  break;
              }catch (Exception e){
                  System.out.println("Application Closed.");
@@ -193,8 +193,9 @@ public class UserOptions {
                             "4: Main Passwords\n" +
                             "5: Child Passwords\n" +
                             "6: Employee Passwords\n" +
-                            "--------------Funds-------------------------\n" +
-                            "7: Main Funds");
+                            "--------------Misc-------------------------\n" +
+                            "7: Main Funds\n" +
+                            "0: Return");
                         int option = newUser.nextInt();
                         switch (option){
                             case 1:
@@ -228,8 +229,14 @@ public class UserOptions {
                                 modifyUsers.returnUserTable();
                                 modifyUsers.adminFundUpdate();
                                 break;
+                            case 0:
+                                new UserOptions().adminEmployeeLoggedIn();
+                                break;
 
                         }
+                case 3:
+                    new MainDisplay();
+                    break;
                     //--------------------------------------------------------------------------------------------------
                 default:
                     System.out.println("Invalid input. Only the numbers listed on the main menu are valid inputs. " +
@@ -455,12 +462,10 @@ public class UserOptions {
                     modifyUsers.returnUserTable();
                     modifyUsers.deleteMainUser();
                     break;
-                default:
-                    System.out.println("Invalid input");
+
                 case 2: //Child User
                     modifyUsers.returnChildUserTable();
-                    System.out.println("Select the user ID of the user you would like to delete");
-
+                    modifyUsers.deleteChildUser();
                 break;
                 case 3:
                     modifyUsers.returnEmployeeTable();
@@ -468,7 +473,10 @@ public class UserOptions {
                     break;
                 case 0:
                     new UserOptions().adminEmployeeLoggedIn();
-
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    new UserOptions().adminEmployeeLoggedIn();
             }
 
         }

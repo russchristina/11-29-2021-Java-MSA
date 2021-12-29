@@ -216,7 +216,39 @@ public class UserDBImplementation implements UserDB {
         }
 
     }
+    @Override
+    public List<EmployeeUserSpecs> findNonEmployees() {
+        //Setup all the stuff you will need here
+        final String SQL = "select * from employee";
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet set = null;
+        List<EmployeeUserSpecs> userInfo = new ArrayList<>();
+        {
+            try {
+                connection = OpenConnection.getConnection();
+                stmt = connection.createStatement();
+                set = stmt.executeQuery(SQL);
+                while (set.next()) {
+                    userInfo.add(new EmployeeUserSpecs(
+                            set.getInt(1),
+                            set.getString(2),
+                            set.getString(3),
+                            set.getBoolean(4)));
+                }
 
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                CloseDB.closeConnection(connection);
+                CloseDB.closeResultSet(set);
+                CloseDB.closeStatement(stmt);
+            }
+
+            return userInfo;
+        }
+
+    }
     @Override
     public void update(UserSpecs specs) {
         Connection connection = null;
@@ -516,6 +548,35 @@ public class UserDBImplementation implements UserDB {
         }
 
     }
+
+    public UserSpecs returnUser(UserSpecs user1) {
+
+        UserSpecs userSpecs = null;
+
+
+        final String SQL = "select * from users where user_name = ?";
+        ResultSet resultSet = null;
+        try(Connection connection = OpenConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+            preparedStatement.setString(1, user1.getUsername());
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                userSpecs = new UserSpecs(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3) , resultSet.getInt(4));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            CloseDB.closeResultSet(resultSet);
+        }
+
+        return userSpecs;
+
+    }
+
+
 //@Override
 //public UserSpecs findInfo(UserSpecs specs) {
 ////        final String SQL ="select * from users where user_name = '" + name + "'";

@@ -3,7 +3,7 @@ package com.revature.project.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface UserDB {
+public interface UserDBTest {
     /**
      *  How we will save new user name and user password
      */
@@ -27,11 +27,9 @@ public interface UserDB {
     List<UserSpecs> findAll();
     List<ChildUserSpecs> findAllChildren();
     List<EmployeeUserSpecs> findAllEmployees();
-     List<EmployeeUserSpecs> findNonEmployees();
-
-        /**
-         *change user info
-         */
+    /**
+     *change user info
+     */
     void update(UserSpecs specs);
 
     void updateUserName(UserSpecs specs);
@@ -47,12 +45,12 @@ public interface UserDB {
 
 
     //delete users, child users of main users, and employees of the business
-    void delete(UserSpecs specs);
+    Object delete(UserSpecs specs);
     ChildUserSpecs deleteAllChildren(ChildUserSpecs specs);
-    void deleteChild(ChildUserSpecs specs);
-    void deleteEmployee(EmployeeUserSpecs specs);
+    Object deleteChild(ChildUserSpecs specs);
+    Object deleteEmployee(EmployeeUserSpecs specs);
 //    UserSpecs findPass (UserSpecs specs);
-    ArrayList<String> findInfo (String name);
+    ArrayList<String> findInfo();
     ArrayList<String> findChildInfo (String name);
     ArrayList<String> findEmployeeInfo(String name);
 

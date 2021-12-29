@@ -33,7 +33,7 @@ public UserAccounts(){
         Map<String, String> accountHash = UserAccounts.getAccountHash();
         accountHash.putIfAbsent(a, b);
         UserAccounts userAccounts = new UserAccounts();
-        accountHash.put("bitch", "boi");
+        accountHash.put("John", "Doe");
     }
 
 }

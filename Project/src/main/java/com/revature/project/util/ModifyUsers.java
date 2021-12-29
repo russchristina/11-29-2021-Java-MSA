@@ -2,6 +2,8 @@ package com.revature.project.util;
 
 import com.revature.project.MainDisplay;
 import com.revature.project.UserOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +11,8 @@ import java.util.Scanner;
 public class ModifyUsers {
     UserDB userDB = new UserDBImplementation();
     Scanner userInput = new Scanner(System.in);
+
+    private final Logger debugLogger = LoggerFactory.getLogger(ModifyUsers.class);
 
     public void returnUserTable() {
         List<UserSpecs> userSpecsList;
@@ -46,49 +50,61 @@ public class ModifyUsers {
     public void deleteMainUser() {
         userInput = new Scanner(System.in);
         int option = 0;
-        boolean isAdmin = Boolean.parseBoolean(userDB.findEmployeeInfo(MainDisplay.getUsername()).get(3));
+        boolean isCurrentAdmin = Boolean.parseBoolean(userDB.findEmployeeInfo(MainDisplay.getUsername()).get(3));
 
-        System.out.println("What would you like to do?\n" +
-                "1: Delete a user\n" +
-                "2: Return Main Menu");
-        option = userInput.nextInt();
-        switch (option) {
-            case 1:
-                System.out.println("Enter the ID of a user listed above to delete: ");
-                int user = userInput.nextInt();
-                UserSpecs specs = new UserSpecs(user, "", "", 0);
-                userDB.delete(specs);
+        boolean gettingCurrentInput = true;
+        do{
+            System.out.println("What would you like to do?\n" +
+                    "1: Delete a user\n" +
+                    "2: Return Main Menu");
 
-                System.out.println("User deleted. Returning to Main Menu \n" +
-                        "------------------------------------------------------------------------");
-                if (isAdmin) {
+            try{
+                option = userInput.nextInt();
+                switch (option) {
+                    case 1:
+                        System.out.println("Enter the ID of a user listed above to delete: ");
+                        int user = userInput.nextInt();
+                        UserSpecs specs = new UserSpecs(user, "", "", 0);
+                        userDB.delete(specs);
 
-                    new UserOptions().adminEmployeeLoggedIn();
-                } else {
-                    new UserOptions().employeeLoggedIn();
+                        System.out.println("User deleted. Returning to Main Menu \n" +
+                                "------------------------------------------------------------------------");
+                        if (isCurrentAdmin) {
+
+                            new UserOptions().adminEmployeeLoggedIn();
+                        } else {
+                            new UserOptions().employeeLoggedIn();
+                        }
+                        break;
+                    case 2:
+                        if (isCurrentAdmin) {
+                            System.out.println("Returning to Main Menu \n" +
+                                    "------------------------------------------------------------------------");
+                            new UserOptions().adminEmployeeLoggedIn();
+                        } else {
+                            new UserOptions().employeeLoggedIn();
+                        }
+                        gettingCurrentInput = false;
+                        break;
+                    default:
+                        System.out.println("Invalid Input \n" +
+                                "------------------------------------------------------------------------");
+                        new UserOptions().adminEmployeeLoggedIn();
+                        break;
                 }
-                break;
-            case 2:
-                if (isAdmin) {
-                    System.out.println("Returning to Main Menu \n" +
-                            "------------------------------------------------------------------------");
-                    new UserOptions().adminEmployeeLoggedIn();
-                } else {
-                    new UserOptions().employeeLoggedIn();
-                }
+            } catch (Exception e){
+                System.out.println("INVALID NUMBER INPUT\n-------------------------------------------------------");
+                userInput.nextLine();
+            }
 
-                break;
-            default:
-                System.out.println("Returning to Main Menu \n" +
-                        "------------------------------------------------------------------------");
-        }
+        } while(gettingCurrentInput);
 
     }
 
     public void deleteChildUser() {
         userInput = new Scanner(System.in);
         int option = 0;
-        boolean isAdmin = Boolean.parseBoolean(userDB.findEmployeeInfo(MainDisplay.getUsername()).get(3));
+        boolean isCurrentAdmin = Boolean.parseBoolean(userDB.findEmployeeInfo(MainDisplay.getUsername()).get(3));
 
         System.out.println("What would you like to do?\n" +
                 "1: Delete a user\n" +
@@ -103,7 +119,7 @@ public class ModifyUsers {
 
                 System.out.println("User deleted. Returning to Main Menu \n" +
                         "------------------------------------------------------------------------");
-                if (isAdmin) {
+                if (isCurrentAdmin) {
 
                     new UserOptions().adminEmployeeLoggedIn();
                 } else {
@@ -111,7 +127,7 @@ public class ModifyUsers {
                 }
                 break;
             case 2:
-                if (isAdmin) {
+                if (isCurrentAdmin) {
                     System.out.println("Returning to Main Menu \n" +
                             "------------------------------------------------------------------------");
                     new UserOptions().adminEmployeeLoggedIn();
@@ -123,6 +139,7 @@ public class ModifyUsers {
             default:
                 System.out.println("Returning to Main Menu \n" +
                         "------------------------------------------------------------------------");
+                break;
         }
 
     }
@@ -130,7 +147,7 @@ public class ModifyUsers {
     public void deleteEmployeeUser() {
         userInput = new Scanner(System.in);
         int option = 0;
-        boolean isAdmin = Boolean.parseBoolean(userDB.findEmployeeInfo(MainDisplay.getUsername()).get(3));
+        boolean isCurrentAdmin = Boolean.parseBoolean(userDB.findEmployeeInfo(MainDisplay.getUsername()).get(3));
 
         System.out.println("What would you like to do?\n" +
                 "1: Delete a user\n" +
@@ -140,12 +157,14 @@ public class ModifyUsers {
             case 1:
                 System.out.println("Enter the ID of a user listed above to delete: ");
                 int user = userInput.nextInt();
+               if (isCurrentAdmin){
+                   System.out.println("Cannot delete admins");
+               }
                 EmployeeUserSpecs specs = new EmployeeUserSpecs(user, "", "", false);
                 userDB.deleteEmployee(specs);
-
                 System.out.println("User deleted. Returning to Main Menu \n" +
                         "------------------------------------------------------------------------");
-                if (isAdmin) {
+                if (isCurrentAdmin) {
 
                     new UserOptions().adminEmployeeLoggedIn();
                 } else {
@@ -153,7 +172,7 @@ public class ModifyUsers {
                 }
                 break;
             case 2:
-                if (isAdmin) {
+                if (isCurrentAdmin) {
                     System.out.println("Returning to Main Menu \n" +
                             "------------------------------------------------------------------------");
                     new UserOptions().adminEmployeeLoggedIn();
@@ -215,7 +234,6 @@ public class ModifyUsers {
                 new UserOptions().adminEmployeeLoggedIn();
         }
     }
-
     public void adminPasswordSelection(int choice) {
         switch (choice) {
             case 4:

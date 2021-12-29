@@ -9,7 +9,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GetValueTest {
-
+    protected void newEntry(String a, String b) {
+        Map<String, String> accountHash = UserAccounts.getAccountHash();
+        accountHash.putIfAbsent(a, b);
+        UserAccounts userAccounts = new UserAccounts();
+        accountHash.put("John", "Doe");
+    }
     @Test
     void getAccountPassword() {
       String password ="1234";

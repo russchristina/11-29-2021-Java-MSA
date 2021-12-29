@@ -66,8 +66,7 @@ public class GetValue {
         userScanner.nextLine();
     }
     public void childPasswordCheck() {
-        System.out.println("Enter password :D" +  "BUG: switch options are not working here. If they put in an incorrect" +
-                "password, they cannot use the follow-up ints to select another option ");
+        System.out.println("Enter password :D" );
         MainDisplay.setPassword(userScanner.nextLine());
         String databasePassword = userDB.findChildInfo(MainDisplay.getUsername()).get(2);
         while (!databasePassword.equals(MainDisplay.getPassword())) {
@@ -101,14 +100,11 @@ public class GetValue {
             String breakNum = "3";
             attempts--;
             if (attempts == 0) {
-                System.out.println("Too many attempts foo :P");
+                System.out.println("Too many attempts. Closing program");
+                    System.exit(0);
                 break;
             } else {
-                System.out.println("Password incorrect. Please try again, or " +
-                        "please enter a number corresponding with the options " +
-                        "below : \n " +
-                        " \n 1: Create a new account \n 2: Re-enter username \n  3: Exit Application \n Attempts " +
-                        "remaining :  " + attempts);
+                System.out.println("Password incorrect. Remaining attempts: " + attempts);
 
                 MainDisplay.setPassword(userScanner.nextLine());
             }
