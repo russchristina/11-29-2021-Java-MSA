@@ -14,7 +14,9 @@
 		</encoder>
 	</appender>
 	
-	<!-- Let's log to a file instead (or just keep both appenders). -->
+	<!-- Let's log to a file instead (or just keep both appenders). Note that you
+	can optionally create a Rolling File Appender if you're concerned about the size of
+	the file getting too large. -->
 	<appender name="FILE"
 		class="ch.qos.logback.core.FileAppender">
 		<!-- Specify the location of the file you're logging to. -->
@@ -26,8 +28,28 @@
 		</encoder>
 	</appender>
 	
-	<root level="error">
-		<appender-ref ref="STDOUT" />
+	<appender name="FILE2"
+		class="ch.qos.logback.core.FileAppender">
+		<!-- Specify the location of the file you're logging to. -->
+		<file>jdbclogs2.log</file>
+		<!-- This encoder is determining what the format of our logging messages 
+			will be. -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- You can create individual loggers and give them their own logging levels and pass
+	your desired appenders to these loggers. -->
+	<logger name="aLogger" level="debug">
+		<appender-ref ref="FILE"/>
+	</logger>
+	
+	<!-- Note that the below configuration would apply to all loggers. That is why we
+	have commented it out as we don't want all of our loggers working at the exact same
+	level. -->
+	<!-- <root level="error">
 		<appender-ref ref="FILE" />
-	</root>
+		<appender-ref ref="FILE2" />
+	</root> -->
 </configuration>

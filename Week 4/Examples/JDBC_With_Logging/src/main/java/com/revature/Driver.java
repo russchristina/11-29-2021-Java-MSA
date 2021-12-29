@@ -26,10 +26,15 @@ public class Driver {
 				0.0f);
 		Ingredient nonSqlInjectedIngredient = new Ingredient(-100, "Cheese", "savory", 0.0f);
 		
-		ingredientRepository.save(nonSqlInjectedIngredient);
+		Ingredient updatedIngredient = new Ingredient(28, "Christmas Ham", "savory", 0.0f);
+		
+//		ingredientRepository.save(nonSqlInjectedIngredient);
 
 		System.out.println(ingredientRepository.findAll());
+		
 		System.out.println(ingredientRepository.findById(7));
+		
+		ingredientRepository.update(updatedIngredient);
 
 	}
 }
