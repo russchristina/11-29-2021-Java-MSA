@@ -42,7 +42,6 @@ public class Driver {
         firstStage();
     }
 
-
     public static void main(String[] args) {
         Driver login = new Driver();
     }
@@ -73,8 +72,8 @@ public class Driver {
                         break;
                 }
             }catch (Exception e){
-                errorLogger.error(String.valueOf(e));
-                System.out.println(createShapes.indent + "ERRORRESTART APPLICATION");
+                errorLogger.error(String.valueOf(e) + "\n" + e.getMessage());
+                System.out.println(createShapes.indent + "ERROR RESTART APPLICATION");
                 input.setLength(0);
             }
         }
@@ -103,20 +102,14 @@ public class Driver {
                     creatingAccount = false;
                 }
             } catch (DuplicateUsernameException e) {
-                System.out.println(createShapes.border);
                 System.out.println(createShapes.indent + "USERNAME IS NOT VALID");
-                System.out.println(createShapes.border);
-                debugLogger.debug(String.valueOf(e));
+                debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
             }catch (EmptyUserCredentialDataException e){
-                System.out.println(createShapes.border);
-                debugLogger.debug(String.valueOf(e));
+                debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
                 System.out.println(createShapes.indent + "EMPTY INPUT");
-                System.out.println(createShapes.border);
             } catch (InvalidUserCredentialException e) {
-                System.out.println(createShapes.border);
-                debugLogger.debug(String.valueOf(e));
+                debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
                 System.out.println(createShapes.indent + "USER CREDENTIALS TOO SHORT, MUST BE A MINIMUM 4 CHARACTERS");
-                System.out.println(createShapes.border);
             }
         } while (creatingAccount);
     }
@@ -141,25 +134,14 @@ public class Driver {
                     accountHandler.initiateAccount(userCredential);
                 }
             } catch (EmptyUserCredentialDataException e) {
-                System.out.println(createShapes.border);
                 System.out.println(createShapes.indent + "EMPTY INPUT TRY AGAIN");
-                debugLogger.debug(String.valueOf(e));
-                System.out.println(createShapes.border);
-            } catch (AccountNotFoundException e) {
-                debugLogger.debug(String.valueOf(e));
-                System.out.println(createShapes.border);
+                debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
+            } catch (AccountNotFoundException | NullPointerException | InvalidPasswordException e) {
+                debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
                 System.out.println(createShapes.indent + "INVALID CREDENTIALS");
-                System.out.println(createShapes.border);
-            } catch (NullPointerException | InvalidPasswordException e){
-                System.out.println(createShapes.border);
-                debugLogger.debug(String.valueOf(e));
-                System.out.println(createShapes.indent + "INVALID CREDENTIALS");
-                System.out.println(createShapes.border);
             } catch (Exception e){
-                System.out.println(createShapes.border);
-                errorLogger.error(String.valueOf(e));
+                errorLogger.error(String.valueOf(e) + "\n" + e.getMessage());
                 System.out.println(createShapes.indent + "ERROR TRY AGAIN");
-                System.out.println(createShapes.border);
             }
         } while (loggingIn);
     }
@@ -169,16 +151,15 @@ public class Driver {
         if(username.trim().contentEquals("")) throw new EmptyUserCredentialDataException("Empty username input");
         if(password.trim().contentEquals("")) throw new EmptyUserCredentialDataException("Empty password input");
 
-
         UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
         UserCredential userCredential = null;
         try {
             userCredential = userCredentialsDAO.getUserCredentialByUsername(username);
         } catch (EmptyInputException e) {
-            debugLogger.debug(String.valueOf(e));
+            debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
             System.out.println(createShapes.indent + "EMPTY INPUT");
         }
-        if(userCredential.getPassword().contentEquals(password)) {
+        if(userCredential != null && userCredential.getPassword().contentEquals(password)) {
             return userCredential;
         }
         throw new InvalidPasswordException();
@@ -232,28 +213,28 @@ public class Driver {
         }catch(DuplicateUsernameException e){
             throw new DuplicateUsernameException("Username already exists");
         }catch (EmptyInputException e) {
-            debugLogger.debug(String.valueOf(e));
+            debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
             System.out.println(createShapes.indent + "EMPTY INPUT");
         } catch (InvalidPrimaryUserException e) {
             System.out.println(createShapes.border);
-            debugLogger.debug(String.valueOf(e));
+            debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
             System.out.println(createShapes.indent + "INVALID PRIMARY USER ID");
             System.out.println(createShapes.border);
         } catch (SQLException | InvalidUserCredentialException throwables) {
             debugLogger.debug(String.valueOf(throwables));
         }catch (InvalidCustomerAccountIdException e) {
             System.out.println(createShapes.border);
-            debugLogger.debug(String.valueOf(e));
+            debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
             System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
             System.out.println(createShapes.border);
         } catch (InvalidInventoryIdException e) {
             System.out.println(createShapes.border);
-            debugLogger.debug(String.valueOf(e));
+            debugLogger.debug(String.valueOf(e) + "\n" + e.getMessage());
             System.out.println(createShapes.indent + "INVALID INVENTORY ID");
             System.out.println(createShapes.border);
         } catch (Exception e){
             System.out.println(createShapes.border);
-            errorLogger.error(String.valueOf(e));
+            errorLogger.error(String.valueOf(e) + "\n" + e.getMessage());
             System.out.println(createShapes.indent + "ERROR IN APPLICATON, IF ISSUES PERSIST, PLEASE RESTART");
             System.out.println(createShapes.border);
 
@@ -261,3 +242,4 @@ public class Driver {
         return false;
     }
 }
+

@@ -26,7 +26,7 @@ class AtmosphereDAOTest {
     }
 
     @Test
-    void addAtmosphereCompositionNullException() {
+    void addAtmosphereCompositionNullExceptionTest() {
         Assertions.assertThrows(NullPointerException.class, () -> atmosphereDAO.addAtmosphereComposition(null, 0));
     }
 

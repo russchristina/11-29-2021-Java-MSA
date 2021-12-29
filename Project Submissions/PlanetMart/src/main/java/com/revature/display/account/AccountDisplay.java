@@ -97,6 +97,7 @@ public class AccountDisplay {
         System.out.println(createShapes.indent + "10. ALTER USER DATA");
         System.out.println(createShapes.indent + "11. ADD EMPLOYEE ACCOUNT");
         System.out.println(createShapes.indent + "12. ADD ADMIN ACCOUNT");
+        System.out.println(createShapes.indent + "13. DELETE EMPLOYEE");
         System.out.println(createShapes.border);
 
 

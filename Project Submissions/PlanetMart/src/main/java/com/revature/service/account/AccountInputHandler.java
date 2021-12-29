@@ -241,13 +241,13 @@ public class AccountInputHandler {
                 return;
             }
 
-            int customerId = Integer.parseInt(input.toString());
-            if(!customerAccountDAO.checkCustomerAccountId(customerId)){
-                System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
-                return;
-            }
-            CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(customerId);
             try{
+                int customerId = Integer.parseInt(input.toString());
+                if(!customerAccountDAO.checkCustomerAccountId(customerId)){
+                    System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
+                    return;
+                }
+                CustomerAccount customerAccount = customerAccountDAO.getCustomerAccountById(customerId);
                 int userCredentialId = customerAccount.getUserCredentialId();
                 List<CustomerAccount> customerAccountList = customerAccountDAO.getCustomerAccountsByUserCredentialId(userCredentialId);
                 if(customerAccountList.size() == 1){
@@ -267,11 +267,12 @@ public class AccountInputHandler {
             } catch (InvalidCustomerAccountIdException e) {
                 debugLogger.debug(e.toString());
                 System.out.println(createShapes.indent + "INVALID CUSTOMER ACCOUNT ID");
-            } catch (SQLException throwables) {
+            } catch (SQLException | InvalidUserCredentialException throwables) {
                 debugLogger.debug(String.valueOf(throwables));
-            } catch (InvalidUserCredentialException e) {
-                e.printStackTrace();
+                System.out.println(createShapes.indent + "ERROR, TRY AGAIN");
             }
+
+
         }while(chooseAccount);
     }
 
@@ -508,11 +509,70 @@ public class AccountInputHandler {
                         System.out.println(createShapes.indent + "EMPTY INPUT REGISTERED, TRY AGAIN");
                     }
                     break;
+                case ("13"):
+                    System.out.println(createShapes.indent + "OPTION 13: DELETE EMPLOYEE");
+                    try{
+                        deleteEmployee(employeeAccount, username);
+                    } catch (Exception e) {
+                        errorLogger.error(String.valueOf(e));
+                        System.out.println(createShapes.indent + "FAILED TO DELETE");
+                    }
+                    break;
                 default:
-                    System.out.println(createShapes.indent + "Input a valid choice.");
+                    System.out.println(createShapes.indent + "INPUT A VALID CHOICE");
                     break;
             }
         } while (choosingOPTIONs);
 
+    }
+
+    private void deleteEmployee(EmployeeAccount employeeAccount, UserCredential username) {
+        EmployeeAccountDAO employeeAccountDAO = new EmployeeAccountDAO();
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAO();
+
+        boolean chooseAccount = true;
+        do{
+            System.out.println(createShapes.indent + "INPUT ACCOUNT NUMBER OR N TO RETURN");
+            System.out.print(createShapes.indent + "-> ");
+            input.setLength(0);
+            input.append(sc.nextLine().trim());
+
+            if(input.toString().contentEquals("N")){
+                return;
+            }
+
+            int employeeId = Integer.parseInt(input.toString());
+            if(!employeeAccountDAO.checkEmployeeId(employeeId)){
+                System.out.println(createShapes.indent + "INVALID EMPLOYEE ACCOUNT ID");
+                return;
+            }
+            if(employeeId == employeeAccount.getEmployeeId()) {
+                System.out.println(createShapes.indent + "CANNOT DELETE CURRENT USER");
+                return;
+            }
+
+            for (EmployeeAccount allEmployeeAccount : employeeAccountDAO.getAllEmployeeAccounts()) {
+                if(employeeId == allEmployeeAccount.getAdminId()){
+                    System.out.println(createShapes.indent + "CANNOT DELETE ADMIN");
+                    return;
+                }
+            }
+
+            EmployeeAccount deleteEmployee = employeeAccountDAO.getEmployeeAccountByEmployeeId(employeeId);
+            try{
+                int userCredentialId = deleteEmployee.getUserId();
+                userCredentialsDAO.deleteUserCredentialByUserCredentialId(userCredentialId);
+                employeeAccountDAO.deleteEmployeeAccountById(employeeId);
+                chooseAccount = false;
+                transactionLogger.info("ADMIN ACTIVITY: ACCOUNT WIPE ID: " + employeeId);
+                System.out.println(createShapes.indent + "DONE");
+                return;
+            }catch (NumberFormatException e){
+                debugLogger.debug(String.valueOf(e));
+                System.out.println(createShapes.indent + "TYPE A VALID NUMBER");
+            } catch (InvalidEmployeeAccountIdException e) {
+                debugLogger.debug(String.valueOf(e));
+            }
+        }while(chooseAccount);
     }
 }
