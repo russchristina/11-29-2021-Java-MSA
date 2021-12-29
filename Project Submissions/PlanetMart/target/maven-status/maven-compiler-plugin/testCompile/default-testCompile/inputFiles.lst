@@ -1,4 +1,9 @@
-C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\org\revature\database\UserCredentialsDaoTest.java
-C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\org\revature\models\PrimaryUserTest.java
-C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\org\revature\service\UserLoginHandlerTest.java
-C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\org\revature\models\UserTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\LifeDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\CustomerAccountDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\InventoryDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\UserCredentialsDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\PlanetDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\CustomerUserDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\AtmosphereDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\repository\EmployeeAccountDAOTest.java
+C:\Users\Bravo\Documents\gitRepos\11-29-2021-Java-MSA\Project Submissions\PlanetMart\src\test\java\com\revature\service\login\DriverTest.java

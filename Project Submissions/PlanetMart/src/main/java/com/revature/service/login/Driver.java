@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-public class LoginInputHandler {
+public class Driver {
     CreateShapes createShapes = new CreateShapes();
     private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
     private final Logger debugLogger = LoggerFactory.getLogger("debugLogger");
@@ -34,17 +34,17 @@ public class LoginInputHandler {
     public final StringBuilder password = new StringBuilder();
     public final LoginDisplay loginDisplay;
 
-    public LoginInputHandler(){
+    public Driver(){
         sc = new Scanner(System.in);
         input = new StringBuilder();
         accountDisplay = new AccountDisplay();
         loginDisplay = new LoginDisplay();
+        firstStage();
     }
 
 
     public static void main(String[] args) {
-        LoginInputHandler login = new LoginInputHandler();
-        login.firstStage();
+        Driver login = new Driver();
     }
 
     public void firstStage(){

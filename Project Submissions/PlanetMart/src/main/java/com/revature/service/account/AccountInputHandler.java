@@ -10,7 +10,7 @@ import com.revature.models.users.UserCredential;
 import com.revature.repository.*;
 import com.revature.repository.Exception.*;
 import com.revature.service.exceptions.EmptyInputException;
-import com.revature.service.login.LoginInputHandler;
+import com.revature.service.login.Driver;
 import com.revature.service.shop.InventoryHandler;
 import com.revature.service.shop.ShopHandler;
 import org.slf4j.Logger;
@@ -74,8 +74,8 @@ public class AccountInputHandler {
                     choosingOPTIONs = false;
                     System.out.println();
                     System.out.println(createShapes.indent + "LOGGING OUT");
-                    LoginInputHandler loginInputHandler = new LoginInputHandler();
-                    loginInputHandler.firstStage();
+                    Driver driver = new Driver();
+                    driver.firstStage();
                     break;
                 default:
                     System.out.println(createShapes.indent + "INPUT VALID CHOICE");
@@ -120,8 +120,8 @@ public class AccountInputHandler {
                         choosingOPTIONs = false;
                         System.out.println();
                         System.out.println(createShapes.indent + "LOGGING OUT");
-                        LoginInputHandler loginInputHandler = new LoginInputHandler();
-                        loginInputHandler.firstStage();
+                        Driver driver = new Driver();
+                        driver.firstStage();
                         break;
                     case ("6"):
                         System.out.println(createShapes.indent + "OPTION 6: ADD USER");
@@ -218,8 +218,8 @@ public class AccountInputHandler {
                     System.out.println(createShapes.indent + "OPTION 7: LOGOUT");
                     choosingOPTIONs = false;
                     System.out.println(createShapes.indent + "LOGGING OUT");
-                    LoginInputHandler loginInputHandler = new LoginInputHandler();
-                    loginInputHandler.firstStage();
+                    Driver driver = new Driver();
+                    driver.firstStage();
                     break;
                 default:
                     System.out.println(createShapes.indent + "Input a valid choice.");
@@ -474,8 +474,8 @@ public class AccountInputHandler {
                     choosingOPTIONs = false;
                     System.out.println();
                     System.out.println(createShapes.indent + "LOGGING OUT");
-                    LoginInputHandler loginInputHandler = new LoginInputHandler();
-                    loginInputHandler.firstStage();
+                    Driver driver = new Driver();
+                    driver.firstStage();
                     break;
                 case ("8"):
                     System.out.println(createShapes.indent + "OPTION 8: VIEW ALL EMPLOYEE ACCOUNTS");
