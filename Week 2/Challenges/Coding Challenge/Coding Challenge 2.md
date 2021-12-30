@@ -46,4 +46,8 @@ aibohphobia
 CHALLENGE: For a slightly more challenging variation of the method, assume that the String can contain spaces. For example:
 
 taco cat
+<<<<<<< HEAD
 was it a car or a cat I saw
+=======
+was it a car or a cat I saw
+>>>>>>> main

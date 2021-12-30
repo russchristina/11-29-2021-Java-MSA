@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Please refer to the logback documentation for the proper tags and attributes. -->
+<configuration>
+	<!-- Inside of your configuration tag, you can create several "appenders". 
+		Appenders determine where you will log and what the format of your logging 
+		messages should be. -->
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<!-- This encoder is determining what the format of our logging messages 
+			will be. -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- Let's log to a file instead (or just keep both appenders). Note that you
+	can optionally create a Rolling File Appender if you're concerned about the size of
+	the file getting too large. -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.FileAppender">
+		<!-- Specify the location of the file you're logging to. -->
+		<file>jdbclogs.log</file>
+		<!-- This encoder is determining what the format of our logging messages 
+			will be. -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="FILE2"
+		class="ch.qos.logback.core.FileAppender">
+		<!-- Specify the location of the file you're logging to. -->
+		<file>jdbclogs2.log</file>
+		<!-- This encoder is determining what the format of our logging messages 
+			will be. -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- You can create individual loggers and give them their own logging levels and pass
+	your desired appenders to these loggers. -->
+	<logger name="aLogger" level="debug">
+		<appender-ref ref="FILE"/>
+	</logger>
+	
+	<!-- Note that the below configuration would apply to all loggers. That is why we
+	have commented it out as we don't want all of our loggers working at the exact same
+	level. -->
+	<!-- <root level="error">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="FILE2" />
+	</root> -->
+</configuration>
