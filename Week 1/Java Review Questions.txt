@@ -1,16 +1,53 @@
-What is Java?
-What does it mean to be a “pass-by-value” language? How is this different from passing by reference?
-What is the difference between the JRE, JDK, and JVM?
+What is Java? 
+- Java is a high-level programming language that utilizes classes and object-oriented programming built specificially to run on multiple machines effectively
+. High-Level is just a classification, meaning that the language is easy to read, has powerful statements, and will generally run on more than one OS
+
+hat does it mean to be a “pass-by-value” language? How is this different from passing by reference? - Pass by value refers to the relationship between a value and parameter, in the way that they are 
+both independent of each other when the value is passed. Meaning that although the value of the variable is copied to the parameter, they are independent of each other, and one can be changed without affecting the other
+The opposite is true for pass by reference, where the memory address is the same for both the value and the passed in parameter, so if one is changed then the other is changed as well 
+What is the difference between the JRE, JDK, and JVM? 
+
+-The JDK--Java Development Kit--is what is used to develop and execute java programs or applications. It includes the JRE and other Development tools such as the 
+compiler that is used to turn source code into java machine language. The JRE--Java Runtime Environment--is used to run the java programs and applications. It includes the java library that holds packages needed to run
+our code. The JVM--Java Virtual Machine is where our code is actually ran. Which means that when we run our code, we are actually launching a JVM specific to our operating system. This is actually what makes Java 
+able to run in different environments, since there are different JVMs tailored to different environement.
+
 What happens during the compilation process?
 What are the benefits of using Java?
+
+-Java is easier to read than a lot of other languages, it's a high-level language which means you can execute powerful commands, and you can use different JRE's to run your code in different environements
 What is a constructor?
+
+-Constructors are methods defomed at the class level that have the same name as the class. Defining these methods at the class level allows us to force our class to do certain 
+actions whenever it is called, such as a computation
+
 What is the first line of a constructor?
-What are the primitive data types?
+
+-The first line of a constructor is a reference to the superclass constructor, declared by using the keyword super. You shouldn't have to actually type in the word super in this case, since it is auto-generated
+on the backend if it is left empty. A superclass is basically just the main class who's methods are being inherited
+
+What are the primitive data types? 
+
+-byte, short, int, long, double, float, boolean, char
 What is a no args constructor?
+-A constructor that is created without any parameters.
 What is the default constructor?
+
+-When you don't explicity create and call a constructor, Java creates a no args constructor that is automatically called; this is your default constructor.
+
 Under what circumstances does a class have a default constructor?
-What are the scopes of a variable in java?
+
+-When a constructor is not explicity created and called 
+What are the scopes of a variable in java? 
+
+-class scopes: outside of the main method but inside the class. These can be accessed from any method method scope, which means they can only be accessed within that method
+Also block scope, which refers to code within curly braces that are within a method--such as if/else statements or for loops
+
 What are the different access modifiers? What does each one do?
+
+-public, which means it can changed from any class; private, meaning it is only accessible to methods within the same class, and protected, which means that it can only be 
+accessed within that same class, or by classes derived from this base class or in the same package
+
 What are the different control statements, and how are they different?
 How do you create an Array in java?
 What is varargs?
