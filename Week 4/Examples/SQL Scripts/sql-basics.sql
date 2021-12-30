@@ -47,10 +47,10 @@
  * Many-To-Many (often modeled with a bridge/join table)
  */
 
-drop table recipe;
+drop table recipe cascade; --the cascade keyword allows you to bypass constraints when dropping tables
 create table recipe(
 --each column on a table represents a piece of data that belongs to a recipe record
-recipe_id numeric primary key, --primary keys are implicitly unique and not null; they serve as unique identifiers for records
+recipe_id serial primary key, --primary keys are implicitly unique and not null; they serve as unique identifiers for records
 recipe_name varchar,
 recipe_cookTimeInMinutes numeric check (recipe_cookTimeInMinutes > 0),
 author_id numeric references author(author_id) --this is a foreign key that points to a column on another table
@@ -73,10 +73,10 @@ author_speciality varchar
 
 -- Creating our ingredient table
 
-drop table ingredient;
+drop table ingredient cascade;
 create table ingredient(
-ingredient_id numeric primary key,
-ingredient_name varchar,
+ingredient_id serial primary key,
+ingredient_name varchar unique,
 ingredient_flavor varchar
 );
 
@@ -88,8 +88,8 @@ ingredient_flavor varchar
 
 drop table recipe_ingredient;
 create table recipe_ingredient(
-	recipe_id numeric references recipe(recipe_id),
-	ingredient_id numeric references ingredient(ingredient_id),
+	recipe_id integer references recipe(recipe_id),
+	ingredient_id integer references ingredient(ingredient_id),
 	-- This table has a composite primary key which consists of two columns
 	constraint recipe_ingredient_pk primary key(recipe_id, ingredient_id)
 );
@@ -101,8 +101,9 @@ create table recipe_ingredient(
 
 insert into recipe values(1, 'Birthday Cake', 80, 1);
 insert into recipe values(2, 'Candy Corn', 2, 2), (3, 'Burger', 30, 3), (4, 'Water', 1, 2);
-insert into recipe values(5, 'Pancakes', 30, 4);
-insert into recipe values(6, 'Pizza', 40, 2);
+insert into recipe values(default, 'Pancakes', 30, 4);
+insert into recipe values(default, 'Pizza', 40, 2);
+insert into recipe values(null, 'Waffles', 50, 1);
 insert into recipe values(7, 'Cereal', 3, null);
 
 insert into author(author_id, author_name, author_speciality) values(1, 'Gordon', 'Steak');
@@ -112,14 +113,18 @@ insert into author values(4, 'Grandmas Everywhere', 'Using a pinch of every ingr
 insert into author values (1, 'Pioneer Woman', 'Themed Special'); --can't insert this because of the unique constraint
 insert into author values(null, null, null); --yes, you can do this if you don't have constraints to prevent it
 
-insert into ingredient values(1, 'Salt', 'salty');
+insert into ingredient values(default, 'Salt', 'salty');
 insert into ingredient values(2, 'Pepper', 'spicy');
 insert into ingredient values(3, 'Clove', 'spicy');
-insert into ingredient values(4, 'Celery Salt', 'salty');
+insert into ingredient values(10, 'Celery Salt', 'salty');
+
+select * from ingredient;
+
+insert into ingredient values(11, 'Lawry''s Seasoning Salt', 'savory');
 
 --Inserting into our bridge table
-insert into recipe_ingredient values(1, 1);
 insert into recipe_ingredient values(1, 2);
+insert into recipe_ingredient values(2, 2);
 insert into recipe_ingredient values(5, 1);
 insert into recipe_ingredient values(1, 1); --this will not work as their is pk constraint placed on these columns together
 
@@ -173,6 +178,8 @@ select * from recipe where recipe_cooktimeinminutes between -1 and 30;
 update recipe set recipe_name = 'Best Burger'; -- Bad Query
 update recipe set recipe_name = 'Best Burger' where recipe_name = 'Burger'; -- Better Query
 update recipe set author = 'Bobby' where recipe_name = 'Best Burger';
+update ingredient set ingredient_flavor = 'sweet' where ingredient_id = 22;
+update ingredient set ingredient_name = 'Manchego Cheese' where ingredient_flavor = 'sweet';
 
 /*
  * If you wish to remove a record from a table, you can use the "delete" keyword. Let's delete
@@ -181,6 +188,10 @@ update recipe set author = 'Bobby' where recipe_name = 'Best Burger';
  */
 
 delete from recipe where recipe_name = 'Candy Corn'; -- Again, where clauses are important.
+
+delete from ingredient where ingredient_flavor = 'salty';
+
+select * from ingredient;
 
 /*
  * Thus far, we've seen:
@@ -193,7 +204,7 @@ delete from recipe where recipe_name = 'Candy Corn'; -- Again, where clauses are
  * We refer to these actions as basic CRUD - Create, Read, Update, Delete.
  */
 
-select * from recipe;
+select * from ingredient;
 
 
 
