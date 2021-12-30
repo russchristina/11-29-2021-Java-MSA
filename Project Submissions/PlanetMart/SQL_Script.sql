@@ -36,13 +36,13 @@ customer_account_id integer references customer_account
 create table employee_account(
 
 employee_id serial primary key,
-user_id integer references user_credentials(id),
+user_id integer references user_credentials(id) on delete cascade,
 admin_id integer references employee_account(employee_id)
 
 );
 
 
-
+drop table employee_account;
 
 create table customer_inventory(
 
@@ -147,3 +147,7 @@ alter table customer_account add column primary_user_id integer;
 
 
 alter table planets drop column planet+
+
+insert into user_credentials values(default, 'ADMIN', 'ADMIN', 'ADMIN', 'ADMIN');
+
+insert into employee_account values(default, 28, null);
