@@ -46,7 +46,7 @@ public class IngredientRepositoryTest {
 		List<Ingredient> retrievedIngredients = ingredientRepository.findAll();
 		
 		Assertions.assertNotNull(retrievedIngredients);
-		Assertions.assertEquals(7, retrievedIngredients.size());
+		Assertions.assertEquals(8, retrievedIngredients.size());
 	}
 	
 	
