@@ -66,4 +66,3 @@ date_resolved date not null
 
 
 
-
