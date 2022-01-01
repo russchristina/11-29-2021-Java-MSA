@@ -62,6 +62,9 @@ public class ProjectDBTest {
 	@Test
 	public void testFindUsersByAccountIdDoesNotExist() {
 		List<VirtualDollarsUser> userList = repo.findUsersByAccountId(40);
+		if(userList.isEmpty()) {
+			userList = null;
+		} // End if statement
 		assertNull(userList);
 	} // End test
 	

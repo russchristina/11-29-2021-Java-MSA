@@ -1,0 +1,33 @@
+package utilities.connect;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ConnectionClosers {
+
+	public static void closeConnection(Connection conn) {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // End catch block
+	} // End method
+	
+	public static void closeStatement(Statement stmt) {
+		try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // End catch block
+	} // End method
+	
+	public static void closeResultSet(ResultSet set) {
+		try {
+			set.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // End catch block
+	} // End method
+} // End class

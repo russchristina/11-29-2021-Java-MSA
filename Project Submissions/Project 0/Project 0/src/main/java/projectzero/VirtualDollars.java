@@ -426,9 +426,7 @@ public class VirtualDollars {
 		
 		if (sc.hasNextInt()) { 
 			option = sc.nextInt();
-		} else {
-			sc.next();
-		} // End else statement
+		} // End if statement
 		sc.nextLine();
 		
 		
