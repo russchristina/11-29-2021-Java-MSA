@@ -10,7 +10,9 @@ insert into employee_account values(default, 'Iphazor' , 'Thitarum', 3), (defaul
 
 insert into employee_account values(default, 'John' , 'Smith', 4), (default, 'Linda', 'Gobert', 4);
 
+insert into employee_account values(default, 'Greg', 'Marcus', 4) returning *;
 
+update employee_account set first_name = 'Misha' where id = 12 returning *;
 
 insert into login_info values
 (default, 'knight1', 'pass1', 1), 
