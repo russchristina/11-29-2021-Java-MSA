@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Request {
 
 	// Fields
@@ -20,16 +22,6 @@ public class Request {
 		this.status = status;
 		this.note = note;
 	} // End constructor
-
-	// Constructor
-		public Request(int requestId, String employeeName, double amount, String reason, int status) {
-			super();
-			this.requestId = requestId;
-			this.employeeName = employeeName;
-			this.amount = amount;
-			this.reason = reason;
-			this.status = status;
-		} // End constructor
 	
 	// Constructor
 	public Request(int requestId, String employeeName, double amount, String reason) {
@@ -41,6 +33,12 @@ public class Request {
 		this.status = 1;
 	} // End constructor
 
+	public Request(String employeeName, double amount) {
+		super();
+		this.employeeName = employeeName;
+		this.amount = amount;
+	} // End constructor
+	
 	// Getters/setters
 	public int getRequestId() {
 		return requestId;
@@ -89,8 +87,29 @@ public class Request {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(amount, employeeName, note, reason, requestId, status);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Request other = (Request) obj;
+		return Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount)
+				&& Objects.equals(employeeName, other.employeeName) && Objects.equals(note, other.note)
+				&& Objects.equals(reason, other.reason) && requestId == other.requestId && status == other.status;
+	}
+
+	@Override
+	public String toString() {
+		return "Request id: " + requestId + ", employee name: " + employeeName + ", amount: " + amount + ", reason: "
+				+ reason + ", status: " + status + ", note: " + note;
+	}
 } // End class

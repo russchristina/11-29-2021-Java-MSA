@@ -1,0 +1,23 @@
+body {  
+    margin: 10%;
+    background: linear-gradient(90deg, #20a7e6, rgba(0, 0, 0, 0)); 
+}  
+
+h1 {
+    background: linear-gradient(45deg, rgb(170, 35, 197), #20a7e6);
+    font: 55px Arial, sans-serif;
+    font-weight: bolder;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+    border-style: double;
+    border-color: rgb(122, 28, 141);
+    border-radius: 30px;
+    border-width: 5px;
+}
+
+h2 {
+    font: 30px Arial, sans-serif;
+}

@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Employee {
 
 	// Fields
@@ -39,5 +41,27 @@ public class Employee {
 	public void setManager(boolean isManager) {
 		this.isManager = isManager;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(isManager, name, password);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		return isManager == other.isManager && Objects.equals(name, other.name)
+				&& Objects.equals(password, other.password);
+	}
+
+	@Override
+	public String toString() {
+		return "Employee name: " + name;
+	}
 } // End class

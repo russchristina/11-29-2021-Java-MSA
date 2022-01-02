@@ -7,7 +7,7 @@ import models.Request;
 
 public interface EmployeeRequestRepository {
 
-	void createRequest();
+	void createRequest(Request r);
 	
 	Employee findByEmployeeName(String name);
 	
@@ -19,7 +19,11 @@ public interface EmployeeRequestRepository {
 	
 	List<Request> findPendingRequests();
 	
-	String highestSpender();
+	public void updateRequestStatus(Request r);
+	
+	public void updateRequestStatusAndNote(Request r);
+	
+	Request highestSpender();
 	
 	int numberOfRequests();
 	
