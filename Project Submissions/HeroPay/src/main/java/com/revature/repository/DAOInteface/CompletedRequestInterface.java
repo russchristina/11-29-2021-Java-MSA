@@ -2,9 +2,9 @@ package com.revature.repository.DAOInteface;
 
 import com.revature.repository.DTO.CompletedRequestEntity;
 
-import java.time.LocalDate;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public interface CompletedRequestInterface {
 
@@ -17,33 +17,28 @@ public interface CompletedRequestInterface {
 
     //Create
 
-    CompletedRequestEntity insertCompletedRequest(int employeeId, String type, String requestMessage, double amount, LocalDate dateSubmission);
+    CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, double amount, Date dateSubmission) throws SQLException;
 
     //Read
 
-    CompletedRequestEntity getCompletedRequest(int requestId);
+    CompletedRequestEntity getCompletedRequest(int requestId) throws SQLException;
 
-    List<CompletedRequestEntity> getCompletedRequestByManagerIdList(int managerId);
+    List<CompletedRequestEntity> getCompletedRequestByManagerIdList(int managerId) throws SQLException;
 
-    List<CompletedRequestEntity> getAllCompletedRequestList();
+    List<CompletedRequestEntity> getAllCompletedRequestList() throws SQLException;
 
-    CompletedRequestEntity getResponseTypeWithId(int id);
-
-    CompletedRequestEntity getResponseTypeWithString(String type);
+    List<CompletedRequestEntity> getResponseTypeWithStatus(boolean status) throws SQLException;
 
 
     //Update
 
-    CompletedRequestEntity updateCompletedRequestTyoe(int requestId, String type);
+    CompletedRequestEntity updateCompletedRequestByManagerId(int managerId, int requestId) throws SQLException;
 
-    CompletedRequestEntity updateCompletedRequestRequestMessage(int requestId, String requestMessage);
+    CompletedRequestEntity updateCompletedRequestStatus(int requestId, boolean status) throws SQLException;
 
-    CompletedRequestEntity updateCompletedRequestAmount(int requestId, double amount);
-
-    CompletedRequestEntity updateCompletedRequest(int requestId, int employeeId, String type, String requestMessage, double amount, LocalDate dateSubmission);
-
+    CompletedRequestEntity updateCompletedRequestResponse(int requestId, String response) throws SQLException;
 
     //Delete
 
-    CompletedRequestEntity deleteCompletedRequest(int requestId);
+    CompletedRequestEntity deleteCompletedRequest(int requestId) throws SQLException;
 }

@@ -30,31 +30,29 @@ public interface PendingRequestInterface {
 
     List<PendingRequestEntity> getEmployeePendingRequestList(int employeeId) throws SQLException;
 
-    List<PendingRequestEntity> getAllPendingRequests();
+    List<PendingRequestEntity> getAllPendingRequests() throws SQLException;
 
-    List<PendingRequestEntity> getAllPendingRequestsByType(int typeId);
+    List<PendingRequestEntity> getAllPendingRequestsByType(int typeId) throws SQLException;
 
-    Map<Integer, String> getRequestTypeMap();
+    Map<Integer, String> getRequestTypeMap() throws SQLException;
 
-    RequestTypeEntity getRequestTypeWithId(int id);
+    RequestTypeEntity getRequestTypeWithId(int id) throws SQLException;
 
-    RequestTypeEntity getRequestTypeWithString(String type);
+    RequestTypeEntity getRequestTypeWithString(String type) throws SQLException;
 
 
     //Update
 
-    PendingRequestEntity updatePendingRequestTyoe(int requestId, int typeId);
+    PendingRequestEntity updatePendingRequestTyoe(int requestId, int typeId) throws SQLException;
 
-    PendingRequestEntity updatePendingRequestMessage(int requestId, String requestMessage);
+    PendingRequestEntity updatePendingRequestMessage(int requestId, String requestMessage) throws SQLException;
 
-    PendingRequestEntity updatePendingRequestAmount(int requestId, double amount);
-
-    PendingRequestEntity updatePendingRequest(int requestId, int employeeId, int typeId, String requestMessage, double amount, java.sql.Date dateSubmission);
+    PendingRequestEntity updatePendingRequestAmount(int requestId, double amount) throws SQLException;
 
 
     //Delete
 
-    PendingRequestEntity deletePendingRequest(int requestId);
+    PendingRequestEntity deletePendingRequest(int requestId) throws SQLException;
 
 
 

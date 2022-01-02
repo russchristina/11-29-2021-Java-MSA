@@ -14,6 +14,8 @@ insert into employee_account values(default, 'Greg', 'Marcus', 4) returning *;
 
 update employee_account set first_name = 'Misha' where id = 12 returning *;
 
+
+
 insert into login_info values
 (default, 'knight1', 'pass1', 1), 
 (default, 'knight2', 'pass2', 2),

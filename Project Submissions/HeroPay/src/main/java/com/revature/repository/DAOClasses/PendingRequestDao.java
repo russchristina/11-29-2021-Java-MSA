@@ -7,6 +7,7 @@ import com.revature.service.utility.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class PendingRequestDao implements PendingRequestInterface {
     public PendingRequestEntity insertPendingRequest(int employeeId, int typeId, String requestMessage, double amount, java.sql.Date dateSubmission) throws SQLException {
         PendingRequestEntity entity = null;
         final String SQL = "INSERT INTO pending_request values(default, ?, ?, ?, ?, ? RETURNING *";
-        ResultSet rs = null;
+        ResultSet rs;
 
         try(
                 Connection conn = ConnectionFactory.getConnection();
@@ -27,6 +28,7 @@ public class PendingRequestDao implements PendingRequestInterface {
             stmt.setString(3, requestMessage);
             stmt.setDouble(4, amount);
             stmt.setDate(5, dateSubmission);
+            rs = stmt.executeQuery();
 
             if(rs.next()) entity = new PendingRequestEntity(
                     rs.getInt(1),
@@ -45,13 +47,14 @@ public class PendingRequestDao implements PendingRequestInterface {
         RequestTypeEntity entity = null;
         final String SQL = "INSERT INTO request_type values(default, ?) RETURNING *";
 
-        ResultSet rs = null;
+        ResultSet rs;
 
         try(
                 Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(SQL)
                 ){
             stmt.setString(1, type);
+            rs = stmt.executeQuery();
 
             if(rs.next()) entity = new RequestTypeEntity(
                     rs.getInt(1),
@@ -68,13 +71,14 @@ public class PendingRequestDao implements PendingRequestInterface {
         PendingRequestEntity entity = null;
         final String SQL = "SELECT * FROM pending_request WHERE id = ?";
 
-        ResultSet rs = null;
+        ResultSet rs;
 
         try(
                 Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(SQL)
                 ){
             stmt.setInt(1, requestId);
+            rs = stmt.executeQuery();
             if(rs.next()) entity = new PendingRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
@@ -100,6 +104,7 @@ public class PendingRequestDao implements PendingRequestInterface {
                 PreparedStatement stmt = conn.prepareStatement(SQL)
                 ){
             stmt.setInt(1, employeeId);
+            rs = stmt.executeQuery();
             while(rs.next()) pendingRequestEntityList.add(
                     new PendingRequestEntity(
                             rs.getInt(1),
@@ -115,52 +120,221 @@ public class PendingRequestDao implements PendingRequestInterface {
     }
 
     @Override
-    public List<PendingRequestEntity> getAllPendingRequests() {
-        return null;
+    public List<PendingRequestEntity> getAllPendingRequests() throws SQLException {
+        List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
+
+        final String SQL = "SELECT * FROM pending_request";
+
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            rs = stmt.executeQuery();
+            while(rs.next()) pendingRequestEntityList.add(
+                    new PendingRequestEntity(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(3),
+                            rs.getString(4),
+                            rs.getDouble(5),
+                            rs.getDate(6)
+                    )
+            );
+        }
+        return pendingRequestEntityList;
     }
 
     @Override
-    public List<PendingRequestEntity> getAllPendingRequestsByType(int typeId) {
-        return null;
+    public List<PendingRequestEntity> getAllPendingRequestsByType(int typeId) throws SQLException {
+        List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
+
+        final String SQL = "SELECT * FROM pending_request WHERE type = ?";
+
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setInt(1, typeId);
+            rs = stmt.executeQuery();
+            while(rs.next()) pendingRequestEntityList.add(
+                    new PendingRequestEntity(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(3),
+                            rs.getString(4),
+                            rs.getDouble(5),
+                            rs.getDate(6)
+                    )
+            );
+        }
+        return pendingRequestEntityList;    }
+
+    @Override
+    public Map<Integer, String> getRequestTypeMap() throws SQLException {
+        final String SQL = "SELECT * FROM request_type";
+
+        Map<Integer, String> requestTypeMap = new HashMap<>();
+
+        ResultSet result;
+
+        try(
+                Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL)
+        ){
+            result = statement.executeQuery();
+
+            while(result.next()) requestTypeMap.put(result.getInt(1), result.getString(2));
+
+        }
+
+        return requestTypeMap;    }
+
+    @Override
+    public RequestTypeEntity getRequestTypeWithId(int id) throws SQLException {
+        RequestTypeEntity requestTypeEntity = null;
+
+        final String SQL = "SELECT * FROM request_type WHERE id = ?";
+
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            while(rs.next()) requestTypeEntity = new RequestTypeEntity(rs.getInt(1), rs.getString(2));
+        }
+        return requestTypeEntity;    }
+
+    @Override
+    public RequestTypeEntity getRequestTypeWithString(String type) throws SQLException {
+        RequestTypeEntity requestTypeEntity = null;
+
+        final String SQL = "SELECT * FROM request_type WHERE type = ?";
+
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setString(1, type);
+            rs = stmt.executeQuery();
+            while(rs.next()) requestTypeEntity = new RequestTypeEntity(rs.getInt(1), rs.getString(2));
+        }
+        return requestTypeEntity;        }
+
+    @Override
+    public PendingRequestEntity updatePendingRequestTyoe(int requestId, int typeId) throws SQLException {
+        final String SQL = "UPDATE pending_request SET type = ? WHERE id = ? RETURNING *";
+
+        PendingRequestEntity pendingRequestEntity = null;
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)){
+            stmt.setInt(1, typeId);
+            stmt.setInt(2, requestId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()) pendingRequestEntity = new PendingRequestEntity(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getInt(3),
+                    rs.getString(4),
+                    rs.getDouble(5),
+                    rs.getDate(6)
+            );
+
+        }
+
+        return pendingRequestEntity;
     }
 
     @Override
-    public Map<Integer, String> getRequestTypeMap() {
-        return null;
-    }
+    public PendingRequestEntity updatePendingRequestMessage(int requestId, String requestMessage) throws SQLException {
+        final String SQL = "UPDATE pending_request SET request_message = ? WHERE id = ? RETURNING *";
+
+        PendingRequestEntity pendingRequestEntity = null;
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)){
+            stmt.setString(1, requestMessage);
+            stmt.setInt(2, requestId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()) pendingRequestEntity = new PendingRequestEntity(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getInt(3),
+                    rs.getString(4),
+                    rs.getDouble(5),
+                    rs.getDate(6)
+            );
+
+        }
+
+        return pendingRequestEntity;    }
 
     @Override
-    public RequestTypeEntity getRequestTypeWithId(int id) {
-        return null;
-    }
+    public PendingRequestEntity updatePendingRequestAmount(int requestId, double amount) throws SQLException {
+        final String SQL = "UPDATE pending_request SET amount = ? WHERE id = ? RETURNING *";
+
+        PendingRequestEntity pendingRequestEntity = null;
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)){
+            stmt.setDouble(1, amount);
+            stmt.setInt(2, requestId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()) pendingRequestEntity = new PendingRequestEntity(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getInt(3),
+                    rs.getString(4),
+                    rs.getDouble(5),
+                    rs.getDate(6)
+            );
+
+        }
+
+        return pendingRequestEntity;    }
 
     @Override
-    public RequestTypeEntity getRequestTypeWithString(String type) {
-        return null;
-    }
+    public PendingRequestEntity deletePendingRequest(int requestId) throws SQLException {
+        final String SQL = "DELETE FROM pending_request WHERE id = ? RETURNING *";
 
-    @Override
-    public PendingRequestEntity updatePendingRequestTyoe(int requestId, int typeId) {
-        return null;
-    }
+        PendingRequestEntity pendingRequestEntity = null;
+        ResultSet rs;
 
-    @Override
-    public PendingRequestEntity updatePendingRequestMessage(int requestId, String requestMessage) {
-        return null;
-    }
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)){
+            stmt.setInt(1, requestId);
+            stmt.setInt(2, requestId);
+            rs = stmt.executeQuery();
 
-    @Override
-    public PendingRequestEntity updatePendingRequestAmount(int requestId, double amount) {
-        return null;
-    }
+            if(rs.next()) pendingRequestEntity = new PendingRequestEntity(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getInt(3),
+                    rs.getString(4),
+                    rs.getDouble(5),
+                    rs.getDate(6)
+            );
 
-    @Override
-    public PendingRequestEntity updatePendingRequest(int requestId, int employeeId, int typeId, String requestMessage, double amount, java.sql.Date dateSubmission) {
-        return null;
-    }
+        }
 
-    @Override
-    public PendingRequestEntity deletePendingRequest(int requestId) {
-        return null;
-    }
+        return pendingRequestEntity;    }
 }
