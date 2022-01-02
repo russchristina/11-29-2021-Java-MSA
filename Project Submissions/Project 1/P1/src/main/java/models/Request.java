@@ -33,11 +33,15 @@ public class Request {
 		this.status = 1;
 	} // End constructor
 
+	// Constructor
 	public Request(String employeeName, double amount) {
 		super();
 		this.employeeName = employeeName;
 		this.amount = amount;
 	} // End constructor
+	
+	// Constructor
+	public Request() {}
 	
 	// Getters/setters
 	public int getRequestId() {
@@ -109,7 +113,7 @@ public class Request {
 
 	@Override
 	public String toString() {
-		return "Request id: " + requestId + ", employee name: " + employeeName + ", amount: " + amount + ", reason: "
+		return "\nRequest id: " + requestId + ", employee name: " + employeeName + ", amount: " + amount + ", reason: "
 				+ reason + ", status: " + status + ", note: " + note;
 	}
 } // End class

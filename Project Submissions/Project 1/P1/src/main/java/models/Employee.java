@@ -17,6 +17,9 @@ public class Employee {
 		this.isManager = isManager;
 	} // End constructor
 
+	// Constructor
+	public Employee() {}
+	
 	// Getters/Setters
 	public String getName() {
 		return name;
