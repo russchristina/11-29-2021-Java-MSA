@@ -1,0 +1,6 @@
+/*
+    This is the best practice for CSS - using an external stylesheet. External stylesheets are reusable and help keep our HTML documents clutter free.
+*/
+body{
+    background-color: powderblue;
+}
