@@ -35,6 +35,7 @@ class PendingRequestServiceTest {
     private PendingRequestService pendingRequestService;
 
     private PendingRequest mockNewPendingRequestModel;
+    private PendingRequest mockPendingRequestModel;
     private PendingRequestEntity mockedPendingRequestEntity;
 
     private RequestTypeEntity mockedRequestTypeEntity;
@@ -75,6 +76,8 @@ class PendingRequestServiceTest {
         mockedRequestTypeEntity = new RequestTypeEntity(typeId1, requestTypeMap.get(typeId1));
 
         mockNewPendingRequestModel = new PendingRequest(newPendingRequestId, employeeId, requestTypeMap.get(typeId1), requestMessage, amount, dateSubmission);
+
+        mockPendingRequestModel = new PendingRequest(storedPendingRequestId, employeeId, requestTypeMap.get(typeId1), requestMessage, amount, dateSubmission);
 
         mockedPendingRequestEntity = new PendingRequestEntity(storedPendingRequestId, employeeId, typeId1, requestMessage, amount, sqlDate);
 
@@ -188,6 +191,11 @@ class PendingRequestServiceTest {
     @Test
     void getPendingRequestByTypeInvalidTypeId() {
         assertNotEquals(pendingRequestByTypeList, pendingRequestService.getPendingRequestByType(-1));
+    }
+
+    @Test
+    void convertPendingRequestEntity() {
+        assertEquals(mockPendingRequestModel, pendingRequestService.convertPendingRequestEntity(mockedPendingRequestEntity));
     }
 
 }

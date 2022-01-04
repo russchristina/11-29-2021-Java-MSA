@@ -20,4 +20,6 @@ public interface PendingRequestServiceInterface {
 
     PendingRequestEntity deletePendingRequest(int requestId);
 
+    PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity);
+
 }

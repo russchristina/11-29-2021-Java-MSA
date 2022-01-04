@@ -142,4 +142,15 @@ public class PendingRequestService implements PendingRequestServiceInterface {
 
         return null;    }
 
+    @Override
+    public PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity) {
+        return new PendingRequest(
+                pendingRequestEntity.getId(),
+                pendingRequestEntity.getEmployeeId(),
+                requestMap.get(pendingRequestEntity.getRequestType()),
+                pendingRequestEntity.getRequestMessage(),
+                pendingRequestEntity.getAmount(),
+                pendingRequestEntity.getDateSubmission().toLocalDate());
+    }
+
 }
