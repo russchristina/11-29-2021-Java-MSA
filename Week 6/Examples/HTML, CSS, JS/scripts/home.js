@@ -117,25 +117,18 @@ function weWantTheFunc(){
 
 () => {console.log('i am an anonymous function')}
 
-/** The "this" keyword in JavaScript*/
+/** The "this" keyword in JavaScript is all about the context in which it is used. Used outside of a function, "this" refers to the Window object: */
 
 console.log(this)
 Window https://acrenwelge.github.io/Portfolio-Reference-Documents/javams-guidelines.html
-debugger eval code:1:9
-undefined
+
+/**Used within the context of an object, "this" refers to the object itself: */
+
 var myJsObject = {prop1:'this is property2', prop2:function aFunc(){console.log(this)}}
-undefined
 myJsObject.prop2()
 Object { prop1: "this is property2", prop2: aFunc() }
-​
-prop1: "this is property2"
-​
-prop2: function aFunc()
-​
-<prototype>: Object { … }
-debugger eval code:1:77
-undefined
+​​
+/**Note that if you use the arrow function notation, the binding of the "this" keyword changes. In the following function, "this" refers to the Window object rather than the created "myJsObject" because we have used arrow notation. */
 var myJsObject = {prop1:'this is property2', prop2:() => {console.log(this)}}
-undefined
 myJsObject.prop2()
 Window https://acrenwelge.github.io/Portfolio-Reference-Documents/javams-guidelines.html
