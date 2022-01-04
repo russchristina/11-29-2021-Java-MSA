@@ -1,12 +1,10 @@
 package com.revature.presentation.manageLogin.interfaces;
 
 import com.revature.presentation.model.LoginInput;
+import com.revature.repository.DTO.LoginInfoEntity;
 
 public interface LoginControllerInterface {
-    
-    LoginInput getClientLogin(String username, String password);
 
-    boolean authenticateLogin(LoginInput loginInput);
+    LoginInfoEntity authenticateLogin(LoginInput loginInput);
 
-    void manageLogin();
 }

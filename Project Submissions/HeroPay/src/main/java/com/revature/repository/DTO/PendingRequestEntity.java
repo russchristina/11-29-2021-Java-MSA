@@ -1,7 +1,6 @@
 package com.revature.repository.DTO;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class PendingRequestEntity {
@@ -11,7 +10,7 @@ public class PendingRequestEntity {
     private int requestType;
     private String requestMessage;
     private double amount;
-    private java.sql.Date dateSubmission;
+    private Date dateSubmission;
 
     public PendingRequestEntity(int id, int employeeId, int requestType, String requestMessage, double amount, java.sql.Date dateSubmission) {
         this.id = id;

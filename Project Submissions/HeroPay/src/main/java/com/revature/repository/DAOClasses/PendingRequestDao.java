@@ -194,24 +194,6 @@ public class PendingRequestDao implements PendingRequestInterface {
         return requestTypeMap;    }
 
     @Override
-    public RequestTypeEntity getRequestTypeWithId(int id) throws SQLException {
-        RequestTypeEntity requestTypeEntity = null;
-
-        final String SQL = "SELECT * FROM request_type WHERE id = ?";
-
-        ResultSet rs;
-
-        try(
-                Connection conn = ConnectionFactory.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(SQL)
-        ){
-            stmt.setInt(1, id);
-            rs = stmt.executeQuery();
-            while(rs.next()) requestTypeEntity = new RequestTypeEntity(rs.getInt(1), rs.getString(2));
-        }
-        return requestTypeEntity;    }
-
-    @Override
     public RequestTypeEntity getRequestTypeWithString(String type) throws SQLException {
         RequestTypeEntity requestTypeEntity = null;
 

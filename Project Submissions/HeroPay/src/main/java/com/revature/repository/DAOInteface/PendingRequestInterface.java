@@ -36,8 +36,6 @@ public interface PendingRequestInterface {
 
     Map<Integer, String> getRequestTypeMap() throws SQLException;
 
-    RequestTypeEntity getRequestTypeWithId(int id) throws SQLException;
-
     RequestTypeEntity getRequestTypeWithString(String type) throws SQLException;
 
 
