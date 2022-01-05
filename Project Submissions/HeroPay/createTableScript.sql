@@ -56,7 +56,7 @@ select * from completed_request;
 drop table completed_request;
 
 create table completed_request(
-id serial primary key,
+id integer references pending_request(id),
 manager_id integer references employee_account(id),
 status boolean,
 response varchar,
