@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleLogin/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleLogin/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/CompletedRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/CompletedRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/OrderingServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/OrderingServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/interfaces/StatisticsServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/interfaces/StatisticsServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,8 +72,8 @@
       <recent name="com.revature.repository.DAOClasses" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.PendingRequestServiceTest">
-    <configuration name="CompletedRequestServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.OrderingServiceTest">
+    <configuration name="OrderingServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
@@ -86,13 +82,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.CompletedRequestServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.OrderingServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CompletedRequestServiceTest.deleteCompletedRequest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderingServiceTest.orderByAmountCompleted" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
@@ -101,14 +97,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.CompletedRequestServiceTest" />
-      <option name="METHOD_NAME" value="deleteCompletedRequest" />
+      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.OrderingServiceTest" />
+      <option name="METHOD_NAME" value="orderByAmountCompleted" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CompletedRequestServiceTest.deleteCompletedRequestInvalidIdNullTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderingServiceTest.orderByAmountPending" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
@@ -117,14 +113,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.CompletedRequestServiceTest" />
-      <option name="METHOD_NAME" value="deleteCompletedRequestInvalidIdNullTest" />
+      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.OrderingServiceTest" />
+      <option name="METHOD_NAME" value="orderByAmountPending" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CompletedRequestServiceTest.validateCompletedRequestTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderingServiceTest.orderByDateCompleted" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
@@ -133,14 +129,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.CompletedRequestServiceTest" />
-      <option name="METHOD_NAME" value="validateCompletedRequestTest" />
+      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.OrderingServiceTest" />
+      <option name="METHOD_NAME" value="orderByDateCompleted" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PendingRequestServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderingServiceTest.orderByDatePending" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
@@ -149,19 +145,20 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.PendingRequestServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.OrderingServiceTest" />
+      <option name="METHOD_NAME" value="orderByDatePending" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PendingRequestServiceTest" />
-        <item itemvalue="JUnit.CompletedRequestServiceTest" />
-        <item itemvalue="JUnit.CompletedRequestServiceTest.validateCompletedRequestTest" />
-        <item itemvalue="JUnit.CompletedRequestServiceTest.deleteCompletedRequestInvalidIdNullTest" />
-        <item itemvalue="JUnit.CompletedRequestServiceTest.deleteCompletedRequest" />
+        <item itemvalue="JUnit.OrderingServiceTest" />
+        <item itemvalue="JUnit.OrderingServiceTest.orderByAmountCompleted" />
+        <item itemvalue="JUnit.OrderingServiceTest.orderByAmountPending" />
+        <item itemvalue="JUnit.OrderingServiceTest.orderByDateCompleted" />
+        <item itemvalue="JUnit.OrderingServiceTest.orderByDatePending" />
       </list>
     </recent_temporary>
   </component>

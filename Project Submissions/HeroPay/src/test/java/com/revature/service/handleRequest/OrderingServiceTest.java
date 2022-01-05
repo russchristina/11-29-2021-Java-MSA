@@ -14,10 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -131,24 +128,37 @@ class OrderingServiceTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         orderingService = new OrderingService(mockPendingRequestService, mockCompletedRequestService, mockCompletedRequestDao);
     }
 
 
     @Test
     void orderByDatePending() {
+        List<PendingRequest> orderedList = orderingService.orderByDatePending(pendingRequestList);
+        assertTrue(orderedList.get(0).getDateSubmission().compareTo(orderedList.get(1).getDateSubmission()) <= 0);
     }
 
     @Test
     void orderByDateCompleted() {
+        List<CompletedRequest> orderedList = orderingService.orderByDateCompleted(completedRequestList);
+        assertTrue(orderedList.get(0).getDateResolved().compareTo(orderedList.get(1).getDateResolved()) <= 0);
     }
 
     @Test
     void orderByAmountPending() {
+        List<PendingRequest> orderedList = orderingService.orderByAmountPending(pendingRequestList);
+        assertTrue(orderedList.get(0).getAmount() - orderedList.get(1).getAmount() <= 0);
     }
 
     @Test
     void orderByAmountCompleted() {
+        try {
+            SortedMap<Double, CompletedRequest> doubleCompletedRequestSortedMap = orderingService.orderByAmountCompleted(completedRequestList);
+            assertTrue(doubleCompletedRequestSortedMap.firstKey().compareTo(doubleCompletedRequestSortedMap.lastKey()) <= 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
