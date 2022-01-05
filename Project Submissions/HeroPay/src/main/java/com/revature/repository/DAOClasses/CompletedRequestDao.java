@@ -5,12 +5,13 @@ import com.revature.repository.DTO.CompletedRequestEntity;
 import com.revature.service.utility.ConnectionFactory;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompletedRequestDao implements CompletedRequestInterface {
     @Override
-    public CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, double amount, Date dateSubmission) throws SQLException {
+    public CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, LocalDate dateSubmission) throws SQLException {
         CompletedRequestEntity entity = null;
         final String SQL = "INSERT INTO completed_request values(default, ?, ?, ?, ?, ?) RETURNING *";
         ResultSet rs;
@@ -21,8 +22,7 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             stmt.setInt(1, managerId);
             stmt.setBoolean(2, status);
             stmt.setString(3, response);
-            stmt.setDouble(4, amount);
-            stmt.setDate(5, dateSubmission);
+            stmt.setDate(4, Date.valueOf(dateSubmission));
             rs = stmt.executeQuery();
 
             if(rs.next()) entity = new CompletedRequestEntity(
@@ -102,7 +102,7 @@ public class CompletedRequestDao implements CompletedRequestInterface {
         return entityList;            }
 
     @Override
-    public List<CompletedRequestEntity> getResponseTypeWithStatus(boolean status) throws SQLException {
+    public List<CompletedRequestEntity> getCompletedRequestByStatus(boolean status) throws SQLException {
         List<CompletedRequestEntity> entityList = new ArrayList<>();
         final String SQL = "SELECT * FROM completed_request WHERE status = ?";
         ResultSet rs;

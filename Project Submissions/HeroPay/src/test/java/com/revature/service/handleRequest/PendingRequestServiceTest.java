@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PendingRequestServiceTest {
 
     @Mock
-    private PendingRequestDao pendingRequestDao;
+    private PendingRequestDao mockPendingRequestDao;
 
     private PendingRequestService pendingRequestService;
 
@@ -106,13 +106,13 @@ class PendingRequestServiceTest {
         MockitoAnnotations.openMocks(this);
 
         try {
-            Mockito.when(pendingRequestDao.insertPendingRequest(employeeId, typeId1, requestMessage, amount, sqlDate)).thenReturn(mockedPendingRequestEntity);
-            Mockito.when(pendingRequestDao.getRequestTypeWithString(requestTypeMap.get(typeId1))).thenReturn(mockedRequestTypeEntity);
-            Mockito.when(pendingRequestDao.getEmployeePendingRequestList(employeeId)).thenReturn(storedPendingRequestList);
-            Mockito.when(pendingRequestDao.getRequestTypeMap()).thenReturn(requestTypeMap);
-            Mockito.when(pendingRequestDao.deletePendingRequest(storedPendingRequestId)).thenReturn(mockedPendingRequestEntity);
-            Mockito.when(pendingRequestDao.getAllPendingRequests()).thenReturn(storedPendingRequestList);
-            Mockito.when(pendingRequestDao.getAllPendingRequestsByType(typeId1)).thenReturn(storedPendingRequestByTypeList);
+            Mockito.when(mockPendingRequestDao.insertPendingRequest(employeeId, typeId1, requestMessage, amount, sqlDate)).thenReturn(mockedPendingRequestEntity);
+            Mockito.when(mockPendingRequestDao.getRequestTypeWithString(requestTypeMap.get(typeId1))).thenReturn(mockedRequestTypeEntity);
+            Mockito.when(mockPendingRequestDao.getEmployeePendingRequestList(employeeId)).thenReturn(storedPendingRequestList);
+            Mockito.when(mockPendingRequestDao.getRequestTypeMap()).thenReturn(requestTypeMap);
+            Mockito.when(mockPendingRequestDao.deletePendingRequest(storedPendingRequestId)).thenReturn(mockedPendingRequestEntity);
+            Mockito.when(mockPendingRequestDao.getAllPendingRequests()).thenReturn(storedPendingRequestList);
+            Mockito.when(mockPendingRequestDao.getAllPendingRequestsByType(typeId1)).thenReturn(storedPendingRequestByTypeList);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,7 +120,7 @@ class PendingRequestServiceTest {
 
 
         try {
-            pendingRequestService = new PendingRequestService(pendingRequestDao);
+            pendingRequestService = new PendingRequestService(mockPendingRequestDao);
         } catch (SQLException e) {
             e.printStackTrace();
         }

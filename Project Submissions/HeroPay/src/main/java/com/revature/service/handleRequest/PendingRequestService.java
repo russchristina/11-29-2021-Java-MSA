@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class PendingRequestService implements PendingRequestServiceInterface {
 
     private final Logger logger = LoggerFactory.getLogger(PendingRequestService.class);
-    private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
+    private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private PendingRequestDao pendingRequestDao;
     private Map<Integer, String> requestMap;
@@ -44,12 +44,12 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                     pendingRequest.getAmount(),
                     Date.valueOf(pendingRequest.getDateSubmission())
             );
-            if(pr != null) transactionLogger.info("pending request stored in database");
+            if(pr != null) tLog.info("pending request" + pr.getId() + "stored in database");
             return pr;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e));
+            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
         }
-        logger.debug("Failed to store pending request in database");
+        logger.debug("Failed to store pending request in database: " + PendingRequestService.class);
         return null;
     }
 
@@ -61,7 +61,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         if(pendingRequest.getRequestMessage().length() < 5) throw new RequestMessageShortException("Pending Request is < 5 characters");
         if(pendingRequest.getAmount() <= 0) throw new NegativeAmountException("pending request amount");
 
-        logger.debug("pending request validated");
+        logger.debug("pending request validated: " + PendingRequestService.class);
         return true;
     }
 
@@ -72,19 +72,19 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getEmployeePendingRequestList(employeeId);
             List<PendingRequest> pendingModelList = new ArrayList<>();
             pendingRequestList.forEach(
-                    pendingRequestEntity ->
+                    pre ->
                             pendingModelList.add(new PendingRequest(
-                                    pendingRequestEntity.getId(),
-                                    pendingRequestEntity.getEmployeeId(),
-                                    requestMap.get(pendingRequestEntity.getRequestType()),
-                                    pendingRequestEntity.getRequestMessage(),
-                                    pendingRequestEntity.getAmount(),
-                                    pendingRequestEntity.getDateSubmission().toLocalDate())));
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e));
+            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
         }
-
+        logger.debug("Failed to get Employee-" + employeeId + " pending request: " + PendingRequestService.class);
         return null;
     }
 
@@ -92,11 +92,12 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     public PendingRequestEntity deletePendingRequest(int requestId) {
 
         try {
+            logger.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
             return pendingRequestDao.deletePendingRequest(requestId);
         } catch (SQLException e) {
-            logger.error(String.valueOf(e));
+            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
         }
-        logger.debug("Failed to delete pending request: " + requestId);
+        logger.debug("Failed to delete pending request: " + PendingRequestService.class);
         return null;
     }
 
@@ -106,19 +107,19 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getAllPendingRequests();
             List<PendingRequest> pendingModelList = new ArrayList<>();
             pendingRequestList.forEach(
-                    pendingRequestEntity ->
+                    pre ->
                             pendingModelList.add(new PendingRequest(
-                                    pendingRequestEntity.getId(),
-                                    pendingRequestEntity.getEmployeeId(),
-                                    requestMap.get(pendingRequestEntity.getRequestType()),
-                                    pendingRequestEntity.getRequestMessage(),
-                                    pendingRequestEntity.getAmount(),
-                                    pendingRequestEntity.getDateSubmission().toLocalDate())));
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e));
+            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
         }
-
+        logger.debug("Failed to get all pending requests: " + PendingRequestService.class);
         return null;    }
 
     @Override
@@ -127,30 +128,30 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getAllPendingRequestsByType(typeId);
             List<PendingRequest> pendingModelList = new ArrayList<>();
             pendingRequestList.forEach(
-                    pendingRequestEntity ->
+                    pre ->
                             pendingModelList.add(new PendingRequest(
-                                    pendingRequestEntity.getId(),
-                                    pendingRequestEntity.getEmployeeId(),
-                                    requestMap.get(pendingRequestEntity.getRequestType()),
-                                    pendingRequestEntity.getRequestMessage(),
-                                    pendingRequestEntity.getAmount(),
-                                    pendingRequestEntity.getDateSubmission().toLocalDate())));
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e));
+            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
         }
-
+        logger.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
         return null;    }
 
     @Override
-    public PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity) {
+    public PendingRequest convertPendingRequestEntity(PendingRequestEntity pre) {
         return new PendingRequest(
-                pendingRequestEntity.getId(),
-                pendingRequestEntity.getEmployeeId(),
-                requestMap.get(pendingRequestEntity.getRequestType()),
-                pendingRequestEntity.getRequestMessage(),
-                pendingRequestEntity.getAmount(),
-                pendingRequestEntity.getDateSubmission().toLocalDate());
+                pre.getId(),
+                pre.getEmployeeId(),
+                requestMap.get(pre.getRequestType()),
+                pre.getRequestMessage(),
+                pre.getAmount(),
+                pre.getDateSubmission().toLocalDate());
     }
 
 }

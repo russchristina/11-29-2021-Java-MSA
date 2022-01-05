@@ -12,7 +12,4 @@ public interface EmployeeServiceInterface {
 
     Employee convertEmployeeEntityToEmployee(EmployeeAccountEntity employeeAccountEntity);
 
-
-
-
 }

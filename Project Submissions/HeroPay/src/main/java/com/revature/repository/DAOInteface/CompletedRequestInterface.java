@@ -4,6 +4,7 @@ import com.revature.repository.DTO.CompletedRequestEntity;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CompletedRequestInterface {
@@ -17,7 +18,7 @@ public interface CompletedRequestInterface {
 
     //Create
 
-    CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, double amount, Date dateSubmission) throws SQLException;
+    CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, LocalDate dateResolved) throws SQLException;
 
     //Read
 
@@ -27,7 +28,7 @@ public interface CompletedRequestInterface {
 
     List<CompletedRequestEntity> getAllCompletedRequestList() throws SQLException;
 
-    List<CompletedRequestEntity> getResponseTypeWithStatus(boolean status) throws SQLException;
+    List<CompletedRequestEntity> getCompletedRequestByStatus(boolean status) throws SQLException;
 
 
     //Update

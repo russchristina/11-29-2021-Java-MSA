@@ -32,7 +32,7 @@
         </encoder>
     </appender>
 
-    <logger name="transactionLogger" level ="INFO">
+    <logger name="tLog" level ="INFO">
         <appender-ref ref="FILE2"/>
     </logger>
 

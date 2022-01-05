@@ -11,6 +11,8 @@ public interface CompletedRequestServiceInterface {
 
     CompletedRequest convertCompletedRequestEntity(CompletedRequestEntity completedRequestEntity);
 
+    boolean validateCompletedRequest(CompletedRequest completedRequest);
+
     List<CompletedRequest> getAllCompletedRequests();
 
     List<CompletedRequest> getAllCompletedRequestsByManagerId(int managerId);
