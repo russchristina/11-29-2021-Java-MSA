@@ -47,7 +47,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             if(pr != null) tLog.info("pending request" + pr.getId() + "stored in database");
             return pr;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
+            logger.error(e.getMessage(), e);
         }
         logger.debug("Failed to store pending request in database: " + PendingRequestService.class);
         return null;
@@ -82,7 +82,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                                     pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
+            logger.error(e.getMessage(), e);
         }
         logger.debug("Failed to get Employee-" + employeeId + " pending request: " + PendingRequestService.class);
         return null;
@@ -95,7 +95,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             logger.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
             return pendingRequestDao.deletePendingRequest(requestId);
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
+            logger.error(e.getMessage(), e);
         }
         logger.debug("Failed to delete pending request: " + PendingRequestService.class);
         return null;
@@ -117,7 +117,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                                     pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
+            logger.error(e.getMessage(), e);
         }
         logger.debug("Failed to get all pending requests: " + PendingRequestService.class);
         return null;    }
@@ -138,7 +138,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                                     pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + " " + PendingRequestService.class);
+            logger.error(e.getMessage(), e);
         }
         logger.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
         return null;    }

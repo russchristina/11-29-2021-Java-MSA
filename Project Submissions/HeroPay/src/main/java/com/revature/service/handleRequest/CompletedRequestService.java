@@ -32,13 +32,15 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
                     completedRequest.isStatus(),
                     completedRequest.getResponse(), completedRequest.getDateResolved());
             if(cre != null){
-                tLog.info("Completed store completed request in database: " + CompletedRequestService.class);
+                tLog.info("Completed store completed request in database: " + completedRequest.toString(), CompletedRequestService.class);
                 return cre;
             }
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + ": " + CompletedRequestService.class);
+            logger.error(e.getMessage(), e);
+        } finally{
+            logger.debug("Storing Completed Request in Database: " + completedRequest.toString() , CompletedRequestService.class);
         }
-        logger.debug("Store Completed Request Failure: " + CompletedRequestService.class );
+        logger.debug("Store Completed Request Failure");
         return null;
     }
 
@@ -56,7 +58,7 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     @Override
     public boolean validateCompletedRequest(CompletedRequest completedRequest) {
         if(completedRequest.getManagerId() <= 0) throw new EmployeeIdException("Invalid Manager ID, <= 0");
-        logger.debug("Completed request validated: " + CompletedRequestService.class);
+        logger.debug("Completed request validated");
         return true;
     }
 
@@ -73,9 +75,11 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
                     ));
             return completedRequestList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + ": " + CompletedRequestService.class);
+            logger.error(e.getMessage(), e);
+        } finally{
+            logger.debug("Getting all Completed Requests");
         }
-        logger.debug("Failed to get all Completed Requests: " + CompletedRequestService.class);
+        logger.debug("Failed to get all Completed Requests");
         return null;
     }
 
@@ -91,9 +95,11 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
                     ));
             return completedRequestList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + ": " + CompletedRequestService.class);
+            logger.error(e.getMessage(), e);
+        } finally{
+            logger.debug("Getting all Completed Requests by Manager Id: " + managerId);
         }
-        logger.debug("Failed to get all Completed Requests by Manager-" + managerId + ": " + CompletedRequestService.class);
+        logger.debug("Failed to get all Completed Requests by Manager-" + managerId);
         return null;
     }
 
@@ -110,21 +116,24 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
                     ));
             return completedRequestList;
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + ": " + CompletedRequestService.class);
+            logger.error(e.getMessage(), e);
+        } finally{
+            logger.debug("Getting all Completed Requests by status: " + status);
         }
-        logger.debug("Failed to get all Completed Requests by Status-" + status + ": " + CompletedRequestService.class);
+        logger.debug("Failed to get all Completed Requests by Status-" + status);
         return null;
     }
 
     @Override
     public CompletedRequestEntity deleteCompletedRequest(int requestId) {
         try {
-            logger.debug("Deleting Completed Request-" + requestId + " : " + CompletedRequestService.class);
             return completedRequestDao.deleteCompletedRequest(requestId);
         } catch (SQLException e) {
-            logger.error(String.valueOf(e) + " " + CompletedRequestService.class);
+            logger.error(e.getMessage(), e);
+        } finally{
+            logger.debug("Deleting Completed Request-" + requestId);
         }
-        logger.debug("Failed to delete completed requests-" + requestId + " : " + CompletedRequestService.class);
+        logger.debug("Failed to delete completed requests-" + requestId);
         return null;
     }
 

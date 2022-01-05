@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class EmployeeService implements EmployeeServiceInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(LoginInfoDao.class);
+    private final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
     private final Logger transactionLogger = LoggerFactory.getLogger("transactionLogger");
 
     private EmployeeAccountDao employeeAccountDao;

@@ -13,7 +13,8 @@ public interface StatisticsServiceInterface {
 
     double meanAverage(List<CompletedRequest> completedRequests);
 
-    Map<Integer, Double> totalAmountByEmployee(List<Employee> employees, List<CompletedRequest> completedRequests);
+    Map<Integer, Double> totalAmountPerEmployee(List<Employee> employees, List<CompletedRequest> completedRequests);
 
-    Map<Employee, Double> mostExpensiveEmployee(List<Employee> employees, List<CompletedRequest> completedRequests)
+    Map<Integer, Double> totalAmountPerRole(List<Employee> employees, List<CompletedRequest> completedRequests);
+
 }

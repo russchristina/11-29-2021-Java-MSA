@@ -26,11 +26,11 @@ public class LoginService implements LoginServiceInterface {
         try {
             return loginInfoDao.getLoginInfo(loginInput.getUsername(), loginInput.getPassword());
         } catch (SQLException e) {
-            logger.error(String.valueOf(e));
+            logger.error(e.getMessage(), e);
         } finally{
-            logger.debug("user login attempt");
+            logger.debug("User Login Attempt: " + LoginService.class);
         }
-        logger.debug("user login validation fail");
+        logger.debug("user login validation fail: " + LoginService.class);
         return null;
 
     }
