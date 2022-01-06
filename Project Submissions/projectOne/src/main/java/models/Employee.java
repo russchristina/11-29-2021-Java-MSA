@@ -3,8 +3,6 @@ package models;
 public class Employee {
 
 	private int Id;
-	private String username;
-	private String password;
 	private String firstName;
 	private String lastName;
 	private String department;
@@ -18,8 +16,6 @@ public class Employee {
 			String permissions) {
 		super();
 		Id = id;
-		this.username = username;
-		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.department = department;
@@ -32,22 +28,6 @@ public class Employee {
 
 	public void setId(int id) {
 		Id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getFirstName() {
@@ -90,9 +70,7 @@ public class Employee {
 		result = prime * result + ((department == null) ? 0 : department.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -122,27 +100,18 @@ public class Employee {
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
 		if (permissions == null) {
 			if (other.permissions != null)
 				return false;
 		} else if (!permissions.equals(other.permissions))
 			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
+		
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [Id=" + Id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
+		return "Employee [Id=" + Id + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", department=" + department + ", permissions=" + permissions + "]";
 	}
 	

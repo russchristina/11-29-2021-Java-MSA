@@ -1,0 +1,27 @@
+#banner{
+    background-color: darkgreen;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: normal;
+    color:aquamarine
+}
+#login{
+    background-color: lightsalmon;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: normal;
+    color: darkmagenta
+}
+#logo{
+    background-color:slateblue
+}
+#footer{
+    background-color: olivedrab;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: normal;
+    color:papayawhip
+}
+nav{
+    background-color: yellowgreen;
+    padding: 5em;
+    margin-left: 5em;
+    text-align: center;
+}
