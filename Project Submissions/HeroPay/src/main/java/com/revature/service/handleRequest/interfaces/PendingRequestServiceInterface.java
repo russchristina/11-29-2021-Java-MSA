@@ -18,6 +18,8 @@ public interface PendingRequestServiceInterface {
 
     List<PendingRequest> getPendingRequestByType(int typeId);
 
+    PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status);
+
     PendingRequestEntity deletePendingRequest(int requestId);
 
     PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity);

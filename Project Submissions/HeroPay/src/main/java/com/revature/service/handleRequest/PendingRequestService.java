@@ -1,6 +1,8 @@
 package com.revature.service.handleRequest;
 
+import com.revature.presentation.model.CompletedRequest;
 import com.revature.presentation.model.PendingRequest;
+import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.repository.DAOClasses.PendingRequestDao;
 import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.repository.DTO.RequestTypeEntity;
@@ -141,6 +143,16 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             logger.error(e.getMessage(), e);
         }
         logger.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
+        return null;    }
+
+    @Override
+    public PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status) {
+        try {
+            return pendingRequestDao.updatePendingRequestStatus(requestId, status);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
+        logger.debug("Failed to update status pending requests: " + PendingRequestService.class);
         return null;    }
 
     @Override

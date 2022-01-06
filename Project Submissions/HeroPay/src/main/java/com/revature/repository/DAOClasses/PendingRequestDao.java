@@ -16,7 +16,7 @@ public class PendingRequestDao implements PendingRequestInterface {
     @Override
     public PendingRequestEntity insertPendingRequest(int employeeId, int typeId, String requestMessage, double amount, java.sql.Date dateSubmission) throws SQLException {
         PendingRequestEntity entity = null;
-        final String SQL = "INSERT INTO pending_request values(default, ?, ?, ?, ?, ? RETURNING *";
+        final String SQL = "INSERT INTO pending_request values(default, ?, ?, ?, ?, ?) RETURNING *";
         ResultSet rs;
 
         try(
@@ -36,9 +36,10 @@ public class PendingRequestDao implements PendingRequestInterface {
                     rs.getInt(3),
                     rs.getString(4),
                     rs.getDouble(5),
-                    rs.getDate(6)
+                    rs.getDate(6),
+                    rs.getBoolean(7)
             );
-        }
+        }           rs.close();
         return entity;
     }
 
@@ -69,10 +70,8 @@ public class PendingRequestDao implements PendingRequestInterface {
     @Override
     public PendingRequestEntity getPendingRequest(int requestId) throws SQLException {
         PendingRequestEntity entity = null;
-        final String SQL = "SELECT * FROM pending_request WHERE id = ?";
-
+        final String SQL = "SELECT * FROM pending_request WHERE id = ? AND status = false";
         ResultSet rs;
-
         try(
                 Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(SQL)
@@ -85,8 +84,10 @@ public class PendingRequestDao implements PendingRequestInterface {
                     rs.getInt(3),
                     rs.getString(4),
                     rs.getDouble(5),
-                    rs.getDate(6)
+                    rs.getDate(6),
+                    rs.getBoolean(7)
             );
+            rs.close();
         }
         return entity;
     }
@@ -95,7 +96,7 @@ public class PendingRequestDao implements PendingRequestInterface {
     public List<PendingRequestEntity> getEmployeePendingRequestList(int employeeId) throws SQLException {
         List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
 
-        final String SQL = "SELECT * FROM pending_request WHERE employee_id = ?";
+        final String SQL = "SELECT * FROM pending_request WHERE employee_id = ? AND status = false";
 
         ResultSet rs = null;
 
@@ -112,7 +113,8 @@ public class PendingRequestDao implements PendingRequestInterface {
                             rs.getInt(3),
                             rs.getString(4),
                             rs.getDouble(5),
-                            rs.getDate(6)
+                            rs.getDate(6),
+                            rs.getBoolean(7)
                     )
             );
         }
@@ -123,7 +125,7 @@ public class PendingRequestDao implements PendingRequestInterface {
     public List<PendingRequestEntity> getAllPendingRequests() throws SQLException {
         List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
 
-        final String SQL = "SELECT * FROM pending_request";
+        final String SQL = "SELECT * FROM pending_request AND status = false";
 
         ResultSet rs;
 
@@ -139,9 +141,11 @@ public class PendingRequestDao implements PendingRequestInterface {
                             rs.getInt(3),
                             rs.getString(4),
                             rs.getDouble(5),
-                            rs.getDate(6)
+                            rs.getDate(6),
+                            rs.getBoolean(7)
                     )
             );
+            rs.close();
         }
         return pendingRequestEntityList;
     }
@@ -150,7 +154,7 @@ public class PendingRequestDao implements PendingRequestInterface {
     public List<PendingRequestEntity> getAllPendingRequestsByType(int typeId) throws SQLException {
         List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
 
-        final String SQL = "SELECT * FROM pending_request WHERE type = ?";
+        final String SQL = "SELECT * FROM pending_request WHERE type = ? AND status = false";
 
         ResultSet rs;
 
@@ -167,9 +171,11 @@ public class PendingRequestDao implements PendingRequestInterface {
                             rs.getInt(3),
                             rs.getString(4),
                             rs.getDouble(5),
-                            rs.getDate(6)
+                            rs.getDate(6),
+                            rs.getBoolean(7)
                     )
             );
+            rs.close();
         }
         return pendingRequestEntityList;    }
 
@@ -189,6 +195,7 @@ public class PendingRequestDao implements PendingRequestInterface {
 
             while(result.next()) requestTypeMap.put(result.getInt(1), result.getString(2));
 
+            result.close();
         }
 
         return requestTypeMap;    }
@@ -212,7 +219,35 @@ public class PendingRequestDao implements PendingRequestInterface {
         return requestTypeEntity;        }
 
     @Override
-    public PendingRequestEntity updatePendingRequestTyoe(int requestId, int typeId) throws SQLException {
+    public PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status) throws SQLException {
+        final String SQL = "UPDATE pending_request SET status = ? WHERE id = ? RETURNING *";
+
+        PendingRequestEntity pendingRequestEntity = null;
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)){
+            stmt.setBoolean(1, status);
+            stmt.setInt(2, requestId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()) pendingRequestEntity = new PendingRequestEntity(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getInt(3),
+                    rs.getString(4),
+                    rs.getDouble(5),
+                    rs.getDate(6),
+                    rs.getBoolean(7)
+            );
+            rs.close();
+        }
+
+        return pendingRequestEntity;    }
+
+    @Override
+    public PendingRequestEntity updatePendingRequestType(int requestId, int typeId) throws SQLException {
         final String SQL = "UPDATE pending_request SET type = ? WHERE id = ? RETURNING *";
 
         PendingRequestEntity pendingRequestEntity = null;
@@ -231,9 +266,10 @@ public class PendingRequestDao implements PendingRequestInterface {
                     rs.getInt(3),
                     rs.getString(4),
                     rs.getDouble(5),
-                    rs.getDate(6)
+                    rs.getDate(6),
+                    rs.getBoolean(7)
             );
-
+            rs.close();
         }
 
         return pendingRequestEntity;
@@ -259,9 +295,10 @@ public class PendingRequestDao implements PendingRequestInterface {
                     rs.getInt(3),
                     rs.getString(4),
                     rs.getDouble(5),
-                    rs.getDate(6)
+                    rs.getDate(6),
+                    rs.getBoolean(7)
             );
-
+            rs.close();
         }
 
         return pendingRequestEntity;    }
@@ -286,9 +323,10 @@ public class PendingRequestDao implements PendingRequestInterface {
                     rs.getInt(3),
                     rs.getString(4),
                     rs.getDouble(5),
-                    rs.getDate(6)
+                    rs.getDate(6),
+                    rs.getBoolean(7)
             );
-
+            rs.close();
         }
 
         return pendingRequestEntity;    }
@@ -313,9 +351,10 @@ public class PendingRequestDao implements PendingRequestInterface {
                     rs.getInt(3),
                     rs.getString(4),
                     rs.getDouble(5),
-                    rs.getDate(6)
+                    rs.getDate(6),
+                    rs.getBoolean(7)
             );
-
+            rs.close();
         }
 
         return pendingRequestEntity;    }

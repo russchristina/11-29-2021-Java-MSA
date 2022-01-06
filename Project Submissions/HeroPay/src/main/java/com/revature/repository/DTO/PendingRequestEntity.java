@@ -11,19 +11,46 @@ public class PendingRequestEntity {
     private String requestMessage;
     private double amount;
     private Date dateSubmission;
+    private boolean status;
 
-    public PendingRequestEntity(int id, int employeeId, int requestType, String requestMessage, double amount, java.sql.Date dateSubmission) {
+    public PendingRequestEntity(int id, int employeeId, int requestType, String requestMessage, double amount, Date dateSubmission, boolean status) {
         this.id = id;
         this.employeeId = employeeId;
         this.requestType = requestType;
         this.requestMessage = requestMessage;
         this.amount = amount;
         this.dateSubmission = dateSubmission;
+        this.status = status;
     }
 
     public PendingRequestEntity() {
     }
 
+    @Override
+    public String toString() {
+        return "{\"PendingRequestEntity\":{"
+                + "\"id\":\"" + id + "\""
+                + ", \"employeeId\":\"" + employeeId + "\""
+                + ", \"requestType\":\"" + requestType + "\""
+                + ", \"requestMessage\":\"" + requestMessage + "\""
+                + ", \"amount\":\"" + amount + "\""
+                + ", \"dateSubmission\":" + dateSubmission
+                + ", \"status\":\"" + status + "\""
+                + "}}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PendingRequestEntity)) return false;
+        PendingRequestEntity that = (PendingRequestEntity) o;
+        return getId() == that.getId() && getEmployeeId() == that.getEmployeeId() && getRequestType() == that.getRequestType() && Double.compare(that.getAmount(), getAmount()) == 0 && isStatus() == that.isStatus() && Objects.equals(getRequestMessage(), that.getRequestMessage()) && Objects.equals(getDateSubmission(), that.getDateSubmission());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmployeeId(), getRequestType(), getRequestMessage(), getAmount(), getDateSubmission(), isStatus());
+    }
 
     public int getId() {
         return id;
@@ -69,32 +96,15 @@ public class PendingRequestEntity {
         return dateSubmission;
     }
 
-    public void setDateSubmission(java.sql.Date dateSubmission) {
+    public void setDateSubmission(Date dateSubmission) {
         this.dateSubmission = dateSubmission;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PendingRequestEntity)) return false;
-        PendingRequestEntity that = (PendingRequestEntity) o;
-        return id == that.id && employeeId == that.employeeId && requestType == that.requestType && Double.compare(that.amount, amount) == 0 && Objects.equals(requestMessage, that.requestMessage) && Objects.equals(dateSubmission, that.dateSubmission);
+    public boolean isStatus() {
+        return status;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, employeeId, requestType, requestMessage, amount, dateSubmission);
-    }
-
-    @Override
-    public String toString() {
-        return "{\"PendingRequestEntity\":{"
-                + "\"id\":\"" + id + "\""
-                + ", \"employeeId\":\"" + employeeId + "\""
-                + ", \"requestType\":\"" + requestType + "\""
-                + ", \"requestMessage\":\"" + requestMessage + "\""
-                + ", \"amount\":\"" + amount + "\""
-                + ", \"dateSubmission\":" + dateSubmission
-                + "}}";
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

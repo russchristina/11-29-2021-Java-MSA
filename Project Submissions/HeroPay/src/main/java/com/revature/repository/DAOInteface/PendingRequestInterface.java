@@ -41,7 +41,9 @@ public interface PendingRequestInterface {
 
     //Update
 
-    PendingRequestEntity updatePendingRequestTyoe(int requestId, int typeId) throws SQLException;
+    PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status) throws SQLException;
+
+    PendingRequestEntity updatePendingRequestType(int requestId, int typeId) throws SQLException;
 
     PendingRequestEntity updatePendingRequestMessage(int requestId, String requestMessage) throws SQLException;
 

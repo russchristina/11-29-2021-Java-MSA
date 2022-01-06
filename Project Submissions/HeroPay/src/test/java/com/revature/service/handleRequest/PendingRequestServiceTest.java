@@ -49,6 +49,8 @@ class PendingRequestServiceTest {
     private double amount;
     private LocalDate dateSubmission;
     private Date sqlDate;
+    private boolean status;
+
     private Map<Integer, String> requestTypeMap;
 
     private List<PendingRequest> pendingRequestList;
@@ -68,6 +70,7 @@ class PendingRequestServiceTest {
         amount = 20.01;
         dateSubmission = LocalDate.of(2022, 1, 1);
         sqlDate = Date.valueOf(dateSubmission);
+        status = false;
 
         requestTypeMap = new HashMap<>();
         requestTypeMap.put(1, "cash");
@@ -79,7 +82,7 @@ class PendingRequestServiceTest {
 
         mockPendingRequestModel = new PendingRequest(storedPendingRequestId, employeeId, requestTypeMap.get(typeId1), requestMessage, amount, dateSubmission);
 
-        mockedPendingRequestEntity = new PendingRequestEntity(storedPendingRequestId, employeeId, typeId1, requestMessage, amount, sqlDate);
+        mockedPendingRequestEntity = new PendingRequestEntity(storedPendingRequestId, employeeId, typeId1, requestMessage, amount, sqlDate, status);
 
         storedPendingRequestList = new ArrayList<>();
         pendingRequestList = new ArrayList<>();
@@ -87,18 +90,18 @@ class PendingRequestServiceTest {
         storedPendingRequestByTypeList = new ArrayList<>();
         pendingRequestByTypeList = new ArrayList<>();
 
-        storedPendingRequestList.add(new PendingRequestEntity(1, employeeId, typeId1, "Hello Greg", amount, sqlDate));
-        storedPendingRequestList.add(new PendingRequestEntity(2, employeeId, typeId2, "Hello sads", amount + 33, Date.valueOf(LocalDate.of(2022, 1, 2))));
-        storedPendingRequestList.add(new PendingRequestEntity(3, employeeId, typeId1, "sdfo sads", amount + 23.02, Date.valueOf(LocalDate.of(2010, 1, 2))));
-        storedPendingRequestList.add(new PendingRequestEntity(4, employeeId, typeId2, "dff sddfasdfasdads", amount + 11, Date.valueOf(LocalDate.of(2019, 1, 2))));
+        storedPendingRequestList.add(new PendingRequestEntity(1, employeeId, typeId1, "Hello Greg", amount, sqlDate, status));
+        storedPendingRequestList.add(new PendingRequestEntity(2, employeeId, typeId2, "Hello sads", amount + 33, Date.valueOf(LocalDate.of(2022, 1, 2)), status));
+        storedPendingRequestList.add(new PendingRequestEntity(3, employeeId, typeId1, "sdfo sads", amount + 23.02, Date.valueOf(LocalDate.of(2010, 1, 2)), status));
+        storedPendingRequestList.add(new PendingRequestEntity(4, employeeId, typeId2, "dff sddfasdfasdads", amount + 11, Date.valueOf(LocalDate.of(2019, 1, 2)), status));
 
         pendingRequestList.add(new PendingRequest(1, employeeId, requestTypeMap.get(typeId1), "Hello Greg", amount, sqlDate.toLocalDate()));
         pendingRequestList.add(new PendingRequest(2, employeeId, requestTypeMap.get(typeId2), "Hello sads", amount + 33, LocalDate.of(2022, 1, 2)));
         pendingRequestList.add(new PendingRequest(3, employeeId, requestTypeMap.get(typeId1), "sdfo sads", amount + 23.02, LocalDate.of(2010, 1, 2)));
         pendingRequestList.add(new PendingRequest(4, employeeId, requestTypeMap.get(typeId2), "dff sddfasdfasdads", amount + 11, LocalDate.of(2019, 1, 2)));
 
-        storedPendingRequestByTypeList.add(new PendingRequestEntity(1, employeeId, typeId1, "Hello Greg", amount, sqlDate));
-        storedPendingRequestByTypeList.add(new PendingRequestEntity(3, employeeId, typeId1, "sdfo sads", amount + 23.02, Date.valueOf(LocalDate.of(2010, 1, 2))));
+        storedPendingRequestByTypeList.add(new PendingRequestEntity(1, employeeId, typeId1, "Hello Greg", amount, sqlDate, status));
+        storedPendingRequestByTypeList.add(new PendingRequestEntity(3, employeeId, typeId1, "sdfo sads", amount + 23.02, Date.valueOf(LocalDate.of(2010, 1, 2)), status));
 
         pendingRequestByTypeList.add(new PendingRequest(1, employeeId, requestTypeMap.get(typeId1), "Hello Greg", amount, sqlDate.toLocalDate()));
         pendingRequestByTypeList.add(new PendingRequest(3, employeeId, requestTypeMap.get(typeId1), "sdfo sads", amount + 23.02, LocalDate.of(2010, 1, 2)));
