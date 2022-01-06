@@ -113,7 +113,9 @@ public class Request {
 
 	@Override
 	public String toString() {
-		return "\nRequest id: " + requestId + ", employee name: " + employeeName + ", amount: " + amount + ", reason: "
-				+ reason + ", status: " + status + ", note: " + note;
+		return "Request [requestId=" + requestId + ", employeeName=" + employeeName + ", amount=" + amount + ", reason="
+				+ reason + ", status=" + status + ", note=" + note + "]";
 	}
+
+
 } // End class

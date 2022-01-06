@@ -57,7 +57,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 						set.getBoolean(3)
 						);
 			} // End if statement
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
 			ConnectionClosers.closeConnection(conn);

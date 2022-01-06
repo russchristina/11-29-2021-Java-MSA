@@ -1,11 +1,10 @@
 body {  
-    margin: 10%;
     background: linear-gradient(90deg, #20a7e6, rgba(0, 0, 0, 0)); 
 }  
 
-h1 {
+#title {
     background: linear-gradient(45deg, rgb(170, 35, 197), #20a7e6);
-    font: 55px Arial, sans-serif;
+    font: 45px Arial, sans-serif;
     font-weight: bolder;
     background-clip: text;
     -webkit-background-clip: text;
@@ -15,9 +14,49 @@ h1 {
     border-style: double;
     border-color: rgb(122, 28, 141);
     border-radius: 30px;
-    border-width: 5px;
+    border-width: 10px;
 }
 
 h2 {
-    font: 30px Arial, sans-serif;
+    font: 40px Arial, sans-serif;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+#login {
+    width: 300px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -10%);
+    padding: 20px;
+    border-style: outset;
+    border-color: lightskyblue;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#loginImage {
+    height: 3.5in;
+    width: 6in;
+    border-style: inset;
+    border-color: deepskyblue;
+    transform: translate(23%, 20%);
+}
+
+#loginImage2 {
+    height: 2in;
+    width: 2.5in;
+    position: relative;
+    transform: translate(-5%, -60%);
+    border-style: inset;
+    border-color: deepskyblue;
+}
+
+#loginImageHolder {
+    transform: translate(0%, -5%);
 }

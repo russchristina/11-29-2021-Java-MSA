@@ -65,6 +65,6 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee name: " + name;
+		return "Employee [name=" + name + ", password=" + password + ", isManager=" + isManager + "]";
 	}
 } // End class

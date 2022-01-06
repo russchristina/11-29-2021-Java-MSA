@@ -9,23 +9,33 @@
 </head>
 
 <body align = "center">
-    <h1>Developing Developers</h1>
+    <div id = "title">
+        <h1>Developing Developers</h1>
+    </div>
     <h2>Reimbursement Portal</h2>
     
     <br>
-    <h3>Please enter your username and password to log in.</h3>
-    <form>
-        <div class="container">
-            <div class="form-group">
-                <label for="username"><b>Username:</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required><br>
+    <div id= "mainContainer">
+        <h3>Please enter your username and password to log in.</h3>
+        <form  id= "loginForm" onsubmit="return fetchData()">
+            <div id = "login">
+                <div class="form-group">
+                    <label for="username"><b>Username:</b></label>
+                    <input type="text" placeholder="Enter Username" name="username" required><br>
+                    <br>
+                    <label for="password"><b>Password: </b></label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+                </div>
                 <br>
-                <label for="password"><b>Password: </b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
+                <button id='loginButton' type="submit">Log In</button>
             </div>
-            <br>
-            <button type="submit">Log In</button>
-        </div>
-    </form>
+        </form>
+    </div>
+    <br>
+    <div id="loginImageHolder">
+        <img id= "loginImage" src = "https://media.istockphoto.com/photos/pyramid-blue-cubes-picture-id182766931?k=6&m=182766931&s=612x612&w=0&h=z3pQmj2nnfjFdXggogB4OKGjAQSzx5nS-AMarXDo--Y=" />
+        <img id="loginImage2" src="https://www.educationquizzes.com/library/KS3-Maths/5-6-shape-volume-1.jpg"/>
+    </div>
+    <script src="DevelopingLogic.js"></script>
 </body>
 </html>
