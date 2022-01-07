@@ -1,14 +1,10 @@
 package com.revature.controller;
 
 import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.path;
-
-import com.revature.model.Ingredient;
-import com.revature.service.IngredientService;
+import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.Javalin;
-import io.javalin.http.Handler;
 
 /*
  * We're technically trying to build a "RESTful" API. REST stands for Representational
@@ -35,11 +31,11 @@ public class IngredientController {
 	 * handlers (e.g. methods for handling POST requests, GET requests, etc.).
 	 */
 	private Javalin app;
-	private IngredientService ingredientService;
+	private IngredientHandlers ingredientHandler;
 	
 	public IngredientController(Javalin app) {
 		this.app = app;
-		this.ingredientService = new IngredientService();
+		this.ingredientHandler = new IngredientHandlers();
 	}
 	
 	public void initEndpoints() {
@@ -53,12 +49,12 @@ public class IngredientController {
 				path("/all", () -> {
 					//This endpoint should return all ingredients
 					//We want this to be a get request, so...
-					get(findAllIngredients);
+					get(this.ingredientHandler.findAllIngredients);
 				});
 				
 				path("/new", () -> {
 					//This endpoint should allow the client to add a new ingredient to our DB
-					post(saveIngredient);
+					post(this.ingredientHandler.saveIngredient);
 				});
 				
 				/*
@@ -67,59 +63,13 @@ public class IngredientController {
 				 * particular ingredients.
 				 */
 				path("/id/{id}", () -> {
-					get(findIngredientById);
+					get(this.ingredientHandler.findIngredientById);
 				});
 			});
 		});
 	}
 	
-	private Handler findAllIngredients = ctx -> {
-		
-		/*
-		 * As a general note, you can grab a query string (the query parameters added to
-		 * the URL using the "?" symbol. These can be useful for allowing the client
-		 * to filter results, etc.
-		 */
-		
-		System.out.println(ctx.queryString());
-		
-		//To isolate a parameter:
-		
-		System.out.println(ctx.queryParam("minCost"));
-		System.out.println(ctx.queryParam("maxCost"));
-		
-		/*
-		 * The json() method serializes a Java object as JSON. This is necessary if you 
-		 * want to send data as JSON - otherwise we'd just be writing a Java object to the
-		 * response body. Javalin uses Jackson Databind to achieve this.
-		 */
-		ctx.json(this.ingredientService.findAll());
-	};
 	
-	private Handler saveIngredient = ctx -> {
-		//Proof of concept that we received the JSON string which the client sent in the
-		//request body.
-		System.out.println(ctx.body());
-		//We'll have Javalin automatically deserialize the JSON string so that it can be
-		//stored as an Ingredient immediately. Again, Javalin uses Jackson Databind to
-		//achieve this.
-		Ingredient retrievedIngredient = ctx.bodyAsClass(Ingredient.class);
-		System.out.println(retrievedIngredient);
-		//Save the ingredient
-		this.ingredientService.save(retrievedIngredient);
-		//We should be intentional about setting response status codes when applicable.
-		ctx.status(201);
-	};
-	
-	private Handler findIngredientById = ctx -> {
-		//Proof of Concept
-		System.out.println(ctx.pathParam("id"));
-		Ingredient retrievedIngredient = this.ingredientService.findById(Integer.parseInt(ctx.pathParam("id")));
-		//Don't forget to write the ingredient to the response body as JSON.
-		if(retrievedIngredient != null) ctx.json(retrievedIngredient);
-		else ctx.res.getWriter().write("Sorry. No ingredients that match your search were found.");
-		
-	};
 	
 	
 	

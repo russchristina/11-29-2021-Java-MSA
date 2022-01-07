@@ -1,15 +1,19 @@
 package com.revature;
 
 import com.revature.controller.IngredientController;
+import com.revature.util.JavalinConfig;
 
 import io.javalin.Javalin;
-import io.javalin.http.staticfiles.Location;
 
 public class Driver {
 
 	public static void main(String[] args) {
 		
 		Javalin app = Javalin.create().start(8000);
+		
+		//Configure your Javalin app (I created a util class for this):
+		JavalinConfig config = new JavalinConfig(app).configureHttpMethodPreference()
+				.configureStaticResources();
 		
 		//Initialize your controllers
 		IngredientController ingredientController = new IngredientController(app);
@@ -20,7 +24,6 @@ public class Driver {
 		 * (serving HTML documents, etc. from Javalin) and CORS configuration.
 		 */
 		
-		app._conf.addStaticFiles("/static", Location.CLASSPATH);
-		app._conf.prefer405over404 = true;
+		
 	}
 }
