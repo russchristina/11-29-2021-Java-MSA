@@ -55,7 +55,6 @@ public class EmployeeService implements EmployeeServiceInterface {
                 employeeAccountEntity.getId(),
                 employeeAccountEntity.getFirstName(),
                 employeeAccountEntity.getLastName(),
-                getEmployeeRole(
-                        employeeAccountEntity.getRoleId()).getRoleName());
+                getEmployeeRole(employeeAccountEntity.getRoleId()).getRoleName());
     }
 }

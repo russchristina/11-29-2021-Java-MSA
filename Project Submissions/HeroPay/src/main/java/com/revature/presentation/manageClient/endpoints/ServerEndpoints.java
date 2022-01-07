@@ -1,7 +1,9 @@
 package com.revature.presentation.manageClient.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.presentation.manageEmployee.EmployeeController;
 import com.revature.presentation.manageLogin.LoginController;
+import com.revature.presentation.model.Employee;
 import com.revature.presentation.model.LoginInput;
 import com.revature.presentation.staticHTML.StaticHTMLHandler;
 import com.revature.repository.DTO.LoginInfoEntity;
@@ -14,10 +16,12 @@ public class ServerEndpoints {
     private ObjectMapper objectMapper;
 
     private LoginController loginController;
+    private EmployeeController employeeController;
 
     public ServerEndpoints(StaticHTMLHandler staticHTML) {
         this.app = Javalin.create().start(9002);
         loginController = new LoginController();
+        employeeController = new EmployeeController();
         app.before(ctx ->{
             ctx.header("Access-Control-Allow-Origin", "*");
             ctx.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
@@ -32,27 +36,42 @@ public class ServerEndpoints {
     public void generateEndpoints() {
         generateGetEndpoints();
         generatePutEndpoints();
+        generatePostEndpoints();
 
+    }
+
+    private void generatePostEndpoints() {
+        String verifyUser = "/auth";
+        String employeeRequest = "/employee-info";
+
+        app.post(verifyUser, ctx -> {
+            LoginInput loginInput = objectMapper.readValue(ctx.body(), LoginInput.class);
+            LoginInfoEntity loginInfoEntity = loginController.authenticateLogin(loginInput);
+            if(loginInfoEntity != null) ctx.res.getWriter().write(objectMapper.writeValueAsString(loginInfoEntity));
+            else ctx.res.getWriter().write(String.valueOf(false));
+        });
+
+        app.post(employeeRequest, ctx -> {
+            //Handle employee
+            LoginInfoEntity loginInfoEntity = objectMapper.readValue(ctx.body(), LoginInfoEntity.class);
+            Employee employee = employeeController.getEmployee(loginInfoEntity.getEmployeeId());
+            if(employee != null) ctx.res.getWriter().write(objectMapper.writeValueAsString(employee));
+            else ctx.res.getWriter().write(String.valueOf(false));
+        });
 
     }
 
     private void generatePutEndpoints() {
         String createRequest = "/create-request";
-        String verifyUser = "/auth";
+
 
         app.put(createRequest, ctx -> {
            String request = objectMapper.writeValueAsString(ctx.body());
            ctx.res.getWriter().write(request);
         });
 
-        app.post(verifyUser, ctx -> {
-//            String jsonResponse = objectMapper.writeValueAsString(ctx.body());
-            LoginInput loginInput = objectMapper.readValue(ctx.body(), LoginInput.class);
-//            System.out.println(loginInput);
-            LoginInfoEntity loginInfoEntity = loginController.authenticateLogin(loginInput);
-            if(loginInfoEntity != null) ctx.res.getWriter().write(objectMapper.writeValueAsString(loginInfoEntity));
-            else ctx.res.getWriter().write(String.valueOf(false));
-        });
+
+
     }
 
     private void generateGetEndpoints() {
@@ -72,6 +91,8 @@ public class ServerEndpoints {
         app.get(statistics, ctx ->{
             staticHTML.getStatisticsPage(ctx);
         });
+
+
 
     }
 

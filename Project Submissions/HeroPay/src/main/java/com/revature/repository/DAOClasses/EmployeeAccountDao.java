@@ -22,7 +22,7 @@ public class EmployeeAccountDao implements EmployeeAccountInterface {
 
     @Override
     public EmployeeAccountEntity insertEmployeeAccount(String firstName, String lastName, int roleId) throws SQLException {
-        final String SQL = "INSERT INTO employee_account values(default, ? , ?, ?) returning *" ;
+        final String SQL = "INSERT INTO employee_account values(default, ? , ?, ?) returning * " ;
 
         EmployeeAccountEntity employeeAccountEntity = null;
         ResultSet result;
@@ -139,7 +139,7 @@ public class EmployeeAccountDao implements EmployeeAccountInterface {
 
     @Override
     public EmployeeRoleEntity getEmployeeRoleById(int id) throws SQLException {
-        final String SQL = "SELECT * FROM employee_role WHERE id = ? returning *" ;
+        final String SQL = "SELECT * FROM employee_role WHERE id = ?" ;
 
         EmployeeRoleEntity employeeRoleEntity = null;
         ResultSet result;
@@ -162,7 +162,7 @@ public class EmployeeAccountDao implements EmployeeAccountInterface {
 
     @Override
     public EmployeeRoleEntity getEmployeeRoleByName(String roleName) throws SQLException {
-        final String SQL = "SELECT * FROM employee_role WHERE role_name = ? returning *" ;
+        final String SQL = "SELECT * FROM employee_role WHERE role_name = ?" ;
 
         EmployeeRoleEntity employeeRoleEntity = null;
         ResultSet result;
