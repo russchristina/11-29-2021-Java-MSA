@@ -4,6 +4,10 @@ import java.util.Enumeration;
 
 import io.javalin.Javalin;
 
+/*
+ * This is just a Hello World for Javalin, so I'm not actually using this instance of
+ * Javalin elsewhere in the application.
+ */
 public class HelloJavalin {
 
 	public static void main(String[] args) {
