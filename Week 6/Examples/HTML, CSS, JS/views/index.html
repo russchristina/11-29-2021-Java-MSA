@@ -1,0 +1,108 @@
+<!-- HTML stands for Hypertext Markup Language. It is NOT a programming language. It is a markup langauge that is used to define which elements are present on a webpage. This means that any paragraphs, images, charts, sections, headers, footers, etc. that you see on a webpage are there because of HTML. HTML is NOT pretty on its own; it is often accompanied by CSS. -->
+
+<!-- You should start with your doctype declaration. This document will be an HTML document.-->
+<!DOCTYPE html>
+
+<!--HTML documents, like XML document, are written using tags. There should opening and closing tags for most elements. The "html" tags are the root tags of any HTML document; this means that everything should be contained within them.-->
+<html>
+    <head>
+        <!--The head of an HTML document contains metadata about the document itself. For instance, you can specify what the character encoding for a document should be and reference style sheets that should be used to apply styles to elements on this page.-->
+        <title>Recipes By Russ</title>
+        <!--Character encoding for the document.-->
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="../styles/index.css" />
+    </head>
+    <body>
+        <!--The body of an HTML document is where the content goes - this is anything that your end user can see.-->
+
+        <!-- Below you'll find some common HTML tags. -->
+        <header>
+            <!-- The header tag is an example of a "semantic" tag. The tag name itself describes to use what our purpose in using the tag is. We know that we intend to use this section to make a header for our document.-->
+            
+            <!-- We can use the div tag to div-ide the page into different sections. This just allows us to logically group certain elements together.-->
+            <div>
+                <!-- Element attributes (e.g. style, hidden, id, class) allows us to modify elements by either applying style to them, hiding them from view, giving them unique IDs, or specifying the location of a resource. Note that "img" is a self closing tag.-->
+                <img class="header_img" src="https://cdn.pixabay.com/photo/2017/09/23/16/33/pixel-heart-2779422_1280.png" />
+            </div>
+            <div>
+                <!-- If you want anything styled, you will have to use CSS. CSS is an acronym that stands for "Cascading Style Sheet". We can use CSS in a few different ways, the first of which is inline CSS. We use inline CSS by using an elements "style" attribute.-->
+                <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; text-align: center;">Recipes By Russ</h1>
+                <h2>Burning the Christmas Yams Out of Sheer Hunger</h2>
+            </div>
+            <div>
+                <img class="header_img" src="https://cdn.pixabay.com/photo/2017/09/23/16/33/pixel-heart-2779422_1280.png" />
+            </div>
+        </header>
+
+        <!--Nav is a semantic tag that is used to create a navigation bar which contains links that allow users to easily traverse the pages on a site.-->
+        <nav>
+            <!--The "a" tag is short for "anchor". We use it to create links to other webpages.-->
+            <a href="">Link 1</a>
+            <a href="">Link 2</a>
+            <a href="">Link 3</a>
+        </nav>
+
+        <div id="recipe_container">
+            <!--The ID attribute allows us to specify a unique identifier for our element so that we can target just this element later. The class attribute allows us to add an element to a logical grouping of elements that we can target together for some purpose.-->
+            <div id="cheesecakeDiv" class="recipe_div">
+                <h3>Cheesecake</h3>
+                <p>This is basic cheescake. Nothing cheesecake.</p>
+                <img class="recipe_img" src="https://pixnio.com/free-images/2017/09/20/2017-09-20-07-02-00.jpg" />
+                <ol>
+                    <li>Bring your cream cheese to your room temperature.</li>
+                    <li>Eat the cheesecake.</li>
+                </ol>
+            </div>
+            <div class="recipe_div">
+                <h3>Ribs</h3>
+                <p>Generic Brand Ribs</p>
+                <img class="recipe_img" src="https://image.shutterstock.com/image-photo/spicy-hot-grilled-spare-ribs-600w-611174102.jpg"/>
+                <ol>
+                    <li>I've never made good ribs from scratch.</li>
+                    <li>Buy good ribs from a good BBQ place.</li>
+                </ol>
+            </div>
+            <div class="recipe_div">
+                <h3>Ice Cream</h3>
+                <p>Homemade Ice Cream</p>
+                <img class="recipe_img" src="https://image.shutterstock.com/image-photo/strawberry-vanilla-chocolate-ice-cream-600w-1449921599.jpg"/>
+                <ol>
+                    <li>Something about milk.</li>
+                    <li>Enjoy the ice cream.</li>
+                </ol>
+            </div>
+            <div class="recipe_div">
+                <h3>Turkey Sandwich</h3>
+                <p>The most basic turkey sandwich ever</p>
+                <img class="recipe_img" src="https://image.shutterstock.com/image-photo/homemade-sandwich-smoked-turkey-lettuce-600w-1095369245.jpg"/>
+                <ol>
+                    <li>Buy bread, mayo, cheese, relish, and turkey.</li>
+                    <li>Make a sandwich.</li>
+                </ol>
+            </div>
+        </div>
+
+        <footer>
+                <!--Alos a semantic tag; the assumption is that this content represents a footer.-->
+                <h6>No Rights Reserved. Haha.</h6>
+        </footer>
+
+        <!-- We can also apply styles to a web page by using a "style" tag. This is slightly better practice than using inline CSS, though it's still not the best practice as it's not reusable across documents. Note that we have to write valid CSS inside of the style tag. This means that we need ways of targeting elements for styling.-->
+        <style>
+            h3 {
+                color: blueviolet;
+            }
+
+            /*This syntax targets an element with the id of "cheesecakeDiv"*/
+            #cheesecakeDiv{
+                background-color: pink;
+            }
+
+            /*This syntax targets elements with the class of "recipe_div"*/
+            .recipe_div{
+                background-color: plum;
+            }
+        </style>
+        <script src="../scripts/index.js"></script>
+    </body>
+</html>

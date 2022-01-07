@@ -1,0 +1,66 @@
+/*
+    This is the best practice for CSS - using an external stylesheet. External stylesheets are reusable and help keep our HTML documents clutter free.
+*/
+body{
+    background-color: powderblue;
+}
+
+header{
+    text-align: center;
+    /*We'll use CSS Grid to define easy rows and columns.*/
+    display: grid;
+    /*This creates three columns of equal width.*/
+    grid-template-columns: auto auto auto;
+}
+
+img.recipe_img{
+    width: 15em;
+}
+
+img.header_img{
+    width: 5em;
+}
+
+nav{
+    height: 3em;
+    background-color: lightgreen;
+    text-align: center;
+    margin-bottom: 2em;
+    border-radius: 1em;
+}
+
+a{
+    display: inline-block;
+    font-size: larger;
+    margin-top: 0.5em;
+    margin-right: 4em;
+    margin-left: 4em;
+    color: red;
+}
+
+#recipe_container{
+    margin-left: 5em;
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    column-gap: 1.5em;
+}
+
+.recipe_div{
+    text-align: center;
+    padding: 0.5em;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 1em;
+    margin-bottom: 2em;
+}
+
+li{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer{
+    text-align: center;
+    height: 2em;
+}
