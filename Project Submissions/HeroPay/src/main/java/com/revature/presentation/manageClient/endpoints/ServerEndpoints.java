@@ -1,7 +1,10 @@
 package com.revature.presentation.manageClient.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.presentation.manageLogin.LoginController;
+import com.revature.presentation.model.LoginInput;
 import com.revature.presentation.staticHTML.StaticHTMLHandler;
+import com.revature.repository.DTO.LoginInfoEntity;
 import io.javalin.Javalin;
 
 public class ServerEndpoints {
@@ -10,8 +13,11 @@ public class ServerEndpoints {
     private StaticHTMLHandler staticHTML;
     private ObjectMapper objectMapper;
 
+    private LoginController loginController;
+
     public ServerEndpoints(StaticHTMLHandler staticHTML) {
         this.app = Javalin.create().start(9002);
+        loginController = new LoginController();
         app.before(ctx ->{
             ctx.header("Access-Control-Allow-Origin", "*");
             ctx.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
@@ -40,8 +46,12 @@ public class ServerEndpoints {
         });
 
         app.post(verifyUser, ctx -> {
-            String request = objectMapper.writeValueAsString(ctx.body());
-            ctx.res.getWriter().write(request);
+//            String jsonResponse = objectMapper.writeValueAsString(ctx.body());
+            LoginInput loginInput = objectMapper.readValue(ctx.body(), LoginInput.class);
+//            System.out.println(loginInput);
+            LoginInfoEntity loginInfoEntity = loginController.authenticateLogin(loginInput);
+            if(loginInfoEntity != null) ctx.res.getWriter().write(objectMapper.writeValueAsString(loginInfoEntity));
+            else ctx.res.getWriter().write(String.valueOf(false));
         });
     }
 
