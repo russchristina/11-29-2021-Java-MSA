@@ -37,4 +37,16 @@ public class IngredientService {
 		
 		return retrievedIngredients;
 	}
+	
+	public List<Ingredient> findAll(){
+		return this.ingredientRepository.findAll();
+	}
+	
+	public void save(Ingredient ingredient) {
+		this.ingredientRepository.save(ingredient);
+	}
+	
+	public Ingredient findById(int id) {
+		return this.ingredientRepository.findById(id);
+	}
 }
