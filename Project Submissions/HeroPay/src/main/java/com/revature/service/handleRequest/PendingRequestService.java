@@ -30,7 +30,6 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     private Map<Integer, String> requestMap;
 
     public PendingRequestService(PendingRequestDao pendingRequestDao) throws SQLException {
-
         this.pendingRequestDao = pendingRequestDao;
         this.requestMap = pendingRequestDao.getRequestTypeMap();
     }

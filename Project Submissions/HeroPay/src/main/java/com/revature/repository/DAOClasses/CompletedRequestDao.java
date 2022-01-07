@@ -11,18 +11,19 @@ import java.util.List;
 
 public class CompletedRequestDao implements CompletedRequestInterface {
     @Override
-    public CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, LocalDate dateSubmission) throws SQLException {
+    public CompletedRequestEntity insertCompletedRequest(int requestId, int managerId, boolean status, String response, LocalDate dateSubmission) throws SQLException {
         CompletedRequestEntity entity = null;
-        final String SQL = "INSERT INTO completed_request values(default, ?, ?, ?, ?, ?) RETURNING *";
+        final String SQL = "INSERT INTO completed_request values(?, ?, ?, ?, ?, ?) RETURNING *";
         ResultSet rs;
         try(
                 Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(SQL)
                 ){
-            stmt.setInt(1, managerId);
-            stmt.setBoolean(2, status);
-            stmt.setString(3, response);
-            stmt.setDate(4, Date.valueOf(dateSubmission));
+            stmt.setInt(1, requestId);
+            stmt.setInt(2, managerId);
+            stmt.setBoolean(3, status);
+            stmt.setString(4, response);
+            stmt.setDate(5, Date.valueOf(dateSubmission));
             rs = stmt.executeQuery();
 
             if(rs.next()) entity = new CompletedRequestEntity(

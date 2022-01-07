@@ -1,6 +1,7 @@
 package com.revature.service.handleRequest.interfaces;
 
 import com.revature.presentation.model.CompletedRequest;
+import com.revature.presentation.model.PendingRequest;
 import com.revature.repository.DTO.CompletedRequestEntity;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface CompletedRequestServiceInterface {
     List<CompletedRequest> getAllCompletedRequestsByStatus(boolean status);
 
     CompletedRequestEntity deleteCompletedRequest(int requestId);
+
+    CompletedRequest convertPendingRequest(PendingRequest pendingRequest, int managerId, boolean status, String response);
 
 
 

@@ -18,7 +18,7 @@ public interface CompletedRequestInterface {
 
     //Create
 
-    CompletedRequestEntity insertCompletedRequest(int managerId, boolean status, String response, LocalDate dateResolved) throws SQLException;
+    CompletedRequestEntity insertCompletedRequest(int requestId, int managerId, boolean status, String response, LocalDate dateResolved) throws SQLException;
 
     //Read
 

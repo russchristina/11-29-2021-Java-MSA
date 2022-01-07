@@ -40,7 +40,8 @@ employee_id integer references employee_account(id),
 type integer references request_type(id),
 request_message varchar,
 amount numeric not null,
-date_submission date not null
+date_submission date not null,
+status boolean default false
 );
 
 select * from request_type;
@@ -62,7 +63,6 @@ status boolean,
 response varchar,
 date_resolved date not null
 );
-
 
 
 

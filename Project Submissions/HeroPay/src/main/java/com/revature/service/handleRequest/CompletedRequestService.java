@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     public CompletedRequestEntity storeCompletedRequest(CompletedRequest completedRequest) {
         try {
             CompletedRequestEntity cre = completedRequestDao.insertCompletedRequest(
+                    completedRequest.getId(),
                     completedRequest.getManagerId(),
                     completedRequest.isStatus(),
                     completedRequest.getResponse(), completedRequest.getDateResolved());
@@ -135,6 +137,11 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
         }
         logger.debug("Failed to delete completed requests-" + requestId);
         return null;
+    }
+
+    @Override
+    public CompletedRequest convertPendingRequest(PendingRequest pendingRequest, int managerId, boolean status, String response) {
+        return convertCompletedRequestEntity(storeCompletedRequest(new CompletedRequest(pendingRequest.getId(), managerId, status, response, LocalDate.now())));
     }
 
 }

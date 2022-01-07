@@ -14,4 +14,5 @@ public interface StatisticsServiceInterface {
 
     double meanAverage(List<PendingRequest>   completedRequests);
 
+
 }

@@ -1,6 +1,7 @@
 package com.revature.service.handleRequest;
 
 import com.revature.presentation.model.CompletedRequest;
+import com.revature.presentation.model.PendingRequest;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.repository.DTO.CompletedRequestEntity;
 import com.revature.service.serviceExceptions.EmployeeIdException;
@@ -31,6 +32,7 @@ class CompletedRequestServiceTest {
     private CompletedRequest newCompleteRequest;
     private CompletedRequest oldCompleteRequest;
     private CompletedRequestEntity completedRequestEntity;
+    private PendingRequest pendingRequest;
 
     private int newRequestId;
     private int storedRequestId;
@@ -57,7 +59,7 @@ class CompletedRequestServiceTest {
 
 
         newCompleteRequest = new CompletedRequest(
-                0, managerId, true, response, dateResolved);
+                storedRequestId, managerId, true, response, dateResolved);
 
         oldCompleteRequest = new CompletedRequest(
                 storedRequestId, managerId, true, response, dateResolved);
@@ -95,9 +97,10 @@ class CompletedRequestServiceTest {
         statusRequestList.add(new CompletedRequest(3, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
 
 
+
         MockitoAnnotations.openMocks(this);
         try {
-            Mockito.when(mockCompletedRequestDao.insertCompletedRequest(managerId, true, response, dateResolved)).thenReturn(completedRequestEntity);
+            Mockito.when(mockCompletedRequestDao.insertCompletedRequest(1, managerId, true, response, dateResolved)).thenReturn(completedRequestEntity);
             Mockito.when(mockCompletedRequestDao.getAllCompletedRequestList()).thenReturn(completedRequestEntityList);
             Mockito.when(mockCompletedRequestDao.getCompletedRequestByManagerIdList(managerId)).thenReturn(completedRequestEntityListByManagerId);
             Mockito.when(mockCompletedRequestDao.getCompletedRequestByStatus(false)).thenReturn(statusCompleteRequestList);
@@ -169,5 +172,10 @@ class CompletedRequestServiceTest {
     @Test
     void deleteCompletedRequestInvalidIdNullTest(){
         assertNull(completedRequestService.deleteCompletedRequest(-1));
+    }
+
+    @Test
+    void convertPendingRequest() {
+
     }
 }
