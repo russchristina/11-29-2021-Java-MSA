@@ -5,13 +5,14 @@ import java.util.Objects;
 
 public class AllRequestResponse {
 
-    private boolean status;
+
     private List<PendingRequest> pendingRequests;
+    private List<PendingRequest> answeredRequests;
     private List<CompletedRequest> completedRequests;
 
-    public AllRequestResponse(boolean status, List<PendingRequest> pendingRequests, List<CompletedRequest> completedRequests) {
-        this.status = status;
+    public AllRequestResponse(boolean status, List<PendingRequest> pendingRequests, List<PendingRequest> answeredRequests, List<CompletedRequest> completedRequests) {
         this.pendingRequests = pendingRequests;
+        this.answeredRequests = answeredRequests;
         this.completedRequests = completedRequests;
     }
 
@@ -21,8 +22,8 @@ public class AllRequestResponse {
     @Override
     public String toString() {
         return "{\"AllRequestResponse\":{"
-                + "\"status\":\"" + status + "\""
-                + ", \"pendingRequests\":" + pendingRequests
+                + "\"pendingRequests\":" + pendingRequests
+                + ", \"answeredRequests\":" + answeredRequests
                 + ", \"completedRequests\":" + completedRequests
                 + "}}";
     }
@@ -32,20 +33,12 @@ public class AllRequestResponse {
         if (this == o) return true;
         if (!(o instanceof AllRequestResponse)) return false;
         AllRequestResponse that = (AllRequestResponse) o;
-        return isStatus() == that.isStatus() && Objects.equals(getPendingRequests(), that.getPendingRequests()) && Objects.equals(getCompletedRequests(), that.getCompletedRequests());
+        return Objects.equals(getPendingRequests(), that.getPendingRequests()) && Objects.equals(getAnsweredRequests(), that.getAnsweredRequests()) && Objects.equals(getCompletedRequests(), that.getCompletedRequests());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(isStatus(), getPendingRequests(), getCompletedRequests());
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+        return Objects.hash(getPendingRequests(), getAnsweredRequests(), getCompletedRequests());
     }
 
     public List<PendingRequest> getPendingRequests() {
@@ -54,6 +47,14 @@ public class AllRequestResponse {
 
     public void setPendingRequests(List<PendingRequest> pendingRequests) {
         this.pendingRequests = pendingRequests;
+    }
+
+    public List<PendingRequest> getAnsweredRequests() {
+        return answeredRequests;
+    }
+
+    public void setAnsweredRequests(List<PendingRequest> answeredRequests) {
+        this.answeredRequests = answeredRequests;
     }
 
     public List<CompletedRequest> getCompletedRequests() {

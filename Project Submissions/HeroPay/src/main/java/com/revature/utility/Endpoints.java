@@ -58,12 +58,8 @@ public class Endpoints {
                     get(requestController.getAllRequests);
                 });
 
-                path("/approval", () ->{
-                    post(requestController.approveRequest);
-                });
-
-                path("/denial", () ->{
-                    post(requestController.denyRequest);
+                path("/respond", () ->{
+                    post(requestController.respondToRequest);
                 });
 
                 path("/statistic", () ->{

@@ -22,7 +22,7 @@ public interface CompletedRequestInterface {
 
     //Read
 
-    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId);
+    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId) throws SQLException;
 
     CompletedRequestEntity getCompletedRequest(int requestId) throws SQLException;
 

@@ -148,16 +148,17 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
 
     @Override
     public List<CompletedRequest> getAllEmployeeRequests(int employeeId) {
-        List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByEmployeeId(employeeId);
         List<CompletedRequest> completedRequestList = new ArrayList<>();
         try {
+            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByEmployeeId(employeeId);
+
             completedRequestEntityList.forEach(e ->
                     completedRequestList.add(
                             new CompletedRequest(e.getId(), e.getEmployeeId(), e.getManagerId(), e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
                     ));
             return completedRequestList;
 
-        } catch(NullPointerException e){
+        } catch(NullPointerException | SQLException e){
             dLog.debug("No Completed Requests for employee: " + employeeId);
             return completedRequestList;
          }finally{

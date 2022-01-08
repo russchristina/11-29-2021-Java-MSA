@@ -20,7 +20,6 @@ public class LoginController {
     }
 
     public Handler validateLogin = ctx ->{
-        tLog.info("Validating login:");
         dLog.debug("Validating Login");
         try{
             LoginInfoEntity loginInfo = loginService.validateLogin(ctx.bodyAsClass(LoginInput.class));

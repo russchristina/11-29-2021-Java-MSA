@@ -1,6 +1,7 @@
 package com.revature.presentation.manageRequest.controller;
 
 import com.revature.presentation.model.requests.*;
+import com.revature.repository.DTO.CompletedRequestEntity;
 import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.service.handleRequest.CompletedRequestService;
 import com.revature.service.handleRequest.PendingRequestService;
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class RequestController {
+
+
 
     private Logger dLog = LoggerFactory.getLogger("dLog");
     private Logger tLog = LoggerFactory.getLogger("tLog");
@@ -35,9 +38,11 @@ public class RequestController {
             System.out.println(employeeId);
             AllRequestResponse allRequests = new AllRequestResponse();
             List<PendingRequest> pendingRequests = pendingRequestService.getAllEmployeePendingRequest(employeeId);
+            List<PendingRequest> answeredRequests = pendingRequestService.getAllAnsweredRequests(employeeId);
             List<CompletedRequest> completedRequests = completedRequestService.getAllEmployeeRequests(employeeId);
-            allRequests.setStatus(true);
+            System.out.println(answeredRequests);
             allRequests.setPendingRequests(pendingRequests);
+            allRequests.setAnsweredRequests(answeredRequests);
             allRequests.setCompletedRequests(completedRequests);
             ctx.json(allRequests);
         }catch (NumberFormatException e){
@@ -50,7 +55,6 @@ public class RequestController {
         dLog.debug("Getting Employee Pending Requests: " + ctx.queryParam("employeeId"));
         try{
             int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
-            System.out.println(employeeId);
             AllPendingRequestResponse allRequests = new AllPendingRequestResponse();
             List<PendingRequest> pendingRequests = pendingRequestService.getAllEmployeePendingRequest(employeeId);
             allRequests.setStatus(true);
@@ -74,7 +78,7 @@ public class RequestController {
                     ctx.json(pendingRequestService.convertPendingRequestEntity(pendingRequestService.storePendingRequest(pendingRequest)));
                     ctx.status(201);
                 }else{
-                    dLog.debug("New Request was not valid" + ctx.body());
+                    dLog.debug("New Request was not valid " + ctx.body());
                     ctx.json(new FailCreateRequestResponse("Your request was not valid"));
                     ctx.status(406);
                 }
@@ -99,6 +103,51 @@ public class RequestController {
         }catch(Exception e){
             dLog.debug(e.getMessage(), e);
         }
+    };
+
+    public Handler getAllRequests = ctx -> {
+        dLog.debug("Getting All Requests");
+        try{
+            AllRequestResponse allRequests = new AllRequestResponse();
+            List<PendingRequest> pendingRequests = pendingRequestService.getAllPendingRequests();
+            List<PendingRequest> answeredRequests = pendingRequestService.getAnsweredRequests();
+            List<CompletedRequest> completedRequests = completedRequestService.getAllCompletedRequests();
+            allRequests.setPendingRequests(pendingRequests);
+            allRequests.setAnsweredRequests(answeredRequests);
+            allRequests.setCompletedRequests(completedRequests);
+            ctx.json(allRequests);
+        }catch (NumberFormatException e){
+            dLog.debug(e.getMessage(), e);
+            ctx.status(406);
+        }
+    };
+
+    public Handler respondToRequest = ctx -> {
+        dLog.debug("Responding to request: " + ctx.body());
+        try{
+            ManagerRequestResponse msg = ctx.bodyAsClass(ManagerRequestResponse.class);
+            if(msg.getEmployeeId() == msg.getManagerId()) {
+                ctx.status(451);
+            }
+            CompletedRequest completedRequest = new CompletedRequest(
+                    msg.getRequestId(),
+                    msg.getEmployeeId(),
+                    msg.getManagerId(),
+                    msg.isStatus(),
+                    msg.getResponse(),
+                    LocalDate.now()
+            );
+            if(completedRequestService.validateCompletedRequest(completedRequest)){
+                CompletedRequestEntity storedRequest = completedRequestService.storeCompletedRequest(completedRequest);
+                pendingRequestService.updatePendingRequestStatus(storedRequest.getId(), true);
+                ctx.json(completedRequestService.convertCompletedRequestEntity(storedRequest));
+                ctx.status(201);
+            }
+        } catch (Exception e){
+            dLog.debug(e.getMessage(), e);
+            ctx.status(500);
+        }
+
     };
 
 

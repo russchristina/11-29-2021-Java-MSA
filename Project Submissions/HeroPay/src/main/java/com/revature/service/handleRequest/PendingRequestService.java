@@ -165,4 +165,47 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                 pre.getDateSubmission().toLocalDate());
     }
 
+    @Override
+    public List<PendingRequest> getAnsweredRequests() {
+        try {
+            dLog.debug("Getting answered requests");
+            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getAnsweredRequests();
+            List<PendingRequest> pendingModelList = new ArrayList<>();
+            answeredRequests.forEach(
+                    pre ->
+                            pendingModelList.add(new PendingRequest(
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
+            return pendingModelList;
+        } catch (SQLException e) {
+            dLog.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<PendingRequest> getAllAnsweredRequests(int employeeId) {
+        try {
+            dLog.debug("Getting Employee answered requests");
+            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequests(employeeId);
+            List<PendingRequest> pendingModelList = new ArrayList<>();
+            answeredRequests.forEach(
+                    pre ->
+                            pendingModelList.add(new PendingRequest(
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
+            return pendingModelList;
+        } catch (SQLException e) {
+            dLog.error(e.getMessage(), e);
+        }
+        return null;    }
+
 }

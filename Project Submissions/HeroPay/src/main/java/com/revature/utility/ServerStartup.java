@@ -20,7 +20,11 @@ public class ServerStartup {
     }
 
     public void configureServer(){
-        this.app._conf.enableCorsForAllOrigins();
+        this.app.before(ctx -> {
+            ctx.header("Access-Control-Allow-Origin", "*");
+            ctx.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE");
+            ctx.header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
+        });
         this.app._conf.prefer405over404 = true;
         Endpoints endpoints = new Endpoints(
                 new LoginController(new LoginService(new LoginInfoDao())),

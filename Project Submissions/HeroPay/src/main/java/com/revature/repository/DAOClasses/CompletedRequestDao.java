@@ -14,7 +14,7 @@ public class CompletedRequestDao implements CompletedRequestInterface {
     public CompletedRequestEntity insertCompletedRequest(int requestId, int employeeId, int managerId, boolean status, String response, LocalDate dateSubmission) throws SQLException {
         CompletedRequestEntity entity = null;
 
-        final String SQL = "INSERT INTO completed_request values(?, ?, ?, ?, ?, ?, ?) RETURNING *";
+        final String SQL = "INSERT INTO completed_request values(?, ?, ?, ?, ?, ?) RETURNING *";
         ResultSet rs;
         try(
                 Connection conn = ConnectionFactory.getConnection();
@@ -229,7 +229,26 @@ public class CompletedRequestDao implements CompletedRequestInterface {
         return entity;    }
 
     @Override
-    public List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId) {
-        return null;
+    public List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId) throws SQLException {
+        List<CompletedRequestEntity> completedRequestEntityList = new ArrayList<>();
+        final String SQL = "SELECT * FROM completed_request WHERE employee_id = ?";
+        ResultSet rs;
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setInt(1, employeeId);
+            rs = stmt.executeQuery();
+
+            while(rs.next()) completedRequestEntityList.add(new CompletedRequestEntity(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
+            ));
+        }
+        return completedRequestEntityList;
     }
 }

@@ -125,7 +125,7 @@ public class PendingRequestDao implements PendingRequestInterface {
     public List<PendingRequestEntity> getAllPendingRequests() throws SQLException {
         List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
 
-        final String SQL = "SELECT * FROM pending_request AND status = false";
+        final String SQL = "SELECT * FROM pending_request WHERE status = false";
 
         ResultSet rs;
 
@@ -358,4 +358,61 @@ public class PendingRequestDao implements PendingRequestInterface {
         }
 
         return pendingRequestEntity;    }
+
+    @Override
+    public List<PendingRequestEntity> getAnsweredRequests() throws SQLException {
+        List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
+
+        final String SQL = "SELECT * FROM pending_request WHERE status = true";
+
+        ResultSet rs;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            rs = stmt.executeQuery();
+            while(rs.next()) pendingRequestEntityList.add(
+                    new PendingRequestEntity(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(3),
+                            rs.getString(4),
+                            rs.getDouble(5),
+                            rs.getDate(6),
+                            rs.getBoolean(7)
+                    )
+            );
+            rs.close();
+        }
+        return pendingRequestEntityList;    }
+
+    @Override
+    public List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId) throws SQLException {
+        List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
+
+        final String SQL = "SELECT * FROM pending_request WHERE employee_id = ? AND status = true";
+
+        ResultSet rs = null;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setInt(1, employeeId);
+            rs = stmt.executeQuery();
+            while(rs.next()) pendingRequestEntityList.add(
+                    new PendingRequestEntity(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(3),
+                            rs.getString(4),
+                            rs.getDouble(5),
+                            rs.getDate(6),
+                            rs.getBoolean(7)
+                    )
+            );
+        }
+        return pendingRequestEntityList;
+    }
 }

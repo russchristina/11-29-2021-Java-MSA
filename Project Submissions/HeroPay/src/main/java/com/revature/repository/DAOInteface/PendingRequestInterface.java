@@ -38,6 +38,10 @@ public interface PendingRequestInterface {
 
     RequestTypeEntity getRequestTypeWithString(String type) throws SQLException;
 
+    List<PendingRequestEntity> getAnsweredRequests() throws SQLException;
+
+    List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId) throws SQLException;
+
 
     //Update
 

@@ -23,4 +23,7 @@ public interface PendingRequestServiceInterface {
 
     PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity);
 
+    List<PendingRequest> getAnsweredRequests();
+
+    List<PendingRequest> getAllAnsweredRequests(int employeeId);
 }
