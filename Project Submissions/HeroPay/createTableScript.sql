@@ -58,6 +58,7 @@ drop table completed_request;
 
 create table completed_request(
 id integer references pending_request(id),
+employee_id integer references employee_account(id),
 manager_id integer references employee_account(id),
 status boolean,
 response varchar,

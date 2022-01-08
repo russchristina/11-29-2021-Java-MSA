@@ -28,3 +28,9 @@ insert into login_info values
 (default, 'mage3', 'pass9', 9),
 (default, 'manager1', 'pass10', 10),
 (default, 'manager2', 'pass11', 11);
+
+
+insert into request_type values(default, 'Travel');
+insert into request_type values(default, 'Equipment');
+insert into request_type values(default, 'Consumable');
+insert into request_type values(default, 'Book');

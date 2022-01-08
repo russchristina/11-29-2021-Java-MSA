@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/ManagerRequestResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageLogin/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageLogin/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/AllRequestResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/AllRequestResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/CompletedRequestDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/CompletedRequestDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/PendingRequestDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/PendingRequestDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/CompletedRequestInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/CompletedRequestInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/PendingRequestInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/PendingRequestInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/PendingRequestServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/PendingRequestServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/createTableScript.sql" beforeDir="false" afterPath="$PROJECT_DIR$/createTableScript.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/populateTable.sql" beforeDir="false" afterPath="$PROJECT_DIR$/populateTable.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +173,34 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="brian_arayathel" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="brian_arayathel" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>
