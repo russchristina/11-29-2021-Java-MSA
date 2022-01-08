@@ -14,7 +14,9 @@ public class DevelopingDevelopers {
 		});
 		
 		app.post("/verify", Controller.fetchEmployeeByName);
-		app.get("/requests", Controller.fetchAllRequests);
+		app.post("/empRequests", Controller.fetchEmployeeRequests);
+		app.get("/all-requests", Controller.fetchAllRequests);
+		app.put("/request-submit", Controller.saveRequest);
 		
 		
 	} // End main
