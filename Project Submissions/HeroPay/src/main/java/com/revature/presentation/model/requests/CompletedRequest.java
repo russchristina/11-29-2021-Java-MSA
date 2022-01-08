@@ -1,21 +1,21 @@
-package com.revature.repository.DTO;
+package com.revature.presentation.model.requests;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class CompletedRequestEntity {
+public class CompletedRequest {
 
     private int id;
     private int employeeId;
     private int managerId;
     private boolean status;
     private String response;
-    private Date dateResolved;
+    private LocalDate dateResolved;
 
-    public CompletedRequestEntity() {
+    public CompletedRequest() {
     }
 
-    public CompletedRequestEntity(int id, int employeeId, int managerId, boolean status, String response, Date dateResolved) {
+    public CompletedRequest(int id, int employeeId, int managerId, boolean status, String response, LocalDate dateResolved) {
         this.id = id;
         this.employeeId = employeeId;
         this.managerId = managerId;
@@ -26,7 +26,7 @@ public class CompletedRequestEntity {
 
     @Override
     public String toString() {
-        return "{\"CompletedRequestEntity\":{"
+        return "{\"CompletedRequest\":{"
                 + "\"id\":\"" + id + "\""
                 + ", \"employeeId\":\"" + employeeId + "\""
                 + ", \"managerId\":\"" + managerId + "\""
@@ -39,8 +39,8 @@ public class CompletedRequestEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CompletedRequestEntity)) return false;
-        CompletedRequestEntity that = (CompletedRequestEntity) o;
+        if (!(o instanceof CompletedRequest)) return false;
+        CompletedRequest that = (CompletedRequest) o;
         return getId() == that.getId() && getEmployeeId() == that.getEmployeeId() && getManagerId() == that.getManagerId() && isStatus() == that.isStatus() && Objects.equals(getResponse(), that.getResponse()) && Objects.equals(getDateResolved(), that.getDateResolved());
     }
 
@@ -89,11 +89,11 @@ public class CompletedRequestEntity {
         this.response = response;
     }
 
-    public Date getDateResolved() {
+    public LocalDate getDateResolved() {
         return dateResolved;
     }
 
-    public void setDateResolved(Date dateResolved) {
+    public void setDateResolved(LocalDate dateResolved) {
         this.dateResolved = dateResolved;
     }
 }

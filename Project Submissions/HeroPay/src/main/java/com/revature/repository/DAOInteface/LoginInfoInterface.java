@@ -1,7 +1,5 @@
 package com.revature.repository.DAOInteface;
 
-import com.revature.presentation.model.Employee;
-import com.revature.presentation.model.LoginInput;
 import com.revature.repository.DTO.LoginInfoEntity;
 
 import java.sql.SQLException;
@@ -20,8 +18,6 @@ public interface LoginInfoInterface {
     LoginInfoEntity insertLoginInfo(String username, String password, int employeeId) throws SQLException;
 
     //Read
-
-    Employee getEmployeeWithLogin(String username, String password) throws SQLException;
 
     LoginInfoEntity getLoginInfo(String username, String password) throws SQLException;
 

@@ -1,6 +1,6 @@
 package com.revature.service.handleEmployee;
 
-import com.revature.presentation.model.Employee;
+import com.revature.presentation.model.employee.Employee;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
@@ -44,7 +44,7 @@ class EmployeeServiceTest {
         roleName = "roleName";
         mockedEmployeeAccount = new EmployeeAccountEntity(employeeId, firstName, lastName, roleId);
         mockedEmployeeRole = new EmployeeRoleEntity(employeeId, roleName);
-        mockedEmployee = new Employee(employeeId, firstName, lastName, roleName);
+        mockedEmployee = new Employee(employeeId, firstName, lastName, roleName, false);
 
         try {
             Mockito.when(mockEmployeeAccountDao.getEmployeeAccount(employeeId)).thenReturn(mockedEmployeeAccount);
@@ -78,7 +78,7 @@ class EmployeeServiceTest {
 
     @Test
     void convertEmployeeEntityToEmployee() {
-        assertEquals(new Employee(employeeId, firstName, lastName, roleName), employeeService.convertEmployeeEntityToEmployee(mockedEmployeeAccount));
+        assertEquals(new Employee(employeeId, firstName, lastName, roleName, false), employeeService.convertEmployeeEntityToEmployee(mockedEmployeeAccount));
     }
 
 }

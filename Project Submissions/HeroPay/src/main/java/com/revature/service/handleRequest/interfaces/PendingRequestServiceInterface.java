@@ -1,8 +1,7 @@
 package com.revature.service.handleRequest.interfaces;
 
-import com.revature.presentation.model.PendingRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DTO.PendingRequestEntity;
-import com.revature.repository.DTO.RequestTypeEntity;
 
 import java.util.List;
 

@@ -1,11 +1,8 @@
 package com.revature.service.handleRequest;
 
-import com.revature.presentation.model.CompletedRequest;
-import com.revature.presentation.model.PendingRequest;
-import com.revature.repository.DAOClasses.CompletedRequestDao;
+import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DAOClasses.PendingRequestDao;
 import com.revature.repository.DTO.PendingRequestEntity;
-import com.revature.repository.DTO.RequestTypeEntity;
 import com.revature.service.handleRequest.interfaces.PendingRequestServiceInterface;
 import com.revature.service.serviceExceptions.EmployeeIdException;
 import com.revature.service.serviceExceptions.NegativeAmountException;
@@ -19,19 +16,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PendingRequestService implements PendingRequestServiceInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(PendingRequestService.class);
+    private final Logger dLog = LoggerFactory.getLogger("dLog");
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private PendingRequestDao pendingRequestDao;
     private Map<Integer, String> requestMap;
 
-    public PendingRequestService(PendingRequestDao pendingRequestDao) throws SQLException {
+    public PendingRequestService(PendingRequestDao pendingRequestDao) {
         this.pendingRequestDao = pendingRequestDao;
-        this.requestMap = pendingRequestDao.getRequestTypeMap();
+        try {
+            this.requestMap = pendingRequestDao.getRequestTypeMap();
+        } catch (SQLException e) {
+            dLog.error(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -48,9 +48,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             if(pr != null) tLog.info("pending request" + pr.getId() + "stored in database");
             return pr;
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            dLog.error(e.getMessage(), e);
         }
-        logger.debug("Failed to store pending request in database: " + PendingRequestService.class);
+        dLog.debug("Failed to store pending request in database: " + PendingRequestService.class);
         return null;
     }
 
@@ -62,7 +62,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         if(pendingRequest.getRequestMessage().length() < 5) throw new RequestMessageShortException("Pending Request is < 5 characters");
         if(pendingRequest.getAmount() <= 0) throw new NegativeAmountException("pending request amount");
 
-        logger.debug("pending request validated: " + PendingRequestService.class);
+        dLog.debug("pending request validated: " + PendingRequestService.class);
         return true;
     }
 
@@ -83,9 +83,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                                     pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            dLog.error(e.getMessage(), e);
         }
-        logger.debug("Failed to get Employee-" + employeeId + " pending request: " + PendingRequestService.class);
+        dLog.debug("Failed to get Employee-" + employeeId + " pending request: " + PendingRequestService.class);
         return null;
     }
 
@@ -93,12 +93,12 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     public PendingRequestEntity deletePendingRequest(int requestId) {
 
         try {
-            logger.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
+            dLog.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
             return pendingRequestDao.deletePendingRequest(requestId);
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            dLog.error(e.getMessage(), e);
         }
-        logger.debug("Failed to delete pending request: " + PendingRequestService.class);
+        dLog.debug("Failed to delete pending request: " + PendingRequestService.class);
         return null;
     }
 
@@ -118,9 +118,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                                     pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            dLog.error(e.getMessage(), e);
         }
-        logger.debug("Failed to get all pending requests: " + PendingRequestService.class);
+        dLog.debug("Failed to get all pending requests: " + PendingRequestService.class);
         return null;    }
 
     @Override
@@ -139,9 +139,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                                     pre.getDateSubmission().toLocalDate())));
             return pendingModelList;
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            dLog.error(e.getMessage(), e);
         }
-        logger.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
+        dLog.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
         return null;    }
 
     @Override
@@ -149,9 +149,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         try {
             return pendingRequestDao.updatePendingRequestStatus(requestId, status);
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            dLog.error(e.getMessage(), e);
         }
-        logger.debug("Failed to update status pending requests: " + PendingRequestService.class);
+        dLog.debug("Failed to update status pending requests: " + PendingRequestService.class);
         return null;    }
 
     @Override

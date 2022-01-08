@@ -1,7 +1,7 @@
 package com.revature.service.handleRequest;
 
-import com.revature.presentation.model.CompletedRequest;
-import com.revature.presentation.model.PendingRequest;
+import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.repository.DTO.CompletedRequestEntity;
 import org.junit.jupiter.api.BeforeAll;
@@ -87,15 +87,15 @@ class OrderingServiceTest {
         PendingRequest pr3 = new PendingRequest(3, employeeId, requestTypeMap.get(typeId1), "sdfo sads", amount + 23.02, LocalDate.of(2010, 1, 2));
         PendingRequest pr4 = new PendingRequest(4, employeeId, requestTypeMap.get(typeId2), "dff sddfasdfasdads", amount + 11, LocalDate.of(2019, 1, 2));
 
-        CompletedRequestEntity cre1 = new CompletedRequestEntity(1, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2023, 1, 1)));
-        CompletedRequestEntity cre2 = new CompletedRequestEntity(2, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2020, 1, 1)));
-        CompletedRequestEntity cre3 = new CompletedRequestEntity(3, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2300, 1, 1)));
-        CompletedRequestEntity cre4 = new CompletedRequestEntity(4, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2020, 1, 1)));
+        CompletedRequestEntity cre1 = new CompletedRequestEntity(1, employeeId, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2023, 1, 1)));
+        CompletedRequestEntity cre2 = new CompletedRequestEntity(2, employeeId, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2020, 1, 1)));
+        CompletedRequestEntity cre3 = new CompletedRequestEntity(3, employeeId, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2300, 1, 1)));
+        CompletedRequestEntity cre4 = new CompletedRequestEntity(4, employeeId, managerId, true, "You got it buddy", Date.valueOf(LocalDate.of(2020, 1, 1)));
 
-        CompletedRequest cr1 = new CompletedRequest(1, managerId, true, "You got it buddy", LocalDate.of(2023, 1, 1));
-        CompletedRequest cr2 = new CompletedRequest(2, managerId, true, "You got it buddy", LocalDate.of(2020, 1, 1));
-        CompletedRequest cr3 = new CompletedRequest(3, managerId, true, "You got it buddy", LocalDate.of(2300, 1, 1));
-        CompletedRequest cr4 = new CompletedRequest(4, managerId, true, "You got it buddy", LocalDate.of(2020, 1, 1));
+        CompletedRequest cr1 = new CompletedRequest(1, employeeId,  managerId, true, "You got it buddy", LocalDate.of(2023, 1, 1));
+        CompletedRequest cr2 = new CompletedRequest(2, employeeId,  managerId, true, "You got it buddy", LocalDate.of(2020, 1, 1));
+        CompletedRequest cr3 = new CompletedRequest(3, employeeId,  managerId, true, "You got it buddy", LocalDate.of(2300, 1, 1));
+        CompletedRequest cr4 = new CompletedRequest(4, employeeId,  managerId, true, "You got it buddy", LocalDate.of(2020, 1, 1));
 
         pendingRequestList.add(pr1);
         pendingRequestList.add(pr2);

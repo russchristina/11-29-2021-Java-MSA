@@ -1,7 +1,7 @@
 package com.revature.service.handleRequest.interfaces;
 
-import com.revature.presentation.model.CompletedRequest;
-import com.revature.presentation.model.PendingRequest;
+import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DTO.CompletedRequestEntity;
 
 import java.util.List;
@@ -24,6 +24,5 @@ public interface CompletedRequestServiceInterface {
 
     CompletedRequest convertPendingRequest(PendingRequest pendingRequest, int managerId, boolean status, String response);
 
-
-
+    List<CompletedRequest> getAllEmployeeRequests(int employeeId);
 }

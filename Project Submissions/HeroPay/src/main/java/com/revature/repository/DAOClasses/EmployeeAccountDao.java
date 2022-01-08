@@ -3,7 +3,7 @@ package com.revature.repository.DAOClasses;
 import com.revature.repository.DAOInteface.EmployeeAccountInterface;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
-import com.revature.service.utility.ConnectionFactory;
+import com.revature.repository.utility.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

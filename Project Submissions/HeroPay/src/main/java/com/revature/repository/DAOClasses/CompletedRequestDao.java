@@ -2,7 +2,7 @@ package com.revature.repository.DAOClasses;
 
 import com.revature.repository.DAOInteface.CompletedRequestInterface;
 import com.revature.repository.DTO.CompletedRequestEntity;
-import com.revature.service.utility.ConnectionFactory;
+import com.revature.repository.utility.ConnectionFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -11,27 +11,30 @@ import java.util.List;
 
 public class CompletedRequestDao implements CompletedRequestInterface {
     @Override
-    public CompletedRequestEntity insertCompletedRequest(int requestId, int managerId, boolean status, String response, LocalDate dateSubmission) throws SQLException {
+    public CompletedRequestEntity insertCompletedRequest(int requestId, int employeeId, int managerId, boolean status, String response, LocalDate dateSubmission) throws SQLException {
         CompletedRequestEntity entity = null;
-        final String SQL = "INSERT INTO completed_request values(?, ?, ?, ?, ?, ?) RETURNING *";
+
+        final String SQL = "INSERT INTO completed_request values(?, ?, ?, ?, ?, ?, ?) RETURNING *";
         ResultSet rs;
         try(
                 Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(SQL)
                 ){
             stmt.setInt(1, requestId);
-            stmt.setInt(2, managerId);
-            stmt.setBoolean(3, status);
-            stmt.setString(4, response);
-            stmt.setDate(5, Date.valueOf(dateSubmission));
+            stmt.setInt(2, employeeId);
+            stmt.setInt(3, managerId);
+            stmt.setBoolean(4, status);
+            stmt.setString(5, response);
+            stmt.setDate(6, Date.valueOf(dateSubmission));
             rs = stmt.executeQuery();
 
             if(rs.next()) entity = new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             );
         }
         return entity;
@@ -52,9 +55,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             if(rs.next()) entity = new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             );
         }
         return entity;    }
@@ -74,9 +78,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             while(rs.next()) entityList.add(new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             ));
         }
         return entityList;        }
@@ -95,9 +100,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             while(rs.next()) entityList.add(new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             ));
         }
         return entityList;            }
@@ -117,9 +123,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             while(rs.next()) entityList.add(new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             ));
         }
         return entityList;        }
@@ -140,9 +147,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             if(rs.next()) entity = new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             );
         }
         return entity;    }
@@ -163,9 +171,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
            if(rs.next()) entity = new CompletedRequestEntity(
                    rs.getInt(1),
                    rs.getInt(2),
-                   rs.getBoolean(3),
-                   rs.getString(4),
-                   rs.getDate(5)
+                   rs.getInt(3),
+                   rs.getBoolean(4),
+                   rs.getString(5),
+                   rs.getDate(6)
            );
        }
        return entity;
@@ -187,9 +196,10 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             if(rs.next()) entity = new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             );
         }
         return entity;    }
@@ -210,10 +220,16 @@ public class CompletedRequestDao implements CompletedRequestInterface {
             if(rs.next()) entity = new CompletedRequestEntity(
                     rs.getInt(1),
                     rs.getInt(2),
-                    rs.getBoolean(3),
-                    rs.getString(4),
-                    rs.getDate(5)
+                    rs.getInt(3),
+                    rs.getBoolean(4),
+                    rs.getString(5),
+                    rs.getDate(6)
             );
         }
         return entity;    }
+
+    @Override
+    public List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId) {
+        return null;
+    }
 }

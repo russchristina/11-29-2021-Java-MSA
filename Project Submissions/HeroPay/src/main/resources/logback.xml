@@ -2,6 +2,13 @@
 
 <configuration>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- This encoder is determining what the format of our logging messages will be. -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- Specify the location of the file you're logging to -->
         <file>heroPayDebugging.log</file>
@@ -32,12 +39,18 @@
         </encoder>
     </appender>
 
+
+
     <logger name="tLog" level ="INFO">
         <appender-ref ref="FILE2"/>
     </logger>
 
+    <logger name="dLog" level ="DEBUG">
+        <appender-ref ref="FILE"/>
+    </logger>
+
 
     <root level="DEBUG">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>

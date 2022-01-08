@@ -1,7 +1,7 @@
 package com.revature.service.handleRequest;
 
-import com.revature.presentation.model.CompletedRequest;
-import com.revature.presentation.model.PendingRequest;
+import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.service.handleRequest.interfaces.OrderingServiceInterface;
 import org.slf4j.Logger;
@@ -12,7 +12,8 @@ import java.util.*;
 
 public class OrderingService implements OrderingServiceInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(OrderingService.class);
+    private final Logger dLog = LoggerFactory.getLogger("dLog");
+    private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private PendingRequestService pendingRequestService;
     private CompletedRequestService completedRequestService;
@@ -29,7 +30,7 @@ public class OrderingService implements OrderingServiceInterface {
 
         List<PendingRequest> sortingList = pendingRequests;
         pendingRequests.sort(Comparator.comparing(PendingRequest::getDateSubmission));
-        logger.debug("Order by date of pendingRequests");
+        dLog.debug("Order by date of pendingRequests");
         return sortingList;
     }
 
@@ -37,7 +38,7 @@ public class OrderingService implements OrderingServiceInterface {
     public List<CompletedRequest> orderByDateCompleted(List<CompletedRequest> completedRequests) {
         List<CompletedRequest> sortingList = completedRequests;
         completedRequests.sort(Comparator.comparing(CompletedRequest::getDateResolved));
-        logger.debug("Order by date completedRequests");
+        dLog.debug("Order by date completedRequests");
         return sortingList;
     }
 
@@ -45,7 +46,7 @@ public class OrderingService implements OrderingServiceInterface {
     public List<PendingRequest> orderByAmountPending(List<PendingRequest> pendingRequests) {
         List<PendingRequest> sortingList = pendingRequests;
         pendingRequests.sort(Comparator.comparing(PendingRequest::getAmount));
-        logger.debug("Order by Amount pendingRequests");
+        dLog.debug("Order by Amount pendingRequests");
         return sortingList;
     }
 
@@ -66,7 +67,7 @@ public class OrderingService implements OrderingServiceInterface {
         for (PendingRequest pendingRequest : orderedCompletePendingReqList) {
             orderdCompleteRequestSortedMap.put(pendingRequest.getAmount(), completedRequestService.convertCompletedRequestEntity(completedRequestDao.getCompletedRequest(pendingRequest.getId())));
         }
-        logger.debug("order by amount CompletedRequests");
+        dLog.debug("order by amount CompletedRequests");
         return orderdCompleteRequestSortedMap;
     }
 }

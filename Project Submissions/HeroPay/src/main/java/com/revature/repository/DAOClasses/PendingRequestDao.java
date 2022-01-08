@@ -3,7 +3,7 @@ package com.revature.repository.DAOClasses;
 import com.revature.repository.DAOInteface.PendingRequestInterface;
 import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.repository.DTO.RequestTypeEntity;
-import com.revature.service.utility.ConnectionFactory;
+import com.revature.repository.utility.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;

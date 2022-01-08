@@ -1,9 +1,8 @@
 package com.revature.service.handleEmployee.interfaces;
 
-import com.revature.presentation.model.Employee;
+import com.revature.presentation.model.employee.Employee;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
-import jdk.jfr.Description;
 
 public interface EmployeeServiceInterface {
 
@@ -12,5 +11,7 @@ public interface EmployeeServiceInterface {
     EmployeeRoleEntity getEmployeeRole(int employeeRoleId);
 
     Employee convertEmployeeEntityToEmployee(EmployeeAccountEntity employeeAccountEntity);
+
+    Employee getEmployee(int employeeId);
 
 }

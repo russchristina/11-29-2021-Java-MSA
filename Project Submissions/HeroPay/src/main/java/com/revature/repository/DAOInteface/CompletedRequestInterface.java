@@ -18,9 +18,11 @@ public interface CompletedRequestInterface {
 
     //Create
 
-    CompletedRequestEntity insertCompletedRequest(int requestId, int managerId, boolean status, String response, LocalDate dateResolved) throws SQLException;
+    CompletedRequestEntity insertCompletedRequest(int requestId, int employeeId, int managerId, boolean status, String response, LocalDate dateResolved) throws SQLException;
 
     //Read
+
+    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId);
 
     CompletedRequestEntity getCompletedRequest(int requestId) throws SQLException;
 
@@ -42,4 +44,6 @@ public interface CompletedRequestInterface {
     //Delete
 
     CompletedRequestEntity deleteCompletedRequest(int requestId) throws SQLException;
+
+
 }

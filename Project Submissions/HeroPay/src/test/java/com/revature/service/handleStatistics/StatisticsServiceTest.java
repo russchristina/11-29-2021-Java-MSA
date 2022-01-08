@@ -1,16 +1,13 @@
 package com.revature.service.handleStatistics;
 
-import com.revature.presentation.model.PendingRequest;
-import com.revature.presentation.model.PendingRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

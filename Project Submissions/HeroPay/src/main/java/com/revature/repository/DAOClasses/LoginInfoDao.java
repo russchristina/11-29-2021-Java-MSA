@@ -1,9 +1,9 @@
 package com.revature.repository.DAOClasses;
 
-import com.revature.presentation.model.Employee;
 import com.revature.repository.DAOInteface.LoginInfoInterface;
 import com.revature.repository.DTO.LoginInfoEntity;
-import com.revature.service.utility.ConnectionFactory;
+
+import com.revature.repository.utility.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class LoginInfoDao implements LoginInfoInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(LoginInfoDao.class);
+    private final Logger logger = LoggerFactory.getLogger("dLog");
 
     @Override
     public LoginInfoEntity insertLoginInfo(String username, String password, int employeeId) throws SQLException {
@@ -44,37 +44,10 @@ public class LoginInfoDao implements LoginInfoInterface {
     }
 
     @Override
-    public Employee getEmployeeWithLogin(String username, String password) throws SQLException {
-
-        final String SQL = "SELECT * from employee_details_and_login WHERE username = ? AND password = ?";
-
-        Employee employee = null;
-        ResultSet rs = null;
-
-        try(
-                Connection con = ConnectionFactory.getConnection();
-                PreparedStatement stmt = con.prepareStatement(SQL)
-                ){
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            rs = stmt.executeQuery();
-
-            if(rs.next()) employee = new Employee(
-                    rs.getInt(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4)
-            );
-        }
-
-        return employee;
-    }
-
-    @Override
     public LoginInfoEntity getLoginInfo(String username, String password) throws SQLException {
         final String SQL = "SELECT * FROM login_info WHERE username = ? AND password = ?";
         LoginInfoEntity loginInfo = null;
-
+        logger.debug("getting login info: " + username);
         boolean success = false;
         ResultSet rs = null;
 
@@ -93,7 +66,7 @@ public class LoginInfoDao implements LoginInfoInterface {
                     rs.getInt(4)
             );
         }
-
+        logger.debug("returning:" + loginInfo);
         return loginInfo;
     }
 

@@ -1,11 +1,10 @@
 package com.revature.service.handleRequest;
 
-import com.revature.presentation.model.CompletedRequest;
-import com.revature.presentation.model.PendingRequest;
+import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.repository.DTO.CompletedRequestEntity;
 import com.revature.service.serviceExceptions.EmployeeIdException;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -36,6 +35,7 @@ class CompletedRequestServiceTest {
 
     private int newRequestId;
     private int storedRequestId;
+    private int employeeId;
     private int managerId;
     private String response;
     private LocalDate dateResolved;
@@ -52,6 +52,7 @@ class CompletedRequestServiceTest {
     void setup(){
         newRequestId = 0;
         storedRequestId = 1;
+        employeeId = 2;
         managerId = 1;
         response = "You are not here";
         dateResolved = LocalDate.of(2021, 2, 2);
@@ -59,13 +60,13 @@ class CompletedRequestServiceTest {
 
 
         newCompleteRequest = new CompletedRequest(
-                storedRequestId, managerId, true, response, dateResolved);
+                storedRequestId, employeeId, managerId, true, response, dateResolved);
 
         oldCompleteRequest = new CompletedRequest(
-                storedRequestId, managerId, true, response, dateResolved);
+                storedRequestId, employeeId, managerId, true, response, dateResolved);
 
         completedRequestEntity = new CompletedRequestEntity(
-                storedRequestId, managerId, true, response, sqlDate);
+                storedRequestId, employeeId, managerId, true, response, sqlDate);
 
         completedRequestEntityList = new ArrayList<>();
         completedRequestList = new ArrayList<>();
@@ -76,31 +77,31 @@ class CompletedRequestServiceTest {
         statusCompleteRequestList = new ArrayList<>();
         statusRequestList = new ArrayList<>();
 
-        completedRequestEntityList.add(new CompletedRequestEntity(1, managerId, true, "Hello", sqlDate));
-        completedRequestEntityList.add(new CompletedRequestEntity(2, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
-        completedRequestEntityList.add(new CompletedRequestEntity(3, 5, false, "Bonjour", Date.valueOf(LocalDate.of(1888, 2, 4))));
+        completedRequestEntityList.add(new CompletedRequestEntity(1, employeeId, managerId, true, "Hello", sqlDate));
+        completedRequestEntityList.add(new CompletedRequestEntity(2, employeeId, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
+        completedRequestEntityList.add(new CompletedRequestEntity(3, employeeId, 5, false, "Bonjour", Date.valueOf(LocalDate.of(1888, 2, 4))));
 
-        completedRequestEntityListByManagerId.add(new CompletedRequestEntity(1, managerId, true, "Hello", sqlDate));
-        completedRequestEntityListByManagerId.add(new CompletedRequestEntity(2, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
+        completedRequestEntityListByManagerId.add(new CompletedRequestEntity(1, employeeId, managerId, true, "Hello", sqlDate));
+        completedRequestEntityListByManagerId.add(new CompletedRequestEntity(2, employeeId, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
 
-        completedRequestList.add(new CompletedRequest(1, managerId, true, "Hello", sqlDate.toLocalDate()));
-        completedRequestList.add(new CompletedRequest(2, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
-        completedRequestList.add(new CompletedRequest(3, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
+        completedRequestList.add(new CompletedRequest(1, employeeId, managerId, true, "Hello", sqlDate.toLocalDate()));
+        completedRequestList.add(new CompletedRequest(2, employeeId, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
+        completedRequestList.add(new CompletedRequest(3, employeeId, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
 
-        completedRequestListByManagerId.add(new CompletedRequest(1, managerId, true, "Hello", sqlDate.toLocalDate()));
-        completedRequestListByManagerId.add(new CompletedRequest(2, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
+        completedRequestListByManagerId.add(new CompletedRequest(1, employeeId, managerId, true, "Hello", sqlDate.toLocalDate()));
+        completedRequestListByManagerId.add(new CompletedRequest(2, employeeId, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
 
-        statusCompleteRequestList.add(new CompletedRequestEntity(2, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
-        statusCompleteRequestList.add(new CompletedRequestEntity(3, 5, false, "Bonjour", Date.valueOf(LocalDate.of(1888, 2, 4))));
+        statusCompleteRequestList.add(new CompletedRequestEntity(2, employeeId, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
+        statusCompleteRequestList.add(new CompletedRequestEntity(3, employeeId, 5, false, "Bonjour", Date.valueOf(LocalDate.of(1888, 2, 4))));
 
-        statusRequestList.add(new CompletedRequest(2, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
-        statusRequestList.add(new CompletedRequest(3, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
+        statusRequestList.add(new CompletedRequest(2, employeeId, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
+        statusRequestList.add(new CompletedRequest(3, employeeId, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
 
 
 
         MockitoAnnotations.openMocks(this);
         try {
-            Mockito.when(mockCompletedRequestDao.insertCompletedRequest(1, managerId, true, response, dateResolved)).thenReturn(completedRequestEntity);
+            Mockito.when(mockCompletedRequestDao.insertCompletedRequest(1, employeeId, managerId, true, response, dateResolved)).thenReturn(completedRequestEntity);
             Mockito.when(mockCompletedRequestDao.getAllCompletedRequestList()).thenReturn(completedRequestEntityList);
             Mockito.when(mockCompletedRequestDao.getCompletedRequestByManagerIdList(managerId)).thenReturn(completedRequestEntityListByManagerId);
             Mockito.when(mockCompletedRequestDao.getCompletedRequestByStatus(false)).thenReturn(statusCompleteRequestList);
@@ -114,7 +115,7 @@ class CompletedRequestServiceTest {
 
     @Test
     void storeCompletedRequestTest() {
-        assertEquals(completedRequestEntity, completedRequestService.storeCompletedRequest(new CompletedRequest(1, managerId, true, response, dateResolved)));
+        assertEquals(completedRequestEntity, completedRequestService.storeCompletedRequest(new CompletedRequest(1, employeeId, managerId, true, response, dateResolved)));
     }
 
     @Test
@@ -135,7 +136,7 @@ class CompletedRequestServiceTest {
     @Test
     void validateCompletedRequestInvalidManagerIdExceptionTest(){
         assertThrows(EmployeeIdException.class, () -> completedRequestService.validateCompletedRequest(
-                new CompletedRequest(0, -1, true, response, dateResolved))
+                new CompletedRequest(0,1,  -1, true, response, dateResolved))
         );
     }
 

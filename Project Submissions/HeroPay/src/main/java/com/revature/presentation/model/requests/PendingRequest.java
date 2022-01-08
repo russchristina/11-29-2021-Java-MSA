@@ -1,4 +1,4 @@
-package com.revature.presentation.model;
+package com.revature.presentation.model.requests;
 
 import java.time.LocalDate;
 import java.util.Objects;

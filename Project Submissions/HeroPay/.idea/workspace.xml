@@ -5,12 +5,60 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/EmployeeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/employee/EmployeeResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/login/LoginResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/AllPendingRequestResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/AllRequestResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/FailCreateRequestResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/NewRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Driver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageClient/endpoints/ServerEndpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageClient/endpoints/ServerEndpoints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/inteface/EmployeeControllerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/inteface/EmployeeControllerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageClient/endpoints/ServerEndpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/controller/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/inteface/EmployeeControllerInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageLogin/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageLogin/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageLogin/interfaces/LoginControllerInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/interfaces/PendingRequestControllerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/interfaces/PendingRequestControllerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/CompletedRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/CompletedRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/employee/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/LoginInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/login/LoginInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/PendingRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/PendingRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/staticHTML/StaticHTMLHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/CompletedRequestDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/CompletedRequestDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/EmployeeAccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/EmployeeAccountDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/LoginInfoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/LoginInfoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/PendingRequestDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/PendingRequestDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/CompletedRequestInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/CompletedRequestInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/LoginInfoInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/LoginInfoInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DTO/CompletedRequestEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DTO/CompletedRequestEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/interfaces/EmployeeServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/interfaces/EmployeeServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleLogin/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleLogin/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleLogin/interfaces/LoginServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleLogin/interfaces/LoginServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleManager/ManagerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleManager/ManagerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleManager/interfaces/ManagerServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleManager/interfaces/ManagerServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/CompletedRequestServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/CompletedRequestServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/OrderingServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/OrderingServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/PendingRequestServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/PendingRequestServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/StatisticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/StatisticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/interfaces/StatisticsServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/interfaces/StatisticsServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/utility/ConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/utility/ConnectionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/presentation/manageLogin/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/presentation/manageLogin/LoginControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleEmployee/EmployeeServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleEmployee/EmployeeServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleLogin/LoginServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleLogin/LoginServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/CompletedRequestServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/CompletedRequestServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/PendingRequestServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/PendingRequestServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleStatistics/StatisticsServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleStatistics/StatisticsServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,12 +106,17 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.revature.presentation.model.requests" />
+      <recent name="com.revature.presentation.manageRequest.controller" />
       <recent name="com.revature.service.serviceExceptions" />
       <recent name="com.revature.service.handleRequest" />
       <recent name="com.revature.repository.DTO" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.revature" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.revature.service.handleRequest" />
@@ -73,13 +126,26 @@
       <recent name="com.revature.presentation.manageLogin" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ServerEndpoints">
-    <configuration name="ServerEndpoints" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.revature.presentation.manageClient.endpoints.ServerEndpoints" />
+  <component name="RunManager" selected="Application.Driver">
+    <configuration name="Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.revature.utility.Driver" />
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.revature.presentation.manageClient.endpoints.*" />
+          <option name="PATTERN" value="com.revature.repository.utility.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerEndpoints" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.revature.utility.ServerEndpoints" />
+      <module name="HeroPay" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.revature.repository.utility.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -117,45 +183,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StatisticsServiceTest.meanAverage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PendingRequestServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.revature.service.handleStatistics.*" />
+          <option name="PATTERN" value="com.revature.service.handleRequest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.revature.service.handleStatistics" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleStatistics.StatisticsServiceTest" />
-      <option name="METHOD_NAME" value="meanAverage" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StatisticsServiceTest.sumOfAmountCompleted" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="HeroPay" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.revature.service.handleStatistics.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.revature.service.handleStatistics" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleStatistics.StatisticsServiceTest" />
-      <option name="METHOD_NAME" value="sumOfAmountCompleted" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
+      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.PendingRequestServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ServerEndpoints" />
-        <item itemvalue="JUnit.CompletedRequestServiceTest" />
-        <item itemvalue="JUnit.StatisticsServiceTest.meanAverage" />
-        <item itemvalue="JUnit.StatisticsServiceTest.sumOfAmountCompleted" />
+        <item itemvalue="Application.Driver" />
         <item itemvalue="JUnit.OrderingServiceTest" />
+        <item itemvalue="JUnit.PendingRequestServiceTest" />
+        <item itemvalue="JUnit.CompletedRequestServiceTest" />
+        <item itemvalue="Application.ServerEndpoints" />
       </list>
     </recent_temporary>
   </component>

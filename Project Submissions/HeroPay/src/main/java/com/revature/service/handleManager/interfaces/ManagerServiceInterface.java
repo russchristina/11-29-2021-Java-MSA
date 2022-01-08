@@ -1,9 +1,7 @@
 package com.revature.service.handleManager.interfaces;
 
-import com.revature.presentation.model.CompletedRequest;
-import com.revature.presentation.model.PendingRequest;
-
-import java.util.List;
+import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 
 public interface ManagerServiceInterface {
 
