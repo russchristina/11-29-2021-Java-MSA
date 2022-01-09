@@ -199,7 +199,18 @@ const pageUtility = {
             tableRow = document.createElement('tr');
             for(let key in values[i]){
                 tableElement = document.createElement('td')
-                tableElement.innerText = values[i][key];
+                if(Array.isArray(values[i][key])){
+                    tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
+                }else if(values[i][key] === false){
+                    tableElement.innerText = 'Denied';
+
+                } else if(values[i][key] === true){
+                    tableElement.innerText = 'Approved';
+                }else{
+                    console.log(values[i][key])
+                    tableElement.innerText = values[i][key];
+                }
+
                 tableRow.appendChild(tableElement);
 
                 for(let hidden of hiddenColumns){
@@ -207,7 +218,6 @@ const pageUtility = {
                         tableElement.hidden = true;
                     }}
                 counter++;
-                
             }
             table.appendChild(tableRow);
         }
@@ -231,6 +241,39 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
+    generateManagerTableRowClean: function(tableId, container, values, funky, hiddenColumns){
+        let table = document.getElementById(tableId);
+        let tableRow;
+        let tableElement;
+        for(let i = 0; i < values.length; i++){
+            let counter2 = 0;
+            tableRow = document.createElement('tr');
+            for(let key in values[i]){
+                tableElement = document.createElement('td')
+                // if(Array.isArray(values[i][key])){
+                //     tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
+                // }else if(values[i][key] == false){
+                //     tableElement.innerText = 'Denied';
+
+                // } else if(values[i][key] == true){
+                //     tableElement.innerText = 'Approved';
+                // }else{
+                console.log(values[i][key])
+                tableElement.innerText = values[i][key];
+                for(let hidden of hiddenColumns){
+                    if(hidden == counter2){
+                    tableElement.hidden = true;
+                    }}
+                counter2++;
+                tableRow.appendChild(tableElement);
+            }
+                pageUtility.attachButtonElement('respond', 'respond-button', tableRow, 'click', e => {
+                funky(e);
+                });
+                table.appendChild(tableRow);
+            }
+        container.appendChild(table);
+    },
     generateSingleTableRow: function(value, container){
         let tableRow = document.createElement('tr');
         let tableElement;
@@ -238,6 +281,33 @@ const pageUtility = {
             tableElement = document.createElement('td')
             tableElement.innerText = value[key];
             tableRow.appendChild(tableElement);
+        }
+        container.appendChild(tableRow);
+    },
+    generateSingleTableRowClean : function(value, container, hiddenColumns){
+        let tableRow = document.createElement('tr');
+        let tableElement;
+        let counter = 0;
+        for(let key in value){
+            tableElement = document.createElement('td')
+            if(Array.isArray(value[key])){
+                tableElement.innerText = `${value[key][2]} / ${value[key][1]} / ${value[key][0]}`;
+            }else if(value[key] === false){
+                tableElement.innerText = 'Denied';
+
+            } else if(value[key] === true){
+                tableElement.innerText = 'Approved';
+            }else{
+                console.log(value[key])
+                tableElement.innerText = value[key];
+            }
+            tableRow.appendChild(tableElement);
+
+            for(let hidden of hiddenColumns){
+                if(hidden == counter){
+                    tableElement.hidden = true;
+                }}
+            counter++;
         }
         container.appendChild(tableRow);
     }
@@ -321,15 +391,15 @@ const requestViewUtility = {
     },
     createAllRequestTable: function(){
         pageUtility.attachTitleElement('h3', 'All Pending Requests', allPRContainer);
-        pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'all-pending-request-table', allPRContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-pending-request-table', allPRContainer);
         homepageView.appendChild(allPRContainer);
 
         pageUtility.attachTitleElement('h3', 'All Past Requests', allARContainer);
-        pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'all-answered-request-table', allARContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-answered-request-table', allARContainer);
         homepageView.appendChild(allARContainer);
 
         pageUtility.attachTitleElement('h3', 'All Completed Requests', allCRContainer);
-        pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'all-completed-request-table', allCRContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Manager ID', 'Status', 'Responding Message', 'Resolved'], 'all-completed-request-table', allCRContainer);
         homepageView.appendChild(allCRContainer);
     },
     displayEmployeeRequests: function (allRequestData){
@@ -363,23 +433,23 @@ const requestViewUtility = {
     },
     displayNewPendingRequests : function (newPendingRequestData){
         let table = document.getElementById('pending-request-table');
-        pageUtility.generateSingleTableRow(newPendingRequestData, table);
+        pageUtility.generateSingleTableRowClean(newPendingRequestData, table, [0, 1]);
     },
     displayAllPendingRequests : function (pendingRequests){
-        pageUtility.generateManagerTableRow('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest);
+        pageUtility.generateManagerTableRowClean('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest, [0]);
         homepageView.appendChild(allPRContainer);
     },
     displayAllAnsweredRequests : function (answeredRequests){
-        pageUtility.generateTableRows('all-answered-request-table', allARContainer, answeredRequests)
+        pageUtility.generateTableRowsClean('all-answered-request-table', allARContainer, answeredRequests, [0])
         homepageView.appendChild(allARContainer);
     },
     displayAllCompletedRequests : function (completedRequests){
-        pageUtility.generateTableRows('all-completed-request-table', allCRContainer, completedRequests);
+        pageUtility.generateTableRowsClean('all-completed-request-table', allCRContainer, completedRequests, [0]);
         homepageView.appendChild(allCRContainer);
     },
     displayNewPendingRequests : function (newPendingRequestData){
         let table = document.getElementById('pending-request-table');
-        pageUtility.generateSingleTableRow(newPendingRequestData, table);
+        pageUtility.generateSingleTableRowClean(newPendingRequestData, table, [0, 1]);
     },
     failedToGetRequests : function (){
         window.alert('Failed to get requests from server');
