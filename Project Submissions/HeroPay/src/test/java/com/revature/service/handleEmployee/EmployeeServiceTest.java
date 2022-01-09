@@ -1,6 +1,6 @@
 package com.revature.service.handleEmployee;
 
-import com.revature.presentation.model.employee.Employee;
+import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;

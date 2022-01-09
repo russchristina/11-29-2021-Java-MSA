@@ -1,8 +1,12 @@
 package com.revature.presentation.manageRequest.controller;
 
 import com.revature.presentation.model.requests.*;
+import com.revature.presentation.model.requests.recieve.CompletedRequest;
+import com.revature.presentation.model.requests.response.AllPendingRequestResponse;
+import com.revature.presentation.model.requests.response.AllRequestResponse;
+import com.revature.presentation.model.requests.response.FailCreateRequestResponse;
+import com.revature.presentation.model.requests.response.ManagerRequestResponse;
 import com.revature.repository.DTO.CompletedRequestEntity;
-import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.service.handleRequest.CompletedRequestService;
 import com.revature.service.handleRequest.PendingRequestService;
 import com.revature.service.serviceExceptions.EmployeeIdException;

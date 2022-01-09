@@ -1,6 +1,6 @@
 package com.revature.service.handleLogin;
 
-import com.revature.presentation.model.login.LoginInput;
+import com.revature.presentation.model.loginRequests.LoginInput;
 import com.revature.repository.DAOClasses.LoginInfoDao;
 import com.revature.repository.DTO.LoginInfoEntity;
 import com.revature.service.handleLogin.interfaces.LoginServiceInterface;

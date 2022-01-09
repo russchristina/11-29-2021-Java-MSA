@@ -1,4 +1,4 @@
-package com.revature.presentation.model.login;
+package com.revature.presentation.model.loginRequests;
 
 import java.util.Objects;
 

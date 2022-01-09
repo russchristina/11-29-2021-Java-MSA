@@ -1,4 +1,7 @@
-package com.revature.presentation.model.requests;
+package com.revature.presentation.model.requests.response;
+
+import com.revature.presentation.model.requests.recieve.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
 
 import java.util.List;
 import java.util.Objects;

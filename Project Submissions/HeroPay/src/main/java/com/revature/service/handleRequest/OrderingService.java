@@ -1,6 +1,6 @@
 package com.revature.service.handleRequest;
 
-import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.recieve.CompletedRequest;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.service.handleRequest.interfaces.OrderingServiceInterface;
@@ -36,18 +36,16 @@ public class OrderingService implements OrderingServiceInterface {
 
     @Override
     public List<CompletedRequest> orderByDateCompleted(List<CompletedRequest> completedRequests) {
-        List<CompletedRequest> sortingList = completedRequests;
         completedRequests.sort(Comparator.comparing(CompletedRequest::getDateResolved));
         dLog.debug("Order by date completedRequests");
-        return sortingList;
+        return completedRequests;
     }
 
     @Override
     public List<PendingRequest> orderByAmountPending(List<PendingRequest> pendingRequests) {
-        List<PendingRequest> sortingList = pendingRequests;
         pendingRequests.sort(Comparator.comparing(PendingRequest::getAmount));
         dLog.debug("Order by Amount pendingRequests");
-        return sortingList;
+        return pendingRequests;
     }
 
     @Override

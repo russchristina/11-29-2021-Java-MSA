@@ -25,6 +25,10 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     private PendingRequestDao pendingRequestDao;
     private Map<Integer, String> requestMap;
 
+    public Map<Integer, String> getRequestMap() {
+        return requestMap;
+    }
+
     public PendingRequestService(PendingRequestDao pendingRequestDao) {
         this.pendingRequestDao = pendingRequestDao;
         try {
@@ -207,5 +211,48 @@ public class PendingRequestService implements PendingRequestServiceInterface {
             dLog.error(e.getMessage(), e);
         }
         return null;    }
+
+    @Override
+    public List<PendingRequest> getAllAnsweredRequestsByType(int typeId) {
+        try {
+            dLog.debug("Getting answered requests by type");
+            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequestsByType(typeId);
+            List<PendingRequest> pendingModelList = new ArrayList<>();
+            answeredRequests.forEach(
+                    pre ->
+                            pendingModelList.add(new PendingRequest(
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
+            return pendingModelList;
+        } catch (SQLException e) {
+            dLog.error(e.getMessage(), e);
+        }
+        return null;        }
+
+    @Override
+    public List<PendingRequest> getAllAnsweredRequestsByRole(int roleId) {
+        try {
+            dLog.debug("Getting answered requests by role");
+            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequestsByRole(roleId);
+            List<PendingRequest> pendingModelList = new ArrayList<>();
+            answeredRequests.forEach(
+                    pre ->
+                            pendingModelList.add(new PendingRequest(
+                                    pre.getId(),
+                                    pre.getEmployeeId(),
+                                    requestMap.get(pre.getRequestType()),
+                                    pre.getRequestMessage(),
+                                    pre.getAmount(),
+                                    pre.getDateSubmission().toLocalDate())));
+            dLog.debug("returning " + pendingModelList);
+            return pendingModelList;
+        } catch (SQLException e) {
+            dLog.error(e.getMessage(), e);
+        }
+        return null;           }
 
 }

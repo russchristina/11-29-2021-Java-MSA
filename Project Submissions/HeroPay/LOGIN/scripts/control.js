@@ -1,9 +1,14 @@
 
+/** Base HTML Elements */
+
 let loginView = document.getElementById('login');
 let homepageView = document.getElementById('homepage');
-let statisticsView = document.getElementById('statistics');
+let statisticsPageView = document.getElementById('statistics');
 
+/** Display Div for each Employee */
 let bannerDiv;
+
+/** Homepage Elements */
 let homepageTopContainer;
 
 let personalPRContainer;
@@ -14,11 +19,47 @@ let allPRContainer;
 let allARContainer;
 let allCRContainer;
 
+let containerOptions;
+let requestFormContainer;
+
+let createRequestCheck = true;
+
+let respondFormContainer;
+let respondRequestCheck = true;
+
+/** Statistics Elements */
+
+let statisticsTopContainer;
+
+let generalStatisticsContainer;
+
+let generalStatisticsRoleContainer;
+let generalStatisticsTypeContainer;
+let generalStatisticsTotalContainer;
+
+let statisticsPageCheck = true;
+
+/** JSON objects with needed information for global access */
+
+let userLoginObj;
+let userData;
+let employeeData;
+let allRequestData;
+
+let createRequestObj;
+let newRequestData;
+let newResponseData;
+
+let generalStatData;
+
+
+
+
 //============================================================================
 // JUST FOR DEVELOPMENT, COMMENT OUT WHEN TESTING WITH SERVER, BUGGY
 let toggleViewButton = document.createElement('input');
 toggleViewButton.type = 'button';
-toggleViewButton.value = 'Switch'
+toggleViewButton.value = 'Switch Login <-> Homepage'
 toggleViewButton.addEventListener('click', toggleView);
 
 let loginPageCheck = true;
@@ -35,19 +76,6 @@ document.body.appendChild(toggleViewButton);
 
 //============================================================================
 
-let containerOptions;
-let requestFormContainer;
-
-let userLoginObj;
-let userData;
-let employeeData;
-let allRequestData;
-
-
-let createRequestObj;
-let newRequestData;
-let createRequestCheck = true;
-
 /** Function Objects */
 /* Handle Page Utility*/
 
@@ -56,6 +84,7 @@ const pageUtility = {
         toggleHomepage(false);
         toggleLogin(true);
         createRequestCheck = true;
+        respondRequestCheck = true;
     
     },
     generateNewLine: function (lines, container){
@@ -160,6 +189,30 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
+    generateTableRowsClean: function(tableId, container, values, hiddenColumns){
+        let table = document.getElementById(tableId);
+        let tableRow;
+        let tableElement;
+
+        for(let i = 0; i < values.length; i++){
+            let counter = 0;
+            tableRow = document.createElement('tr');
+            for(let key in values[i]){
+                tableElement = document.createElement('td')
+                tableElement.innerText = values[i][key];
+                tableRow.appendChild(tableElement);
+
+                for(let hidden of hiddenColumns){
+                    if(hidden == counter){
+                        tableElement.hidden = true;
+                    }}
+                counter++;
+                
+            }
+            table.appendChild(tableRow);
+        }
+        container.appendChild(table);
+    },
     generateManagerTableRow: function(tableId, container, values, funky){
         let table = document.getElementById(tableId);
         let tableRow;
@@ -191,7 +244,7 @@ const pageUtility = {
 }
 
 const requestViewUtility = {
-    openDisplay: function (){
+    openCreateRequestDisplay: function (){
         if(createRequestCheck){
             createRequestCheck = !createRequestCheck;
 
@@ -199,7 +252,7 @@ const requestViewUtility = {
             requestFormContainer.id = 'request-form-container';
     
             pageUtility.generateNewLine(1, requestFormContainer);
-            pageUtility.attachInputElement('request-messagee', 'Request Message', requestFormContainer);
+            pageUtility.attachInputElement('request-message', 'Request Message', requestFormContainer);
             pageUtility.generateNewLine(2, requestFormContainer);
             
             pageUtility.attachSelectOptions('request-type', 
@@ -211,30 +264,59 @@ const requestViewUtility = {
             pageUtility.attachInputNumberElement('amount', '$0.00', requestFormContainer);
             pageUtility.generateNewLine(2, requestFormContainer);
             
-            pageUtility.attachButtonElement('close-create-button', 'close', requestFormContainer, 'click', requestViewUtility.closeDisplay);
-            pageUtility.attachButtonElement('submit-request', 'submit', requestFormContainer, 'click', getCreateRequest);
+            pageUtility.attachButtonElement('close-create-button', 'close', requestFormContainer, 'click', requestViewUtility.closeCreateRequestDisplay);
+            pageUtility.attachButtonElement('submit-request', 'submit', requestFormContainer, 'click', userRequestUtility.getCreateRequest);
     
             containerOptions.appendChild(requestFormContainer);
             homepageTopContainer.appendChild(containerOptions);
         }
         
     },
-    closeDisplay: function (){
+    closeCreateRequestDisplay: function (){
         createRequestCheck = !createRequestCheck;
         let requestForm = document.getElementById('request-form-container')
         containerOptions.removeChild(requestForm);
     },
+    openRespondRequestDisplay: function(tableRow){
+        if(respondRequestCheck){
+            respondRequestCheck = !respondRequestCheck;
+
+            respondFormContainer = document.createElement('form');
+            respondFormContainer.id = 'respond-form-container';
+
+            pageUtility.generateNewLine(1, respondFormContainer);
+            pageUtility.attachSelectOptions('status', "Respond", ['Approve', 'Deny'], respondFormContainer);
+            pageUtility.generateNewLine(2, respondFormContainer);
+            pageUtility.attachInputElement('response-message', 'Response', respondFormContainer);
+            pageUtility.generateNewLine(1, respondFormContainer);
+            pageUtility.attachButtonElement('close-respond-button', 'close', respondFormContainer, 'click', requestViewUtility.closeRespondRequestDisplay);
+            pageUtility.attachButtonElement('submit-response', 'submit', respondFormContainer, 'click', () => {
+                requestInteractionUtility.getResponse(tableRow);
+            });
+            
+            allPRContainer.appendChild(respondFormContainer);
+
+        }
+    },
+    closeRespondRequestDisplay: function(){
+        respondRequestCheck = !respondRequestCheck;
+        let respondForm = document.getElementById('respond-form-container');
+        allPRContainer.removeChild(respondForm);
+        
+    },
     createPersonalRequestTables: function(){
         pageUtility.attachTitleElement('h3', 'Pending Requests', personalPRContainer);
-        pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'pending-request-table', personalPRContainer);
+        // pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'pending-request-table', personalPRContainer);
+        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'pending-request-table', personalPRContainer);
         homepageView.appendChild(personalPRContainer);
 
         pageUtility.attachTitleElement('h3', 'Past Requests', personalARContainer);
-        pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'answered-request-table', personalARContainer);
+        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'answered-request-table', personalARContainer);
         homepageView.appendChild(personalARContainer);
 
         pageUtility.attachTitleElement('h3', 'Completed Requests', personalCRContainer);
-        pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
+        // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
+        pageUtility.generateTableElement(['Status', 'Response', 'Resolved'], 'completed-request-table', personalCRContainer);
         homepageView.appendChild(personalCRContainer);
     },
     createAllRequestTable: function(){
@@ -268,15 +350,15 @@ const requestViewUtility = {
         console.log(sortedRequests);
     },
     displayPendingRequests : function (pendingRequests){
-        pageUtility.generateTableRows('pending-request-table', personalPRContainer, pendingRequests);
+        pageUtility.generateTableRowsClean('pending-request-table', personalPRContainer, pendingRequests, [0, 1]);
         homepageView.appendChild(personalPRContainer);
     },
     displayAnsweredRequests : function (answeredRequests){
-        pageUtility.generateTableRows('answered-request-table', personalARContainer, answeredRequests)
+        pageUtility.generateTableRowsClean('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
         homepageView.appendChild(personalARContainer);
     },
     displayCompletedRequests : function (completedRequests){
-        pageUtility.generateTableRows('completed-request-table', personalCRContainer, completedRequests);
+        pageUtility.generateTableRowsClean('completed-request-table', personalCRContainer, completedRequests, [0, 1, 2]);
         homepageView.appendChild(personalCRContainer);
     },
     displayNewPendingRequests : function (newPendingRequestData){
@@ -306,13 +388,42 @@ const requestViewUtility = {
 
 const requestInteractionUtility = {
     respondToRequest: function (e){
-        console.log(e.target.parentNode);
+        let tableRow = e.target.parentNode;
+        requestViewUtility.openRespondRequestDisplay(tableRow);
+    },
+    getResponse : function(tableRow){
+        let responseObj = userRequestUtility.getResponse();
+        let managerResponseJson = JSON.stringify({requestId:tableRow.children[0].innerText, employeeId:tableRow.children[1].innerText , managerId:userData.employeeId, status:responseObj.bool, response: responseObj.text});
+        tableRow.innerHTML = "";
+        postRequestResponse(managerResponseJson);
     }
 }
 
 const userViewUtility = {
     welcomeBanner : function (employeeData){
         pageUtility.attachTitleElement('h2', employeeData.firstName + " " + employeeData.lastName, bannerDiv);
+    }
+}
+
+const statisticsUtility = {
+    createGeneralStatisticsTable: function (){
+
+        pageUtility.attachTitleElement('h3', 'General Employee Role Statistics', generalStatisticsRoleContainer);
+        pageUtility.generateTableElement(["Employee Roles", "Mean Average", "Sum"], 'general-employee-role-table', generalStatisticsRoleContainer);
+        generalStatisticsContainer.appendChild(generalStatisticsRoleContainer);
+        pageUtility.generateTableRows('general-employee-role-table', generalStatisticsRoleContainer, generalStatData.sortedRole);
+
+        pageUtility.attachTitleElement('h3', 'General Request Type Statistics', generalStatisticsTypeContainer);
+        pageUtility.generateTableElement(["Request Types", "Mean Average", "Sum"], 'general-request-type-table', generalStatisticsTypeContainer);
+        generalStatisticsContainer.appendChild(generalStatisticsTypeContainer);
+        pageUtility.generateTableRows('general-request-type-table', generalStatisticsTypeContainer, generalStatData.sortedTypes);
+
+        pageUtility.attachTitleElement('h3', 'General Total Statistics', generalStatisticsTotalContainer);
+        pageUtility.generateTableElement(["Total", "Mean Average", "Sum"], 'general-total-table', generalStatisticsTotalContainer);
+        generalStatisticsContainer.appendChild(generalStatisticsTotalContainer);
+        pageUtility.generateSingleTableRow(generalStatData.total, document.getElementById('general-total-table'));
+        console.log(document.getElementById('general-total-table'));
+        console.log(generalStatData);
     }
 }
 
@@ -325,14 +436,30 @@ function toggleLogin(toggle){
 function toggleHomepage(toggle, isManager, userData){
     if(toggle){
         if(isManager){
+            getGeneralStats(); 
             loadManagerHomepage(homepageView);
-            getMTotalRequests(userData);  
+            getMTotalRequests(userData); 
         }else{
             loadEmployeeHomepage(homepageView);
             getEmployeeTotalRequests(userData);
         }
     }
-        else pageUtility.clearView(homepageView)
+        else {
+            pageUtility.clearView(homepageView);
+        }
+}
+
+function toggleStatistics(){
+    if(statisticsPageCheck){
+        statisticsPageCheck = !statisticsPageCheck;
+        pageUtility.clearView(homepageView);
+        loadStatistics(statisticsPageView);
+    }
+    else {
+        pageUtility.clearView(statisticsPageView);
+        statisticsPageCheck = !statisticsPageCheck;
+        toggleHomepage(true, true, userData);
+    }
 }
 
 window.onload = toggleLogin(true);
@@ -399,7 +526,7 @@ function loadEmployeeHomepage(homepageView){
 
     homepageView.appendChild(homepageTopContainer);
     pageUtility.attachTitleElement('h3', 'Options', homepageTopContainer);
-    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer,'click', requestViewUtility.openDisplay);
+    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer,'click', requestViewUtility.openCreateRequestDisplay);
     pageUtility.attachButtonElement('logout-button', 'Logout', homepageTopContainer, 'click', pageUtility.logoutHomepage);
     containerOptions = document.createElement('div');
     containerOptions.id = 'options-div';
@@ -427,8 +554,9 @@ function loadManagerHomepage(homepageView){
 
     homepageView.appendChild(homepageTopContainer);
     pageUtility.attachTitleElement('h3', 'Options', homepageTopContainer);
-    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer,'click', requestViewUtility.openDisplay);
+    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer,'click', requestViewUtility.openCreateRequestDisplay);
     pageUtility.attachButtonElement('logout-button', 'Logout', homepageTopContainer, 'click', pageUtility.logoutHomepage);
+
     containerOptions = document.createElement('div');
     containerOptions.id = 'options-div';
 
@@ -452,6 +580,36 @@ function loadManagerHomepage(homepageView){
 
     requestViewUtility.createPersonalRequestTables();
     requestViewUtility.createAllRequestTable();
+}
+
+function loadStatistics(statisticsPageView){
+    statisticsTopContainer = document.createElement('div');
+    statisticsTopContainer.id = 'statistics-top';
+
+    bannerDiv = document.createElement('div');
+    bannerDiv.id = 'banner-div';
+    pageUtility.attachTitleElement('h1', 'Statistics', bannerDiv);
+    statisticsTopContainer.appendChild(bannerDiv);
+    statisticsPageView.appendChild(statisticsTopContainer);
+
+
+    pageUtility.attachTitleElement('h3', 'Options', statisticsTopContainer);
+    pageUtility.attachButtonElement('homepage-button', 'return', statisticsTopContainer, 'click', toggleStatistics);
+    // pageUtility.attachButtonElement('create-button', 'Create Request', statisticsTopContainer,'click', requestViewUtility.openCreateRequestDisplay);
+
+    generalStatisticsContainer = document.createElement('div');
+    generalStatisticsContainer.id = 'general-statistics-container';
+    statisticsPageView.appendChild(generalStatisticsContainer);
+
+    generalStatisticsRoleContainer = document.createElement('div');
+    generalStatisticsRoleContainer.id = 'general-statistics-role-container';
+    generalStatisticsTypeContainer = document.createElement('div');
+    generalStatisticsTypeContainer.id = 'general-statistics-Type-container';
+    generalStatisticsTotalContainer = document.createElement('div');
+    generalStatisticsTotalContainer.id = 'general-statistics-total-container';
+
+
+    statisticsUtility.createGeneralStatisticsTable();
 }
 
 /*================================================================================================*/
@@ -531,12 +689,9 @@ function successfulLogin(userData, isManager){
     toggleLogin(false);
     if(isManager){
         toggleHomepage(true, isManager, userData);
- 
     }else{
         toggleHomepage(true, isManager, userData);
-
     }
-
 }
 
 function welcomeEmployee(employeeData){
@@ -547,17 +702,30 @@ function welcomeEmployee(employeeData){
 
 /**Handle user request */
 
-function getCreateRequest(){
-    let requestForm = document.getElementById('request-form-container');
-    let message = requestForm.elements[0].value;
-    let type = requestForm.elements[1].value;
-    let amount = requestForm.elements[2].value;
+const userRequestUtility = {
+    getCreateRequest: function (){
+        let requestForm = document.getElementById('request-form-container');
+        let message = requestForm.elements[0].value;
+        let type = requestForm.elements[1].value;
+        let amount = requestForm.elements[2].value;
+    
+         
+        if(message && type && amount) {
+            createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type:type, requestMessage: message, amount:amount});
+            postNewRequest(createRequestObj);
+        } else window.alert("EMPTY INPUT")
+    },
+    getResponse: function (){
+        let responseForm = document.getElementById('respond-form-container');
+        console.log(responseForm);
+        let statusText = responseForm.elements[0].value;
+        let message = responseForm.elements[1].value;
+        let boolio;
+        statusText == 'Approve' ? boolio = true: boolio = false;
 
-     
-    if(message && type && amount) {
-        createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type:type, requestMessage: message, amount:amount});
-        postNewRequest(createRequestObj);
-    } else window.alert("EMPTY INPUT")
+        let responseObj = {bool:boolio, text:message};
+        return responseObj;
+    }
 }
 
 /*================================================================================================*/
@@ -615,7 +783,7 @@ async function postNewRequest(createRequestObj){
         let newRequestResponseBody = await fetch(createNewRequestUrl, {method: "POST", body: createRequestObj});
         newRequestData = await newRequestResponseBody.json();
         if(newRequestData) {
-            requestViewUtility.closeDisplay();
+            requestViewUtility.closeCreateRequestDisplay();
             console.log(newRequestData);
             requestViewUtility.displayNewPendingRequests(newRequestData);
         }else failedLogin();
@@ -636,5 +804,36 @@ async function getMTotalRequests(userData){
     }catch(e){
         console.log(e);
         requestViewUtility.failedToGetRequests();
+    }
+}
+
+async function postRequestResponse(responseObj){
+    console.log(responseObj);
+    let respondUrl = 'http://localhost:9002/manager/respond';
+    try{
+        let responseBody = await fetch(respondUrl, {method: "POST", body: responseObj});
+        newResponseData = await responseBody.json();
+         if(newResponseData){
+             console.log("refresh to see new results");
+             pageUtility.clearView(homepageView);
+             toggleHomepage(true, true, userData);
+             console.log(newResponseData);
+         } 
+    } catch(e){
+        console.log(e);
+    }
+}
+
+async function getGeneralStats(){
+    let generalStatUrl = 'http://localhost:9002/manager/statistic/general';
+    try{
+        let generalStatBody = await fetch(generalStatUrl, {method: "GET"});
+        generalStatData = await generalStatBody.json();
+        if(generalStatData){
+            console.log("GOT THE STATS BOYS");
+            pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
+        }
+    }catch(e){
+        console.log(e);
     }
 }

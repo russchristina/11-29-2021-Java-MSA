@@ -42,6 +42,10 @@ public interface PendingRequestInterface {
 
     List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId) throws SQLException;
 
+    List<PendingRequestEntity> getEmployeeAnsweredRequestsByType(int typeId) throws SQLException;
+
+    List<PendingRequestEntity> getEmployeeAnsweredRequestsByRole(int roleId) throws SQLException;
+
 
     //Update
 

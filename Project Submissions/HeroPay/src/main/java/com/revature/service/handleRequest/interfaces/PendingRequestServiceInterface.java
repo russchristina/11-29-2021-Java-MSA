@@ -26,4 +26,8 @@ public interface PendingRequestServiceInterface {
     List<PendingRequest> getAnsweredRequests();
 
     List<PendingRequest> getAllAnsweredRequests(int employeeId);
+
+    List<PendingRequest> getAllAnsweredRequestsByType(int typeId);
+
+    List<PendingRequest> getAllAnsweredRequestsByRole(int roleId);
 }

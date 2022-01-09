@@ -1,6 +1,6 @@
 package com.revature.service.handleRequest.interfaces;
 
-import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.recieve.CompletedRequest;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DTO.CompletedRequestEntity;
 

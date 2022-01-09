@@ -1,6 +1,6 @@
 package com.revature.presentation.manageLogin;
 
-import com.revature.presentation.model.login.LoginInput;
+import com.revature.presentation.model.loginRequests.LoginInput;
 import com.revature.repository.DTO.LoginInfoEntity;
 import com.revature.service.handleLogin.LoginService;
 import org.junit.jupiter.api.Assertions;

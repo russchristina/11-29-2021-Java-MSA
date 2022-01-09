@@ -1,4 +1,4 @@
-package com.revature.presentation.model.employee;
+package com.revature.presentation.model.employeeRequests;
 
 public class EmployeeResponse {
 

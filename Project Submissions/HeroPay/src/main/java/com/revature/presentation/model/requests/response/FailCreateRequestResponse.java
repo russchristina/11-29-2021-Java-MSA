@@ -1,4 +1,4 @@
-package com.revature.presentation.model.requests;
+package com.revature.presentation.model.requests.response;
 
 import java.util.Objects;
 

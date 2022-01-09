@@ -1,7 +1,7 @@
 package com.revature.presentation.manageLogin.controller;
 
-import com.revature.presentation.model.login.LoginInput;
-import com.revature.presentation.model.login.LoginResponse;
+import com.revature.presentation.model.loginRequests.LoginInput;
+import com.revature.presentation.model.loginRequests.LoginResponse;
 import com.revature.repository.DTO.LoginInfoEntity;
 import com.revature.service.handleLogin.LoginService;
 import io.javalin.http.Handler;

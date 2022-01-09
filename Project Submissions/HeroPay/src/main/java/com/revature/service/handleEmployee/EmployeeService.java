@@ -1,6 +1,6 @@
 package com.revature.service.handleEmployee;
 
-import com.revature.presentation.model.employee.Employee;
+import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class EmployeeService implements EmployeeServiceInterface {
 
@@ -16,6 +17,7 @@ public class EmployeeService implements EmployeeServiceInterface {
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private EmployeeAccountDao employeeAccountDao;
+
 
     public EmployeeService(EmployeeAccountDao employeeAccountDao) {
         this.employeeAccountDao = employeeAccountDao;
@@ -69,5 +71,15 @@ public class EmployeeService implements EmployeeServiceInterface {
     @Override
     public Employee getEmployee(int employeeId) {
         return convertEmployeeEntityToEmployee(getEmployeeAccountById(employeeId));
+    }
+
+    @Override
+    public Map<Integer, String> getEmployeeRoleMap() {
+        try {
+            return employeeAccountDao.getEmployeeRoleMap();
+        } catch (SQLException e) {
+            dLog.debug(e.getMessage(), e);
+        }
+        return null;
     }
 }

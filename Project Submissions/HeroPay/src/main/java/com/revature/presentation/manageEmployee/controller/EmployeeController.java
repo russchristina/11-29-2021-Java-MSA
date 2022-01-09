@@ -1,7 +1,7 @@
 package com.revature.presentation.manageEmployee.controller;
 
-import com.revature.presentation.model.employee.Employee;
-import com.revature.presentation.model.employee.EmployeeResponse;
+import com.revature.presentation.model.employeeRequests.Employee;
+import com.revature.presentation.model.employeeRequests.EmployeeResponse;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.service.handleEmployee.EmployeeService;
 import io.javalin.http.Handler;

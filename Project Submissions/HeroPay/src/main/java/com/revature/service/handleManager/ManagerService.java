@@ -1,6 +1,6 @@
 package com.revature.service.handleManager;
 
-import com.revature.presentation.model.requests.CompletedRequest;
+import com.revature.presentation.model.requests.recieve.CompletedRequest;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.service.handleManager.interfaces.ManagerServiceInterface;
 import com.revature.service.handleRequest.CompletedRequestService;

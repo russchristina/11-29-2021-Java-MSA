@@ -1,6 +1,5 @@
-package com.revature.presentation.model.requests;
+package com.revature.presentation.model.requests.response;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class ManagerRequestResponse {

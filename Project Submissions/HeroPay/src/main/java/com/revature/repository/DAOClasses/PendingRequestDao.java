@@ -415,4 +415,60 @@ public class PendingRequestDao implements PendingRequestInterface {
         }
         return pendingRequestEntityList;
     }
+
+    @Override
+    public List<PendingRequestEntity> getEmployeeAnsweredRequestsByType(int typeId) throws SQLException {
+        List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
+
+        final String SQL = "SELECT * FROM pending_request WHERE type = ? AND status = true";
+
+        ResultSet rs = null;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setInt(1, typeId);
+            rs = stmt.executeQuery();
+            while(rs.next()) pendingRequestEntityList.add(
+                    new PendingRequestEntity(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(3),
+                            rs.getString(4),
+                            rs.getDouble(5),
+                            rs.getDate(6),
+                            rs.getBoolean(7)
+                    )
+            );
+        }
+        return pendingRequestEntityList;
+    }
+
+    @Override
+    public List<PendingRequestEntity> getEmployeeAnsweredRequestsByRole(int roleId) throws SQLException {
+        List<PendingRequestEntity> pendingRequestEntityList = new ArrayList<>();
+        final String SQL = "SELECT * FROM request_with_role_id WHERE role_id = ? AND status = true";
+
+        ResultSet rs = null;
+
+        try(
+                Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SQL)
+        ){
+            stmt.setInt(1, roleId);
+            rs = stmt.executeQuery();
+            while(rs.next()) pendingRequestEntityList.add(
+                    new PendingRequestEntity(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(4),
+                            rs.getString(5),
+                            rs.getDouble(6),
+                            rs.getDate(7),
+                            rs.getBoolean(8)
+                    )
+            );
+        }
+        return pendingRequestEntityList;    }
 }

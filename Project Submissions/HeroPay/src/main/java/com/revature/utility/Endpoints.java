@@ -3,6 +3,7 @@ package com.revature.utility;
 import com.revature.presentation.manageEmployee.controller.EmployeeController;
 import com.revature.presentation.manageLogin.controller.LoginController;
 import com.revature.presentation.manageRequest.controller.RequestController;
+import com.revature.presentation.manageStatistics.controller.StatisticsController;
 import io.javalin.Javalin;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -12,11 +13,13 @@ public class Endpoints {
     private LoginController loginController;
     private EmployeeController employeeController;
     private RequestController requestController;
+    private StatisticsController statisticsController;
 
-    public Endpoints(LoginController loginController, EmployeeController employeeController, RequestController requestController) {
+    public Endpoints(LoginController loginController, EmployeeController employeeController, RequestController requestController, StatisticsController statisticsController) {
         this.loginController = loginController;
         this.employeeController = employeeController;
         this.requestController = requestController;
+        this.statisticsController = statisticsController;
     }
 
     public void initializeEndpoints(Javalin app){
@@ -63,6 +66,10 @@ public class Endpoints {
                 });
 
                 path("/statistic", () ->{
+
+                    path("/general", () ->{
+                       get(statisticsController.getGeneralStatistics);
+                    });
 
                 });
             });
