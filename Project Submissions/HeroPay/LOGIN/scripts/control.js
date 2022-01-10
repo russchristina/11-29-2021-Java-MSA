@@ -42,15 +42,8 @@ let generalStatisticsTotalContainer;
 let individualEmployeeFormContainer;
 let individualEmployeeData;
 
-
 let statisticsPageCheck = true;
 
-
-let employeeDataViewCheck = true;
-
-
-
-let alteredInfo = false;
 
 /** JSON objects with needed information for global access */
 
