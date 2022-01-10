@@ -21,24 +21,24 @@ let iss_url = 'https://api.wheretheiss.at/v1/satellites/25544'
 // }
 // getLogin();
 
-async function getDoggo(){
-    let breed_info = await fetch(dog_url)
-    let data = await breed_info.json()
-    console.log('donde esta?')
-    // console.log(data[0].name)
-    const {dogName,[0]:name} = data;
-    document.getElementById('doggo').textContent = data[0].name
+// async function getDoggo(){
+//     let breed_info = await fetch(dog_url)
+//     let data = await breed_info.json()
+//     console.log('donde esta?')
+//     // console.log(data[0].name)
+//     const {dogName,[0]:name} = data;
+//     document.getElementById('doggo').textContent = data[0].name
     
-// }
-// getISS();
-// async function getISS(){
-// let iss = await fetch(iss_url)
-// let data = await iss.json()
-// // console.log(data.latitude)
-// // console.log(data.longitude)
-// const {latitude, longitude} = data;
+// // }
+// // getISS();
+// // async function getISS(){
+// // let iss = await fetch(iss_url)
+// // let data = await iss.json()
+// // // console.log(data.latitude)
+// // // console.log(data.longitude)
+// // const {latitude, longitude} = data;
 
-// document.getElementById('lat').textContent = latitude;
-// document.getElementById('lon').textContent = longitude;
-}
-getDoggo();
+// // document.getElementById('lat').textContent = latitude;
+// // document.getElementById('lon').textContent = longitude;
+// }
+// getDoggo();

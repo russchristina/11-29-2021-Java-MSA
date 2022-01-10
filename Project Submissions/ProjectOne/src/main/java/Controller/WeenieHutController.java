@@ -1,5 +1,7 @@
 package Controller;
 
+import Controller.util.JavalinHandler;
+import daolayer.DAOQueries;
 import daolayer.Reimbursements;
 import io.javalin.Javalin;
 
@@ -13,7 +15,7 @@ import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 public class WeenieHutController {
-ReimbursementBuilder builder = new ReimbursementBuilder();
+    JavalinHandler handle = new JavalinHandler();
    private Javalin app;
 Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
     public WeenieHutController(Javalin app) {
@@ -22,19 +24,36 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
     }
 
     public void WeenieHutEndpoints() {
+
         this.app.routes(() -> {
+            path("/P1LandingPage", () -> {
+               get(StaticHTMLController.loadLandingPage);
+            });
         path("/reimbursements", () -> {
+            path("/validate", () -> {
+               post(handle.VALIDATEUSER);
+            });
             path("new", () -> {
-            post(saveNewRequests);
-            exceptions.debug("Borked it");
+            post(handle.SAVENEWRECORDS);
             });
-            path("all", ()-> {
-                get(findallRequests);
+            path("/manager/all", ()-> {
+                get(handle.FINDALLRECORDS);
             });
-
+            path("delete", () ->{
+            delete(handle.DELETERECORD);
+            });
+            path("manager/update",() ->{
+            put(handle.UPDATERECORD);
+            });
+            path("/show", () ->{
+                get(handle.SHOWBYUSER);
+            });
         });
 
         });
+
+
+
         //        this.app.get("/reimbursements/all", ctx ->{
 //        });
 //
@@ -45,13 +64,5 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
 //
 
     }
-    private Handler findallRequests = ctx -> {
-    ctx.json(builder.compareByStatus());
-    };
 
-    private Handler saveNewRequests = ctx ->{
-        System.out.println(ctx.body());
-        Reimbursements reimbursements = ctx.bodyAsClass(Reimbursements.class);
-//        System.out.println(reimbursements);
-    };
 }

@@ -5,13 +5,16 @@ import java.sql.Date;
 
 public class Reimbursements {
     private String requestID;
-    private int submittedBy;
+    private String submittedBy;
     private Date submittedDate;
     private int requestAmount;
     private String reason;
     private String status;
 
-    public Reimbursements(String requestID, int submittedBy, Date submittedDate, int requestAmount, String reason, String status) {
+    public Reimbursements() {
+    }
+
+    public Reimbursements(String requestID, String submittedBy, Date submittedDate, int requestAmount, String reason, String status) {
         this.requestID = requestID;
         this.submittedBy = submittedBy;
         this.submittedDate = submittedDate;
@@ -28,11 +31,11 @@ public class Reimbursements {
         this.requestID = requestID;
     }
 
-    public int getSubmittedBy() {
+    public String getSubmittedBy() {
         return submittedBy;
     }
 
-    public void setSubmittedBy(int submittedBy) {
+    public void setSubmittedBy(String submittedBy) {
         this.submittedBy = submittedBy;
     }
 
@@ -75,22 +78,21 @@ public class Reimbursements {
 
         Reimbursements that = (Reimbursements) o;
 
-        if (getSubmittedBy() != that.getSubmittedBy()) return false;
         if (getRequestAmount() != that.getRequestAmount()) return false;
         if (getRequestID() != null ? !getRequestID().equals(that.getRequestID()) : that.getRequestID() != null)
+            return false;
+        if (getSubmittedBy() != null ? !getSubmittedBy().equals(that.getSubmittedBy()) : that.getSubmittedBy() != null)
             return false;
         if (getSubmittedDate() != null ? !getSubmittedDate().equals(that.getSubmittedDate()) : that.getSubmittedDate() != null)
             return false;
         if (getReason() != null ? !getReason().equals(that.getReason()) : that.getReason() != null) return false;
-        if (getStatus() != null ? !getStatus().equals(that.getStatus()) : that.getStatus() != null) return false;
-
-        return true;
+        return getStatus() != null ? getStatus().equals(that.getStatus()) : that.getStatus() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getRequestID() != null ? getRequestID().hashCode() : 0;
-        result = 31 * result + getSubmittedBy();
+        result = 31 * result + (getSubmittedBy() != null ? getSubmittedBy().hashCode() : 0);
         result = 31 * result + (getSubmittedDate() != null ? getSubmittedDate().hashCode() : 0);
         result = 31 * result + getRequestAmount();
         result = 31 * result + (getReason() != null ? getReason().hashCode() : 0);

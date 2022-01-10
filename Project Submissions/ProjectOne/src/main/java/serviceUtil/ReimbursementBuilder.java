@@ -1,9 +1,12 @@
 package serviceUtil;
 
+import Controller.util.models.LoginReceived;
 import Driver.Testing;
 import daolayer.DAOQueries;
 import daolayer.Reimbursements;
+import daolayer.UserSpecs;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,8 +14,13 @@ import java.util.List;
 import java.util.Random;
 
 public class ReimbursementBuilder {
+    Date myDate = java.sql.Date.valueOf(getDate());
+
+    private final String APPROVED = "Approved";
+    private final String DENIED = "Denied";
     ReimbursementBuilder builder;
-    DAOQueries queries;
+    private Reimbursements reimbursements;
+
     private StringBuilder idGenerator(String pool, int idLength) {
         StringBuilder returnedID = new StringBuilder();
 
@@ -43,24 +51,36 @@ public class ReimbursementBuilder {
 
     public Reimbursements passStringForID(String variable) {
         return new Reimbursements(variable,
-                0,
+                "",
                 null,
                 0,
                 "",
                 "");
     }
+    public UserSpecs validateUser(UserSpecs specs){
 
+        UserSpecs userSpecs = new UserSpecs();
+        userSpecs.setUserLogin(specs.getUserLogin());
+        userSpecs.setUserPass(specs.getUserPass());
+        return new DAOQueries().validateUser(userSpecs);
+
+    }
+    public  List<Reimbursements> requestsByUserService(Reimbursements reimbursements){
+        Reimbursements requests = new Reimbursements();
+        requests.setSubmittedBy(reimbursements.getSubmittedBy());
+        return new DAOQueries().returnRequestsByLogin(requests);
+    }
     public Reimbursements passStringForStatus(String variable) {
 
         return new Reimbursements("",
-                0,
+                "",
                 null,
                 0,
                 "",
                 "s"
         );
     }
-    public List<Reimbursements> compareByStatus(){
+    public List<Reimbursements> sortByStatus(){
         List<Reimbursements> reimbursementsList = new DAOQueries().returnRequests();
         reimbursementsList.sort(Comparator.comparing(Reimbursements::getStatus));
         return reimbursementsList;
@@ -71,13 +91,33 @@ public class ReimbursementBuilder {
         return reimbursementsList;
     }
     public List<Reimbursements> sortByUser(){
-     queries = new DAOQueries();
-        List<Reimbursements> reimbursementsList = queries.returnRequests();
+        List<Reimbursements> reimbursementsList = new DAOQueries().returnRequests();
         reimbursementsList.sort(Comparator.comparing(Reimbursements::getSubmittedBy));
 //        reimbursementsList.sort((r1,r2)-> r1.getSubmittedBy() - (r2.getSubmittedBy()));
         return reimbursementsList;
     }
-public void newRequestService(Reimbursements reimbursements){
-        queries.newRequest(reimbursements);
-}
+//    public List<Reimbursements> returnMaster(){
+//
+//    }
+    public void newRequestService(Reimbursements reimbursements){
+    String id =String.valueOf(idBuilder());
+    String PENDING = "Pending";
+    Date myDate = java.sql.Date.valueOf(getDate());
+    reimbursements = new Reimbursements(id,"iamthelaw420", myDate, reimbursements.getRequestAmount(), reimbursements.getReason(), PENDING);
+       new DAOQueries().newRequest(reimbursements);
+
+    }
+    public void deleteRequestService(Reimbursements reimbursements){
+        Date myDate = java.sql.Date.valueOf(getDate());
+        reimbursements = new Reimbursements(reimbursements.getRequestID(), "iamthelaw420",
+                myDate, reimbursements.getRequestAmount(), reimbursements.getReason(), "PENDING");
+        new DAOQueries().deleteRequest(reimbursements);
+    }
+    public void updateRequestService(Reimbursements reimbursements){
+        reimbursements = new Reimbursements(reimbursements.getRequestID(), "",
+                myDate, 0, "", reimbursements.getStatus());
+       new DAOQueries().updateRequest(reimbursements);
+
+    }
+
 }

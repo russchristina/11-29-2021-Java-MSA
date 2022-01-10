@@ -9,6 +9,10 @@ public class UserSpecs {
     private String userPass;
     private boolean isManager;
 
+    public UserSpecs() {
+
+    }
+
     public int getUserID() {
         return userID;
     }
