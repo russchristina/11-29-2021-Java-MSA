@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
-<<<<<<< HEAD
+
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LOGIN/scripts/control.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/control.js" afterDir="false" />
-=======
+
       <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/QuickSortEmployee.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/RankedEmployeeResponse.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/SortedEmployee.java" afterDir="false" />
@@ -29,7 +29,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" afterDir="false" />
->>>>>>> 416ba13 (finished all requirements)
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

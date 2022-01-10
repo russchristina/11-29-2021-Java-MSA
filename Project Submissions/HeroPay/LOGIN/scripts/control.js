@@ -276,14 +276,6 @@ const pageUtility = {
             tableRow = document.createElement('tr');
             for(let key in values[i]){
                 tableElement = document.createElement('td')
-                // if(Array.isArray(values[i][key])){
-                //     tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
-                // }else if(values[i][key] == false){
-                //     tableElement.innerText = 'Denied';
-
-                // } else if(values[i][key] == true){
-                //     tableElement.innerText = 'Approved';
-                // }else{
                 console.log(values[i][key])
                 tableElement.innerText = values[i][key];
                 for(let hidden of hiddenColumns){
@@ -1024,7 +1016,6 @@ async function getGeneralStats(){
         generalStatData = await generalStatBody.json();
         if(generalStatData){
             console.log("GOT THE STATS BOYS");
-            // pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
             pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
         }
     }catch(e){
