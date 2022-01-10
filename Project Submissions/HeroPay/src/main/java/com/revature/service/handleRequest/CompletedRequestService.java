@@ -166,4 +166,16 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
         }
     }
 
+    @Override
+    public CompletedRequestEntity getCompletedRequestById(int requestId) {
+        try {
+            dLog.debug("getting completed request by ID: " + requestId);
+            return completedRequestDao.getCompletedRequest(requestId);
+        } catch (SQLException e) {
+            dLog.debug("Failed to get completedRequest ID: " + requestId);
+            dLog.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
 }

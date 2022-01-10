@@ -10,7 +10,9 @@ import com.revature.repository.DAOClasses.LoginInfoDao;
 import com.revature.repository.DAOClasses.PendingRequestDao;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleLogin.LoginService;
+import com.revature.service.handleManager.ManagerService;
 import com.revature.service.handleRequest.CompletedRequestService;
+import com.revature.service.handleRequest.OrderingService;
 import com.revature.service.handleRequest.PendingRequestService;
 import com.revature.service.handleStatistics.StatisticsService;
 import io.javalin.Javalin;
@@ -30,11 +32,26 @@ public class ServerStartup {
             ctx.header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
         });
         this.app._conf.prefer405over404 = true;
-        Endpoints endpoints = new Endpoints(
-                new LoginController(new LoginService(new LoginInfoDao())),
-                new EmployeeController(),
-                new RequestController(new PendingRequestService(new PendingRequestDao()), new CompletedRequestService(new CompletedRequestDao())),
-                new StatisticsController(new StatisticsService(new PendingRequestService(new PendingRequestDao()), new EmployeeService(new EmployeeAccountDao()))));
+        LoginInfoDao lid = new LoginInfoDao();
+        PendingRequestDao pid = new PendingRequestDao();
+        CompletedRequestDao crd = new CompletedRequestDao();
+        EmployeeAccountDao eid = new EmployeeAccountDao();
+
+        LoginService ls = new LoginService(lid);
+        EmployeeService es = new EmployeeService(eid);
+        PendingRequestService prs = new PendingRequestService(pid);
+        CompletedRequestService crs = new CompletedRequestService(crd);
+
+        ManagerService ms = new ManagerService(prs, crs);
+        OrderingService os = new OrderingService(prs, crs);
+        StatisticsService ss = new StatisticsService(prs, es, os);
+
+        LoginController lc = new LoginController(ls);
+        EmployeeController ec = new EmployeeController();
+        RequestController rc = new RequestController(prs, crs);
+        StatisticsController sc = new StatisticsController(ss);
+
+        Endpoints endpoints = new Endpoints(lc, ec, rc, sc);
         endpoints.initializeEndpoints(this.app);
     }
 

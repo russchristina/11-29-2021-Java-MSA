@@ -25,4 +25,6 @@ public interface CompletedRequestServiceInterface {
     CompletedRequest convertPendingRequest(PendingRequest pendingRequest, int managerId, boolean status, String response);
 
     List<CompletedRequest> getAllEmployeeRequests(int employeeId);
+
+    CompletedRequestEntity getCompletedRequestById(int requestId);
 }

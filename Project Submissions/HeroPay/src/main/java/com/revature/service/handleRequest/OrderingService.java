@@ -2,6 +2,8 @@ package com.revature.service.handleRequest;
 
 import com.revature.presentation.model.requests.recieve.CompletedRequest;
 import com.revature.presentation.model.requests.PendingRequest;
+import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
+import com.revature.presentation.model.statisticsRequests.response.SortedEmployee;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.service.handleRequest.interfaces.OrderingServiceInterface;
 import org.slf4j.Logger;
@@ -17,17 +19,14 @@ public class OrderingService implements OrderingServiceInterface {
 
     private PendingRequestService pendingRequestService;
     private CompletedRequestService completedRequestService;
-    private CompletedRequestDao completedRequestDao;
 
-    public OrderingService(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService, CompletedRequestDao completedRequestDao) {
+    public OrderingService(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService) {
         this.pendingRequestService = pendingRequestService;
         this.completedRequestService = completedRequestService;
-        this.completedRequestDao = completedRequestDao;
     }
 
     @Override
     public List<PendingRequest> orderByDatePending(List<PendingRequest> pendingRequests) {
-
         List<PendingRequest> sortingList = pendingRequests;
         pendingRequests.sort(Comparator.comparing(PendingRequest::getDateSubmission));
         dLog.debug("Order by date of pendingRequests");
@@ -63,9 +62,15 @@ public class OrderingService implements OrderingServiceInterface {
         SortedMap<Double, CompletedRequest> orderdCompleteRequestSortedMap = new TreeMap<>();
 
         for (PendingRequest pendingRequest : orderedCompletePendingReqList) {
-            orderdCompleteRequestSortedMap.put(pendingRequest.getAmount(), completedRequestService.convertCompletedRequestEntity(completedRequestDao.getCompletedRequest(pendingRequest.getId())));
+            orderdCompleteRequestSortedMap.put(pendingRequest.getAmount(), completedRequestService.convertCompletedRequestEntity(completedRequestService.getCompletedRequestById(pendingRequest.getId())));
         }
         dLog.debug("order by amount CompletedRequests");
         return orderdCompleteRequestSortedMap;
+    }
+
+    @Override
+    public List<QuickSortEmployee> orderSortedEmployee(List<QuickSortEmployee> sortedEmployees) {
+        sortedEmployees.sort(Comparator.comparing((QuickSortEmployee::getSum)));
+        return sortedEmployees;
     }
 }

@@ -1,5 +1,6 @@
 package com.revature.repository.DAOInteface;
 
+import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
 
@@ -36,11 +37,14 @@ public interface EmployeeAccountInterface {
 
     Map<Integer, String> getEmployeeRoleMap() throws SQLException;
 
+    List<QuickSortEmployee> getQuickSort() throws SQLException;
     //Update
 
     EmployeeAccountEntity updateEmployeeRole(int employeeId, int roleId) throws SQLException;
 
     EmployeeRoleEntity updateRole(int roleId, String roleName) throws SQLException;
+
+
 
     //Delete
 

@@ -5,6 +5,8 @@ import io.javalin.http.Handler;
 
 public class StatisticsController {
 
+
+
     private StatisticsService statisticsService;
 
     public StatisticsController(StatisticsService statisticsService) {
@@ -15,5 +17,13 @@ public class StatisticsController {
         ctx.json(statisticsService.getGeneralStatistics());
     };
 
+    public Handler getEmployeeGeneralStatistics = ctx -> {
+        ctx.json(statisticsService.getEmployeeRankedList());
+    };
+
+    public Handler getEmployeeStatistics = ctx -> {
+        int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
+        ctx.json(statisticsService.getEmployeeStatistics(employeeId));
+    };
 
 }

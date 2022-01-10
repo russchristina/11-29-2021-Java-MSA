@@ -129,7 +129,7 @@ class OrderingServiceTest {
             e.printStackTrace();
         }
 
-        orderingService = new OrderingService(mockPendingRequestService, mockCompletedRequestService, mockCompletedRequestDao);
+        orderingService = new OrderingService(mockPendingRequestService, mockCompletedRequestService);
     }
 
 

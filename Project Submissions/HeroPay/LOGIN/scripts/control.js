@@ -32,12 +32,25 @@ let respondRequestCheck = true;
 let statisticsTopContainer;
 
 let generalStatisticsContainer;
+let employeeStatisticsContainer;
+let indivdiualStatisticsContainer;
 
 let generalStatisticsRoleContainer;
 let generalStatisticsTypeContainer;
 let generalStatisticsTotalContainer;
 
+let individualEmployeeFormContainer;
+let individualEmployeeData;
+
+
 let statisticsPageCheck = true;
+
+
+let employeeDataViewCheck = true;
+
+
+
+let alteredInfo = false;
 
 /** JSON objects with needed information for global access */
 
@@ -51,8 +64,7 @@ let newRequestData;
 let newResponseData;
 
 let generalStatData;
-
-
+let generalEmployeeStatData;
 
 
 //============================================================================
@@ -85,7 +97,7 @@ const pageUtility = {
         toggleLogin(true);
         createRequestCheck = true;
         respondRequestCheck = true;
-    
+
     },
     generateNewLine: function (lines, container){
         let emptySpace;
@@ -156,7 +168,6 @@ const pageUtility = {
             option.innerText = selectOptions[element];
             container.appendChild(option);
         }
-    
     },
     generateTableElement: function(headerNames, tableId, container){
         let table = document.createElement('table');
@@ -183,6 +194,21 @@ const pageUtility = {
             for(let key in values[i]){
                 tableElement = document.createElement('td')
                 tableElement.innerText = values[i][key];
+                tableRow.appendChild(tableElement);
+            }
+            table.appendChild(tableRow);
+        }
+        container.appendChild(table);
+    },
+    generateTableRowsEmployeeStats: function (tableId, container, values){
+        let table = document.getElementById(tableId);
+        let tableRow;
+        let tableElement;
+        for(let i = 0; i < values.orderedList.length; i++){
+            tableRow = document.createElement('tr');
+            for(let key in values.orderedList[i]){
+                tableElement = document.createElement('td')
+                tableElement.innerText = values.orderedList[i][key];
                 tableRow.appendChild(tableElement);
             }
             table.appendChild(tableRow);
@@ -476,6 +502,40 @@ const userViewUtility = {
 }
 
 const statisticsUtility = {
+    viewGeneralData: function(){
+        console.log("general");
+        document.getElementsByName('view-general-button')[0].hidden = true;
+        document.getElementsByName('view-ranking-button')[0].hidden = false;
+        document.getElementsByName('view-individual-button')[0].hidden = false;
+
+        generalStatisticsContainer.hidden = false;
+        employeeStatisticsContainer.hidden = true;
+        indivdiualStatisticsContainer.hidden = true;
+        
+    },
+    viewEmployeeData: function(){
+
+        console.log("emp");
+        document.getElementsByName('view-ranking-button')[0].hidden = true;
+        document.getElementsByName('view-general-button')[0].hidden = false;
+        document.getElementsByName('view-individual-button')[0].hidden = false;
+        generalStatisticsContainer.hidden = true;
+        employeeStatisticsContainer.hidden = false;
+        indivdiualStatisticsContainer.hidden = true;
+        
+    },
+    viewIndividualData : function(){
+
+        console.log("indi")
+        document.getElementsByName('view-individual-button')[0].hidden = true;
+        document.getElementsByName('view-general-button')[0].hidden = false;
+        document.getElementsByName('view-ranking-button')[0].hidden = false;
+    
+        generalStatisticsContainer.hidden = true;
+        employeeStatisticsContainer.hidden = true;
+        indivdiualStatisticsContainer.hidden = false;
+
+    },
     createGeneralStatisticsTable: function (){
 
         pageUtility.attachTitleElement('h3', 'General Employee Role Statistics', generalStatisticsRoleContainer);
@@ -494,7 +554,38 @@ const statisticsUtility = {
         pageUtility.generateSingleTableRow(generalStatData.total, document.getElementById('general-total-table'));
         console.log(document.getElementById('general-total-table'));
         console.log(generalStatData);
-    }
+    },
+    createGeneralEmployeeStatisticsTable: function (){
+        pageUtility.attachTitleElement('h3', 'Employee Detail View', employeeStatisticsContainer);
+        pageUtility.generateTableElement(['Employee ID',"Sum"], 'general-employee-statistics-table', employeeStatisticsContainer);
+        pageUtility.generateTableRowsEmployeeStats('general-employee-statistics-table', employeeStatisticsContainer, generalEmployeeStatData);
+        console.log(generalEmployeeStatData);
+    },
+    createIndividualEmployeeStatisticsTable: function (){
+        console.log(individualEmployeeData); 
+        let tableContainer = document.getElementById('individual-employee-table');
+        if(tableContainer.children[1]) tableContainer.removeChild(tableContainer.children[1]);
+        pageUtility.generateSingleTableRow(individualEmployeeData, document.getElementById('individual-employee-table'));
+
+    },
+    individualEmployeeSearchDisplay: function(){
+        individualEmployeeFormContainer = document.createElement('form');
+        individualEmployeeFormContainer.id = 'individual-employee-form-container';
+
+        pageUtility.generateNewLine(1, individualEmployeeFormContainer);
+        pageUtility.attachInputNumberElement('employee-id-input', 'Employee ID', individualEmployeeFormContainer);
+        pageUtility.generateNewLine(2, individualEmployeeFormContainer);
+
+        pageUtility.attachButtonElement('find-button', 'Find', individualEmployeeFormContainer,'click', userRequestUtility.getIndividualEmployeeRequest);
+        let resetButton = document.createElement('input');
+        resetButton.type = 'reset';
+        resetButton.value = 'reset';
+        individualEmployeeFormContainer.appendChild(resetButton);
+        indivdiualStatisticsContainer.appendChild(individualEmployeeFormContainer);
+        pageUtility.attachTitleElement('h3', 'Employee Details', indivdiualStatisticsContainer);
+        pageUtility.generateTableElement(['Employee ID', 'First Name', 'Last Name', 'Role', 'Average Expenditure', 'Total'], 'individual-employee-table', indivdiualStatisticsContainer);
+    },
+
 }
 
 
@@ -522,12 +613,14 @@ function toggleHomepage(toggle, isManager, userData){
 function toggleStatistics(){
     if(statisticsPageCheck){
         statisticsPageCheck = !statisticsPageCheck;
+
         pageUtility.clearView(homepageView);
         loadStatistics(statisticsPageView);
     }
     else {
         pageUtility.clearView(statisticsPageView);
         statisticsPageCheck = !statisticsPageCheck;
+
         toggleHomepage(true, true, userData);
     }
 }
@@ -662,14 +755,25 @@ function loadStatistics(statisticsPageView){
     statisticsTopContainer.appendChild(bannerDiv);
     statisticsPageView.appendChild(statisticsTopContainer);
 
-
     pageUtility.attachTitleElement('h3', 'Options', statisticsTopContainer);
     pageUtility.attachButtonElement('homepage-button', 'return', statisticsTopContainer, 'click', toggleStatistics);
-    // pageUtility.attachButtonElement('create-button', 'Create Request', statisticsTopContainer,'click', requestViewUtility.openCreateRequestDisplay);
+
 
     generalStatisticsContainer = document.createElement('div');
     generalStatisticsContainer.id = 'general-statistics-container';
+    pageUtility.attachButtonElement('view-general-button', 'View General Data', statisticsTopContainer,'click', statisticsUtility.viewGeneralData);
     statisticsPageView.appendChild(generalStatisticsContainer);
+
+    employeeStatisticsContainer = document.createElement('div');
+    employeeStatisticsContainer.id = 'employee-statistics-container';
+    pageUtility.attachButtonElement('view-ranking-button', 'View Employee Rankings', statisticsTopContainer, 'click', statisticsUtility.viewEmployeeData);
+    statisticsPageView.appendChild(employeeStatisticsContainer);
+
+    indivdiualStatisticsContainer = document.createElement('div');
+    indivdiualStatisticsContainer.id = 'individual-statistics-container';
+    pageUtility.attachButtonElement('view-individual-button', 'View Individual Data', statisticsTopContainer, 'click', statisticsUtility.viewIndividualData);
+    statisticsPageView.appendChild(indivdiualStatisticsContainer);
+
 
     generalStatisticsRoleContainer = document.createElement('div');
     generalStatisticsRoleContainer.id = 'general-statistics-role-container';
@@ -680,6 +784,16 @@ function loadStatistics(statisticsPageView){
 
 
     statisticsUtility.createGeneralStatisticsTable();
+    statisticsUtility.createGeneralEmployeeStatisticsTable();
+    statisticsUtility.individualEmployeeSearchDisplay();
+    generalStatisticsContainer.hidden = false;
+    document.getElementsByName('view-general-button')[0].hidden = true;
+    employeeStatisticsContainer.hidden = true;
+    document.getElementsByName('view-ranking-button')[0].hidden = false;
+    indivdiualStatisticsContainer.hidden = true;
+    document.getElementsByName('view-individual-button')[0].hidden = false;
+
+
 }
 
 /*================================================================================================*/
@@ -758,6 +872,7 @@ function failedLogin(){
 function successfulLogin(userData, isManager){
     toggleLogin(false);
     if(isManager){
+        getGeneralEmployeeStats();
         toggleHomepage(true, isManager, userData);
     }else{
         toggleHomepage(true, isManager, userData);
@@ -787,14 +902,22 @@ const userRequestUtility = {
     },
     getResponse: function (){
         let responseForm = document.getElementById('respond-form-container');
-        console.log(responseForm);
         let statusText = responseForm.elements[0].value;
         let message = responseForm.elements[1].value;
         let boolio;
         statusText == 'Approve' ? boolio = true: boolio = false;
-
         let responseObj = {bool:boolio, text:message};
         return responseObj;
+    },
+    getIndividualEmployeeRequest: function(){
+        let id = individualEmployeeFormContainer.elements[0].value;
+        
+        if(id){
+            getIndividualEmployeeRequest(id);
+        }else{
+            window.alert('EMPTY INPUT');
+        }
+
     }
 }
 
@@ -901,8 +1024,35 @@ async function getGeneralStats(){
         generalStatData = await generalStatBody.json();
         if(generalStatData){
             console.log("GOT THE STATS BOYS");
+            // pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
             pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
         }
+    }catch(e){
+        console.log(e);
+    }
+}
+
+async function getGeneralEmployeeStats(){
+    let generalEmployeeStatUrl = 'http://localhost:9002/manager/statistic/employee-list';
+    try{
+        let generalEmployeeBody = await fetch(generalEmployeeStatUrl, {method: "GET"});
+        generalEmployeeStatData = await generalEmployeeBody.json();
+        if(generalEmployeeStatData){
+            console.log("GOT THE EMPLOYEESTATS BOYS");
+        }
+    }catch(e){
+        console.log(e);
+    }
+}
+
+async function getIndividualEmployeeRequest(id){
+    let individualEmployeeUrl = 'http://localhost:9002/manager/statistic/individual?employeeId=' + id;
+    try{
+        let individualEmployeeBody = await fetch(individualEmployeeUrl, {method: "GET"});
+        individualEmployeeData = await individualEmployeeBody.json();
+        if(individualEmployeeData){
+            statisticsUtility.createIndividualEmployeeStatisticsTable();
+        } 
     }catch(e){
         console.log(e);
     }

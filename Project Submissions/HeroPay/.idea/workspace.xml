@@ -5,8 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LOGIN/scripts/control.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/control.js" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/QuickSortEmployee.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/RankedEmployeeResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/SortedEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LOGIN/scripts/control.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/control.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageStatistics/controller/StatisticsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageStatistics/controller/StatisticsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/generalStatisticsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/statisticsRequests/response/GeneralStatisticsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/EmployeeAccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOClasses/EmployeeAccountDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/EmployeeAccountInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DAOInteface/EmployeeAccountInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/interfaces/EmployeeServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/interfaces/EmployeeServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/OrderingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/CompletedRequestServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/CompletedRequestServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/OrderingServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/OrderingServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/StatisticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/StatisticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/interfaces/StatisticsServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleStatistics/interfaces/StatisticsServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/ServerStartup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/OrderingServiceTest.java" afterDir="false" />
+>>>>>>> 416ba13 (finished all requirements)
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +74,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="copyright" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">

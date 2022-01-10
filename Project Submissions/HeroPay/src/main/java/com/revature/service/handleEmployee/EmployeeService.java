@@ -1,6 +1,7 @@
 package com.revature.service.handleEmployee;
 
 import com.revature.presentation.model.employeeRequests.Employee;
+import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class EmployeeService implements EmployeeServiceInterface {
@@ -77,6 +80,31 @@ public class EmployeeService implements EmployeeServiceInterface {
     public Map<Integer, String> getEmployeeRoleMap() {
         try {
             return employeeAccountDao.getEmployeeRoleMap();
+        } catch (SQLException e) {
+            dLog.debug(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        try {
+            List<EmployeeAccountEntity> employeeAccountEntities = employeeAccountDao.getAllEmployeeAccountList();
+            List<Employee> employeeList = new ArrayList<>();
+            employeeAccountEntities.forEach(employee -> {
+               employeeList.add(convertEmployeeEntityToEmployee(employee));
+            });
+            return employeeList;
+        } catch (SQLException e) {
+            dLog.debug(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<QuickSortEmployee> getQuickSort() {
+        try {
+            return employeeAccountDao.getQuickSort();
         } catch (SQLException e) {
             dLog.debug(e.getMessage(), e);
         }

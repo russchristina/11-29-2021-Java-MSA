@@ -1,9 +1,11 @@
 package com.revature.service.handleEmployee.interfaces;
 
 import com.revature.presentation.model.employeeRequests.Employee;
+import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface EmployeeServiceInterface {
@@ -17,4 +19,8 @@ public interface EmployeeServiceInterface {
     Employee getEmployee(int employeeId);
 
     Map<Integer, String> getEmployeeRoleMap();
+
+    List<Employee> getAllEmployees();
+
+    List<QuickSortEmployee> getQuickSort();
 }

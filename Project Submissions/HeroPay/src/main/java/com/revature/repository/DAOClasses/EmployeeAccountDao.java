@@ -1,5 +1,6 @@
 package com.revature.repository.DAOClasses;
 
+import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DAOInteface.EmployeeAccountInterface;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
@@ -198,10 +199,31 @@ public class EmployeeAccountDao implements EmployeeAccountInterface {
             result = statement.executeQuery();
 
             while(result.next()) employeeRoleMap.put(result.getInt(1), result.getString(2));
-
         }
 
         return employeeRoleMap;
+    }
+
+    @Override
+    public List<QuickSortEmployee> getQuickSort() throws SQLException {
+        final String SQL = "select * from quick_sum";
+
+        List<QuickSortEmployee> employeesList = new ArrayList<>();
+
+        ResultSet result;
+
+        try(
+            Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement statement = conn.prepareStatement(SQL)
+        ){
+            result = statement.executeQuery();
+
+            while(result.next()){
+                employeesList.add(new QuickSortEmployee(result.getInt(1), result.getDouble(2)));
+            }
+        }
+        result.close();
+        return employeesList;
     }
 
     @Override

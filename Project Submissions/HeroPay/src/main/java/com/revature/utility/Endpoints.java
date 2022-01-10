@@ -71,6 +71,14 @@ public class Endpoints {
                        get(statisticsController.getGeneralStatistics);
                     });
 
+                    path("/employee-list", () ->{
+                       get(statisticsController.getEmployeeGeneralStatistics);
+                    });
+
+                    path("/individual", () -> {
+                       get(statisticsController.getEmployeeStatistics);
+                    });
+
                 });
             });
 
