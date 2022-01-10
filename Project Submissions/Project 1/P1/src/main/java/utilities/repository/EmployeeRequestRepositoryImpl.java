@@ -25,7 +25,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 			 stmt.setString(1, r.getEmployeeName());
 			 stmt.setDouble(2, r.getAmount());
 			 stmt.setString(3, r.getReason());
-			 stmt.setInt(4, r.getStatus());
+			 stmt.setString(4, r.getStatus());
 			 stmt.setString(5, r.getNote());
 			 stmt.execute();
 		 } catch (SQLException e) {
@@ -88,7 +88,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 						set.getString(2),
 						set.getDouble(3),
 						set.getString(4),
-						set.getInt(5),
+						set.getString(5),
 						set.getString(6)
 						);
 			} // End if statement
@@ -123,7 +123,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 						set.getString(2),
 						set.getDouble(3),
 						set.getString(4),
-						set.getInt(5),
+						set.getString(5),
 						set.getString(6)
 						));
 			} // End while loop
@@ -157,7 +157,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 						set.getString(2),
 						set.getDouble(3),
 						set.getString(4),
-						set.getInt(5),
+						set.getString(5),
 						set.getString(6)
 						));
 			} // End while loop
@@ -191,7 +191,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 						set.getString(2),
 						set.getDouble(3),
 						set.getString(4),
-						set.getInt(5),
+						set.getString(5),
 						set.getString(6)
 						));
 			} // End while loop
@@ -214,7 +214,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 		 try {
 			 conn = ConnectionHandler.getConnection();
 			 stmt = conn.prepareStatement(SQL);
-			 stmt.setInt(1, r.getStatus());
+			 stmt.setString(1, r.getStatus());
 			 stmt.setInt(3, r.getRequestId());
 			 stmt.execute();
 		 } catch (SQLException e) {
@@ -233,7 +233,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 		 try {
 			 conn = ConnectionHandler.getConnection();
 			 stmt = conn.prepareStatement(SQL);
-			 stmt.setInt(1, r.getStatus());
+			 stmt.setString(1, r.getStatus());
 			 stmt.setString(2, r.getNote());
 			 stmt.setInt(3, r.getRequestId());
 			 stmt.execute();

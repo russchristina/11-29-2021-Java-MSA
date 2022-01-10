@@ -9,11 +9,11 @@ public class Request {
 	private String employeeName;
 	private double amount;
 	private String reason;
-	private int status;
+	private String status;
 	private String note;
 	
 	// Constructor
-	public Request(int requestId, String employeeName, double amount, String reason, int status, String note) {
+	public Request(int requestId, String employeeName, double amount, String reason, String status, String note) {
 		super();
 		this.requestId = requestId;
 		this.employeeName = employeeName;
@@ -24,13 +24,12 @@ public class Request {
 	} // End constructor
 	
 	// Constructor
-	public Request(int requestId, String employeeName, double amount, String reason) {
+	public Request(String employeeName, double amount, String reason) {
 		super();
-		this.requestId = requestId;
 		this.employeeName = employeeName;
 		this.amount = amount;
 		this.reason = reason;
-		this.status = 1;
+		this.status = "Pending";
 	} // End constructor
 
 	// Constructor
@@ -76,11 +75,11 @@ public class Request {
 		this.reason = reason;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -116,6 +115,4 @@ public class Request {
 		return "Request [requestId=" + requestId + ", employeeName=" + employeeName + ", amount=" + amount + ", reason="
 				+ reason + ", status=" + status + ", note=" + note + "]";
 	}
-
-
 } // End class

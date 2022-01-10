@@ -1,5 +1,5 @@
 let mainContainer = document.getElementById('mainContainer')
-let loginButton = document.getElementById('loginButton')
+/*let loginButton = document.getElementById('loginButton')*/
 let loginForm = document.getElementById('loginForm')
 
 /**
@@ -73,7 +73,59 @@ function generateMenu(data) {
  *  Request creation handling
  */
 function createRequest(data) {
+    let requestForm = document.createElement('form')
     
+    let empName = document.createElement('input')
+    empName.name='empName'
+    empName.setAttribute('type', 'text')
+    empName.value = data.name
+    empName.setAttribute('readonly', 'readonly')
+
+    let reqAmount = document.createElement('input')
+    reqAmount.name='reqAmount'
+    reqAmount.required = true
+    reqAmount.type=('text')
+    reqAmount.placeholder=('Enter amount')
+
+    let reqReason = document.createElement('select')
+    reqReason.required = true
+    reqReason.name='reqReason'
+    let option1 = document.createElement('option')
+    option1.text = 'Travel'
+    let option2 = document.createElement('option')
+    option2.text = 'Equipment'
+    let option3 = document.createElement('option')
+    option3.text = 'Work-related expense'
+    let option4 = document.createElement('option')
+    option4.text = 'Illness'
+    let option5 = document.createElement('option')
+    option5.text = 'Work-related injury'
+    let option6 = document.createElement('option')
+    option6.text = 'Other'
+
+    reqReason.options.add(option1)
+    reqReason.options.add(option2)
+    reqReason.options.add(option3)
+    reqReason.options.add(option4)
+    reqReason.options.add(option5)
+    reqReason.options.add(option6)
+    
+    let reqButton = document.createElement('button')
+    reqButton.type='submit'
+    reqButton.innerText='Submit'
+
+    requestForm.appendChild(empName)
+    requestForm.appendChild(reqAmount)
+    requestForm.appendChild(reqReason)
+    requestForm.appendChild(reqButton)
+
+    requestForm.onsubmit= function(){createRequestHandler(requestForm, data)}
+
+    mainContainer.innerHTML=''
+    let reqDiv = document.createElement('div')
+    
+    reqDiv.append(requestForm)
+    mainContainer.append(reqDiv)
 }
 
 /**
@@ -88,7 +140,7 @@ async function viewRequestHandler(data) {
     })
     let empReqData = await response_body.json()
 
-    buildTable(empReqData, false) 
+    buildTable(empReqData, data) 
 }
 
 /**
@@ -99,7 +151,7 @@ async function getAllRequestData(data) {
     let response_body = await fetch(url)
     let allRequestData = await response_body.json()
 
-    buildTable(allRequestData, true)
+    buildTable(allRequestData, data)
 }
 
 /**
@@ -110,9 +162,32 @@ function viewStats(data) {
 }
 
 /**
+ *  Handle send/recieve portion of request creation
+ */
+function createRequestHandler(requestForm, data)  {
+    let url = 'http://localhost:7777/requestSubmit'
+    let createReqData = new FormData(requestForm)
+
+    fetch(url, {
+        method: 'PUT', 
+        body: createReqData
+    })
+
+    .then(response => response.text())
+    .then(text => {
+        window.alert(text)
+        console.log(text)
+    })
+
+    .catch(() => {window.alert('Oops.. Something happened')})
+    generateMenu(data)
+}
+
+/**
  *  Table construction for employees and managers
  */
-function buildTable(buildData, managerFlag) {
+function buildTable(buildData, data) {
+
     let table = document.createElement('table');
     let thead = document.createElement('thead');
     let tbody = document.createElement('tbody');
@@ -143,7 +218,7 @@ function buildTable(buildData, managerFlag) {
     row_1.appendChild(heading_4);
     row_1.appendChild(heading_5);
     row_1.appendChild(heading_6);
-    if(managerFlag === true){
+    if(data.manager === true){
         row_1.appendChild(heading_7);
     }
     thead.appendChild(row_1);
@@ -163,19 +238,101 @@ function buildTable(buildData, managerFlag) {
         let r6 = document.createElement('td')
         r6.innerHTML = request.note
         let r7 = document.createElement('td')
-        r7.innerHTML = 'Approve/Deny'
         row.appendChild(r1)
         row.appendChild(r2)
         row.appendChild(r3)
         row.appendChild(r4)
         row.appendChild(r5)
         row.appendChild(r6)
-        if(managerFlag === true){
+        if(data.manager === true && data.name !== request.employeeName && request.status === 'Pending'){
+            let approveButton = document.createElement('button')
+            approveButton.innerText='Approve'
+            approveButton.onclick = function() {handleRequest(request, 'Approved')}
+            let denyButton = document.createElement('button')
+            denyButton.innerText='Deny'  
+            denyButton.onclick = function() {handleRequest(request, 'Denied')}
+            r7.appendChild(approveButton)
+            r7.appendChild(denyButton)
             row.appendChild(r7)
         }
         tbody.appendChild(row)
     }
-    table.appendChild(tbody)
+    
+    let tableDiv = document.createElement('div')
+    let b = document.createElement('br')
+    let backButton = document.createElement('button')
+    backButton.innerText='Go Back'
+    backButton.onclick = function() {generateMenu(data)}
+    
+    tableDiv.append(table)
+    tableDiv.append(b)
+    tableDiv.append(backButton)
+    
     mainContainer.innerHTML=''
-    mainContainer.append(table)
+    mainContainer.append(tableDiv)
+}
+
+/**
+ *  Handle approve/deny request functionality
+ */
+function handleRequest(requestData, reqAction) {
+    /**
+     *  
+     */
+    let noteWindow = window
+    let yesButton = document.createElement('button')
+    yesButton.innerText='Yes'
+    let noButton = document.createElement('button')
+    noButton.innerText='No'
+    
+    noteWindow.append(yesButton)
+    noteWindow.append(noButton)
+    noteWindow.open()
+    /**
+     *  
+     */
+
+    requestData.status = reqAction
+
+    yesButton.onclick= function(){
+        
+        
+        let url = 'http://localhost:7777/request-update-note'
+
+        fetch(url, {
+            method: 'PUT', 
+            body: requestData
+        })
+    
+        .then(response => response.text())
+        .then(text => {
+            window.alert(text)
+            console.log(text)
+        })
+    
+        .catch(() => {window.alert('Oops.. Something happened')})
+        noteWindow.window.close()
+    }
+
+    
+    noButton.onclick= function(){
+        let url = 'http://localhost:7777/request-update'
+        
+        fetch(url, {
+            method: 'PUT', 
+            body: requestData
+        })
+    
+        .then(response => response.text())
+        .then(text => {
+            window.alert(text)
+            console.log(text)
+        })
+    
+        .catch(() => {window.alert('Oops.. Something happened')})
+        noteWindow.window.close()
+    }
+
+    
+
 }
