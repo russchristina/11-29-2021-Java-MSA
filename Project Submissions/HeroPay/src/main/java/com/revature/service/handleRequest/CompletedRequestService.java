@@ -18,7 +18,7 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     private final Logger dLog = LoggerFactory.getLogger("dLog");
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private CompletedRequestDao completedRequestDao;
+    private final CompletedRequestDao completedRequestDao;
 
     public CompletedRequestService(CompletedRequestDao completedRequestDao) {
         this.completedRequestDao = completedRequestDao;
@@ -26,118 +26,118 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
 
     @Override
     public CompletedRequestEntity storeCompletedRequest(CompletedRequest completedRequest) {
-        try {
-            CompletedRequestEntity cre = completedRequestDao.insertCompletedRequest(
-                    completedRequest.getId(),
-                    completedRequest.getEmployeeId(),
-                    completedRequest.getManagerId(),
-                    completedRequest.isStatus(),
-                    completedRequest.getResponse(),
-                    completedRequest.getDateResolved());
-            if(cre != null){
-                tLog.info("Completed store completed request in database: " + completedRequest.toString(), CompletedRequestService.class);
-                return cre;
-            }
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        } finally{
-            dLog.debug("Storing Completed Request in Database: " + completedRequest.toString() , CompletedRequestService.class);
-        }
-        dLog.debug("Store Completed Request Failure");
+//        try {
+//            CompletedRequestEntity cre = completedRequestDao.insertCompletedRequest(
+//                    completedRequest.getId(),
+//                    completedRequest.getEmployeeId(),
+//                    completedRequest.getManagerId(),
+//                    completedRequest.isStatus(),
+//                    completedRequest.getResponse(),
+//                    completedRequest.getDateResolved());
+//            if(cre != null){
+//                tLog.info("Completed store completed request in database: " + completedRequest, CompletedRequestService.class);
+//                return cre;
+//            }
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        } finally{
+//            dLog.debug("Storing Completed Request in Database: " + completedRequest.toString() , CompletedRequestService.class);
+//        }
+//        dLog.debug("Store Completed Request Failure");
         return null;
     }
 
     @Override
     public CompletedRequest convertCompletedRequestEntity(CompletedRequestEntity completedRequestEntity) {
-        return new CompletedRequest(
-                completedRequestEntity.getId(),
-                completedRequestEntity.getEmployeeId(),
-                completedRequestEntity.getManagerId(),
-                completedRequestEntity.isStatus(),
-                completedRequestEntity.getResponse(),
-                completedRequestEntity.getDateResolved().toLocalDate()
-        );
+//        return new CompletedRequest(
+//                completedRequestEntity.getId(),
+//                completedRequestEntity.getEmployeeId(),
+//                completedRequestEntity.getManagerId(),
+//                completedRequestEntity.isStatus(),
+//                completedRequestEntity.getResponse(),
+//                completedRequestEntity.getDateResolved().toLocalDate()
+//        );
+        return null;
     }
 
     @Override
-    public boolean validateCompletedRequest(CompletedRequest completedRequest) {
-        if(completedRequest.getManagerId() <= 0) throw new EmployeeIdException("Invalid Manager ID, <= 0");
-        dLog.debug("Completed request validated");
-        return true;
+    public void validateCompletedRequest(CompletedRequest completedRequest) {
+//        if(completedRequest.getManagerId() <= 0) throw new EmployeeIdException("Invalid Manager ID, <= 0");
+//        dLog.debug("Completed request validated");
     }
 
     @Override
     public List<CompletedRequest> getAllCompletedRequests() {
 
-        try {
-            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getAllCompletedRequestList();
-            List<CompletedRequest> completedRequestList = new ArrayList<>();
-
-            completedRequestEntityList.forEach(e ->
-                    completedRequestList.add(
-                            new CompletedRequest(e.getId(), e.getEmployeeId(), e.getManagerId(),e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
-                    ));
-            return completedRequestList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        } finally{
-            dLog.debug("Getting all Completed Requests");
-        }
-        dLog.debug("Failed to get all Completed Requests");
+//        try {
+//            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getAllCompletedRequestList();
+//            List<CompletedRequest> completedRequestList = new ArrayList<>();
+//
+//            completedRequestEntityList.forEach(e ->
+//                    completedRequestList.add(
+//                            new CompletedRequest(e.getId(), e.getEmployeeId(), e.getManagerId(),e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
+//                    ));
+//            return completedRequestList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        } finally{
+//            dLog.debug("Getting all Completed Requests");
+//        }
+//        dLog.debug("Failed to get all Completed Requests");
         return null;
     }
 
     @Override
     public List<CompletedRequest> getAllCompletedRequestsByManagerId(int managerId) {
-        try {
-            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByManagerIdList(managerId);
-            List<CompletedRequest> completedRequestList = new ArrayList<>();
-
-            completedRequestEntityList.forEach(e ->
-                    completedRequestList.add(
-                            new CompletedRequest(e.getId(),e.getEmployeeId(), e.getManagerId(),e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
-                    ));
-            return completedRequestList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        } finally{
-            dLog.debug("Getting all Completed Requests by Manager Id: " + managerId);
-        }
-        dLog.debug("Failed to get all Completed Requests by Manager-" + managerId);
+//        try {
+//            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByManagerIdList(managerId);
+//            List<CompletedRequest> completedRequestList = new ArrayList<>();
+//
+//            completedRequestEntityList.forEach(e ->
+//                    completedRequestList.add(
+//                            new CompletedRequest(e.getId(),e.getEmployeeId(), e.getManagerId(),e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
+//                    ));
+//            return completedRequestList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        } finally{
+//            dLog.debug("Getting all Completed Requests by Manager Id: " + managerId);
+//        }
+//        dLog.debug("Failed to get all Completed Requests by Manager-" + managerId);
         return null;
     }
 
     @Override
     public List<CompletedRequest> getAllCompletedRequestsByStatus(boolean status) {
 
-        try {
-            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByStatus(status);
-            List<CompletedRequest> completedRequestList = new ArrayList<>();
-
-            completedRequestEntityList.forEach(e ->
-                    completedRequestList.add(
-                            new CompletedRequest(e.getId(),e.getEmployeeId(), e.getManagerId(),e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
-                    ));
-            return completedRequestList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        } finally{
-            dLog.debug("Getting all Completed Requests by status: " + status);
-        }
-        dLog.debug("Failed to get all Completed Requests by Status-" + status);
+//        try {
+//            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByStatus(status);
+//            List<CompletedRequest> completedRequestList = new ArrayList<>();
+//
+//            completedRequestEntityList.forEach(e ->
+//                    completedRequestList.add(
+//                            new CompletedRequest(e.getId(),e.getEmployeeId(), e.getManagerId(),e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
+//                    ));
+//            return completedRequestList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        } finally{
+//            dLog.debug("Getting all Completed Requests by status: " + status);
+//        }
+//        dLog.debug("Failed to get all Completed Requests by Status-" + status);
         return null;
     }
 
     @Override
     public CompletedRequestEntity deleteCompletedRequest(int requestId) {
-        try {
-            return completedRequestDao.deleteCompletedRequest(requestId);
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        } finally{
-            dLog.debug("Deleting Completed Request-" + requestId);
-        }
-        dLog.debug("Failed to delete completed requests-" + requestId);
+//        try {
+//            return completedRequestDao.deleteCompletedRequest(requestId);
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        } finally{
+//            dLog.debug("Deleting Completed Request-" + requestId);
+//        }
+//        dLog.debug("Failed to delete completed requests-" + requestId);
         return null;
     }
 
@@ -148,33 +148,34 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
 
     @Override
     public List<CompletedRequest> getAllEmployeeRequests(int employeeId) {
-        List<CompletedRequest> completedRequestList = new ArrayList<>();
-        try {
-            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByEmployeeId(employeeId);
-
-            completedRequestEntityList.forEach(e ->
-                    completedRequestList.add(
-                            new CompletedRequest(e.getId(), e.getEmployeeId(), e.getManagerId(), e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
-                    ));
-            return completedRequestList;
-
-        } catch(NullPointerException | SQLException e){
-            dLog.debug("No Completed Requests for employee: " + employeeId);
-            return completedRequestList;
-         }finally{
-            dLog.debug("Getting all Completed Requests by employeeId: " + employeeId);
-        }
+//        List<CompletedRequest> completedRequestList = new ArrayList<>();
+//        try {
+//            List<CompletedRequestEntity> completedRequestEntityList = completedRequestDao.getCompletedRequestByEmployeeId(employeeId);
+//
+//            completedRequestEntityList.forEach(e ->
+//                    completedRequestList.add(
+//                            new CompletedRequest(e.getId(), e.getEmployeeId(), e.getManagerId(), e.isStatus(), e.getResponse(), e.getDateResolved().toLocalDate())
+//                    ));
+//            return completedRequestList;
+//
+//        } catch(NullPointerException | SQLException e){
+//            dLog.debug("No Completed Requests for employee: " + employeeId);
+//            return completedRequestList;
+//         }finally{
+//            dLog.debug("Getting all Completed Requests by employeeId: " + employeeId);
+//        }
+        return null;
     }
 
     @Override
     public CompletedRequestEntity getCompletedRequestById(int requestId) {
-        try {
-            dLog.debug("getting completed request by ID: " + requestId);
-            return completedRequestDao.getCompletedRequest(requestId);
-        } catch (SQLException e) {
-            dLog.debug("Failed to get completedRequest ID: " + requestId);
-            dLog.error(e.getMessage(), e);
-        }
+//        try {
+//            dLog.debug("getting completed request by ID: " + requestId);
+//            return completedRequestDao.getCompletedRequest(requestId);
+//        } catch (SQLException e) {
+//            dLog.debug("Failed to get completedRequest ID: " + requestId);
+//            dLog.error(e.getMessage(), e);
+//        }
         return null;
     }
 

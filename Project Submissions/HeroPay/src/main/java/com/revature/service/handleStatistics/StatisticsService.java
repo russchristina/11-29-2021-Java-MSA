@@ -83,10 +83,6 @@ public class StatisticsService implements StatisticsServiceInterface {
         dLog.debug("Getting Ranked Employee List");
         RankedEmployeeResponse rankedEmployeeResponse = new RankedEmployeeResponse();
         List<QuickSortEmployee> allEmployees = employeeService.getQuickSort();
-//        List<QuickSortEmployee> sortedEmployees = new ArrayList<>(allEmployees.size());
-//        allEmployees.forEach(employee -> {
-//            sortedEmployees.add(getQuickEmployeeSum(employee.getId()));
-//        });
         rankedEmployeeResponse.setOrderedList(allEmployees);
         return rankedEmployeeResponse;
     }

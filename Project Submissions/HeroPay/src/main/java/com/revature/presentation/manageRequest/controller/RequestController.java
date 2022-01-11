@@ -24,18 +24,18 @@ public class RequestController {
 
 
 
-    private Logger dLog = LoggerFactory.getLogger("dLog");
-    private Logger tLog = LoggerFactory.getLogger("tLog");
+    private final Logger dLog = LoggerFactory.getLogger("dLog");
+    private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private PendingRequestService pendingRequestService;
-    private CompletedRequestService completedRequestService;
+    private PendingRequestService pendingRequestService = null;
+    private CompletedRequestService completedRequestService = null;
 
     public RequestController(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService) {
         this.pendingRequestService = pendingRequestService;
         this.completedRequestService = completedRequestService;
     }
 
-    public Handler getEmployeeRequests = ctx -> {
+    public final Handler getEmployeeRequests = ctx -> {
         dLog.debug("Getting Employee Requests: " + ctx.queryParam("employeeId"));
         try{
             int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
@@ -55,7 +55,7 @@ public class RequestController {
         }
     };
 
-    public Handler getEmployeePendingRequests = ctx -> {
+    public final Handler getEmployeePendingRequests = ctx -> {
         dLog.debug("Getting Employee Pending Requests: " + ctx.queryParam("employeeId"));
         try{
             int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
@@ -70,22 +70,17 @@ public class RequestController {
         }
     };
 
-    public Handler createRequest = ctx -> {
+    public final Handler createRequest = ctx -> {
         dLog.debug("Creating new request: " + ctx.body());
         try{
             NewRequest newRequest = ctx.bodyAsClass(NewRequest.class);
             PendingRequest pendingRequest = new PendingRequest(0,newRequest.getEmployeeId(),newRequest.getType(),newRequest.getRequestMessage(),newRequest.getAmount(),LocalDate.now());
             try{
-                boolean validRequest = pendingRequestService.validateNewPendingRequest(pendingRequest);
-                if(validRequest){
-                    tLog.info("New Pending Request Created: " + pendingRequest.toString());
-                    ctx.json(pendingRequestService.convertPendingRequestEntity(pendingRequestService.storePendingRequest(pendingRequest)));
-                    ctx.status(201);
-                }else{
-                    dLog.debug("New Request was not valid " + ctx.body());
-                    ctx.json(new FailCreateRequestResponse("Your request was not valid"));
-                    ctx.status(406);
-                }
+                pendingRequestService.validateNewPendingRequest(pendingRequest);
+                tLog.info("New Pending Request Created: " + pendingRequest);
+                ctx.json(pendingRequestService.convertPendingRequestEntity(pendingRequestService.storePendingRequest(pendingRequest)));
+                ctx.status(201);
+
             }catch(EmployeeIdException e){
                 dLog.debug(e.getMessage(), e);
                 ctx.json(new FailCreateRequestResponse("Invalid Employee Id"));
@@ -109,7 +104,7 @@ public class RequestController {
         }
     };
 
-    public Handler getAllRequests = ctx -> {
+    public final Handler getAllRequests = ctx -> {
         dLog.debug("Getting All Requests");
         try{
             AllRequestResponse allRequests = new AllRequestResponse();
@@ -126,7 +121,7 @@ public class RequestController {
         }
     };
 
-    public Handler respondToRequest = ctx -> {
+    public final Handler respondToRequest = ctx -> {
         dLog.debug("Responding to request: " + ctx.body());
         try{
             ManagerRequestResponse msg = ctx.bodyAsClass(ManagerRequestResponse.class);
@@ -141,12 +136,12 @@ public class RequestController {
                     msg.getResponse(),
                     LocalDate.now()
             );
-            if(completedRequestService.validateCompletedRequest(completedRequest)){
-                CompletedRequestEntity storedRequest = completedRequestService.storeCompletedRequest(completedRequest);
-                pendingRequestService.updatePendingRequestStatus(storedRequest.getId(), true);
-                ctx.json(completedRequestService.convertCompletedRequestEntity(storedRequest));
-                ctx.status(201);
-            }
+            completedRequestService.validateCompletedRequest(completedRequest);
+            CompletedRequestEntity storedRequest = completedRequestService.storeCompletedRequest(completedRequest);
+//            pendingRequestService.updatePendingRequestStatus(storedRequest.getId(), true);
+            ctx.json(completedRequestService.convertCompletedRequestEntity(storedRequest));
+            ctx.status(201);
+
         } catch (Exception e){
             dLog.debug(e.getMessage(), e);
             ctx.status(500);

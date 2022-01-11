@@ -1,55 +1,45 @@
 package com.revature.repository.DTO;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "pending_request", schema = "project_1")
 public class PendingRequestEntity {
 
+    @Id
+    @Column(name = "pending_request_id")
+    @GeneratedValue(generator="pending_request_id_seq", strategy=GenerationType.AUTO)
+    @SequenceGenerator(allocationSize = 1, name = "pending_request_id_seq", sequenceName = "pending_request_id_seq")
     private int id;
-    private int employeeId;
-    private int requestType;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private EmployeeAccountEntity employeeAccount;
+    @ManyToOne
+    @JoinColumn(name = "type")
+    private RequestTypeEntity requestType;
+    @Column(name = "request_message")
     private String requestMessage;
-    private double amount;
+    @Column(name = "amount")
+    private BigDecimal amount;
+    @Column(name = "date_submission")
     private Date dateSubmission;
+    @Column(name = "status")
     private boolean status;
 
-    public PendingRequestEntity(int id, int employeeId, int requestType, String requestMessage, double amount, Date dateSubmission, boolean status) {
+    public PendingRequestEntity() {
+    }
+
+    public PendingRequestEntity(int id, EmployeeAccountEntity employeeAccount, RequestTypeEntity requestType, String requestMessage, BigDecimal amount, Date dateSubmission, boolean status) {
         this.id = id;
-        this.employeeId = employeeId;
+        this.employeeAccount = employeeAccount;
         this.requestType = requestType;
         this.requestMessage = requestMessage;
         this.amount = amount;
         this.dateSubmission = dateSubmission;
         this.status = status;
-    }
-
-    public PendingRequestEntity() {
-    }
-
-    @Override
-    public String toString() {
-        return "{\"PendingRequestEntity\":{"
-                + "\"id\":\"" + id + "\""
-                + ", \"employeeId\":\"" + employeeId + "\""
-                + ", \"requestType\":\"" + requestType + "\""
-                + ", \"requestMessage\":\"" + requestMessage + "\""
-                + ", \"amount\":\"" + amount + "\""
-                + ", \"dateSubmission\":" + dateSubmission
-                + ", \"status\":\"" + status + "\""
-                + "}}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PendingRequestEntity)) return false;
-        PendingRequestEntity that = (PendingRequestEntity) o;
-        return getId() == that.getId() && getEmployeeId() == that.getEmployeeId() && getRequestType() == that.getRequestType() && Double.compare(that.getAmount(), getAmount()) == 0 && isStatus() == that.isStatus() && Objects.equals(getRequestMessage(), that.getRequestMessage()) && Objects.equals(getDateSubmission(), that.getDateSubmission());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getEmployeeId(), getRequestType(), getRequestMessage(), getAmount(), getDateSubmission(), isStatus());
     }
 
     public int getId() {
@@ -60,19 +50,19 @@ public class PendingRequestEntity {
         this.id = id;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public EmployeeAccountEntity getEmployeeAccount() {
+        return employeeAccount;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployeeAccount(EmployeeAccountEntity employeeAccount) {
+        this.employeeAccount = employeeAccount;
     }
 
-    public int getRequestType() {
+    public RequestTypeEntity getRequestType() {
         return requestType;
     }
 
-    public void setRequestType(int requestType) {
+    public void setRequestType(RequestTypeEntity requestType) {
         this.requestType = requestType;
     }
 
@@ -84,11 +74,11 @@ public class PendingRequestEntity {
         this.requestMessage = requestMessage;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -106,5 +96,31 @@ public class PendingRequestEntity {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PendingRequestEntity)) return false;
+        PendingRequestEntity that = (PendingRequestEntity) o;
+        return id == that.id && status == that.status && Objects.equals(employeeAccount, that.employeeAccount) && Objects.equals(requestType, that.requestType) && Objects.equals(requestMessage, that.requestMessage) && Objects.equals(amount, that.amount) && Objects.equals(dateSubmission, that.dateSubmission);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, employeeAccount, requestType, requestMessage, amount, dateSubmission, status);
+    }
+
+    @Override
+    public String toString() {
+        return "{\"PendingRequestEntity\":{"
+                + "\"id\":\"" + id + "\""
+                + ", \"employeeAccount\":" + employeeAccount
+                + ", \"requestType\":" + requestType
+                + ", \"requestMessage\":\"" + requestMessage + "\""
+                + ", \"amount\":\"" + amount + "\""
+                + ", \"dateSubmission\":" + dateSubmission
+                + ", \"status\":\"" + status + "\""
+                + "}}";
     }
 }

@@ -9,16 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EmployeeController {
-    private Logger dLog = LoggerFactory.getLogger("dLog");
-    private Logger tLog = LoggerFactory.getLogger("tLog");
+    private final Logger dLog = LoggerFactory.getLogger("dLog");
+    private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private EmployeeService employeeService;
+    private EmployeeService employeeService = null;
 
     public EmployeeController() {
         this.employeeService = new EmployeeService(new EmployeeAccountDao());
     }
 
-    public Handler findEmployee = ctx -> {
+    public final Handler findEmployee = ctx -> {
             dLog.debug("Finding employee: " + ctx.queryParam("employeeId"));
             try {
                 int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));

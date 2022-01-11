@@ -9,7 +9,7 @@ public interface PendingRequestServiceInterface {
 
     PendingRequestEntity storePendingRequest(PendingRequest pendingRequest);
 
-    boolean validateNewPendingRequest(PendingRequest pendingRequest);
+    void validateNewPendingRequest(PendingRequest pendingRequest);
 
     List<PendingRequest> getAllEmployeePendingRequest(int employeeId);
 

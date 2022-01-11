@@ -1,23 +1,56 @@
 package com.revature.repository.DTO;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "login_info", schema = "project_1")
 public class LoginInfoEntity {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator="login_info_id_seq", strategy=GenerationType.AUTO)
+    @SequenceGenerator(allocationSize = 1, name = "login_info_id_seq", sequenceName = "login_info_id_seq")
     private int id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
-    private int employeeId;
+    @OneToOne
+    @JoinColumn(name = "id")
+    private EmployeeAccountEntity employeeAccount;
 
-
-    public LoginInfoEntity(int id, String username, String password, int employeeId) {
+    public LoginInfoEntity(int id, String username, String password, EmployeeAccountEntity employeeAccount) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.employeeId = employeeId;
+        this.employeeAccount = employeeAccount;
     }
 
     public LoginInfoEntity() {
+    }
+
+    @Override
+    public String toString() {
+        return "{\"LoginInfoEntity\":{"
+                + "\"id\":\"" + id + "\""
+                + ", \"username\":\"" + username + "\""
+                + ", \"password\":\"" + password + "\""
+                + ", \"employeeAccount\":" + employeeAccount
+                + "}}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LoginInfoEntity)) return false;
+        LoginInfoEntity that = (LoginInfoEntity) o;
+        return getId() == that.getId() && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getEmployeeAccount(), that.getEmployeeAccount());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername(), getPassword(), getEmployeeAccount());
     }
 
     public int getId() {
@@ -44,34 +77,11 @@ public class LoginInfoEntity {
         this.password = password;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public EmployeeAccountEntity getEmployeeAccount() {
+        return employeeAccount;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LoginInfoEntity)) return false;
-        LoginInfoEntity that = (LoginInfoEntity) o;
-        return id == that.id && employeeId == that.employeeId && Objects.equals(username, that.username) && Objects.equals(password, that.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password, employeeId);
-    }
-
-    @Override
-    public String toString() {
-        return "{\"LoginInfoEntity\":{"
-                + "\"id\":\"" + id + "\""
-                + ", \"username\":\"" + username + "\""
-                + ", \"password\":\"" + password + "\""
-                + ", \"employeeId\":\"" + employeeId + "\""
-                + "}}";
+    public void setEmployeeAccount(EmployeeAccountEntity employeeAccount) {
+        this.employeeAccount = employeeAccount;
     }
 }

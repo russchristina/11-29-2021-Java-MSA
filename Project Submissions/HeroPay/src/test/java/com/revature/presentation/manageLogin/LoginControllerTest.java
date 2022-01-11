@@ -1,6 +1,7 @@
 package com.revature.presentation.manageLogin;
 
 import com.revature.presentation.model.loginRequests.LoginInput;
+import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.LoginInfoEntity;
 import com.revature.service.handleLogin.LoginService;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +28,7 @@ class LoginControllerTest {
         int id = 1;
         int employeeId = 1;
         LoginInput mockLogin = new LoginInput(username, password);
-        LoginInfoEntity mockLoginInfo = new LoginInfoEntity(id, username, password, employeeId);
+        LoginInfoEntity mockLoginInfo = new LoginInfoEntity(id, username, password, new EmployeeAccountEntity());
 
         MockitoAnnotations.openMocks(this);
         Mockito.when(loginService.validateLogin(mockLogin)).thenReturn(mockLoginInfo);
@@ -39,7 +40,7 @@ class LoginControllerTest {
         String password = "pass";
 
         Assertions.assertEquals(
-                new LoginInfoEntity(1, username, password, 1),
+                new LoginInfoEntity(1, username, password, new EmployeeAccountEntity()),
                 loginService.validateLogin(new LoginInput(username, password)));
     }
 
@@ -49,7 +50,7 @@ class LoginControllerTest {
         String password = "pass";
 
         Assertions.assertNotEquals(
-                new LoginInfoEntity(1, username, password, 1),
+                new LoginInfoEntity(1, username, password, new EmployeeAccountEntity()),
                 loginService.validateLogin(new LoginInput(username, password)));
     }
 
@@ -59,7 +60,7 @@ class LoginControllerTest {
         String password = "";
 
         Assertions.assertNotEquals(
-                new LoginInfoEntity(1, username, password, 1),
+                new LoginInfoEntity(1, username, password, new EmployeeAccountEntity()),
                 loginService.validateLogin(new LoginInput(username, password)));
     }
 
@@ -70,7 +71,7 @@ class LoginControllerTest {
         String password = "PASS";
 
         Assertions.assertNotEquals(
-                new LoginInfoEntity(1, username, password, 1),
+                new LoginInfoEntity(1, username, password, new EmployeeAccountEntity()),
                 loginService.validateLogin(new LoginInput(username, password)));
     }
 
@@ -81,7 +82,7 @@ class LoginControllerTest {
         String password = "pass";
 
         Assertions.assertNotEquals(
-                new LoginInfoEntity(1, username, password, 1),
+                new LoginInfoEntity(1, username, password, new EmployeeAccountEntity()),
                 loginService.validateLogin(new LoginInput(username, password)));
     }
 
@@ -92,7 +93,7 @@ class LoginControllerTest {
         String password = "fail";
 
         Assertions.assertNotEquals(
-                new LoginInfoEntity(1, username, password, 1),
+                new LoginInfoEntity(1, username, password, new EmployeeAccountEntity()),
                 loginService.validateLogin(new LoginInput(username, password)));
     }
 

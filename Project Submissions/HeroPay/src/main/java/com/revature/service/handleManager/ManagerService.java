@@ -13,8 +13,8 @@ public class ManagerService implements ManagerServiceInterface {
     private final Logger dLog = LoggerFactory.getLogger("dLog");
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private PendingRequestService pRService;
-    private CompletedRequestService cRService;
+    private final PendingRequestService pRService;
+    private final CompletedRequestService cRService;
 
     public ManagerService(PendingRequestService pRService, CompletedRequestService cRService) {
         this.pRService = pRService;

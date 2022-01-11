@@ -15,20 +15,20 @@ public interface LoginInfoInterface {
 
     //Create
 
-    LoginInfoEntity insertLoginInfo(String username, String password, int employeeId) throws SQLException;
+    Integer insertLoginInfo(LoginInfoEntity loginInfoEntity);
 
     //Read
 
-    LoginInfoEntity getLoginInfo(String username, String password) throws SQLException;
+    LoginInfoEntity getLoginInfo(String username);
 
     //Update
 
-    LoginInfoEntity updateUsername(String newUsername, int employeeId) throws SQLException;
+    Integer updateUsername(LoginInfoEntity loginInfoEntity);
 
-    LoginInfoEntity updatePassword(String newPassword, int employeeId) throws SQLException;
+    Integer updatePassword(LoginInfoEntity loginInfoEntity);
 
     //Delete
 
-    LoginInfoEntity deleteLoginInfo(String username, int employeeId) throws SQLException;
+    void deleteLoginInfo(LoginInfoEntity loginInfoEntity);
 
 }

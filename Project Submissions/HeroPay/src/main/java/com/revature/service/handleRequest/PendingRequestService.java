@@ -22,44 +22,34 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     private final Logger dLog = LoggerFactory.getLogger("dLog");
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private PendingRequestDao pendingRequestDao;
-    private Map<Integer, String> requestMap;
-
-    public Map<Integer, String> getRequestMap() {
-        return requestMap;
-    }
+    private final PendingRequestDao pendingRequestDao;
 
     public PendingRequestService(PendingRequestDao pendingRequestDao) {
         this.pendingRequestDao = pendingRequestDao;
-        try {
-            this.requestMap = pendingRequestDao.getRequestTypeMap();
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
     }
 
     @Override
     public PendingRequestEntity storePendingRequest(PendingRequest pendingRequest) {
 
-        try {
-            PendingRequestEntity pr = pendingRequestDao.insertPendingRequest(
-                    pendingRequest.getEmployeeId(),
-                    pendingRequestDao.getRequestTypeWithString(pendingRequest.getType()).getId(),
-                    pendingRequest.getRequestMessage(),
-                    pendingRequest.getAmount(),
-                    Date.valueOf(pendingRequest.getDateSubmission())
-            );
-            if(pr != null) tLog.info("pending request" + pr.getId() + "stored in database");
-            return pr;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
-        dLog.debug("Failed to store pending request in database: " + PendingRequestService.class);
+//        try {
+//            PendingRequestEntity pr = pendingRequestDao.insertPendingRequest(
+//                    pendingRequest.getEmployeeId(),
+//                    pendingRequestDao.getRequestTypeWithString(pendingRequest.getType()).getId(),
+//                    pendingRequest.getRequestMessage(),
+//                    pendingRequest.getAmount(),
+//                    Date.valueOf(pendingRequest.getDateSubmission())
+//            );
+//            if(pr != null) tLog.info("pending request" + pr.getId() + "stored in database");
+//            return pr;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
+//        dLog.debug("Failed to store pending request in database: " + PendingRequestService.class);
         return null;
     }
 
     @Override
-    public boolean validateNewPendingRequest(PendingRequest pendingRequest) {
+    public void validateNewPendingRequest(PendingRequest pendingRequest) {
 
         if(pendingRequest.getEmployeeId() <= 0) throw new EmployeeIdException("Invalid employee ID, <= 0");
         if(pendingRequest.getType().length() <=1) throw new RequestTypeException("Invalid request Type String given, <= 1 character");
@@ -67,192 +57,196 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         if(pendingRequest.getAmount() <= 0) throw new NegativeAmountException("pending request amount");
 
         dLog.debug("pending request validated: " + PendingRequestService.class);
-        return true;
+
     }
 
     @Override
     public List<PendingRequest> getAllEmployeePendingRequest(int employeeId) {
-
-        try {
-            List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getEmployeePendingRequestList(employeeId);
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            pendingRequestList.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
-        dLog.debug("Failed to get Employee-" + employeeId + " pending request: " + PendingRequestService.class);
+//
+//        try {
+//            List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getEmployeePendingRequestList(employeeId);
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            pendingRequestList.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
+//        dLog.debug("Failed to get Employee-" + employeeId + " pending request: " + PendingRequestService.class);
+//        return null;
         return null;
     }
 
     @Override
     public PendingRequestEntity deletePendingRequest(int requestId) {
 
-        try {
-            dLog.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
-            return pendingRequestDao.deletePendingRequest(requestId);
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
-        dLog.debug("Failed to delete pending request: " + PendingRequestService.class);
+//        try {
+//            dLog.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
+//            return pendingRequestDao.deletePendingRequest(requestId);
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
+//        dLog.debug("Failed to delete pending request: " + PendingRequestService.class);
         return null;
     }
 
     @Override
     public List<PendingRequest> getAllPendingRequests() {
-        try {
-            List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getAllPendingRequests();
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            pendingRequestList.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
-        dLog.debug("Failed to get all pending requests: " + PendingRequestService.class);
+//        try {
+//            List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getAllPendingRequests();
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            pendingRequestList.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
+//        dLog.debug("Failed to get all pending requests: " + PendingRequestService.class);
         return null;    }
 
     @Override
     public List<PendingRequest> getPendingRequestByType(int typeId) {
-        try {
-            List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getAllPendingRequestsByType(typeId);
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            pendingRequestList.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
+//        try {
+//            List<PendingRequestEntity> pendingRequestList =  pendingRequestDao.getAllPendingRequestsByType(typeId);
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            pendingRequestList.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
+//        dLog.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
+//        return null;
+        return null;
         }
-        dLog.debug("Failed to get pending requests by typeId:" + PendingRequestService.class);
-        return null;    }
 
     @Override
     public PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status) {
-        try {
-            return pendingRequestDao.updatePendingRequestStatus(requestId, status);
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
-        dLog.debug("Failed to update status pending requests: " + PendingRequestService.class);
+//        try {
+//            return pendingRequestDao.updatePendingRequestStatus(requestId, status);
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
+//        dLog.debug("Failed to update status pending requests: " + PendingRequestService.class);
         return null;    }
 
     @Override
     public PendingRequest convertPendingRequestEntity(PendingRequestEntity pre) {
-        return new PendingRequest(
-                pre.getId(),
-                pre.getEmployeeId(),
-                requestMap.get(pre.getRequestType()),
-                pre.getRequestMessage(),
-                pre.getAmount(),
-                pre.getDateSubmission().toLocalDate());
+//        return new PendingRequest(
+//                pre.getId(),
+//                pre.getEmployeeId(),
+//                requestMap.get(pre.getRequestType()),
+//                pre.getRequestMessage(),
+//                pre.getAmount(),
+//                pre.getDateSubmission().toLocalDate());
+        return null;
     }
 
     @Override
     public List<PendingRequest> getAnsweredRequests() {
-        try {
-            dLog.debug("Getting answered requests");
-            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getAnsweredRequests();
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            answeredRequests.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
+//        try {
+//            dLog.debug("Getting answered requests");
+//            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getAnsweredRequests();
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            answeredRequests.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
         return null;
     }
 
     @Override
     public List<PendingRequest> getAllAnsweredRequests(int employeeId) {
-        try {
-            dLog.debug("Getting Employee answered requests");
-            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequests(employeeId);
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            answeredRequests.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
+//        try {
+//            dLog.debug("Getting Employee answered requests");
+//            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequests(employeeId);
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            answeredRequests.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
         return null;    }
 
     @Override
     public List<PendingRequest> getAllAnsweredRequestsByType(int typeId) {
-        try {
-            dLog.debug("Getting answered requests by type");
-            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequestsByType(typeId);
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            answeredRequests.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
+//        try {
+//            dLog.debug("Getting answered requests by type");
+//            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequestsByType(typeId);
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            answeredRequests.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
         return null;        }
 
     @Override
     public List<PendingRequest> getAllAnsweredRequestsByRole(int roleId) {
-        try {
-            dLog.debug("Getting answered requests by role");
-            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequestsByRole(roleId);
-            List<PendingRequest> pendingModelList = new ArrayList<>();
-            answeredRequests.forEach(
-                    pre ->
-                            pendingModelList.add(new PendingRequest(
-                                    pre.getId(),
-                                    pre.getEmployeeId(),
-                                    requestMap.get(pre.getRequestType()),
-                                    pre.getRequestMessage(),
-                                    pre.getAmount(),
-                                    pre.getDateSubmission().toLocalDate())));
-            dLog.debug("returning " + pendingModelList);
-            return pendingModelList;
-        } catch (SQLException e) {
-            dLog.error(e.getMessage(), e);
-        }
+//        try {
+//            dLog.debug("Getting answered requests by role");
+//            List<PendingRequestEntity> answeredRequests = pendingRequestDao.getEmployeeAnsweredRequestsByRole(roleId);
+//            List<PendingRequest> pendingModelList = new ArrayList<>();
+//            answeredRequests.forEach(
+//                    pre ->
+//                            pendingModelList.add(new PendingRequest(
+//                                    pre.getId(),
+//                                    pre.getEmployeeId(),
+//                                    requestMap.get(pre.getRequestType()),
+//                                    pre.getRequestMessage(),
+//                                    pre.getAmount(),
+//                                    pre.getDateSubmission().toLocalDate())));
+//            dLog.debug("returning " + pendingModelList);
+//            return pendingModelList;
+//        } catch (SQLException e) {
+//            dLog.error(e.getMessage(), e);
+//        }
         return null;           }
 
 }

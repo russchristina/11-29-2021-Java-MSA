@@ -19,35 +19,24 @@ public interface EmployeeAccountInterface {
 
     //Create
 
-    EmployeeAccountEntity insertEmployeeAccount(String firstName, String lastName, int roleId) throws SQLException;
-
-    EmployeeRoleEntity insertEmployeeRole(String roleName) throws SQLException;
+    Integer insertEmployeeAccount(EmployeeAccountEntity employeeAccountEntity);
 
     //Read
 
-    EmployeeAccountEntity getEmployeeAccount(int employeeId) throws SQLException;
+    EmployeeAccountEntity getEmployeeAccount(int employeeId);
 
-    List<EmployeeAccountEntity> getAllEmployeeAccountList() throws SQLException;
+    List<EmployeeAccountEntity> getAllEmployeeAccountList();
 
-    List<EmployeeAccountEntity> getEmployeeAccountsByRoleList(int roleId) throws SQLException;
+    List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(EmployeeAccountEntity employeeAccountEntity);
 
-    EmployeeRoleEntity getEmployeeRoleById(int id) throws SQLException;
 
-    EmployeeRoleEntity getEmployeeRoleByName(String roleName) throws SQLException;
-
-    Map<Integer, String> getEmployeeRoleMap() throws SQLException;
-
-    List<QuickSortEmployee> getQuickSort() throws SQLException;
     //Update
 
-    EmployeeAccountEntity updateEmployeeRole(int employeeId, int roleId) throws SQLException;
-
-    EmployeeRoleEntity updateRole(int roleId, String roleName) throws SQLException;
-
-
+    Integer updateEmployeeRole(EmployeeAccountEntity employeeAccountEntity);
 
     //Delete
 
+    void deleteEmployeeAccount(EmployeeAccountEntity employeeAccountEntity);
 
 
 }

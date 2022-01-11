@@ -1,10 +1,18 @@
 package com.revature.repository.DTO;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "employee_role", schema = "project_1")
 public class EmployeeRoleEntity {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "employee_role_seq", strategy = GenerationType.AUTO)
+    @SequenceGenerator(allocationSize = 1, name = "employee_role_seq", sequenceName = "employee_role_id_seq")
     private int id;
+    @Column(name = "role_name")
     private String roleName;
 
     public EmployeeRoleEntity(int id, String roleName) {

@@ -1,9 +1,9 @@
 package com.revature.repository.DAOClasses;
 
-import com.revature.repository.DAOInteface.LoginInfoInterface;
+import com.revature.repository.DAOInteface.EmployeeRoleInterface;
+import com.revature.repository.DTO.EmployeeAccountEntity;
+import com.revature.repository.DTO.EmployeeRoleEntity;
 import com.revature.repository.DTO.LoginInfoEntity;
-
-import com.revature.repository.utility.ConnectionFactory;
 import com.revature.repository.utility.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -11,95 +11,76 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
-public class LoginInfoDao implements LoginInfoInterface {
-
+public class EmployeeRoleDao implements EmployeeRoleInterface {
     private final Logger dLog = LoggerFactory.getLogger("dLog");
 
     @Override
-    public Integer insertLoginInfo(LoginInfoEntity loginInfoEntity) {
+    public List<EmployeeRoleEntity> getAllEmployeeRoles() {
+        List<EmployeeRoleEntity> employeeRoleEntities = null;
+        Session session;
+        Transaction tx = null;
+        try{
+            session = HibernateSessionFactory.getSession();
+            tx = session.beginTransaction();
+            employeeRoleEntities = session.createQuery("FROM EmployeeRoleEntity", EmployeeRoleEntity.class).getResultList();
+            tx.commit();
+        }catch(HibernateException e){
+            tx.rollback();
+            e.printStackTrace();
+        }
+        return employeeRoleEntities;
+    }
+
+    @Override
+    public EmployeeRoleEntity getEmployeeRoleById(int roleId) {
+        Session session;
+        Transaction tx = null;
+        EmployeeRoleEntity returnRoleEntity = null;
+        try{
+            session = HibernateSessionFactory.getSession();
+            tx = session.beginTransaction();
+            returnRoleEntity = session.get(EmployeeRoleEntity.class, roleId);
+            tx.commit();
+        }catch(HibernateException e){
+            tx.rollback();
+            dLog.error(e.getMessage(), e);
+        }
+        return returnRoleEntity;
+    }
+
+    @Override
+    public EmployeeRoleEntity getEmployeeRoleByName(String roleName) {
+        Session session;
+        Transaction tx = null;
+        EmployeeRoleEntity returnRoleEntity = null;
+        try{
+            session = HibernateSessionFactory.getSession();
+            tx = session.beginTransaction();
+            returnRoleEntity = session.get(EmployeeRoleEntity.class, roleName);
+            tx.commit();
+        }catch(HibernateException e){
+            tx.rollback();
+            dLog.error(e.getMessage(), e);
+        }
+        return returnRoleEntity;
+    }
+
+    @Override
+    public Integer updateRole(EmployeeRoleEntity employeeRoleEntity) {
         Session session;
         Transaction tx = null;
         int savedId = 0;
         try{
             session = HibernateSessionFactory.getSession();
             tx = session.beginTransaction();
-            savedId = (Integer) session.save(loginInfoEntity);
+            savedId = (Integer) session.save(employeeRoleEntity);
             tx.commit();
         }catch(HibernateException e){
             tx.rollback();
             dLog.error(e.getMessage(), e);
         }
         return savedId;
-    }
-
-    @Override
-    public LoginInfoEntity getLoginInfo(String username) {
-        Session session;
-        Transaction tx = null;
-        LoginInfoEntity returnLoginInfo = null;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            returnLoginInfo = session.get(LoginInfoEntity.class, username);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return returnLoginInfo;
-    }
-
-    @Override
-    public Integer updateUsername(LoginInfoEntity loginInfoEntity) {
-        Session session;
-        Transaction tx = null;
-        int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            savedId = (Integer) session.save(loginInfoEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return savedId;
-    }
-
-    @Override
-    public Integer updatePassword(LoginInfoEntity loginInfoEntity) {
-        Session session;
-        Transaction tx = null;
-        int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            savedId = (Integer) session.save(loginInfoEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return savedId;
-    }
-
-    @Override
-    public void deleteLoginInfo(LoginInfoEntity loginInfoEntity) {
-        Session session;
-        Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            session.delete(loginInfoEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
     }
 }

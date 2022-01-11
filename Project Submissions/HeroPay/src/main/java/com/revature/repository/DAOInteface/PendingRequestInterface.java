@@ -20,47 +20,40 @@ public interface PendingRequestInterface {
 
     //Create
 
-    PendingRequestEntity insertPendingRequest(int employeeId, int typeId, String requestMessage, double amount, java.sql.Date dateSubmission) throws SQLException;
-
-    RequestTypeEntity insertPendingRequestType(String type) throws SQLException;
+    PendingRequestEntity insertPendingRequest(PendingRequestEntity pendingRequestEntity);
 
     //Read
 
-    PendingRequestEntity getPendingRequest(int requestId) throws SQLException;
+    PendingRequestEntity getPendingRequest(int requestId);
 
-    List<PendingRequestEntity> getEmployeePendingRequestList(int employeeId) throws SQLException;
+    List<PendingRequestEntity> getEmployeePendingRequestList(int employeeId);
 
-    List<PendingRequestEntity> getAllPendingRequests() throws SQLException;
+    List<PendingRequestEntity> getAllPendingRequests();
 
-    List<PendingRequestEntity> getAllPendingRequestsByType(int typeId) throws SQLException;
+    List<PendingRequestEntity> getAllPendingRequestsByTypeId(int typeId);
 
-    Map<Integer, String> getRequestTypeMap() throws SQLException;
+    Map<Integer, String> getRequestTypeMap();
 
-    RequestTypeEntity getRequestTypeWithString(String type) throws SQLException;
 
-    List<PendingRequestEntity> getAnsweredRequests() throws SQLException;
+    List<PendingRequestEntity> getAnsweredRequests();
 
-    List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId) throws SQLException;
+    List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId);
 
-    List<PendingRequestEntity> getEmployeeAnsweredRequestsByType(int typeId) throws SQLException;
-
-    List<PendingRequestEntity> getEmployeeAnsweredRequestsByRole(int roleId) throws SQLException;
+    List<PendingRequestEntity> getEmployeeAnsweredRequestsByTypeId(int typeId);
 
 
     //Update
 
-    PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status) throws SQLException;
+    PendingRequestEntity updatePendingRequestStatus(PendingRequestEntity pendingRequestEntity);
 
-    PendingRequestEntity updatePendingRequestType(int requestId, int typeId) throws SQLException;
+    PendingRequestEntity updatePendingRequestMessage(PendingRequestEntity pendingRequestEntity);
 
-    PendingRequestEntity updatePendingRequestMessage(int requestId, String requestMessage) throws SQLException;
-
-    PendingRequestEntity updatePendingRequestAmount(int requestId, double amount) throws SQLException;
+    PendingRequestEntity updatePendingRequestAmount(PendingRequestEntity pendingRequestEntity);
 
 
     //Delete
 
-    PendingRequestEntity deletePendingRequest(int requestId) throws SQLException;
+    PendingRequestEntity deletePendingRequest(PendingRequestEntity pendingRequestEntity);
 
 
 

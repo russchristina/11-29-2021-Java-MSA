@@ -10,10 +10,10 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Endpoints {
 
-    private LoginController loginController;
-    private EmployeeController employeeController;
-    private RequestController requestController;
-    private StatisticsController statisticsController;
+    private final LoginController loginController;
+    private final EmployeeController employeeController;
+    private final RequestController requestController;
+    private final StatisticsController statisticsController;
 
     public Endpoints(LoginController loginController, EmployeeController employeeController, RequestController requestController, StatisticsController statisticsController) {
         this.loginController = loginController;
@@ -85,62 +85,4 @@ public class Endpoints {
         });
     }
 
-//    public void generatePostEndpoints() {
-//        this.app.routes(() -> {
-//            path("/authenticate", () -> {
-//
-//                path("/login", () -> {
-//
-//                }) ;
-//            });
-//        });
-//
-//        String verifyUser = "/auth";
-//
-//
-//        this.app.post(verifyUser, ctx -> {
-//            LoginInput loginInput = objectMapper.readValue(ctx.body(), LoginInput.class);
-//            LoginInfoEntity loginInfoEntity = loginController.authenticateLogin(loginInput);
-//            Employee employee = employeeController.getEmployee(loginInfoEntity.getEmployeeId());
-//            if(employee != null) ctx.res.getWriter().write(objectMapper.writeValueAsString(employee));
-//            else ctx.res.getWriter().write(String.valueOf(false));
-//        });
-//
-//    }
-//
-//    private void generatePutEndpoints() {
-//
-//        String createRequest = "/create-request";
-//
-//
-//        this.app.put(createRequest, ctx -> {
-//            String request = objectMapper.writeValueAsString(ctx.body());
-//            ctx.res.getWriter().write(request);
-//        });
-//
-//
-//
-//    }
-//
-//    private void generateGetEndpoints() {
-//        String loginPage = "/login-page";
-//        String homepage = "/homepage";
-//        String statistics = "/statistics";
-//
-//
-//        app.get(loginPage, ctx ->{
-//            staticHTML.getLoginPage(ctx);
-//        });
-//
-//        app.get(homepage, ctx ->{
-//            staticHTML.getEmployeeHomepage(ctx);
-//        });
-//
-//        app.get(statistics, ctx ->{
-//            staticHTML.getStatisticsPage(ctx);
-//        });
-//
-//
-//
-//    }
 }

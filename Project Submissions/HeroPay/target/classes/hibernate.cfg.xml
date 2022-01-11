@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgresPlusDialect</property>
+
+        <property name="hibernate.connection.url"></property>
+        <property name="hibernate.connection.username"></property>
+        <property name="hibernate.connection.password"></property>
+
+        <property name="show_sql">true</property>
+        <property name="hibernate.connection.pool_size">5</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <mapping class="com.revature.repository.DTO.RequestTypeEntity"/>
+        <mapping class="com.revature.repository.DTO.EmployeeRoleEntity"/>
+        <mapping class="com.revature.repository.DTO.EmployeeAccountEntity"/>
+        <mapping class="com.revature.repository.DTO.LoginInfoEntity"/>
+        <mapping class="com.revature.repository.DTO.PendingRequestEntity"/>
+        <mapping class="com.revature.repository.DTO.CompletedRequestEntity"/>
+
+    </session-factory>
+</hibernate-configuration>

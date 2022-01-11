@@ -17,8 +17,8 @@ public class OrderingService implements OrderingServiceInterface {
     private final Logger dLog = LoggerFactory.getLogger("dLog");
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private PendingRequestService pendingRequestService;
-    private CompletedRequestService completedRequestService;
+    private final PendingRequestService pendingRequestService;
+    private final CompletedRequestService completedRequestService;
 
     public OrderingService(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService) {
         this.pendingRequestService = pendingRequestService;
@@ -27,10 +27,9 @@ public class OrderingService implements OrderingServiceInterface {
 
     @Override
     public List<PendingRequest> orderByDatePending(List<PendingRequest> pendingRequests) {
-        List<PendingRequest> sortingList = pendingRequests;
         pendingRequests.sort(Comparator.comparing(PendingRequest::getDateSubmission));
         dLog.debug("Order by date of pendingRequests");
-        return sortingList;
+        return pendingRequests;
     }
 
     @Override

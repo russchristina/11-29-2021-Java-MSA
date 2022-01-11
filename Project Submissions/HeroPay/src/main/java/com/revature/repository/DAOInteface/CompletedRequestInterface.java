@@ -18,32 +18,32 @@ public interface CompletedRequestInterface {
 
     //Create
 
-    CompletedRequestEntity insertCompletedRequest(int requestId, int employeeId, int managerId, boolean status, String response, LocalDate dateResolved) throws SQLException;
+    CompletedRequestEntity insertCompletedRequest(CompletedRequestEntity completedRequestEntity);
 
     //Read
 
-    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId) throws SQLException;
+    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId);
 
-    CompletedRequestEntity getCompletedRequest(int requestId) throws SQLException;
+    CompletedRequestEntity getCompletedRequest(int requestId);
 
-    List<CompletedRequestEntity> getCompletedRequestByManagerIdList(int managerId) throws SQLException;
+    List<CompletedRequestEntity> getCompletedRequestByManagerIdList(int managerId);
 
-    List<CompletedRequestEntity> getAllCompletedRequestList() throws SQLException;
+    List<CompletedRequestEntity> getAllCompletedRequestList();
 
-    List<CompletedRequestEntity> getCompletedRequestByStatus(boolean status) throws SQLException;
+    List<CompletedRequestEntity> getCompletedRequestByStatus(boolean status);
 
 
     //Update
 
-    CompletedRequestEntity updateCompletedRequestByManagerId(int managerId, int requestId) throws SQLException;
+    CompletedRequestEntity updateCompletedRequestByManagerId(CompletedRequestEntity completedRequestEntity);
 
-    CompletedRequestEntity updateCompletedRequestStatus(int requestId, boolean status) throws SQLException;
+    CompletedRequestEntity updateCompletedRequestStatus(CompletedRequestEntity completedRequestEntity);
 
-    CompletedRequestEntity updateCompletedRequestResponse(int requestId, String response) throws SQLException;
+    CompletedRequestEntity updateCompletedRequestResponse(CompletedRequestEntity completedRequestEntity);
 
     //Delete
 
-    CompletedRequestEntity deleteCompletedRequest(int requestId) throws SQLException;
+    CompletedRequestEntity deleteCompletedRequest(CompletedRequestEntity completedRequestEntity);
 
 
 }

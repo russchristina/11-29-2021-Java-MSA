@@ -12,7 +12,7 @@ public interface CompletedRequestServiceInterface {
 
     CompletedRequest convertCompletedRequestEntity(CompletedRequestEntity completedRequestEntity);
 
-    boolean validateCompletedRequest(CompletedRequest completedRequest);
+    void validateCompletedRequest(CompletedRequest completedRequest);
 
     List<CompletedRequest> getAllCompletedRequests();
 

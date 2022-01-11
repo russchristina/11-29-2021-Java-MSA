@@ -49,19 +49,11 @@ full join employee_role er
 on ea."role" = er.id
 where ea."role" = 2;
 
-
-create view request_with_role_id as
-select pr.id, pr.employee_id, er.id as role_id, pr."type" , pr.request_message, pr.amount , pr.date_submission , pr.status 
+create view request_with_role_id;
+select pr.id, pr.employee_id, er.id as role_id, pr."type" , pr.request_message , pr.date_submission , pr.status 
 from pending_request pr 
-left join employee_account ea 
-on pr.employee_id = ea.id 
-left join employee_role er 
-on ea."role" = er.id ;
-
-select * from request_with_role_id;
-
-drop view request_with_role_id ;
-
+full join employee_role er 
+on pr.employee_id = er.id ;
 
 select * from employee_role er ;
 
@@ -76,4 +68,13 @@ on li.employee_id = ea.id
 full join employee_role er 
 on ea."role" = er.id
 where ea."role" = 3;
+
+create view quick_sum as
+select employee_id , sum (amount) 
+from pending_request pr 
+where status = true
+group by employee_id
+order by sum (amount) asc;
+
+select * from quick_sum;
 

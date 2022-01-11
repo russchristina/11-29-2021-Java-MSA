@@ -1,10 +1,18 @@
 package com.revature.repository.DTO;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name ="request_type", schema = "project_1")
 public class RequestTypeEntity {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "request_type_seq", strategy = GenerationType.AUTO)
+    @SequenceGenerator(allocationSize = 1, name = "request_type_seq", sequenceName = "request_type_id_seq")
     private int id;
+    @Column(name = "type")
     private String requestType;
 
     public RequestTypeEntity(int id, String requestType) {

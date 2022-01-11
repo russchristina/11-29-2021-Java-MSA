@@ -1,5 +1,6 @@
 package com.revature.utility;
 
+import com.revature.repository.utility.HibernateSessionFactory;
 import io.javalin.Javalin;
 
 public class Driver {
@@ -8,6 +9,7 @@ public class Driver {
         Javalin app = Javalin.create().start(9002);
         ServerStartup server = new ServerStartup(app);
         server.configureServer();
+        HibernateSessionFactory.getSession();
 
     }
 

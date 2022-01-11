@@ -19,7 +19,7 @@ import io.javalin.Javalin;
 
 public class ServerStartup {
 
-    private Javalin app;
+    private final Javalin app;
 
     public ServerStartup(Javalin app) {
         this.app = app;

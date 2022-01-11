@@ -7,21 +7,21 @@ public class StatisticsController {
 
 
 
-    private StatisticsService statisticsService;
+    private StatisticsService statisticsService = null;
 
     public StatisticsController(StatisticsService statisticsService) {
         this.statisticsService = statisticsService;
     }
 
-    public Handler getGeneralStatistics = ctx -> {
+    public final Handler getGeneralStatistics = ctx -> {
         ctx.json(statisticsService.getGeneralStatistics());
     };
 
-    public Handler getEmployeeGeneralStatistics = ctx -> {
+    public final Handler getEmployeeGeneralStatistics = ctx -> {
         ctx.json(statisticsService.getEmployeeRankedList());
     };
 
-    public Handler getEmployeeStatistics = ctx -> {
+    public final Handler getEmployeeStatistics = ctx -> {
         int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
         ctx.json(statisticsService.getEmployeeStatistics(employeeId));
     };
