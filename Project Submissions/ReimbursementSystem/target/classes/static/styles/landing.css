@@ -1,0 +1,26 @@
+
+body{
+    display: grid;
+    grid-template-columns: subgrid auto auto auto;
+}
+.news {
+    margin-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 1em;
+    width: 75%;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    background-color:rgb(248, 248, 245);
+    font-size: large;
+    }
+
+.landing_img {
+    width: 75%;
+    border-width: 2px;
+    border-style: inset;
+}
