@@ -1,5 +1,4 @@
 let mainContainer = document.getElementById('mainContainer')
-/*let loginButton = document.getElementById('loginButton')*/
 let loginForm = document.getElementById('loginForm')
 
 /**
@@ -158,7 +157,9 @@ async function getAllRequestData(data) {
  *  Statistics view handling
  */
 function viewStats(data) {
-
+    /**
+     *  Make list/buttons for each stat
+     */
 }
 
 /**
@@ -247,10 +248,10 @@ function buildTable(buildData, data) {
         if(data.manager === true && data.name !== request.employeeName && request.status === 'Pending'){
             let approveButton = document.createElement('button')
             approveButton.innerText='Approve'
-            approveButton.onclick = function() {handleRequest(request, 'Approved')}
+            approveButton.onclick = function() {handleRequest(request, 'Approved', data)}
             let denyButton = document.createElement('button')
             denyButton.innerText='Deny'  
-            denyButton.onclick = function() {handleRequest(request, 'Denied')}
+            denyButton.onclick = function() {handleRequest(request, 'Denied', data)}
             r7.appendChild(approveButton)
             r7.appendChild(denyButton)
             row.appendChild(r7)
@@ -275,64 +276,29 @@ function buildTable(buildData, data) {
 /**
  *  Handle approve/deny request functionality
  */
-function handleRequest(requestData, reqAction) {
-    /**
-     *  
-     */
-    let noteWindow = window
-    let yesButton = document.createElement('button')
-    yesButton.innerText='Yes'
-    let noButton = document.createElement('button')
-    noButton.innerText='No'
-    
-    noteWindow.append(yesButton)
-    noteWindow.append(noButton)
-    noteWindow.open()
-    /**
-     *  
-     */
-
+function handleRequest(requestData, reqAction, data) { 
+    let url;
+    let noteWindow = prompt('Reason for action. (Optional)')
     requestData.status = reqAction
-
-    yesButton.onclick= function(){
-        
-        
-        let url = 'http://localhost:7777/request-update-note'
-
-        fetch(url, {
-            method: 'PUT', 
-            body: requestData
-        })
     
-        .then(response => response.text())
-        .then(text => {
-            window.alert(text)
-            console.log(text)
-        })
-    
-        .catch(() => {window.alert('Oops.. Something happened')})
-        noteWindow.window.close()
+    if(noteWindow == null || noteWindow == "") {
+        url = 'http://localhost:7777/request-update'
+    } else {
+        url = 'http://localhost:7777/request-update-note'
+        requestData.note = noteWindow
     }
-
     
-    noButton.onclick= function(){
-        let url = 'http://localhost:7777/request-update'
-        
-        fetch(url, {
-            method: 'PUT', 
-            body: requestData
-        })
+    fetch(url, {
+        method: 'PUT', 
+        body: JSON.stringify(requestData)
+    })
     
-        .then(response => response.text())
-        .then(text => {
-            window.alert(text)
-            console.log(text)
-        })
+    .then(response => response.text())
+    .then(text => {
+        window.alert(text)
+        console.log(text)
+        getAllRequestData(data)
+    })
     
-        .catch(() => {window.alert('Oops.. Something happened')})
-        noteWindow.window.close()
-    }
-
-    
-
+    .catch(() => {window.alert('Oops.. Something happened')})
 }

@@ -2,14 +2,33 @@ package models;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "requests")
 public class Request {
 
 	// Fields
+	@Id
+	@Column(name = "request_id")
+	@GeneratedValue(generator = "request_id_seq", strategy = GenerationType.AUTO)
+	@SequenceGenerator(allocationSize = 1, name = "request_id_seq")
 	private int requestId;
+	@Column(name = "employee_name")
 	private String employeeName;
+	@Column(name = "amount", columnDefinition = "NUMERIC")
 	private double amount;
+	@Column(name = "reason")
 	private String reason;
+	@Column(name = "status")
 	private String status;
+	@Column(name = "note")
 	private String note;
 	
 	// Constructor

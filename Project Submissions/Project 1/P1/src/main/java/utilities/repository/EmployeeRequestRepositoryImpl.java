@@ -7,10 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import models.Employee;
 import models.Request;
 import utilities.connect.ConnectionClosers;
 import utilities.connect.ConnectionHandler;
+import utilities.connect.HibernateSessionFactory;
 
 public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 	
@@ -138,40 +143,57 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 		return requestList;
 	} // End method
 
+	
+//	public List<Request> findAllRequestsJ() {
+//		List<Request> requestList = new ArrayList<>();
+//		final String SQL = "select * from requests";
+//		Connection conn = null;
+//		PreparedStatement stmt = null;
+//		ResultSet set = null;
+//		
+//		try {
+//			conn = ConnectionHandler.getConnection();
+//			stmt = conn.prepareStatement(SQL);
+//			set = stmt.executeQuery();
+//			
+//			while (set.next()) {
+//				requestList.add(new Request(
+//						set.getInt(1),
+//						set.getString(2),
+//						set.getDouble(3),
+//						set.getString(4),
+//						set.getString(5),
+//						set.getString(6)
+//						));
+//			} // End while loop
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			ConnectionClosers.closeConnection(conn);
+//			ConnectionClosers.closeResultSet(set);
+//			ConnectionClosers.closeStatement(stmt);
+//		} // End finally block
+//		
+//		return requestList;
+//	} // End method
+
 	@Override
 	public List<Request> findAllRequests() {
-		List<Request> requestList = new ArrayList<>();
-		final String SQL = "select * from requests";
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet set = null;
-		
+		List<Request> requestList = null;
+		Session session = null;
+		Transaction transaction = null;
 		try {
-			conn = ConnectionHandler.getConnection();
-			stmt = conn.prepareStatement(SQL);
-			set = stmt.executeQuery();
-			
-			while (set.next()) {
-				requestList.add(new Request(
-						set.getInt(1),
-						set.getString(2),
-						set.getDouble(3),
-						set.getString(4),
-						set.getString(5),
-						set.getString(6)
-						));
-			} // End while loop
-		} catch (SQLException e) {
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			requestList = session.createQuery("FROM Request", Request.class).getResultList();
+			transaction.commit();
+		} catch(HibernateException e) {
+			transaction.rollback();
 			e.printStackTrace();
-		} finally {
-			ConnectionClosers.closeConnection(conn);
-			ConnectionClosers.closeResultSet(set);
-			ConnectionClosers.closeStatement(stmt);
-		} // End finally block
-		
+		}
 		return requestList;
-	} // End method
-
+	}
+	
 	@Override
 	public List<Request> findPendingRequests() {
 		List<Request> requestList = new ArrayList<>();
@@ -248,7 +270,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 	@Override
 	public Request highestSpender() {
 		Request r = null;
-		final String SQL = "select employee_name, amount from requests where status = 2 order by amount  desc limit 1";
+		final String SQL = "select employee_name, amount from requests where status = Approved order by amount  desc limit 1";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet set = null;
@@ -305,7 +327,7 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 	@Override
 	public double averageCost() {
 		double avg = 0;
-		int div = 0;
+		double div = 0;
 		final String SQL = "select amount from requests";
 		Connection conn = null;
 		PreparedStatement stmt = null;

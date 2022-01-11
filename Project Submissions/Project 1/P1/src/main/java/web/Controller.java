@@ -26,7 +26,7 @@ public class Controller {
 		String name = ctx.formParam("empName");
 		String amount = ctx.formParam("reqAmount");
 		String reason = ctx.formParam("reqReason");
-		System.out.println(name + " " + amount + " " + reason);
+		
 		try {
 			double numberAmount = Double.parseDouble(amount);
 			Request r = new Request(name, numberAmount, reason);
@@ -56,10 +56,10 @@ public class Controller {
 		EmployeeRequestRepositoryImpl repo = new EmployeeRequestRepositoryImpl();
 		if (r.getStatus().equals("Approved") || r.getStatus().equals("Denied")) {
 			repo.updateRequestStatus(r);
-			if(r.getStatus().equals("Appoved")) {
-				ctx.html("Request Approved");
+			if(r.getStatus().equals("Approved")) {
+				ctx.html("Reimbursement request for " + r.getReason().toLowerCase() + " submitted by " + r.getEmployeeName() + " has been approved");
 			} else if (r.getStatus().equals("Denied")) {
-				ctx.html("Request Denied");
+				ctx.html("Reimbursement request for " + r.getReason().toLowerCase() + " submitted by " + r.getEmployeeName() + " has been denied");
 			} // End else if statement
 		} else {
 			ctx.html("Action failed");
@@ -71,13 +71,31 @@ public class Controller {
 		EmployeeRequestRepositoryImpl repo = new EmployeeRequestRepositoryImpl();
 		if (r.getStatus().equals("Approved") || r.getStatus().equals("Denied")) {
 			repo.updateRequestStatusAndNote(r);
-			if(r.getStatus().equals("Appoved")) {
-				ctx.html("Request Approved");
+			if(r.getStatus().equals("Approved")) {
+				ctx.html("Reimbursement request for " + r.getReason().toLowerCase() + " submitted by " + r.getEmployeeName() + " has been approved");
 			} else if (r.getStatus().equals("Denied")) {
-				ctx.html("Request Denied");
+				ctx.html("Reimbursement request for " + r.getReason().toLowerCase() + " submitted by " + r.getEmployeeName() + " has been denied");
 			} // End else if statement
 		} else {
 			ctx.html("Action failed");
 		} // End else statement
+	}; // End Handler
+	
+	public static Handler fetchHighestAmount = ctx -> {
+		EmployeeRequestRepositoryImpl repo = new EmployeeRequestRepositoryImpl();
+		Request r = repo.highestSpender();
+		ctx.json(r);
+	}; // End Handler
+	
+	public static Handler fetchNumberOfRequests = ctx -> {
+		EmployeeRequestRepositoryImpl repo = new EmployeeRequestRepositoryImpl();
+		int numRequests = repo.numberOfRequests();
+		ctx.html(String.valueOf(numRequests));
+	}; // End Handler
+	
+	public static Handler fetchAverageAmountReq = ctx -> {
+		EmployeeRequestRepositoryImpl repo = new EmployeeRequestRepositoryImpl();
+		double avgReqAmt = repo.averageCost();
+		ctx.html(String.valueOf(avgReqAmt));
 	}; // End Handler
 } // End class

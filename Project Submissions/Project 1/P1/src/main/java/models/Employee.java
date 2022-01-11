@@ -2,11 +2,22 @@ package models;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "employees")
 public class Employee {
 
 	// Fields
+	@Id
+	@Column(name = "employee_name")
 	private String name;
+	@Column(name = "employee_password")
 	private String password;
+	@Column(name = "isManager")
 	private boolean isManager;
 	
 	// Constructor
