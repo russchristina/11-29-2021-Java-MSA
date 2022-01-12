@@ -3,6 +3,7 @@ package com.revature.presentation.manageEmployee.controller;
 import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.presentation.model.employeeRequests.EmployeeResponse;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
+import com.revature.repository.DAOClasses.EmployeeRoleDao;
 import com.revature.service.handleEmployee.EmployeeService;
 import io.javalin.http.Handler;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ public class EmployeeController {
     private EmployeeService employeeService = null;
 
     public EmployeeController() {
-        this.employeeService = new EmployeeService(new EmployeeAccountDao());
+        this.employeeService = new EmployeeService(new EmployeeAccountDao(), new EmployeeRoleDao());
     }
 
     public final Handler findEmployee = ctx -> {
@@ -41,7 +42,6 @@ public class EmployeeController {
                     dLog.debug("Employee not Found: " + ctx.queryParam("employeeId"));
                     ctx.json(employeeResponse);
                     ctx.status(406);
-
                 }
             }catch (NumberFormatException e){
                 dLog.debug(e.getMessage(),e);

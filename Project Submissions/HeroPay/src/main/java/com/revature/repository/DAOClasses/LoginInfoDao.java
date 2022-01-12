@@ -1,6 +1,7 @@
 package com.revature.repository.DAOClasses;
 
 import com.revature.repository.DAOInteface.LoginInfoInterface;
+import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.LoginInfoEntity;
 
 import com.revature.repository.utility.ConnectionFactory;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class LoginInfoDao implements LoginInfoInterface {
 
@@ -22,7 +24,7 @@ public class LoginInfoDao implements LoginInfoInterface {
 
     @Override
     public Integer insertLoginInfo(LoginInfoEntity loginInfoEntity) {
-        Session session;
+        Session session = null;
         Transaction tx = null;
         int savedId = 0;
         try{
@@ -31,32 +33,37 @@ public class LoginInfoDao implements LoginInfoInterface {
             savedId = (Integer) session.save(loginInfoEntity);
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null) tx.rollback();
             dLog.error(e.getMessage(), e);
+        } finally{
+            session.close();
         }
         return savedId;
     }
 
     @Override
     public LoginInfoEntity getLoginInfo(String username) {
-        Session session;
-        Transaction tx = null;
         LoginInfoEntity returnLoginInfo = null;
+        Session session = null;
+        Transaction tx = null;
         try{
             session = HibernateSessionFactory.getSession();
             tx = session.beginTransaction();
-            returnLoginInfo = session.get(LoginInfoEntity.class, username);
+            returnLoginInfo = session.createQuery("FROM LoginInfoEntity AS L WHERE L.username = :username", LoginInfoEntity.class)
+                    .setParameter("username", username).getSingleResult();
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null) tx.rollback();
             dLog.error(e.getMessage(), e);
+        } finally{
+            session.close();
         }
         return returnLoginInfo;
     }
 
     @Override
     public Integer updateUsername(LoginInfoEntity loginInfoEntity) {
-        Session session;
+        Session session = null;
         Transaction tx = null;
         int savedId = 0;
         try{
@@ -65,15 +72,17 @@ public class LoginInfoDao implements LoginInfoInterface {
             savedId = (Integer) session.save(loginInfoEntity);
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null) tx.rollback();
             dLog.error(e.getMessage(), e);
+        } finally{
+            session.close();
         }
         return savedId;
     }
 
     @Override
     public Integer updatePassword(LoginInfoEntity loginInfoEntity) {
-        Session session;
+        Session session = null;
         Transaction tx = null;
         int savedId = 0;
         try{
@@ -82,15 +91,17 @@ public class LoginInfoDao implements LoginInfoInterface {
             savedId = (Integer) session.save(loginInfoEntity);
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null) tx.rollback();
             dLog.error(e.getMessage(), e);
+        } finally{
+            session.close();
         }
         return savedId;
     }
 
     @Override
     public void deleteLoginInfo(LoginInfoEntity loginInfoEntity) {
-        Session session;
+        Session session = null;
         Transaction tx = null;
         try{
             session = HibernateSessionFactory.getSession();
@@ -98,8 +109,10 @@ public class LoginInfoDao implements LoginInfoInterface {
             session.delete(loginInfoEntity);
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null) tx.rollback();
             dLog.error(e.getMessage(), e);
+        } finally{
+            session.close();
         }
     }
 }

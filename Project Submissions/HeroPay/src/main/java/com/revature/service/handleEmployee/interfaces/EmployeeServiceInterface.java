@@ -23,4 +23,6 @@ public interface EmployeeServiceInterface {
     List<Employee> getAllEmployees();
 
     List<QuickSortEmployee> getQuickSort();
+
+    List<EmployeeAccountEntity> getAllEmployeesNotConverted();
 }

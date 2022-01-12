@@ -77,20 +77,21 @@ public class EmployeeAccountDao implements EmployeeAccountInterface {
     }
 
     @Override
-    public List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(EmployeeAccountEntity employeeAccountEntity) {
-//        List<EmployeeAccountEntity> employeeAccountEntities = null;
-//        Session session;
-//        Transaction tx = null;
-//        try{
-//            session = HibernateSessionFactory.getSession();
-//            tx = session.beginTransaction();
-//            employeeAccountEntities = session.createQuery("FROM EmployeeAccountEntity WHERE roleName =", EmployeeAccountEntity.class).getResultList();
-//            tx.commit();
-//        }catch(HibernateException e){
-//            tx.rollback();
-//            e.printStackTrace();
-//        }
-        return null;
+    public List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(int roleId) {
+        List<EmployeeAccountEntity> employeeAccountEntities = null;
+        Session session;
+        Transaction tx = null;
+        try{
+            session = HibernateSessionFactory.getSession();
+            tx = session.beginTransaction();
+            employeeAccountEntities = session.createQuery("FROM EmployeeAccountEntity AS E WHERE E.employeeRole.id = :roleId", EmployeeAccountEntity.class)
+                    .setParameter("roleId", roleId).getResultList();
+            tx.commit();
+        }catch(HibernateException e){
+            tx.rollback();
+            dLog.error(e.getMessage(), e);
+        }
+        return employeeAccountEntities;
     }
 
     @Override

@@ -7,38 +7,14 @@ public class GeneralStatisticsResponse {
 
     private SortedAll total;
     private List<SortedType> sortedTypes;
-    private List<SortedRole> sortedRole;
 
 
     public GeneralStatisticsResponse() {
     }
 
-    public GeneralStatisticsResponse(SortedAll total, List<SortedType> sortedTypes, List<SortedRole> sortedRole) {
+    public GeneralStatisticsResponse(SortedAll total, List<SortedType> sortedTypes) {
         this.total = total;
         this.sortedTypes = sortedTypes;
-        this.sortedRole = sortedRole;
-    }
-
-    @Override
-    public String toString() {
-        return "{\"GeneralStatisticsResponse\":{"
-                + "\"total\":" + total
-                + ", \"sortedTypes\":" + sortedTypes
-                + ", \"sortedRole\":" + sortedRole
-                + "}}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GeneralStatisticsResponse)) return false;
-        GeneralStatisticsResponse that = (GeneralStatisticsResponse) o;
-        return Objects.equals(getTotal(), that.getTotal()) && Objects.equals(getSortedTypes(), that.getSortedTypes()) && Objects.equals(getSortedRole(), that.getSortedRole());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getTotal(), getSortedTypes(), getSortedRole());
     }
 
     public SortedAll getTotal() {
@@ -57,11 +33,24 @@ public class GeneralStatisticsResponse {
         this.sortedTypes = sortedTypes;
     }
 
-    public List<SortedRole> getSortedRole() {
-        return sortedRole;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GeneralStatisticsResponse)) return false;
+        GeneralStatisticsResponse that = (GeneralStatisticsResponse) o;
+        return Objects.equals(total, that.total) && Objects.equals(sortedTypes, that.sortedTypes);
     }
 
-    public void setSortedRole(List<SortedRole> sortedRole) {
-        this.sortedRole = sortedRole;
+    @Override
+    public int hashCode() {
+        return Objects.hash(total, sortedTypes);
+    }
+
+    @Override
+    public String toString() {
+        return "{\"GeneralStatisticsResponse\":{"
+                + "\"total\":" + total
+                + ", \"sortedTypes\":" + sortedTypes
+                + "}}";
     }
 }

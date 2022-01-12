@@ -58,7 +58,7 @@ public class EmployeeRoleDao implements EmployeeRoleInterface {
         try{
             session = HibernateSessionFactory.getSession();
             tx = session.beginTransaction();
-            returnRoleEntity = session.get(EmployeeRoleEntity.class, roleName);
+            returnRoleEntity = session.createQuery("FROM EmployeeRoleEntity AS E WHERE E.roleName = :roleName", EmployeeRoleEntity.class).setParameter("roleName", roleName).getSingleResult();
             tx.commit();
         }catch(HibernateException e){
             tx.rollback();

@@ -26,7 +26,7 @@ public class LoginController {
             LoginResponse loginResponse = new LoginResponse();
             if(loginInfo != null) {
                 loginResponse.setStatus(true);
-//                loginResponse.setEmployeeId(loginInfo.getEmployeeId());
+                loginResponse.setEmployeeId(loginInfo.getEmployeeAccount().getId());
                 dLog.debug("Validation Success: " + loginResponse.getEmployeeId());
             }else{
                 loginResponse.setStatus(false);

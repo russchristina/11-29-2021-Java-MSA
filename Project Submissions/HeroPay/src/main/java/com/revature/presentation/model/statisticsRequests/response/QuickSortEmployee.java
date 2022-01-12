@@ -1,16 +1,17 @@
 package com.revature.presentation.model.statisticsRequests.response;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class QuickSortEmployee {
 
     private int employeeId;
-    private double sum;
+    private BigDecimal sum;
 
     public QuickSortEmployee() {
     }
 
-    public QuickSortEmployee(int employeeId, double sum) {
+    public QuickSortEmployee(int employeeId, BigDecimal sum) {
         this.employeeId = employeeId;
         this.sum = sum;
     }
@@ -23,11 +24,11 @@ public class QuickSortEmployee {
         this.employeeId = employeeId;
     }
 
-    public double getSum() {
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
 
@@ -36,7 +37,7 @@ public class QuickSortEmployee {
         if (this == o) return true;
         if (!(o instanceof QuickSortEmployee)) return false;
         QuickSortEmployee that = (QuickSortEmployee) o;
-        return employeeId == that.employeeId && Double.compare(that.sum, sum) == 0;
+        return employeeId == that.employeeId && Objects.equals(sum, that.sum);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class QuickSortEmployee {
     public String toString() {
         return "{\"QuickSortEmployee\":{"
                 + "\"employeeId\":\"" + employeeId + "\""
-                + ", \"sum\":\"" + sum + "\""
+                + ", \"sum\":" + sum
                 + "}}";
     }
 }

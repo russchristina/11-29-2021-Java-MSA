@@ -14,10 +14,10 @@ public class PendingRequestEntity {
     @GeneratedValue(generator="pending_request_id_seq", strategy=GenerationType.AUTO)
     @SequenceGenerator(allocationSize = 1, name = "pending_request_id_seq", sequenceName = "pending_request_id_seq")
     private int id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private EmployeeAccountEntity employeeAccount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type")
     private RequestTypeEntity requestType;
     @Column(name = "request_message")

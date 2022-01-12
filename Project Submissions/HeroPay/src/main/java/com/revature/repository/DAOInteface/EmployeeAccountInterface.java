@@ -27,7 +27,7 @@ public interface EmployeeAccountInterface {
 
     List<EmployeeAccountEntity> getAllEmployeeAccountList();
 
-    List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(EmployeeAccountEntity employeeAccountEntity);
+    List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(int roleId);
 
 
     //Update

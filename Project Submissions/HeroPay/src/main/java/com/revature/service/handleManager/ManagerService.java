@@ -23,16 +23,19 @@ public class ManagerService implements ManagerServiceInterface {
 
     @Override
     public CompletedRequest approveRequest(PendingRequest pendingRequest, int employeeId, int managerId, String response) {
-        dLog.debug("Approving pending request" + ManagerService.class);
-        PendingRequest approvedRequest = pRService.convertPendingRequestEntity(pRService.updatePendingRequestStatus(pendingRequest.getId(), true));
-        tLog.info("Pending request approved" + approvedRequest.toString());
-        return cRService.convertPendingRequest(approvedRequest, managerId, true, response);
+//        dLog.debug("Approving pending request" + ManagerService.class);
+//        PendingRequest approvedRequest = pRService.convertPendingRequestEntity(pRService.updatePendingRequestStatus(pendingRequest.getId(), true));
+//        tLog.info("Pending request approved" + approvedRequest.toString());
+//        return cRService.convertPendingRequest(approvedRequest, managerId, true, response);
+        return null;
     }
 
     @Override
     public CompletedRequest denyRequest(PendingRequest pendingRequest, int employeeId, int managerId, String response) {
-        dLog.debug("Denying pending request" + ManagerService.class);
-        PendingRequest deniedRequest = pRService.convertPendingRequestEntity(pRService.updatePendingRequestStatus(pendingRequest.getId(), true));
-        tLog.info("Pending request denied" + deniedRequest.toString());
-        return cRService.convertPendingRequest(deniedRequest, managerId, false, response);    }
+//        dLog.debug("Denying pending request" + ManagerService.class);
+//        PendingRequest deniedRequest = pRService.convertPendingRequestEntity(pRService.updatePendingRequestStatus(pendingRequest.getId(), true));
+//        tLog.info("Pending request denied" + deniedRequest.toString());
+//        return cRService.convertPendingRequest(deniedRequest, managerId, false, response);    }
+return null;}
+
 }

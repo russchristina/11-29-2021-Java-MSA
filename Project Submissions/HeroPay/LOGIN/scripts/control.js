@@ -182,6 +182,10 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
+        if(!values) {
+            console.log("Empty");
+            return;
+        }
         for(let i = 0; i < values.length; i++){
             tableRow = document.createElement('tr');
             for(let key in values[i]){
@@ -212,7 +216,10 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-
+        if(!values) {
+            console.log("Empty");
+            return;
+        }
         for(let i = 0; i < values.length; i++){
             let counter = 0;
             tableRow = document.createElement('tr');
@@ -238,6 +245,44 @@ const pageUtility = {
                     }}
                 counter++;
             }
+            tableRow.id = "completed-id-" + String(tableRow.firstChild.innerText);
+            table.appendChild(tableRow);
+        }
+        container.appendChild(table);
+    },
+    generateTableRowsCleanPender: function(tableId, container, values, hiddenColumns){
+        let table = document.getElementById(tableId);
+        let tableRow;
+        let tableElement;
+        if(!values) {
+            console.log("Empty");
+            return;
+        }
+        for(let i = 0; i < values.length; i++){
+            let counter = 0;
+            tableRow = document.createElement('tr');
+            for(let key in values[i]){
+                tableElement = document.createElement('td')
+                if(Array.isArray(values[i][key])){
+                    tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
+                }else if(values[i][key] === false){
+                    tableElement.innerText = 'Pending';
+                } else if(values[i][key] === true){
+                    tableElement.innerText = 'Answered';
+                }else{
+                    tableElement.innerText = values[i][key];
+                }
+ 
+
+                tableRow.appendChild(tableElement);
+
+                for(let hidden of hiddenColumns){
+                    if(hidden == counter){
+                        tableElement.hidden = true;
+                    }}
+                counter++;
+            }
+            tableRow.id = "request-id-" + String(tableRow.firstChild.innerText);
             table.appendChild(tableRow);
         }
         container.appendChild(table);
@@ -264,6 +309,10 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
+        if(!values) {
+            console.log("Empty");
+            return;
+        }
         for(let i = 0; i < values.length; i++){
             let counter2 = 0;
             tableRow = document.createElement('tr');
@@ -288,6 +337,10 @@ const pageUtility = {
     generateSingleTableRow: function(value, container){
         let tableRow = document.createElement('tr');
         let tableElement;
+        if(!value) {
+            console.log("Empty");
+            return;
+        }
         for(let key in value){
             tableElement = document.createElement('td')
             tableElement.innerText = value[key];
@@ -299,6 +352,10 @@ const pageUtility = {
         let tableRow = document.createElement('tr');
         let tableElement;
         let counter = 0;
+        if(!value) {
+            console.log("Empty");
+            return;
+        }
         for(let key in value){
             tableElement = document.createElement('td')
             if(Array.isArray(value[key])){
@@ -388,11 +445,11 @@ const requestViewUtility = {
     createPersonalRequestTables: function(){
         pageUtility.attachTitleElement('h3', 'Pending Requests', personalPRContainer);
         // pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'pending-request-table', personalPRContainer);
-        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'pending-request-table', personalPRContainer);
+        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'pending-request-table', personalPRContainer);
         homepageView.appendChild(personalPRContainer);
 
         pageUtility.attachTitleElement('h3', 'Past Requests', personalARContainer);
-        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'answered-request-table', personalARContainer);
+        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'answered-request-table', personalARContainer);
         homepageView.appendChild(personalARContainer);
 
         pageUtility.attachTitleElement('h3', 'Completed Requests', personalCRContainer);
@@ -402,11 +459,11 @@ const requestViewUtility = {
     },
     createAllRequestTable: function(){
         pageUtility.attachTitleElement('h3', 'All Pending Requests', allPRContainer);
-        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-pending-request-table', allPRContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'all-pending-request-table', allPRContainer);
         homepageView.appendChild(allPRContainer);
 
         pageUtility.attachTitleElement('h3', 'All Past Requests', allARContainer);
-        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-answered-request-table', allARContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'all-answered-request-table', allARContainer);
         homepageView.appendChild(allARContainer);
 
         pageUtility.attachTitleElement('h3', 'All Completed Requests', allCRContainer);
@@ -415,7 +472,7 @@ const requestViewUtility = {
     },
     displayEmployeeRequests: function (allRequestData){
 
-        requestViewUtility.displayPendingRequests(allRequestData.pendingRequests);
+        requestViewUtility.displayPendingRequests(allRequestData.unansweredRequests);
         requestViewUtility.displayAnsweredRequests(allRequestData.answeredRequests);
         requestViewUtility.displayCompletedRequests(allRequestData.completedRequests);
         console.log(allRequestData);
@@ -431,11 +488,11 @@ const requestViewUtility = {
         console.log(sortedRequests);
     },
     displayPendingRequests : function (pendingRequests){
-        pageUtility.generateTableRowsClean('pending-request-table', personalPRContainer, pendingRequests, [0, 1]);
+        pageUtility.generateTableRowsCleanPender('pending-request-table', personalPRContainer, pendingRequests, [0, 1]);
         homepageView.appendChild(personalPRContainer);
     },
     displayAnsweredRequests : function (answeredRequests){
-        pageUtility.generateTableRowsClean('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
+        pageUtility.generateTableRowsCleanPender('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
         homepageView.appendChild(personalARContainer);
     },
     displayCompletedRequests : function (completedRequests){
@@ -451,7 +508,7 @@ const requestViewUtility = {
         homepageView.appendChild(allPRContainer);
     },
     displayAllAnsweredRequests : function (answeredRequests){
-        pageUtility.generateTableRowsClean('all-answered-request-table', allARContainer, answeredRequests, [0])
+        pageUtility.generateTableRowsCleanPender('all-answered-request-table', allARContainer, answeredRequests, [0])
         homepageView.appendChild(allARContainer);
     },
     displayAllCompletedRequests : function (completedRequests){
@@ -795,7 +852,7 @@ const sortingUtility = {
         let employeeAnsweredRequests = [];
         let employeeCompletedRequests = [];
 
-        totalRequestData.pendingRequests.forEach(sortPending);
+        totalRequestData.unansweredRequests.forEach(sortPending);
         totalRequestData.answeredRequests.forEach(sortAnswered);
         totalRequestData.completedRequests.forEach(sortCompleted);
 

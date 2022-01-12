@@ -12,11 +12,13 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class RequestTypeDao implements RequestTypeInterface {
     private final Logger dLog = LoggerFactory.getLogger("dLog");
     @Override
     public Integer insertRequestType(RequestTypeEntity requestTypeEntity) {
-        Session session;
+        Session session = null;
         Transaction tx = null;
         int savedId = 0;
         try{
@@ -31,26 +33,30 @@ public class RequestTypeDao implements RequestTypeInterface {
         return savedId;
     }
 
+
     @Override
-    public RequestTypeEntity getRequestTypeWithString(String requestTypeName) {
-        Session session;
+    public RequestTypeEntity getRequestTypeWithString(String type) {
+        Session session = null;
         Transaction tx = null;
         RequestTypeEntity returnRequestType = null;
         try{
             session = HibernateSessionFactory.getSession();
             tx = session.beginTransaction();
-            returnRequestType = session.get(RequestTypeEntity.class, requestTypeName);
+            returnRequestType = session.createQuery("FROM RequestTypeEntity AS R WHERE R.requestType = :type", RequestTypeEntity.class)
+                    .setParameter("type", type).getSingleResult();
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null) tx.rollback();
             dLog.error(e.getMessage(), e);
+        }finally{
+            session.close();
         }
         return returnRequestType;
     }
 
     @Override
     public Integer updatePendingRequestType(RequestTypeEntity requestTypeEntity) {
-        Session session;
+        Session session = null;
         Transaction tx = null;
         int savedId = 0;
         try{
@@ -63,5 +69,22 @@ public class RequestTypeDao implements RequestTypeInterface {
             dLog.debug(e.getMessage(), e);
         }
         return savedId;
+    }
+
+    @Override
+    public List<RequestTypeEntity> getRequestTypes() {
+        List<RequestTypeEntity> requestTypes = null;
+        Transaction tx= null;
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
+            tx = session.beginTransaction();
+            requestTypes = session.createQuery("FROM RequestTypeEntity", RequestTypeEntity.class).getResultList();
+            tx.commit();
+        }catch(HibernateException e){
+            if(tx != null) tx.rollback();
+            dLog.error(e.getMessage(), e);
+        }
+        return requestTypes;
     }
 }

@@ -57,13 +57,22 @@ select * from completed_request;
 drop table completed_request;
 
 create table completed_request(
-id integer references pending_request(id),
+completed_request_id integer references pending_request(pending_request_id),
 employee_id integer references employee_account(id),
 manager_id integer references employee_account(id),
 status boolean,
 response varchar,
 date_resolved date not null
 );
+truncate completed_request;
 
+alter table completed_request 
+drop column employee_id;
 
+create sequence pending_request_id_seq start 1;
+create sequence completed_request_unique_id_seq start 1;
 
+alter table completed_request add column unique_id serial primary key;
+alter table completed_request rename column id to completed_request_id;
+alter table pending_request rename column id to pending_request_id;
+alter table login_info rename column id to login_info_id;

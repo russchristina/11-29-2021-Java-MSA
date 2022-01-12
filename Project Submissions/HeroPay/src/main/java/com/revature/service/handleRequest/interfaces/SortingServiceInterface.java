@@ -3,14 +3,16 @@ package com.revature.service.handleRequest.interfaces;
 import com.revature.presentation.model.requests.recieve.CompletedRequest;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
-import com.revature.presentation.model.statisticsRequests.response.RankedEmployeeResponse;
-import com.revature.presentation.model.statisticsRequests.response.SortedEmployee;
+import com.revature.repository.DTO.EmployeeAccountEntity;
+import com.revature.service.DTO.SortedRequests;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 
-public interface OrderingServiceInterface {
+public interface SortingServiceInterface {
 
     List<PendingRequest> orderByDatePending(List<PendingRequest> pendingRequests);
 
@@ -21,4 +23,8 @@ public interface OrderingServiceInterface {
     SortedMap<Double, CompletedRequest> orderByAmountCompleted(List<CompletedRequest> completedRequestsTrue) throws SQLException;
 
     List<QuickSortEmployee> orderSortedEmployee(List<QuickSortEmployee> sortedEmployees);
+
+    SortedRequests sortPendingRequestsByStatus(List<PendingRequest> pendingRequests);
+
+    List<QuickSortEmployee> employeeRankedSort(HashMap<EmployeeAccountEntity, BigDecimal> employeeSet);
 }

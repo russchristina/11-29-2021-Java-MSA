@@ -1,15 +1,17 @@
 package com.revature.service.handleRequest.interfaces;
 
+import com.revature.presentation.model.requests.NewRequest;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DTO.PendingRequestEntity;
+import com.revature.repository.DTO.RequestTypeEntity;
 
 import java.util.List;
 
 public interface PendingRequestServiceInterface {
 
-    PendingRequestEntity storePendingRequest(PendingRequest pendingRequest);
+    PendingRequestEntity storePendingRequest(NewRequest newRequest);
 
-    void validateNewPendingRequest(PendingRequest pendingRequest);
+    void validateNewPendingRequest(NewRequest newRequest);
 
     List<PendingRequest> getAllEmployeePendingRequest(int employeeId);
 
@@ -17,17 +19,17 @@ public interface PendingRequestServiceInterface {
 
     List<PendingRequest> getPendingRequestByType(int typeId);
 
-    PendingRequestEntity updatePendingRequestStatus(int requestId, boolean status);
+    void updatePendingRequestStatus(int requestId, boolean status);
 
-    PendingRequestEntity deletePendingRequest(int requestId);
+    void deletePendingRequest(int requestId);
 
     PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity);
 
     List<PendingRequest> getAnsweredRequests();
 
-    List<PendingRequest> getAllAnsweredRequests(int employeeId);
+    List<PendingRequest> getAllAnsweredRequestsByEmployeeId(int employeeId);
 
     List<PendingRequest> getAllAnsweredRequestsByType(int typeId);
 
-    List<PendingRequest> getAllAnsweredRequestsByRole(int roleId);
+    List<RequestTypeEntity> getRequestTypes();
 }

@@ -18,7 +18,7 @@ public interface CompletedRequestInterface {
 
     //Create
 
-    CompletedRequestEntity insertCompletedRequest(CompletedRequestEntity completedRequestEntity);
+    Integer insertCompletedRequest(CompletedRequestEntity completedRequestEntity);
 
     //Read
 
@@ -26,24 +26,24 @@ public interface CompletedRequestInterface {
 
     CompletedRequestEntity getCompletedRequest(int requestId);
 
-    List<CompletedRequestEntity> getCompletedRequestByManagerIdList(int managerId);
+    List<CompletedRequestEntity> getCompletedRequestByManagerId(int managerId);
 
     List<CompletedRequestEntity> getAllCompletedRequestList();
 
-    List<CompletedRequestEntity> getCompletedRequestByStatus(boolean status);
 
 
     //Update
 
-    CompletedRequestEntity updateCompletedRequestByManagerId(CompletedRequestEntity completedRequestEntity);
+    Integer updateCompletedRequestByManagerId(CompletedRequestEntity completedRequestEntity);
 
-    CompletedRequestEntity updateCompletedRequestStatus(CompletedRequestEntity completedRequestEntity);
+    Integer updateCompletedRequestStatus(CompletedRequestEntity completedRequestEntity);
 
-    CompletedRequestEntity updateCompletedRequestResponse(CompletedRequestEntity completedRequestEntity);
+    Integer updateCompletedRequestResponse(CompletedRequestEntity completedRequestEntity);
 
     //Delete
 
-    CompletedRequestEntity deleteCompletedRequest(CompletedRequestEntity completedRequestEntity);
+    void deleteCompletedRequest(CompletedRequestEntity completedRequestEntity);
 
 
+    List<CompletedRequestEntity> getCompletedRequestsByStatus(boolean status);
 }

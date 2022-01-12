@@ -7,8 +7,11 @@ import com.revature.presentation.model.requests.response.AllRequestResponse;
 import com.revature.presentation.model.requests.response.FailCreateRequestResponse;
 import com.revature.presentation.model.requests.response.ManagerRequestResponse;
 import com.revature.repository.DTO.CompletedRequestEntity;
+import com.revature.repository.DTO.PendingRequestEntity;
+import com.revature.service.DTO.SortedRequests;
 import com.revature.service.handleRequest.CompletedRequestService;
 import com.revature.service.handleRequest.PendingRequestService;
+import com.revature.service.handleRequest.SortingService;
 import com.revature.service.serviceExceptions.EmployeeIdException;
 import com.revature.service.serviceExceptions.NegativeAmountException;
 import com.revature.service.serviceExceptions.RequestMessageShortException;
@@ -19,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class RequestController {
 
@@ -29,26 +33,23 @@ public class RequestController {
 
     private PendingRequestService pendingRequestService = null;
     private CompletedRequestService completedRequestService = null;
+    private SortingService sortingService = null;
 
-    public RequestController(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService) {
+    public RequestController(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService, SortingService sortingService) {
         this.pendingRequestService = pendingRequestService;
         this.completedRequestService = completedRequestService;
+        this.sortingService = sortingService;
     }
 
     public final Handler getEmployeeRequests = ctx -> {
         dLog.debug("Getting Employee Requests: " + ctx.queryParam("employeeId"));
         try{
             int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
-            System.out.println(employeeId);
-            AllRequestResponse allRequests = new AllRequestResponse();
             List<PendingRequest> pendingRequests = pendingRequestService.getAllEmployeePendingRequest(employeeId);
-            List<PendingRequest> answeredRequests = pendingRequestService.getAllAnsweredRequests(employeeId);
-            List<CompletedRequest> completedRequests = completedRequestService.getAllEmployeeRequests(employeeId);
-            System.out.println(answeredRequests);
-            allRequests.setPendingRequests(pendingRequests);
-            allRequests.setAnsweredRequests(answeredRequests);
-            allRequests.setCompletedRequests(completedRequests);
-            ctx.json(allRequests);
+            SortedRequests sortedRequests = sortingService.sortPendingRequestsByStatus(pendingRequests);
+            sortedRequests.setCompletedRequests(completedRequestService.getAllEmployeeRequests(employeeId));
+            System.out.println(sortedRequests);
+            ctx.json(sortedRequests);
         }catch (NumberFormatException e){
             dLog.debug(e.getMessage(), e);
             ctx.status(406);
@@ -58,11 +59,12 @@ public class RequestController {
     public final Handler getEmployeePendingRequests = ctx -> {
         dLog.debug("Getting Employee Pending Requests: " + ctx.queryParam("employeeId"));
         try{
-            int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
+            int employeeId = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("employeeId")));
             AllPendingRequestResponse allRequests = new AllPendingRequestResponse();
             List<PendingRequest> pendingRequests = pendingRequestService.getAllEmployeePendingRequest(employeeId);
+            SortedRequests sortedRequests = sortingService.sortPendingRequestsByStatus(pendingRequests);
             allRequests.setStatus(true);
-            allRequests.setPendingRequests(pendingRequests);
+            allRequests.setPendingRequests(sortedRequests.getUnansweredRequests());
             ctx.json(allRequests);
         }catch (NumberFormatException e){
             dLog.debug(e.getMessage(), e);
@@ -72,15 +74,18 @@ public class RequestController {
 
     public final Handler createRequest = ctx -> {
         dLog.debug("Creating new request: " + ctx.body());
+
         try{
             NewRequest newRequest = ctx.bodyAsClass(NewRequest.class);
-            PendingRequest pendingRequest = new PendingRequest(0,newRequest.getEmployeeId(),newRequest.getType(),newRequest.getRequestMessage(),newRequest.getAmount(),LocalDate.now());
             try{
-                pendingRequestService.validateNewPendingRequest(pendingRequest);
-                tLog.info("New Pending Request Created: " + pendingRequest);
-                ctx.json(pendingRequestService.convertPendingRequestEntity(pendingRequestService.storePendingRequest(pendingRequest)));
+                pendingRequestService.validateNewPendingRequest(newRequest);
+                PendingRequestEntity pendingRequestEntity = pendingRequestService.storePendingRequest(newRequest);
+                dLog.debug("The stored and returned pendingRequestEntity: " + pendingRequestEntity);
+                if(pendingRequestEntity == null) ctx.status(500);
+                PendingRequest pendingRequest = pendingRequestService.convertPendingRequestEntity(pendingRequestEntity);
+                tLog.info("Inserted new pending request in database");
+                ctx.json(pendingRequest);
                 ctx.status(201);
-
             }catch(EmployeeIdException e){
                 dLog.debug(e.getMessage(), e);
                 ctx.json(new FailCreateRequestResponse("Invalid Employee Id"));
@@ -107,14 +112,10 @@ public class RequestController {
     public final Handler getAllRequests = ctx -> {
         dLog.debug("Getting All Requests");
         try{
-            AllRequestResponse allRequests = new AllRequestResponse();
             List<PendingRequest> pendingRequests = pendingRequestService.getAllPendingRequests();
-            List<PendingRequest> answeredRequests = pendingRequestService.getAnsweredRequests();
-            List<CompletedRequest> completedRequests = completedRequestService.getAllCompletedRequests();
-            allRequests.setPendingRequests(pendingRequests);
-            allRequests.setAnsweredRequests(answeredRequests);
-            allRequests.setCompletedRequests(completedRequests);
-            ctx.json(allRequests);
+            SortedRequests sortedRequests = sortingService.sortPendingRequestsByStatus(pendingRequests);
+            sortedRequests.setCompletedRequests(completedRequestService.getAllCompletedRequests());
+            ctx.json(sortedRequests);
         }catch (NumberFormatException e){
             dLog.debug(e.getMessage(), e);
             ctx.status(406);
@@ -138,7 +139,7 @@ public class RequestController {
             );
             completedRequestService.validateCompletedRequest(completedRequest);
             CompletedRequestEntity storedRequest = completedRequestService.storeCompletedRequest(completedRequest);
-//            pendingRequestService.updatePendingRequestStatus(storedRequest.getId(), true);
+            pendingRequestService.updatePendingRequestStatus(storedRequest.getPendingRequest().getId(), true);
             ctx.json(completedRequestService.convertCompletedRequestEntity(storedRequest));
             ctx.status(201);
 

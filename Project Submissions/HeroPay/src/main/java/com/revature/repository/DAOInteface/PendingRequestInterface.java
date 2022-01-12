@@ -20,41 +20,46 @@ public interface PendingRequestInterface {
 
     //Create
 
-    PendingRequestEntity insertPendingRequest(PendingRequestEntity pendingRequestEntity);
+    Integer insertPendingRequest(PendingRequestEntity pendingRequestEntity);
 
     //Read
 
-    PendingRequestEntity getPendingRequest(int requestId);
+    PendingRequestEntity getPendingRequestByRequestId(int requestId);
 
-    List<PendingRequestEntity> getEmployeePendingRequestList(int employeeId);
+    List<PendingRequestEntity> getEmployeesPendingRequestList(int employeeId);
 
     List<PendingRequestEntity> getAllPendingRequests();
 
-    List<PendingRequestEntity> getAllPendingRequestsByTypeId(int typeId);
+//    List<PendingRequestEntity> getAllPendingRequestsByTypeId(int typeId);
 
-    Map<Integer, String> getRequestTypeMap();
+//    Map<Integer, String> getRequestTypeMap();
 
 
-    List<PendingRequestEntity> getAnsweredRequests();
+//    List<PendingRequestEntity> getRequestsByStatus();
 
-    List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId);
+//    List<PendingRequestEntity> getEmployeeAnsweredRequests(int employeeId);
 
-    List<PendingRequestEntity> getEmployeeAnsweredRequestsByTypeId(int typeId);
+//    List<PendingRequestEntity> getEmployeeAnsweredRequestsByTypeId(int typeId);
 
 
     //Update
 
-    PendingRequestEntity updatePendingRequestStatus(PendingRequestEntity pendingRequestEntity);
+    void updatePendingRequestStatus(PendingRequestEntity pendingRequestEntity);
 
-    PendingRequestEntity updatePendingRequestMessage(PendingRequestEntity pendingRequestEntity);
+    Integer updatePendingRequestMessage(PendingRequestEntity pendingRequestEntity);
 
-    PendingRequestEntity updatePendingRequestAmount(PendingRequestEntity pendingRequestEntity);
-
+    Integer updatePendingRequestAmount(PendingRequestEntity pendingRequestEntity);
 
     //Delete
 
-    PendingRequestEntity deletePendingRequest(PendingRequestEntity pendingRequestEntity);
+    void deletePendingRequest(PendingRequestEntity pendingRequestEntity);
 
 
+    List<PendingRequestEntity> getPendingRequestsByTypeId(int typeId);
 
+    List<PendingRequestEntity> getPendingRequestByStatus(boolean status);
+
+    List<PendingRequestEntity> getAnsweredEmployeePendingRequests(int employeeId);
+
+    List<PendingRequestEntity> getAnsweredPendingRequestsByType(int typeId);
 }
