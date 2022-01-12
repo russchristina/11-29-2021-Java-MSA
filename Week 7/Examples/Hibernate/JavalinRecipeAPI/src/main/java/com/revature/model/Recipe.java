@@ -37,6 +37,11 @@ public class Recipe {
 	/*
 	 * This should be a many-to-many relationship between recipe and ingredient.
 	 * There is a many-to-many annotation for this.
+	 * 
+	 * Note that we have specified the fetch type as "eager". This means that Hibernate will
+	 * automatically pull all of the associated Ingredients when a recipe is pulled from
+	 * the DB. It should be noted that single associations use eager fetching by default
+	 * but collections use lazy loading by default.
 	 */
 	@ManyToMany(fetch = FetchType.EAGER)
 	/*
