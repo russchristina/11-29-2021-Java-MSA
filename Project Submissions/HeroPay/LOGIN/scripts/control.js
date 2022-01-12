@@ -378,6 +378,37 @@ const pageUtility = {
             counter++;
         }
         container.appendChild(tableRow);
+    },
+    generateSingleTableRowCleanPender : function(value, container, hiddenColumns){
+        let tableRow = document.createElement('tr');
+        let tableElement;
+        let counter = 0;
+        if(!value) {
+            console.log("Empty");
+            return;
+        }
+        for(let key in value){
+            tableElement = document.createElement('td')
+            if(Array.isArray(value[key])){
+                tableElement.innerText = `${value[key][2]} / ${value[key][1]} / ${value[key][0]}`;
+            }else if(value[key] === false){
+                tableElement.innerText = 'Pending';
+
+            } else if(value[key] === true){
+                tableElement.innerText = 'Answered';
+            }else{
+                console.log(value[key])
+                tableElement.innerText = value[key];
+            }
+            tableRow.appendChild(tableElement);
+
+            for(let hidden of hiddenColumns){
+                if(hidden == counter){
+                    tableElement.hidden = true;
+                }}
+            counter++;
+        }
+        container.appendChild(tableRow);
     }
 }
 
@@ -517,7 +548,7 @@ const requestViewUtility = {
     },
     displayNewPendingRequests : function (newPendingRequestData){
         let table = document.getElementById('pending-request-table');
-        pageUtility.generateSingleTableRowClean(newPendingRequestData, table, [0, 1]);
+        pageUtility.generateSingleTableRowCleanPender(newPendingRequestData, table, [0, 1]);
     },
     failedToGetRequests : function (){
         window.alert('Failed to get requests from server');

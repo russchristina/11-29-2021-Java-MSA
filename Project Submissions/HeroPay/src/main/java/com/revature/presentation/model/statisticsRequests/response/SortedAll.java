@@ -1,14 +1,15 @@
 package com.revature.presentation.model.statisticsRequests.response;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class SortedAll {
 
     private String total;
-    private double meanAverage;
-    private double sum;
+    private BigDecimal meanAverage;
+    private BigDecimal sum;
 
-    public SortedAll(String total, double meanAverage, double sum) {
+    public SortedAll(String total, BigDecimal meanAverage, BigDecimal sum) {
         this.total = total;
         this.meanAverage = meanAverage;
         this.sum = sum;
@@ -25,19 +26,19 @@ public class SortedAll {
         this.total = total;
     }
 
-    public double getMeanAverage() {
+    public BigDecimal getMeanAverage() {
         return meanAverage;
     }
 
-    public void setMeanAverage(double meanAverage) {
+    public void setMeanAverage(BigDecimal meanAverage) {
         this.meanAverage = meanAverage;
     }
 
-    public double getSum() {
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
 
@@ -46,7 +47,7 @@ public class SortedAll {
         if (this == o) return true;
         if (!(o instanceof SortedAll)) return false;
         SortedAll sortedAll = (SortedAll) o;
-        return Double.compare(sortedAll.meanAverage, meanAverage) == 0 && Double.compare(sortedAll.sum, sum) == 0 && Objects.equals(total, sortedAll.total);
+        return Objects.equals(total, sortedAll.total) && Objects.equals(meanAverage, sortedAll.meanAverage) && Objects.equals(sum, sortedAll.sum);
     }
 
     @Override
@@ -56,10 +57,10 @@ public class SortedAll {
 
     @Override
     public String toString() {
-        return "{\"sortedAll\":{"
+        return "{\"SortedAll\":{"
                 + "\"total\":\"" + total + "\""
-                + ", \"meanAverage\":\"" + meanAverage + "\""
-                + ", \"sum\":\"" + sum + "\""
+                + ", \"meanAverage\":" + meanAverage
+                + ", \"sum\":" + sum
                 + "}}";
     }
 }

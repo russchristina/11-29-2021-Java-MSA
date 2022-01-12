@@ -3,8 +3,6 @@ package com.revature.service.handleStatistics;
 import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.presentation.model.statisticsRequests.response.*;
-import com.revature.repository.DAOClasses.EmployeeRoleDao;
-import com.revature.repository.DAOClasses.RequestTypeDao;
 import com.revature.repository.DTO.*;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleRequest.CompletedRequestService;
@@ -15,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.*;
 
 public class StatisticsService implements StatisticsServiceInterface {
@@ -98,15 +97,24 @@ public class StatisticsService implements StatisticsServiceInterface {
  }
 
     @Override
-    public double sumOfAmountCompleted(List<PendingRequest>  completedRequests) {
+    public BigDecimal sumOfAmountCompleted(List<PendingRequest>  completedRequests) {
         dLog.debug("summing amount service" + StatisticsService.class);
-        return 0;
+        BigDecimal result = BigDecimal.ZERO;
+        for (PendingRequest completedRequest : completedRequests) {
+            result = result.add(completedRequest.getAmount(), new MathContext(2));
+        }
+        return result;
     }
 
     @Override
-    public double meanAverage(List<PendingRequest> completedRequests) {
+    public BigDecimal meanAverage(List<PendingRequest> completedRequests) {
         dLog.debug("mean average service" + StatisticsService.class);
-        return 0;
+        BigDecimal result = BigDecimal.ZERO;
+        for (PendingRequest completedRequest : completedRequests) {
+            result = result.add(completedRequest.getAmount(), new MathContext(2));
+        }
+        if(completedRequests.size()!= 0) result = result.divide(BigDecimal.valueOf(completedRequests.size()), new MathContext(2));
+        return result;
     }
 
     @Override
