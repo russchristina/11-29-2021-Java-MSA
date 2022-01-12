@@ -32,4 +32,6 @@ public interface PendingRequestServiceInterface {
     List<PendingRequest> getAllAnsweredRequestsByType(int typeId);
 
     List<RequestTypeEntity> getRequestTypes();
+
+    List<PendingRequest> getAllAnsweredRequestsByRole(int id);
 }

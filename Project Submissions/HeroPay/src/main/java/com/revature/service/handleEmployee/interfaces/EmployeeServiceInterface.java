@@ -25,4 +25,8 @@ public interface EmployeeServiceInterface {
     List<QuickSortEmployee> getQuickSort();
 
     List<EmployeeAccountEntity> getAllEmployeesNotConverted();
+
+    List<EmployeeRoleEntity> getAllEmployeeRoles();
+
+    List<EmployeeAccountEntity> getAllEmployeesByRole(int roleId);
 }

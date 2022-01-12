@@ -1,33 +1,21 @@
 package com.revature.presentation.model.statisticsRequests.response;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class SortedRole {
 
     private String roleName;
-    private double meanAverage;
-    private double sum;
+    private BigDecimal meanAverage;
+    private BigDecimal sum;
 
-    @Override
-    public String toString() {
-        return "{\"sortedRole\":{"
-                + "\"roleName\":\"" + roleName + "\""
-                + ", \"meanAverage\":\"" + meanAverage + "\""
-                + ", \"sum\":\"" + sum + "\""
-                + "}}";
+    public SortedRole() {
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SortedRole)) return false;
-        SortedRole that = (SortedRole) o;
-        return Double.compare(that.getMeanAverage(), getMeanAverage()) == 0 && Double.compare(that.getSum(), getSum()) == 0 && Objects.equals(getRoleName(), that.getRoleName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getRoleName(), getMeanAverage(), getSum());
+    public SortedRole(String roleName, BigDecimal meanAverage, BigDecimal sum) {
+        this.roleName = roleName;
+        this.meanAverage = meanAverage;
+        this.sum = sum;
     }
 
     public String getRoleName() {
@@ -38,28 +26,41 @@ public class SortedRole {
         this.roleName = roleName;
     }
 
-    public double getMeanAverage() {
+    public BigDecimal getMeanAverage() {
         return meanAverage;
     }
 
-    public void setMeanAverage(double meanAverage) {
+    public void setMeanAverage(BigDecimal meanAverage) {
         this.meanAverage = meanAverage;
     }
 
-    public double getSum() {
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
 
-    public SortedRole() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SortedRole)) return false;
+        SortedRole that = (SortedRole) o;
+        return Objects.equals(roleName, that.roleName) && Objects.equals(meanAverage, that.meanAverage) && Objects.equals(sum, that.sum);
     }
 
-    public SortedRole(String roleName, double meanAverage, double sum) {
-        this.roleName = roleName;
-        this.meanAverage = meanAverage;
-        this.sum = sum;
+    @Override
+    public int hashCode() {
+        return Objects.hash(roleName, meanAverage, sum);
+    }
+
+    @Override
+    public String toString() {
+        return "{\"SortedRole\":{"
+                + "\"roleName\":\"" + roleName + "\""
+                + ", \"meanAverage\":" + meanAverage
+                + ", \"sum\":" + sum
+                + "}}";
     }
 }

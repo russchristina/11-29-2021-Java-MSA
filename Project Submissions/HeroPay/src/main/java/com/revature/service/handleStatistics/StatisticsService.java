@@ -4,11 +4,13 @@ import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.presentation.model.statisticsRequests.response.*;
 import com.revature.repository.DTO.*;
+import com.revature.service.DTO.RolesToEmployee;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleRequest.CompletedRequestService;
 import com.revature.service.handleRequest.SortingService;
 import com.revature.service.handleRequest.PendingRequestService;
 import com.revature.service.handleStatistics.interfaces.StatisticsServiceInterface;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.BigDecimalConversion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,21 +61,33 @@ public class StatisticsService implements StatisticsServiceInterface {
         }
 
         generalStatistics.setSortedTypes(sortedTypeList);
-//        List<SortedRole> sortedRoleList = new ArrayList<>();
-//        List<EmployeeRoleEntity> employeeRoles = emRoleRoleDao.getAllEmployeeRoles();
-//        for(int i = 1; i < employeeRoles.size() + 1; i++){
-//            dLog.debug("Sorting Request By Role: " + i);
-//            List<PendingRequest> answeredRequestsByRole = pendingRequestService.getAllAnsweredRequestsByRole(employeeRoles.get(i).getId());
-//            sortedRoleList.add(
-//                    new SortedRole(
-//                            employeeRoles.get(i).getRoleName(),
-//                            meanAverage(answeredRequestsByRole),
-//                            sumOfAmountCompleted(answeredRequestsByRole)
-//                    )
-//            );
-//        }
+        List<SortedRole> sortedRoleList = new ArrayList<>();
+        List<EmployeeRoleEntity> employeeRoles = employeeService.getAllEmployeeRoles();
+        List<RolesToEmployee> rolesToEmployees = getSortedEmployeeRoles(employeeRoles);
+        for(int i = 0; i < rolesToEmployees.size(); i++){
+            dLog.debug("Sorting Request By Role: " + i);
+            List<EmployeeAccountEntity> employeeAccountEntities = rolesToEmployees.get(i).getEmployees();
+            SortedRole sortedRole = new SortedRole();
+            sortedRole.setRoleName(employeeService.getEmployeeRole(rolesToEmployees.get(i).getRoleId()).getRoleName());
+            sortedRole.setMeanAverage(BigDecimal.ZERO);
+            sortedRole.setSum(BigDecimal.ZERO);
+            for (EmployeeAccountEntity employeeAccountEntity : employeeAccountEntities) {
+                SortedEmployee sortedEmployee = getEmployeeStatistics(employeeAccountEntity.getId());
+                sortedRole.setSum(sortedRole.getSum().add(sortedEmployee.getSum(), new MathContext(2)));
+            }
+            if(employeeAccountEntities.size() != 0) sortedRole.setMeanAverage(sortedRole.getSum().divide(BigDecimal.valueOf(employeeAccountEntities.size()), new MathContext(2)));
+            else sortedRole.setSum(BigDecimal.ZERO);
+            sortedRoleList.add(sortedRole);
+        }
+        generalStatistics.setSortedRoles(sortedRoleList);
         dLog.debug("Got all General statistics: " + generalStatistics);
         return generalStatistics;
+    }
+
+    private List<RolesToEmployee> getSortedEmployeeRoles(List<EmployeeRoleEntity> employeeRoles) {
+        List<RolesToEmployee> rolesToEmployees = new ArrayList<>(employeeRoles.size());
+        employeeRoles.forEach(e -> rolesToEmployees.add(new RolesToEmployee(e.getId(), employeeService.getAllEmployeesByRole(e.getId()))));
+        return rolesToEmployees;
     }
 
     @Override

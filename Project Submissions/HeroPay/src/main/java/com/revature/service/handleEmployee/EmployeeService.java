@@ -91,4 +91,14 @@ public class EmployeeService implements EmployeeServiceInterface {
     public List<EmployeeAccountEntity> getAllEmployeesNotConverted() {
         return employeeAccountDao.getAllEmployeeAccountList();
     }
+
+    @Override
+    public List<EmployeeRoleEntity> getAllEmployeeRoles() {
+        return employeeRoleDao.getAllEmployeeRoles();
+    }
+
+    @Override
+    public List<EmployeeAccountEntity> getAllEmployeesByRole(int roleId) {
+        return employeeAccountDao.getEmployeeAccountsByRoleId(roleId);
+    }
 }

@@ -614,7 +614,7 @@ const statisticsUtility = {
         pageUtility.attachTitleElement('h3', 'General Employee Role Statistics', generalStatisticsRoleContainer);
         pageUtility.generateTableElement(["Employee Roles", "Mean Average", "Sum"], 'general-employee-role-table', generalStatisticsRoleContainer);
         generalStatisticsContainer.appendChild(generalStatisticsRoleContainer);
-        pageUtility.generateTableRows('general-employee-role-table', generalStatisticsRoleContainer, generalStatData.sortedRole);
+        pageUtility.generateTableRows('general-employee-role-table', generalStatisticsRoleContainer, generalStatData.sortedRoles);
 
         pageUtility.attachTitleElement('h3', 'General Request Type Statistics', generalStatisticsTypeContainer);
         pageUtility.generateTableElement(["Request Types", "Mean Average", "Sum"], 'general-request-type-table', generalStatisticsTypeContainer);
@@ -1096,6 +1096,7 @@ async function getGeneralStats(){
         let generalStatBody = await fetch(generalStatUrl, {method: "GET"});
         generalStatData = await generalStatBody.json();
         if(generalStatData){
+            console.log(generalStatData);
             console.log("GOT THE STATS BOYS");
             pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
         }

@@ -157,4 +157,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     public List<RequestTypeEntity> getRequestTypes() {
         return requestTypeDao.getRequestTypes();
     }
+
+    @Override
+    public List<PendingRequest> getAllAnsweredRequestsByRole(int id) {
+        return null;
+    }
 }
