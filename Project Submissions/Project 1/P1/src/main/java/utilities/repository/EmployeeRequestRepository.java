@@ -19,9 +19,7 @@ public interface EmployeeRequestRepository {
 	
 	List<Request> findPendingRequests();
 	
-	public void updateRequestStatus(Request r);
-	
-	public void updateRequestStatusAndNote(Request r);
+	public void updateRequest(Request r);
 	
 	Request highestSpender();
 	

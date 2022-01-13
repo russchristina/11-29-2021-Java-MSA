@@ -157,9 +157,67 @@ async function getAllRequestData(data) {
  *  Statistics view handling
  */
 function viewStats(data) {
-    /**
-     *  Make list/buttons for each stat
-     */
+    let mainStatDiv = document.createElement('div')
+    let highestPayoutDiv = document.createElement('button')
+    highestPayoutDiv.innerText='Highest amount paid'
+    let numberOfReqDiv = document.createElement('button')
+    numberOfReqDiv.innerText='Number of requests submitted'
+    let avgAmtReqDiv = document.createElement('button') 
+    avgAmtReqDiv.innerText='Average amount requested'
+    
+    highestPayoutDiv.addEventListener('click', function(){
+        let url  = 'http://localhost:7777/highest-payout'
+        fetch(url)
+        .then(response => response.text())
+        .then(text => {
+        try {
+            let statRequestData = JSON.parse(text)
+            window.alert("Employee: " + statRequestData.employeeName + "\nAmount: " + statRequestData.amount.toFixed(2))
+        } catch {
+            window.alert(text)
+        }})
+        .catch(() => {window.alert('Oops.. Something happened')})
+    })
+
+    numberOfReqDiv.addEventListener('click', function(){
+        let url = 'http://localhost:7777/number-requests'
+        fetch(url)
+        .then(response => response.text())
+        .then(text => {
+        try {
+            let statRequestData = JSON.parse(text)
+            window.alert("Total number of requests submitted: " + statRequestData)
+        } catch {
+            window.alert(text)
+        }})
+        .catch(() => {window.alert('Oops.. Something happened')})
+    })
+
+    avgAmtReqDiv.addEventListener('click', function(){
+        let url = 'http://localhost:7777/average-requested'
+        fetch(url)
+        .then(response => response.text())
+        .then(text => {
+        try {
+            let statRequestData = JSON.parse(text)
+            window.alert("Average amount requested: " + statRequestData.toFixed(2))
+        } catch {
+            window.alert(text)
+        }})
+        .catch(() => {window.alert('Oops.. Something happened')})
+    })
+    
+    let backButton = document.createElement('button')
+    backButton.innerText='Go Back'
+    backButton.onclick = function() {generateMenu(data)}
+
+    mainStatDiv.append(highestPayoutDiv)
+    mainStatDiv.append(numberOfReqDiv)
+    mainStatDiv.append(avgAmtReqDiv)
+    mainStatDiv.append(backButton)
+    mainContainer.innerHTML=''
+    mainContainer.append(mainStatDiv)
+
 }
 
 /**
@@ -231,7 +289,7 @@ function buildTable(buildData, data) {
         let r2 = document.createElement('td')
         r2.innerHTML = request.employeeName
         let r3 = document.createElement('td')
-        r3.innerHTML = request.amount
+        r3.innerHTML = request.amount.toFixed(2)
         let r4 = document.createElement('td')
         r4.innerHTML = request.reason
         let r5 = document.createElement('td')
@@ -277,16 +335,13 @@ function buildTable(buildData, data) {
  *  Handle approve/deny request functionality
  */
 function handleRequest(requestData, reqAction, data) { 
-    let url;
+    let url = 'http://localhost:7777/request-update';
     let noteWindow = prompt('Reason for action. (Optional)')
     requestData.status = reqAction
     
-    if(noteWindow == null || noteWindow == "") {
-        url = 'http://localhost:7777/request-update'
-    } else {
-        url = 'http://localhost:7777/request-update-note'
+    if(noteWindow != null) {
         requestData.note = noteWindow
-    }
+    } 
     
     fetch(url, {
         method: 'PUT', 

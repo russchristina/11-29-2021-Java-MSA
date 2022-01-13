@@ -34,12 +34,12 @@ public class DevelopingDevelopers {
 		
 		app.post("/verify", Controller.fetchEmployeeByName);
 		app.post("/empRequests", Controller.fetchEmployeeRequests);
+		app.get("/pending-requests", Controller.fetchPendingRequests);
 		app.get("/all-requests", Controller.fetchAllRequests);
 		app.get("/highest-payout", Controller.fetchHighestAmount);
 		app.get("/number-requests", Controller.fetchNumberOfRequests);
 		app.get("/average-requested", Controller.fetchAverageAmountReq);
 		app.put("/requestSubmit", Controller.saveRequest);
-		app.put("/request-update", Controller.changeStatus);
-		app.put("/request-update-note", Controller.changeStatusAndNote);
+		app.put("/request-update", Controller.changeRequest);
 	} // End main
 } // End class

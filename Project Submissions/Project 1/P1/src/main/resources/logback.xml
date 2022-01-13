@@ -19,7 +19,7 @@
 		<appender-ref ref="FILE"/>
 	</logger>
 	
-	<logger name="warningLogger" level="warn">
+	<logger name="errorLogger" level="warn">
 		<appender-ref ref="FILE2"/>
 	</logger>
 </configuration>
