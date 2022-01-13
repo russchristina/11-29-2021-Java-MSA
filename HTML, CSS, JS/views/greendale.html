@@ -3,7 +3,7 @@
     <head>
         <meta charset = "UTF-8">
         <title>Greendale Community College Employee Portal</title>
-        <link rel="stylesheet" href="../styles/greendale.css"
+        <link rel="stylesheet" href="../styles/greendale.css">
     </head>
     <body>
         <div id="banner">
@@ -11,25 +11,24 @@
             <h1> Welcome to the Greendale Community College Employee Portal!</h1>
         </div>
 
-        <div>
-            <a href="https://community-sitcom.fandom.com/wiki/Category:Greendale_Faculty"> Here is a list of faculty members I may add later...</a>
-        </div>
+        <h3>Please log in with your credentials:</h3>
         <div id="login">
-        <form action="empPortal.html" target="_blank" method="get">
+         <form action="empPortal.html" target="_blank" method="post">
             Username:<br />
-            <input type = "text" name="username" placeholder="Username" required/>
+            <input id="username" type = "text" name="username" placeholder="Username" required/>
             <br />
             Password:<br />
-            <input type = "password" name = "password" />
+            <input id="password" type = "password" name = "password" />
             <br /><br />
-            <input type = "submit" value ="Submit" />
+            <input id="submit_button" type = "button" value ="Submit" />
         </form>
+        <script src=".home.js"></script>
     </div>
-        <div id= "logo">
-            <img src="https://scontent-lga3-2.xx.fbcdn.net/v/t1.18169-9/409736_389720171118270_1181655643_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=973b4a&_nc_ohc=q-adRKzTmekAX_lIp5F&_nc_ht=scontent-lga3-2.xx&oh=00_AT9lLJXXF0gy9wBD8ODrikyusuiamyjoBs4y2J2zghOVXQ&oe=61FABDDF" alt="another greendale logo">
+        <div >
+            <img id= "logo" src="https://scontent-lga3-2.xx.fbcdn.net/v/t1.18169-9/409736_389720171118270_1181655643_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=973b4a&_nc_ohc=q-adRKzTmekAX_lIp5F&_nc_ht=scontent-lga3-2.xx&oh=00_AT9lLJXXF0gy9wBD8ODrikyusuiamyjoBs4y2J2zghOVXQ&oe=61FABDDF" alt="another greendale logo">
         </div>
     </body>
     <footer id="footer">
-        <p> website made by Mekha454</p>
+        <h5> website made by Mekha454</h5>
     </footer>
 </html>

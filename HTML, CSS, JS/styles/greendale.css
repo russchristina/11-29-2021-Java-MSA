@@ -1,27 +1,48 @@
 #banner{
-    background-color: darkgreen;
+    background-color: rgb(248, 246, 246);
+    text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-style: normal;
-    color:aquamarine
+    color: darkblue
+    
 }
 #login{
-    background-color: lightsalmon;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: rgb(248, 246, 246);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-style: normal;
-    color: darkmagenta
+    color: darkblue;
+    margin-left: 45%;
+    margin-right: 55%;
+    
 }
 #logo{
-    background-color:slateblue
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 15em;
+    background-color: rgb(248, 246, 246);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2em;
 }
-#footer{
-    background-color: olivedrab;
+footer{
+    background-color: rgb(248, 246, 246);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-style: normal;
-    color:papayawhip
+    color:darkblue;
+    text-align: center;
 }
-nav{
-    background-color: yellowgreen;
-    padding: 5em;
-    margin-left: 5em;
+body{
+    background-color: rgb(248, 246, 246);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: normal;
+    color: darkblue;
+}
+#requests{
+    display:grid;
+    grid-template-columns: 10em 15em 25em, 15em 15em 20em;
+}
+h3{
     text-align: center;
 }
