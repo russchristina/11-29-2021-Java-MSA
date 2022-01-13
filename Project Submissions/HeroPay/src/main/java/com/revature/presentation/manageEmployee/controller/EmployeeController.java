@@ -16,7 +16,7 @@ public class EmployeeController {
     private EmployeeService employeeService = null;
 
     public EmployeeController() {
-        this.employeeService = new EmployeeService(new EmployeeAccountDao(), new EmployeeRoleDao());
+        this.employeeService = new EmployeeService(new EmployeeAccountDao());
     }
 
     public final Handler findEmployee = ctx -> {

@@ -11,7 +11,6 @@ import com.revature.repository.DTO.RequestTypeEntity;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleRequest.interfaces.PendingRequestServiceInterface;
 import com.revature.service.serviceExceptions.EmployeeIdException;
-import com.revature.service.serviceExceptions.NegativeAmountException;
 import com.revature.service.serviceExceptions.RequestMessageShortException;
 import com.revature.service.serviceExceptions.RequestTypeException;
 import org.slf4j.Logger;
@@ -19,11 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PendingRequestService implements PendingRequestServiceInterface {
 
@@ -47,7 +44,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         PendingRequestEntity pendingRequestEntity = convertNewRequest(newRequest);
         dLog.debug("Storing new request converted to pending request entity: " + pendingRequestEntity);
         int storedPendingRequestId = pendingRequestDao.insertPendingRequest(pendingRequestEntity);
-        if(storedPendingRequestId < 0 ) return null;
+
         dLog.debug("Stored pending request ID: " + storedPendingRequestId);
         PendingRequestEntity retrievedPendingRequest = pendingRequestDao.getPendingRequestByRequestId(storedPendingRequestId);
         dLog.debug("retrieved pending request: " + retrievedPendingRequest);
@@ -58,7 +55,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
 
         dLog.debug("Converting new request to PendingRequestEntity: " + newRequest);
         EmployeeAccountEntity employeeAccountEntity = employeeService.getEmployeeAccountById(newRequest.getEmployeeId());
-        RequestTypeEntity requestTypeEntity = requestTypeDao.getRequestTypeWithString(newRequest.getType());;
+        RequestTypeEntity requestTypeEntity = new RequestTypeEntity(0, newRequest.getType());
         BigDecimal amount = newRequest.getAmount();
         PendingRequestEntity pendingRequestEntity = new PendingRequestEntity(0, employeeAccountEntity, requestTypeEntity, newRequest.getRequestMessage(),amount, Date.valueOf(LocalDate.now()), false);
         dLog.debug("New request to pendingRequestEntity complete: " + pendingRequestEntity);
@@ -76,7 +73,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     @Override
     public List<PendingRequest> getAllEmployeePendingRequest(int employeeId) {
         dLog.debug("Getting all Employee Pending Requests Entities, and converting to models");
-        List<PendingRequestEntity> pendingRequestEntityList = pendingRequestDao.getEmployeesPendingRequestList(employeeId);
+        List<PendingRequestEntity> pendingRequestEntityList = pendingRequestDao.getEmployeesPendingRequestList(new EmployeeAccountEntity(employeeId, "", "", new EmployeeRoleEntity()));
         List<PendingRequest> pendingRequest = new ArrayList<>(pendingRequestEntityList.size());
         pendingRequestEntityList.forEach(p -> pendingRequest.add(convertPendingRequestEntity(p)));
         return pendingRequest;
@@ -112,7 +109,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     @Override
     public List<PendingRequest> getPendingRequestByType(int typeId) {
         dLog.debug("getting pending requests entities and converting to pending request by request typeId - " + typeId);
-        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getPendingRequestsByTypeId(typeId);
+        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getPendingRequestsByTypeId(new RequestTypeEntity(typeId, ""));
         List<PendingRequest> pendingRequests = new ArrayList<>(pendingRequestsEntities.size());
         pendingRequestsEntities.forEach(p -> pendingRequests.add(convertPendingRequestEntity(p)));
         return pendingRequests;
@@ -123,7 +120,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         dLog.debug("Updating pending request status");
         PendingRequestEntity pendingRequest = pendingRequestDao.getPendingRequestByRequestId(requestId);
         pendingRequest.setStatus(status);
-        pendingRequestDao.updatePendingRequestStatus(pendingRequest);
+        pendingRequestDao.updatePendingRequest(pendingRequest);
    }
 
     @Override
@@ -138,7 +135,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     @Override
     public List<PendingRequest> getAllAnsweredRequestsByEmployeeId(int employeeId) {
         dLog.debug("getting pending requests entities and converting to pending request by answered");
-        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getAnsweredEmployeePendingRequests(employeeId);
+        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getAnsweredEmployeePendingRequests(new EmployeeAccountEntity(employeeId, "", "", new EmployeeRoleEntity()));
         List<PendingRequest> pendingRequests = new ArrayList<>(pendingRequestsEntities.size());
         pendingRequestsEntities.forEach(p -> pendingRequests.add(convertPendingRequestEntity(p)));
         return pendingRequests;
@@ -147,7 +144,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     @Override
     public List<PendingRequest> getAllAnsweredRequestsByType(int typeId) {
         dLog.debug("getting pending requests entities and converting to pending request by answered requests and type");
-        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getAnsweredPendingRequestsByType(typeId);
+        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getAnsweredPendingRequestsByType(new RequestTypeEntity(typeId, ""));
         List<PendingRequest> pendingRequests = new ArrayList<>(pendingRequestsEntities.size());
         pendingRequestsEntities.forEach(p -> pendingRequests.add(convertPendingRequestEntity(p)));
         return pendingRequests;

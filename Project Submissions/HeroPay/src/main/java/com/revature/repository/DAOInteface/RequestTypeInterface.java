@@ -7,11 +7,9 @@ import java.util.List;
 
 public interface RequestTypeInterface {
 
-    Integer insertRequestType(RequestTypeEntity requestTypeEntity);
+    RequestTypeEntity getRequestTypeEntityWithId(RequestTypeEntity requestType);
 
-    RequestTypeEntity getRequestTypeWithString(String requestTypeName);
-
-    Integer updatePendingRequestType(RequestTypeEntity requestTypeEntity);
+    RequestTypeEntity getRequestTypeWithString(RequestTypeEntity requestType);
 
     List<RequestTypeEntity> getRequestTypes();
 }

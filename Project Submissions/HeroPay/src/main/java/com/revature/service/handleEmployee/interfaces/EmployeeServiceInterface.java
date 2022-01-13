@@ -12,21 +12,11 @@ public interface EmployeeServiceInterface {
 
     EmployeeAccountEntity getEmployeeAccountById(int employeeId);
 
-    EmployeeRoleEntity getEmployeeRole(int employeeRoleId);
-
     Employee convertEmployeeEntityToEmployee(EmployeeAccountEntity employeeAccountEntity);
 
     Employee getEmployee(int employeeId);
 
-    Map<Integer, String> getEmployeeRoleMap();
-
-    List<Employee> getAllEmployees();
-
-    List<QuickSortEmployee> getQuickSort();
-
-    List<EmployeeAccountEntity> getAllEmployeesNotConverted();
-
-    List<EmployeeRoleEntity> getAllEmployeeRoles();
+    List<EmployeeAccountEntity> getAllEmployeesAccountEntities();
 
     List<EmployeeAccountEntity> getAllEmployeesByRole(int roleId);
 }

@@ -2,18 +2,15 @@ package com.revature.repository.DAOClasses;
 
 import com.revature.repository.DAOInteface.CompletedRequestInterface;
 import com.revature.repository.DTO.CompletedRequestEntity;
-import com.revature.repository.DTO.PendingRequestEntity;
-import com.revature.repository.utility.ConnectionFactory;
+import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.utility.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.TransientObjectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CompletedRequestDao implements CompletedRequestInterface {
@@ -22,115 +19,123 @@ public class CompletedRequestDao implements CompletedRequestInterface {
 
     @Override
     public Integer insertCompletedRequest(CompletedRequestEntity completedRequestEntity) {
-        Session session = null;
+        dLog.debug("Beginning insert of Completed Request Entity in Database: " + completedRequestEntity);
         Transaction tx = null;
         int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             savedId = (Integer) session.save(completedRequestEntity);
             tx.commit();
-        }catch(HibernateException e){
+        } catch(HibernateException | IllegalStateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
+            return -1;
         }
-        if(savedId != 0) dLog.debug("Successful insert of completed request into DB: " + completedRequestEntity);
-        else dLog.debug("Unsuccessful insert of completed request into DB");
-        return savedId;       }
+        if(savedId != 0) {
+            dLog.debug("Successful insert of completed request into DB with ID - " + savedId + " - " + completedRequestEntity);
+            return savedId;
+        }else{
+            dLog.debug("Unsuccessful insert of completed request into DB");
+            return -1;
+        }
+    }
 
     @Override
-    public List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId) {
+    public List<CompletedRequestEntity> getCompletedRequestByEmployeeId(EmployeeAccountEntity employee) {
+        dLog.debug("Getting all CompletedRequestEntity from database with ID: " + employee);
         List<CompletedRequestEntity> completedRequestEntities = null;
-        Session session = null;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             completedRequestEntities = session.createQuery("FROM CompletedRequestEntity AS E WHERE E.employeeAccount.id = :employeeId", CompletedRequestEntity.class)
-                    .setParameter("employeeId", employeeId).getResultList();
+                    .setParameter("employeeId", employee.getId()).getResultList();
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
-        return completedRequestEntities;    }
+        if(completedRequestEntities != null) dLog.debug("Successful retrieval of database: " + employee + " " + completedRequestEntities);
+        else dLog.debug("Failed to get Completed Request by EmployeeId from Database: " + employee);
+        return completedRequestEntities;
+    }
 
     @Override
-    public CompletedRequestEntity getCompletedRequest(int requestId) {
-        CompletedRequestEntity completedRequestEntities = null;
-        Session session = null;
+    public CompletedRequestEntity getCompletedRequestWithUniqueId(int uniqueId) {
+        dLog.debug("Getting completed Request by ID: " + uniqueId);
+        CompletedRequestEntity completedRequestEntity = null;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
-            completedRequestEntities = session.get(CompletedRequestEntity.class, requestId);
+            completedRequestEntity = session.get(CompletedRequestEntity.class, uniqueId);
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
-        return completedRequestEntities;      }
+        if(completedRequestEntity != null) dLog.debug("Successful retrieval of CompletedRequestEntity: " + completedRequestEntity);
+
+        return completedRequestEntity;      }
 
     @Override
-    public List<CompletedRequestEntity> getCompletedRequestByManagerId(int managerId) {
+    public List<CompletedRequestEntity> getCompletedRequestByManagerId(EmployeeAccountEntity manager) {
+        dLog.debug("Getting all CompletedRequestEntities by manager in database: " + manager);
         List<CompletedRequestEntity> completedRequestEntities = null;
-        Session session = null;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             completedRequestEntities = session.createQuery("FROM CompletedRequestEntity AS E WHERE E.managerAccount.id = :managerId", CompletedRequestEntity.class)
-                    .setParameter("managerId", managerId).getResultList();
+                    .setParameter("managerId", manager.getId()).getResultList();
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
+        if(completedRequestEntities != null) dLog.debug("Successful retrieval of CompletedRequestEntities from database: " + completedRequestEntities);
+        else dLog.debug("Failed to get completed request entities from database by manager ID:" + manager);
         return completedRequestEntities;
     }
 
     @Override
     public List<CompletedRequestEntity> getAllCompletedRequestList() {
+        dLog.debug("Getting all completed request list from database");
         List<CompletedRequestEntity> completedRequestEntities = null;
-        Session session = null;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             completedRequestEntities = session.createQuery("FROM CompletedRequestEntity", CompletedRequestEntity.class).getResultList();
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
+        if(completedRequestEntities != null) dLog.debug("Successful retrieval of all CompletedRequestEntities");
+        else dLog.debug("Failed request to database");
         return completedRequestEntities;
     }
 
     @Override
     public Integer updateCompletedRequestByManagerId(CompletedRequestEntity completedRequestEntity) {
-        Session session = null;
         Transaction tx = null;
         int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             savedId = (Integer) session.save(completedRequestEntity);
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
         return savedId;
     }
@@ -138,19 +143,17 @@ public class CompletedRequestDao implements CompletedRequestInterface {
     @Override
     public Integer updateCompletedRequestStatus(CompletedRequestEntity completedRequestEntity) {
 
-        Session session = null;
         Transaction tx = null;
         int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             savedId = (Integer) session.save(completedRequestEntity);
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
         return savedId;
     }
@@ -158,47 +161,30 @@ public class CompletedRequestDao implements CompletedRequestInterface {
     @Override
     public Integer updateCompletedRequestResponse(CompletedRequestEntity completedRequestEntity) {
 
-        Session session = null;
         Transaction tx = null;
         int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             savedId = (Integer) session.save(completedRequestEntity);
             tx.commit();
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
         return savedId;
     }
 
+
     @Override
-    public void deleteCompletedRequest(CompletedRequestEntity completedRequestEntity) {
-        Session session = null;
-        Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            session.delete(completedRequestEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            if(tx != null)tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
-        }
-
-
-    }   @Override
     public List<CompletedRequestEntity> getCompletedRequestsByStatus(boolean status) {
+        dLog.debug("Getting Completed requests by their status: " + status);
         List<CompletedRequestEntity> completedRequestEntities = null;
-        Session session = null;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession()
+                ){
             tx = session.beginTransaction();
             completedRequestEntities = session.createQuery("FROM CompletedRequestEntity AS E WHERE E.status = :status", CompletedRequestEntity.class)
                     .setParameter("status", status).getResultList();
@@ -206,8 +192,6 @@ public class CompletedRequestDao implements CompletedRequestInterface {
         }catch(HibernateException e){
             if(tx != null)tx.rollback();
             dLog.error(e.getMessage(), e);
-        }finally{
-            session.close();
         }
         return completedRequestEntities;
     }

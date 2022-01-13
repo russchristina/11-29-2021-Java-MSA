@@ -10,9 +10,6 @@ public interface EmployeeRoleInterface {
 
     List<EmployeeRoleEntity> getAllEmployeeRoles();
 
-    EmployeeRoleEntity getEmployeeRoleById(int id);
+    EmployeeRoleEntity getEmployeeRoleById(EmployeeRoleEntity employeeRole);
 
-    EmployeeRoleEntity getEmployeeRoleByName(String roleName);
-
-    Integer updateRole(EmployeeRoleEntity employeeRoleEntity);
 }

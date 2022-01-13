@@ -20,11 +20,6 @@ public interface CompletedRequestServiceInterface {
 
     List<CompletedRequest> getAllCompletedRequestsByStatus(boolean status);
 
-    void deleteCompletedRequest(int requestId);
-
-    CompletedRequest convertPendingRequest(PendingRequest pendingRequest, int managerId, boolean status, String response);
-
     List<CompletedRequest> getAllEmployeeRequests(int employeeId);
 
-    CompletedRequestEntity getCompletedRequestById(int requestId);
 }

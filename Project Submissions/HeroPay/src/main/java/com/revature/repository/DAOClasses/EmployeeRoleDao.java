@@ -1,9 +1,7 @@
 package com.revature.repository.DAOClasses;
 
 import com.revature.repository.DAOInteface.EmployeeRoleInterface;
-import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
-import com.revature.repository.DTO.LoginInfoEntity;
 import com.revature.repository.utility.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -18,69 +16,44 @@ public class EmployeeRoleDao implements EmployeeRoleInterface {
 
     @Override
     public List<EmployeeRoleEntity> getAllEmployeeRoles() {
+        dLog.debug("Getting all EmployeeRoleEntity's from database");
         List<EmployeeRoleEntity> employeeRoleEntities = null;
-        Session session;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession();
+                ){
             tx = session.beginTransaction();
             employeeRoleEntities = session.createQuery("FROM EmployeeRoleEntity", EmployeeRoleEntity.class).getResultList();
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
-            e.printStackTrace();
+            if(tx != null)
+                if(!tx.isActive()) tx.rollback();
+            dLog.error(e.getMessage(), e);
         }
+        if(employeeRoleEntities != null) dLog.debug("Successful retrieval of all EmployeeRoleEntities from Database");
+        else dLog.debug("Failed to retrieve all EmployeeRoleEntities from database");
         return employeeRoleEntities;
     }
 
     @Override
-    public EmployeeRoleEntity getEmployeeRoleById(int roleId) {
-        Session session;
+    public EmployeeRoleEntity getEmployeeRoleById(EmployeeRoleEntity employeeRole) {
+        dLog.debug("Getting EmployeeRoleEntity from database: " + employeeRole);
         Transaction tx = null;
         EmployeeRoleEntity returnRoleEntity = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession();
+                ){
             tx = session.beginTransaction();
-            returnRoleEntity = session.get(EmployeeRoleEntity.class, roleId);
+            returnRoleEntity = session.get(EmployeeRoleEntity.class, employeeRole.getId());
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null)
+                if(!tx.isActive()) tx.rollback();
             dLog.error(e.getMessage(), e);
         }
+        if(returnRoleEntity != null) dLog.debug("Successful retrieval of EmployeeRoleEntity from Database ID - " + employeeRole + " " + returnRoleEntity);
+        else dLog.debug("Failed to retrieve EmployeeRoleEntity from database: " + employeeRole);
         return returnRoleEntity;
     }
 
-    @Override
-    public EmployeeRoleEntity getEmployeeRoleByName(String roleName) {
-        Session session;
-        Transaction tx = null;
-        EmployeeRoleEntity returnRoleEntity = null;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            returnRoleEntity = session.createQuery("FROM EmployeeRoleEntity AS E WHERE E.roleName = :roleName", EmployeeRoleEntity.class).setParameter("roleName", roleName).getSingleResult();
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return returnRoleEntity;
-    }
-
-    @Override
-    public Integer updateRole(EmployeeRoleEntity employeeRoleEntity) {
-        Session session;
-        Transaction tx = null;
-        int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            savedId = (Integer) session.save(employeeRoleEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return savedId;
-    }
 }

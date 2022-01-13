@@ -6,11 +6,11 @@ import com.revature.presentation.model.statisticsRequests.response.*;
 import com.revature.repository.DTO.*;
 import com.revature.service.DTO.RolesToEmployee;
 import com.revature.service.handleEmployee.EmployeeService;
+import com.revature.service.handleEmployee.RoleService;
 import com.revature.service.handleRequest.CompletedRequestService;
 import com.revature.service.handleRequest.SortingService;
 import com.revature.service.handleRequest.PendingRequestService;
 import com.revature.service.handleStatistics.interfaces.StatisticsServiceInterface;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.BigDecimalConversion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,15 +26,17 @@ public class StatisticsService implements StatisticsServiceInterface {
 
     private PendingRequestService pendingRequestService;
     private EmployeeService employeeService;
+    private RoleService roleService;
     private SortingService sortingService;
     private CompletedRequestService completedRequestService;
 
     public StatisticsService() {
     }
 
-    public StatisticsService(PendingRequestService pendingRequestService, EmployeeService employeeService, SortingService sortingService, CompletedRequestService completedRequestService) {
+    public StatisticsService(PendingRequestService pendingRequestService, EmployeeService employeeService, RoleService roleService, SortingService sortingService, CompletedRequestService completedRequestService) {
         this.pendingRequestService = pendingRequestService;
         this.employeeService = employeeService;
+        this.roleService = roleService;
         this.sortingService = sortingService;
         this.completedRequestService = completedRequestService;
     }
@@ -62,13 +64,13 @@ public class StatisticsService implements StatisticsServiceInterface {
 
         generalStatistics.setSortedTypes(sortedTypeList);
         List<SortedRole> sortedRoleList = new ArrayList<>();
-        List<EmployeeRoleEntity> employeeRoles = employeeService.getAllEmployeeRoles();
+        List<EmployeeRoleEntity> employeeRoles = roleService.getAllEmployeeRoles();
         List<RolesToEmployee> rolesToEmployees = getSortedEmployeeRoles(employeeRoles);
         for(int i = 0; i < rolesToEmployees.size(); i++){
             dLog.debug("Sorting Request By Role: " + i);
             List<EmployeeAccountEntity> employeeAccountEntities = rolesToEmployees.get(i).getEmployees();
             SortedRole sortedRole = new SortedRole();
-            sortedRole.setRoleName(employeeService.getEmployeeRole(rolesToEmployees.get(i).getRoleId()).getRoleName());
+            sortedRole.setRoleName(roleService.getEmployeeRole(rolesToEmployees.get(i).getRoleId()).getRoleName());
             sortedRole.setMeanAverage(BigDecimal.ZERO);
             sortedRole.setSum(BigDecimal.ZERO);
             for (EmployeeAccountEntity employeeAccountEntity : employeeAccountEntities) {
@@ -94,7 +96,7 @@ public class StatisticsService implements StatisticsServiceInterface {
     public RankedEmployeeResponse getEmployeeRankedList() {
         dLog.debug("Getting Ranked Employee List");
         RankedEmployeeResponse rankedEmployeeResponse = new RankedEmployeeResponse();
-        List<EmployeeAccountEntity> account = employeeService.getAllEmployeesNotConverted();
+        List<EmployeeAccountEntity> account = employeeService.getAllEmployeesAccountEntities();
         List<CompletedRequestEntity> allEmployeesCompletedRequests = completedRequestService.getAllCompletedRequestsNotConverted();
 
         HashMap<EmployeeAccountEntity, BigDecimal> employeeSet = new HashMap<>(account.size());

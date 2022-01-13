@@ -741,6 +741,7 @@ function loadLoginInput(loginView){
     pageUtility.attachInputElement('username', 'Username', formContainer);
     pageUtility.generateNewLine(2, formContainer);
     pageUtility.attachInputElement('password', 'Password', formContainer);
+
     pageUtility.generateNewLine(2, formContainer);
     formContainer.appendChild(submitButton);
     formContainer.appendChild(resetButton);
@@ -748,6 +749,8 @@ function loadLoginInput(loginView){
     loginInputDiv.appendChild(formContainer);
 
     loginView.appendChild(loginInputDiv);
+    let passwordInputBox = document.getElementsByName('password');
+    passwordInputBox[0].type = 'password';
 
 }
 

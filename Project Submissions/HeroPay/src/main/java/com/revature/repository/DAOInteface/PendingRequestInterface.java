@@ -1,5 +1,6 @@
 package com.revature.repository.DAOInteface;
 
+import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.repository.DTO.RequestTypeEntity;
 
@@ -26,7 +27,7 @@ public interface PendingRequestInterface {
 
     PendingRequestEntity getPendingRequestByRequestId(int requestId);
 
-    List<PendingRequestEntity> getEmployeesPendingRequestList(int employeeId);
+    List<PendingRequestEntity> getEmployeesPendingRequestList(EmployeeAccountEntity employee);
 
     List<PendingRequestEntity> getAllPendingRequests();
 
@@ -44,22 +45,18 @@ public interface PendingRequestInterface {
 
     //Update
 
-    void updatePendingRequestStatus(PendingRequestEntity pendingRequestEntity);
-
-    Integer updatePendingRequestMessage(PendingRequestEntity pendingRequestEntity);
-
-    Integer updatePendingRequestAmount(PendingRequestEntity pendingRequestEntity);
+    void updatePendingRequest(PendingRequestEntity pendingRequestEntity);
 
     //Delete
 
     void deletePendingRequest(PendingRequestEntity pendingRequestEntity);
 
 
-    List<PendingRequestEntity> getPendingRequestsByTypeId(int typeId);
+    List<PendingRequestEntity> getPendingRequestsByTypeId(RequestTypeEntity requestType);
 
     List<PendingRequestEntity> getPendingRequestByStatus(boolean status);
 
-    List<PendingRequestEntity> getAnsweredEmployeePendingRequests(int employeeId);
+    List<PendingRequestEntity> getAnsweredEmployeePendingRequests(EmployeeAccountEntity employee);
 
-    List<PendingRequestEntity> getAnsweredPendingRequestsByType(int typeId);
+    List<PendingRequestEntity> getAnsweredPendingRequestsByType(RequestTypeEntity requestType);
 }

@@ -15,20 +15,12 @@ public interface LoginInfoInterface {
 
     //Create
 
-    Integer insertLoginInfo(LoginInfoEntity loginInfoEntity);
-
     //Read
 
-    LoginInfoEntity getLoginInfo(String username);
+    LoginInfoEntity getLoginInfo(LoginInfoEntity loginInfo);
 
     //Update
 
-    Integer updateUsername(LoginInfoEntity loginInfoEntity);
-
-    Integer updatePassword(LoginInfoEntity loginInfoEntity);
-
     //Delete
-
-    void deleteLoginInfo(LoginInfoEntity loginInfoEntity);
 
 }

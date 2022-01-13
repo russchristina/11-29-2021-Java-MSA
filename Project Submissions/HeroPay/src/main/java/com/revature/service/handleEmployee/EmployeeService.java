@@ -1,20 +1,14 @@
 package com.revature.service.handleEmployee;
 
 import com.revature.presentation.model.employeeRequests.Employee;
-import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
-import com.revature.repository.DAOClasses.EmployeeRoleDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
 import com.revature.service.handleEmployee.interfaces.EmployeeServiceInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EmployeeService implements EmployeeServiceInterface {
 
@@ -22,29 +16,20 @@ public class EmployeeService implements EmployeeServiceInterface {
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private final EmployeeAccountDao employeeAccountDao;
-    private final EmployeeRoleDao employeeRoleDao;
 
-
-    public EmployeeService(EmployeeAccountDao employeeAccountDao, EmployeeRoleDao employeeRoleDao) {
+    public EmployeeService(EmployeeAccountDao employeeAccountDao) {
         this.employeeAccountDao = employeeAccountDao;
-        this.employeeRoleDao = employeeRoleDao;
     }
 
     @Override
     public EmployeeAccountEntity getEmployeeAccountById(int employeeId) {
-        dLog.debug("Getting employee account entity by employee ID");
-        return employeeAccountDao.getEmployeeAccount(employeeId);
-    }
-
-    @Override
-    public EmployeeRoleEntity getEmployeeRole(int employeeRoleId) {
-        dLog.debug("Getting employee role entity by ID");
-        return employeeRoleDao.getEmployeeRoleById(employeeRoleId);
+        dLog.debug("Getting employee account entity by employee ID: " + employeeId);
+        return employeeAccountDao.getEmployeeAccount(new EmployeeAccountEntity(employeeId, "", "", new EmployeeRoleEntity()));
     }
 
     @Override
     public Employee convertEmployeeEntityToEmployee(EmployeeAccountEntity employeeAccountEntity) {
-        dLog.debug("Converting EmployeeAccountEntity to Employee Model");
+        dLog.debug("Converting EmployeeAccountEntity to Employee Model: " + employeeAccountEntity);
         boolean managerCheck = employeeAccountEntity.getEmployeeRole().getId() == 4;
         return new Employee(
                 employeeAccountEntity.getId(),
@@ -57,48 +42,19 @@ public class EmployeeService implements EmployeeServiceInterface {
 
     @Override
     public Employee getEmployee(int employeeId) {
+        dLog.debug("Getting employee with ID and converting them: " + employeeId);
         return convertEmployeeEntityToEmployee(getEmployeeAccountById(employeeId));
     }
 
     @Override
-    public Map<Integer, String> getEmployeeRoleMap() {
-        dLog.debug("Getting List of all Employee Roles");
-        Map<Integer, String> employeeRoleMap = new HashMap<>();
-        employeeRoleDao.getAllEmployeeRoles().forEach(e -> employeeRoleMap.put(e.getId(), e.getRoleName()));
-        return employeeRoleMap;
-    }
-
-    @Override
-    public List<Employee> getAllEmployees() {
-        dLog.debug("Converting all employees entities to employee model");
-        List<EmployeeAccountEntity> employeeAccountEntities = employeeAccountDao.getAllEmployeeAccountList();
-        List<Employee> employees = new ArrayList<>(employeeAccountEntities.size());
-        employeeAccountEntities.forEach(e -> employees.add(convertEmployeeEntityToEmployee(e)));
-        return employees;
-    }
-
-    @Override
-    public List<QuickSortEmployee> getQuickSort() {
-//        try {
-//            return employeeAccountDao.getQuickSort();
-//        } catch (SQLException e) {
-//            dLog.debug(e.getMessage(), e);
-//        }
-        return null;
-    }
-
-    @Override
-    public List<EmployeeAccountEntity> getAllEmployeesNotConverted() {
+    public List<EmployeeAccountEntity> getAllEmployeesAccountEntities() {
+        dLog.debug("Getting all employee account entities");
         return employeeAccountDao.getAllEmployeeAccountList();
     }
 
     @Override
-    public List<EmployeeRoleEntity> getAllEmployeeRoles() {
-        return employeeRoleDao.getAllEmployeeRoles();
-    }
-
-    @Override
     public List<EmployeeAccountEntity> getAllEmployeesByRole(int roleId) {
-        return employeeAccountDao.getEmployeeAccountsByRoleId(roleId);
+        dLog.debug("getting all employee by a role ID: " + roleId);
+        return employeeAccountDao.getEmployeeAccountsByRoleId(new EmployeeRoleEntity(roleId, ""));
     }
 }

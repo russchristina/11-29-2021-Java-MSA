@@ -1,10 +1,8 @@
 package com.revature.repository.DAOClasses;
 
-import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DAOInteface.EmployeeAccountInterface;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
-import com.revature.repository.utility.ConnectionFactory;
 import com.revature.repository.utility.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -12,117 +10,74 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EmployeeAccountDao implements EmployeeAccountInterface {
 
     private final Logger dLog = LoggerFactory.getLogger(LoginInfoDao.class);
 
     @Override
-    public Integer insertEmployeeAccount(EmployeeAccountEntity employeeAccountEntity) {
-        Session session;
-        Transaction tx = null;
-        int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            savedId = (Integer) session.save(employeeAccountEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return savedId;
-    }
-
-    @Override
-    public EmployeeAccountEntity getEmployeeAccount(int employeeId) {
-        Session session;
+    public EmployeeAccountEntity getEmployeeAccount(EmployeeAccountEntity employeeAccount) {
+        dLog.debug("Getting EmployeeAccountEntity from Database: " + employeeAccount);
         Transaction tx = null;
         EmployeeAccountEntity returnAccountEntity = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession();
+                ){
             tx = session.beginTransaction();
-            returnAccountEntity = session.get(EmployeeAccountEntity.class, employeeId);
+            returnAccountEntity = session.get(EmployeeAccountEntity.class, employeeAccount.getId());
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null)
+                if(!tx.isActive()) tx.rollback();
             dLog.error(e.getMessage(), e);
         }
+        if(returnAccountEntity != null) dLog.debug("Successful retrieval of EmployeeAccountEntity from database: " + returnAccountEntity);
+        else dLog.debug("Failed retrieval of EmployeeAccountEntity: " + employeeAccount);
         return returnAccountEntity;
     }
 
     @Override
     public List<EmployeeAccountEntity> getAllEmployeeAccountList() {
+        dLog.debug("Getting all EmployeeAccountEntity's from Database");
         List<EmployeeAccountEntity> employeeAccountEntities = null;
-        Session session;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession();
+                ){
             tx = session.beginTransaction();
             employeeAccountEntities = session.createQuery("FROM EmployeeAccountEntity", EmployeeAccountEntity.class).getResultList();
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
-            e.printStackTrace();
+            if(tx != null)
+                if(!tx.isActive()) tx.rollback();
+            dLog.error(e.getMessage(), e);
         }
+        if(employeeAccountEntities != null) dLog.debug("Successful retrieval of all EmployeeAccountEntity's from database: " + employeeAccountEntities);
+        else dLog.debug("Failed retrieval of all EmployeeAccountEntity's from database");
         return employeeAccountEntities;
     }
 
     @Override
-    public List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(int roleId) {
+    public List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(EmployeeRoleEntity employeeRole) {
+        dLog.debug("Getting All EmployeeAccountEntity's associated with EmployeeRole from database: " + employeeRole);
         List<EmployeeAccountEntity> employeeAccountEntities = null;
-        Session session;
         Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
+        try(
+                Session session = HibernateSessionFactory.getSession();
+                ){
             tx = session.beginTransaction();
             employeeAccountEntities = session.createQuery("FROM EmployeeAccountEntity AS E WHERE E.employeeRole.id = :roleId", EmployeeAccountEntity.class)
-                    .setParameter("roleId", roleId).getResultList();
+                    .setParameter("roleId", employeeRole.getId()).getResultList();
             tx.commit();
         }catch(HibernateException e){
-            tx.rollback();
+            if(tx != null)
+                if(!tx.isActive()) tx.rollback();
             dLog.error(e.getMessage(), e);
         }
+        if(employeeAccountEntities != null) dLog.debug("Successful retrieval of EmployeeAccountEntity's from database by employeeRole - " + employeeRole + " " + employeeAccountEntities);
+        else dLog.debug("Failed to retrieve EmployeeAccountEntities by employeeRole from Database: " + employeeRole);
         return employeeAccountEntities;
     }
 
-    @Override
-    public Integer updateEmployeeRole(EmployeeAccountEntity employeeAccountEntity) {
-        Session session;
-        Transaction tx = null;
-        int savedId = 0;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            savedId = (Integer) session.save(employeeAccountEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-        return savedId;
-    }
-
-    @Override
-    public void deleteEmployeeAccount(EmployeeAccountEntity employeeAccountEntity) {
-        Session session;
-        Transaction tx = null;
-        try{
-            session = HibernateSessionFactory.getSession();
-            tx = session.beginTransaction();
-            session.delete(employeeAccountEntity);
-            tx.commit();
-        }catch(HibernateException e){
-            tx.rollback();
-            dLog.error(e.getMessage(), e);
-        }
-    }
 }

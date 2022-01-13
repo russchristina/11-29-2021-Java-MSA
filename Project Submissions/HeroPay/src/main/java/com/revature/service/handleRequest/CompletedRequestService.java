@@ -1,10 +1,10 @@
 package com.revature.service.handleRequest;
 
 import com.revature.presentation.model.requests.recieve.CompletedRequest;
-import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.repository.DAOClasses.CompletedRequestDao;
 import com.revature.repository.DTO.CompletedRequestEntity;
 import com.revature.repository.DTO.EmployeeAccountEntity;
+import com.revature.repository.DTO.EmployeeRoleEntity;
 import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.service.handleRequest.interfaces.CompletedRequestServiceInterface;
 import com.revature.service.serviceExceptions.EmployeeIdException;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     @Override
     public CompletedRequestEntity storeCompletedRequest(CompletedRequest completedRequest) {
         dLog.debug("Storing completed Request: " + completedRequest);
-        return completedRequestDao.getCompletedRequest(completedRequestDao.insertCompletedRequest(convertCompletedRequestModel(completedRequest)));
+        return completedRequestDao.getCompletedRequestWithUniqueId(completedRequestDao.insertCompletedRequest(convertCompletedRequestModel(completedRequest)));
     }
 
     private CompletedRequestEntity convertCompletedRequestModel(CompletedRequest completedRequest) {
@@ -87,7 +86,7 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     @Override
     public List<CompletedRequest> getAllCompletedRequestsByManagerId(int managerId) {
         dLog.debug("getting all completed requests by manager ID");
-        List<CompletedRequestEntity> completedRequestEntities = completedRequestDao.getCompletedRequestByManagerId(managerId);
+        List<CompletedRequestEntity> completedRequestEntities = completedRequestDao.getCompletedRequestByManagerId(new EmployeeAccountEntity(managerId, "", "", new EmployeeRoleEntity(4, "Manager")));
         List<CompletedRequest> completedRequests = new ArrayList<>(completedRequestEntities.size());
         completedRequestEntities.forEach(e -> completedRequests.add(convertCompletedRequestEntity(e)));
         return completedRequests;
@@ -103,37 +102,12 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     }
 
     @Override
-    public void deleteCompletedRequest(int requestId) {
-        completedRequestDao.deleteCompletedRequest(completedRequestDao.getCompletedRequest(requestId));
-    }
-
-    @Override
-    public CompletedRequest convertPendingRequest(PendingRequest pendingRequest, int managerId, boolean status, String response) {
-        dLog.debug("Converting pending request to completed request and storing it");
-        return convertCompletedRequestEntity(
-                storeCompletedRequest(
-                        new CompletedRequest(
-                                pendingRequest.getId(),
-                                pendingRequest.getEmployeeId(),
-                                managerId,
-                                status,
-                                response,
-                                LocalDate.now())));
-    }
-
-    @Override
     public List<CompletedRequest> getAllEmployeeRequests(int employeeId) {
         dLog.debug("getting all completed requests by employee Id");
-        List<CompletedRequestEntity> completedRequestEntities = completedRequestDao.getCompletedRequestByEmployeeId(employeeId);
+        List<CompletedRequestEntity> completedRequestEntities = completedRequestDao.getCompletedRequestByEmployeeId(new EmployeeAccountEntity(employeeId, "", "", new EmployeeRoleEntity()));
         List<CompletedRequest> completedRequests = new ArrayList<>(completedRequestEntities.size());
         completedRequestEntities.forEach(e -> completedRequests.add(convertCompletedRequestEntity(e)));
         return completedRequests;
-    }
-
-    @Override
-    public CompletedRequestEntity getCompletedRequestById(int requestId) {
-        dLog.debug("getting all completed requests by request Id");
-        return completedRequestDao.getCompletedRequest(requestId);
     }
 
 }

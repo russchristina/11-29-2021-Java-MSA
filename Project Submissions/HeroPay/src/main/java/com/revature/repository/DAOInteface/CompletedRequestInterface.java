@@ -1,6 +1,7 @@
 package com.revature.repository.DAOInteface;
 
 import com.revature.repository.DTO.CompletedRequestEntity;
+import com.revature.repository.DTO.EmployeeAccountEntity;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -22,11 +23,11 @@ public interface CompletedRequestInterface {
 
     //Read
 
-    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(int employeeId);
+    List<CompletedRequestEntity> getCompletedRequestByEmployeeId(EmployeeAccountEntity employee);
 
-    CompletedRequestEntity getCompletedRequest(int requestId);
+    CompletedRequestEntity getCompletedRequestWithUniqueId(int requestId);
 
-    List<CompletedRequestEntity> getCompletedRequestByManagerId(int managerId);
+    List<CompletedRequestEntity> getCompletedRequestByManagerId(EmployeeAccountEntity manager);
 
     List<CompletedRequestEntity> getAllCompletedRequestList();
 
@@ -41,8 +42,6 @@ public interface CompletedRequestInterface {
     Integer updateCompletedRequestResponse(CompletedRequestEntity completedRequestEntity);
 
     //Delete
-
-    void deleteCompletedRequest(CompletedRequestEntity completedRequestEntity);
 
 
     List<CompletedRequestEntity> getCompletedRequestsByStatus(boolean status);

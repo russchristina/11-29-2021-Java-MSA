@@ -19,24 +19,18 @@ public interface EmployeeAccountInterface {
 
     //Create
 
-    Integer insertEmployeeAccount(EmployeeAccountEntity employeeAccountEntity);
-
     //Read
 
-    EmployeeAccountEntity getEmployeeAccount(int employeeId);
+    EmployeeAccountEntity getEmployeeAccount(EmployeeAccountEntity employeeAccount);
 
     List<EmployeeAccountEntity> getAllEmployeeAccountList();
 
-    List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(int roleId);
+    List<EmployeeAccountEntity> getEmployeeAccountsByRoleId(EmployeeRoleEntity employeeRole);
 
 
     //Update
 
-    Integer updateEmployeeRole(EmployeeAccountEntity employeeAccountEntity);
-
     //Delete
-
-    void deleteEmployeeAccount(EmployeeAccountEntity employeeAccountEntity);
 
 
 }

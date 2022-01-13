@@ -2,6 +2,7 @@ package com.revature.service.handleLogin;
 
 import com.revature.presentation.model.loginRequests.LoginInput;
 import com.revature.repository.DAOClasses.LoginInfoDao;
+import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.LoginInfoEntity;
 import com.revature.service.handleLogin.interfaces.LoginServiceInterface;
 import org.slf4j.Logger;
@@ -20,12 +21,9 @@ public class LoginService implements LoginServiceInterface {
         this.loginInfoDao = loginInfoDao;
     }
 
-
     @Override
     public LoginInfoEntity validateLogin(LoginInput loginInput) {
         dLog.debug("Validating login for: " + loginInput.getUsername());
-        LoginInfoEntity loginEntity = loginInfoDao.getLoginInfo(loginInput.getUsername());
-        if(loginEntity != null && loginEntity.getPassword().contentEquals(loginEntity.getPassword())) return loginEntity;
-        else return null;
+        return loginInfoDao.getLoginInfo(new LoginInfoEntity(0, loginInput.getUsername(), loginInput.getPassword(), new EmployeeAccountEntity()));
     }
 }
