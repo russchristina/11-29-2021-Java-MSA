@@ -23,6 +23,7 @@ let containerOptions;
 let requestFormContainer;
 
 let createRequestCheck = true;
+let completedRequestCheck = true;
 
 let respondFormContainer;
 let respondRequestCheck = true;
@@ -47,7 +48,6 @@ let statisticsPageCheck = true;
 
 /** JSON objects with needed information for global access */
 
-let userLoginObj;
 let userData;
 let employeeData;
 let allRequestData;
@@ -58,6 +58,7 @@ let newResponseData;
 
 let generalStatData;
 let generalEmployeeStatData;
+let sortedRequests;
 
 
 //============================================================================
@@ -182,8 +183,14 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(!values) {
-            console.log("Empty");
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
             return;
         }
         for(let i = 0; i < values.length; i++){
@@ -197,15 +204,59 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
+    generateTableRowsStats: function(tableId, container, values){
+        let table = document.getElementById(tableId);
+        let tableRow;
+        let tableElement;
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
+            return;
+        }
+        for(let i = 0; i < values.length; i++){
+            tableRow = document.createElement('tr');
+            for(let key in values[i]){
+                tableElement = document.createElement('td')
+                if(key == 'meanAverage' || key == 'sum'){
+                    tableElement.innerText = `$ ${values[i][key]}`
+                }else{
+                    tableElement.innerText = values[i][key];
+                }
+                tableRow.appendChild(tableElement);
+            }
+            table.appendChild(tableRow);
+        }
+        container.appendChild(table);
+    },
     generateTableRowsEmployeeStats: function (tableId, container, values){
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
+            return;
+        }
         for(let i = 0; i < values.orderedList.length; i++){
             tableRow = document.createElement('tr');
             for(let key in values.orderedList[i]){
                 tableElement = document.createElement('td')
-                tableElement.innerText = values.orderedList[i][key];
+                if(key == 'sum'){
+                    tableElement.innerText = `$ ${values.orderedList[i][key]}`
+                }else{
+                    tableElement.innerText = values.orderedList[i][key];
+                }
+
                 tableRow.appendChild(tableElement);
             }
             table.appendChild(tableRow);
@@ -216,8 +267,14 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(!values) {
-            console.log("Empty");
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
             return;
         }
         for(let i = 0; i < values.length; i++){
@@ -232,6 +289,8 @@ const pageUtility = {
 
                 } else if(values[i][key] === true){
                     tableElement.innerText = 'Approved';
+                }else if(key == 'amount'){
+                    tableElement.innerText = `$ ${values[i][key]}`
                 }else{
                     console.log(values[i][key])
                     tableElement.innerText = values[i][key];
@@ -254,8 +313,14 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(!values) {
-            console.log("Empty");
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
             return;
         }
         for(let i = 0; i < values.length; i++){
@@ -269,6 +334,8 @@ const pageUtility = {
                     tableElement.innerText = 'Pending';
                 } else if(values[i][key] === true){
                     tableElement.innerText = 'Answered';
+                }else if(key == 'amount'){
+                    tableElement.innerText = `$ ${values[i][key]}`
                 }else{
                     tableElement.innerText = values[i][key];
                 }
@@ -291,6 +358,16 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
+            return;
+        }
         for(let i = 0; i < values.length; i++){
             tableRow = document.createElement('tr');
             for(let key in values[i]){
@@ -298,7 +375,7 @@ const pageUtility = {
                 tableElement.innerText = values[i][key];
                 tableRow.appendChild(tableElement);
             }
-            pageUtility.attachButtonElement('respond', 'respond-button', tableRow, 'click', e => {
+            pageUtility.attachButtonElement('Respond', 'respond-button', tableRow, 'click', e => {
                 funky(e);
             });
             table.appendChild(tableRow);
@@ -309,8 +386,14 @@ const pageUtility = {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(!values) {
-            console.log("Empty");
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
             return;
         }
         for(let i = 0; i < values.length; i++){
@@ -324,10 +407,11 @@ const pageUtility = {
                     tableElement.innerText = 'Pending';
                 } else if(values[i][key] === true){
                     tableElement.innerText = 'Answered';
+                }else if(key == 'amount'){
+                    tableElement.innerText = `$ ${values[i][key]}`
                 }else{
                     tableElement.innerText = values[i][key];
                 }
-                console.log(values[i][key])
                 for(let hidden of hiddenColumns){
                     if(hidden == counter2){
                     tableElement.hidden = true;
@@ -335,7 +419,51 @@ const pageUtility = {
                 counter2++;
                 tableRow.appendChild(tableElement);
             }
-                pageUtility.attachButtonElement('respond', 'respond-button', tableRow, 'click', e => {
+                pageUtility.attachButtonElement('respond-button', 'Respond', tableRow, 'click', e => {
+                funky(e);
+                });
+                table.appendChild(tableRow);
+            }
+        container.appendChild(table);
+    },
+    generateCompletedRequestRowClean: function(tableId, container, values, funky, hiddenColumns){
+        let table = document.getElementById(tableId);
+        let tableRow;
+        let tableElement;
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
+            return;
+        }
+        for(let i = 0; i < values.length; i++){
+            let counter2 = 0;
+            tableRow = document.createElement('tr');
+            for(let key in values[i]){
+                tableElement = document.createElement('td');
+                if(Array.isArray(values[i][key])){
+                    tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
+                }else if(values[i][key] === false){
+                    tableElement.innerText = 'Pending';
+                } else if(values[i][key] === true){
+                    tableElement.innerText = 'Answered';
+                }else if(key == 'amount'){
+                    tableElement.innerText = `$ ${values[i][key]}`
+                }else{
+                    tableElement.innerText = values[i][key];
+                }
+                for(let hidden of hiddenColumns){
+                    if(hidden == counter2){
+                    tableElement.hidden = true;
+                    }}
+                counter2++;
+                tableRow.appendChild(tableElement);
+            }
+                pageUtility.attachButtonElement('open-cr-button', 'View Response', tableRow, 'click', e => {
                 funky(e);
                 });
                 table.appendChild(tableRow);
@@ -345,13 +473,60 @@ const pageUtility = {
     generateSingleTableRow: function(value, container){
         let tableRow = document.createElement('tr');
         let tableElement;
+        if(values.length == 0) {
+            tableRow = document.createElement('tr');
+            tableElement = document.createElement('td')
+            tableElement.innerText = "Empty";
+            tableElement.id = 'empty';
+            tableRow.appendChild(tableElement);
+            table.appendChild(tableRow);
+            container.appendChild(table);
+            return;
+        }
+        for(let key in value){
+            tableElement = document.createElement('td')
+            if(key == 'amount'){
+                tableElement.innerText = `$ ${value[key]}`
+            }else{
+                tableElement.innerText = value[key];  
+            }
+
+            tableRow.appendChild(tableElement);
+        }
+        container.appendChild(tableRow);
+    },
+    generateSingleTableRowStats: function(value, container){
+        let tableRow = document.createElement('tr');
+        let tableElement;
         if(!value) {
             console.log("Empty");
             return;
         }
         for(let key in value){
             tableElement = document.createElement('td')
-            tableElement.innerText = value[key];
+            if(key == 'meanAverage' || key == 'sum'){
+                tableElement.innerText = `$ ${value[key]}`
+            }else{
+                tableElement.innerText = value[key];
+            }
+            tableRow.appendChild(tableElement);
+        }
+        container.appendChild(tableRow);
+    },
+    generateSingleTableRowIndividualStat: function(value, container){
+        let tableRow = document.createElement('tr');
+        let tableElement;
+        if(!value) {
+            console.log("Empty");
+            return;
+        }
+        for(let key in value){
+            tableElement = document.createElement('td')
+            if(key == 'average' || key == 'sum'){
+                tableElement.innerText = `$ ${value[key]}`
+            }else{
+                tableElement.innerText = value[key];
+            }
             tableRow.appendChild(tableElement);
         }
         container.appendChild(tableRow);
@@ -370,9 +545,10 @@ const pageUtility = {
                 tableElement.innerText = `${value[key][2]} / ${value[key][1]} / ${value[key][0]}`;
             }else if(value[key] === false){
                 tableElement.innerText = 'Denied';
-
             } else if(value[key] === true){
                 tableElement.innerText = 'Approved';
+            }else if(key == 'amount'){
+                tableElement.innerText = `$ ${values[i][key]}`
             }else{
                 console.log(value[key])
                 tableElement.innerText = value[key];
@@ -404,6 +580,8 @@ const pageUtility = {
 
             } else if(value[key] === true){
                 tableElement.innerText = 'Answered';
+            }else if(key == 'amount'){
+                tableElement.innerText = `$ ${value[key]}`
             }else{
                 console.log(value[key])
                 tableElement.innerText = value[key];
@@ -484,57 +662,53 @@ const requestViewUtility = {
     createPersonalRequestTables: function(){
         pageUtility.attachTitleElement('h3', 'Pending Requests', personalPRContainer);
         // pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'pending-request-table', personalPRContainer);
-        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'pending-request-table', personalPRContainer);
+        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'pending-request-table', personalPRContainer);
         homepageView.appendChild(personalPRContainer);
 
         pageUtility.attachTitleElement('h3', 'Past Requests', personalARContainer);
-        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'answered-request-table', personalARContainer);
+        pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted', 'View Response'], 'answered-request-table', personalARContainer);
         homepageView.appendChild(personalARContainer);
 
-        pageUtility.attachTitleElement('h3', 'Completed Requests', personalCRContainer);
-        // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
-        pageUtility.generateTableElement(['Status', 'Response', 'Resolved'], 'completed-request-table', personalCRContainer);
-        homepageView.appendChild(personalCRContainer);
     },
     createAllRequestTable: function(){
         pageUtility.attachTitleElement('h3', 'All Pending Requests', allPRContainer);
-        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'all-pending-request-table', allPRContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-pending-request-table', allPRContainer);
         homepageView.appendChild(allPRContainer);
 
         pageUtility.attachTitleElement('h3', 'All Past Requests', allARContainer);
-        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted', 'Status'], 'all-answered-request-table', allARContainer);
+        pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-answered-request-table', allARContainer);
         homepageView.appendChild(allARContainer);
-
-        pageUtility.attachTitleElement('h3', 'All Completed Requests', allCRContainer);
-        pageUtility.generateTableElement(['Employee ID', 'Manager ID', 'Status', 'Responding Message', 'Resolved'], 'all-completed-request-table', allCRContainer);
-        homepageView.appendChild(allCRContainer);
     },
     displayEmployeeRequests: function (allRequestData){
 
         requestViewUtility.displayPendingRequests(allRequestData.unansweredRequests);
         requestViewUtility.displayAnsweredRequests(allRequestData.answeredRequests);
-        requestViewUtility.displayCompletedRequests(allRequestData.completedRequests);
+        // requestViewUtility.displayCompletedRequests(allRequestData.completedRequests);
         console.log(allRequestData);
     },
     displayManagerRequests: function (sortedRequests){
         requestViewUtility.displayPendingRequests(sortedRequests.personalRequests.personalPendingRequests);
         requestViewUtility.displayAnsweredRequests(sortedRequests.personalRequests.personalAnsweredRequests);
-        requestViewUtility.displayCompletedRequests(sortedRequests.personalRequests.personalCompletedRequests);
+        // requestViewUtility.displayCompletedRequests(sortedRequests.personalRequests.personalCompletedRequests);
 
         requestViewUtility.displayAllPendingRequests(sortedRequests.employeeRequests.employeePendingRequests);
         requestViewUtility.displayAllAnsweredRequests(sortedRequests.employeeRequests.employeeAnsweredRequests);
-        requestViewUtility.displayAllCompletedRequests(sortedRequests.employeeRequests.employeeCompletedRequests);
+        // requestViewUtility.displayAllCompletedRequests(sortedRequests.employeeRequests.employeeCompletedRequests);
         console.log(sortedRequests);
     },
     displayPendingRequests : function (pendingRequests){
-        pageUtility.generateTableRowsCleanPender('pending-request-table', personalPRContainer, pendingRequests, [0, 1]);
+        pageUtility.generateTableRowsCleanPender('pending-request-table', personalPRContainer, pendingRequests, [0, 1, 6]);
         homepageView.appendChild(personalPRContainer);
     },
     displayAnsweredRequests : function (answeredRequests){
-        pageUtility.generateTableRowsCleanPender('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
+
+        pageUtility.generateCompletedRequestRowClean('answered-request-table', personalARContainer, answeredRequests, requestInteractionUtility.openResponseManager, [0, 1, 6]);
         homepageView.appendChild(personalARContainer);
+        // pageUtility.generateTableRowsCleanPender('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
+        // homepageView.appendChild(personalARContainer);
     },
     displayCompletedRequests : function (completedRequests){
+
         pageUtility.generateTableRowsClean('completed-request-table', personalCRContainer, completedRequests, [0, 1, 2]);
         homepageView.appendChild(personalCRContainer);
     },
@@ -543,11 +717,13 @@ const requestViewUtility = {
         pageUtility.generateSingleTableRowClean(newPendingRequestData, table, [0, 1]);
     },
     displayAllPendingRequests : function (pendingRequests){
-        pageUtility.generateManagerTableRowClean('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest, [0]);
+        pageUtility.generateManagerTableRowClean('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest, [0, 6]);
         homepageView.appendChild(allPRContainer);
     },
     displayAllAnsweredRequests : function (answeredRequests){
-        pageUtility.generateTableRowsCleanPender('all-answered-request-table', allARContainer, answeredRequests, [0])
+        // pageUtility.generateTableRowsCleanPender('all-answered-request-table', allARContainer, answeredRequests, [0])
+        pageUtility.generateCompletedRequestRowClean('all-answered-request-table', allARContainer, answeredRequests,requestInteractionUtility.openResponseManager, [0, 6])
+
         homepageView.appendChild(allARContainer);
     },
     displayAllCompletedRequests : function (completedRequests){
@@ -560,6 +736,52 @@ const requestViewUtility = {
     },
     failedToGetRequests : function (){
         window.alert('Failed to get requests from server');
+    },
+    viewCompletedResponseDisplay : function(tableRow){
+        let answeredRequestId = tableRow.children[0].innerText;
+        console.log(answeredRequestId);
+        console.log(allRequestData.completedRequests);
+        for (const iterator of allRequestData.completedRequests) {
+            console.log(iterator);
+            if(answeredRequestId == iterator.id) {
+                requestViewUtility.openCompletedRequestDisplay(iterator);
+            } 
+        }
+    },
+    viewCompletedResponseDisplayManager : function(tableRow){
+        let answeredRequestId = tableRow.children[0].innerText;
+        console.log(answeredRequestId);
+        console.log(sortedRequests.employeeRequests.employeeCompletedRequests);
+        for (const iterator of sortedRequests.employeeRequests.employeeCompletedRequests) {
+            console.log(iterator);
+            if(answeredRequestId == iterator.id) {
+                requestViewUtility.openCompletedRequestDisplayManager(iterator);
+            } 
+        }
+    },
+    openCompletedRequestDisplay : function(completedRequest){
+        if(completedRequestCheck){
+            console.log("Viewing completed request");
+            pageUtility.clearView(personalCRContainer);
+            pageUtility.attachTitleElement('h3', 'Completed Request', personalCRContainer);
+            // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
+            pageUtility.generateTableElement(['Status', 'Response', 'Resolved'], 'completed-request-table', personalCRContainer);
+            homepageView.appendChild(personalCRContainer);
+            pageUtility.generateSingleTableRowClean(completedRequest, document.getElementById('completed-request-table'), [0, 1, 2]);
+            homepageView.appendChild(personalCRContainer);
+        }
+    },
+    openCompletedRequestDisplayManager : function(completedRequest){
+        if(completedRequestCheck){
+            console.log("Viewing completed All request");
+            pageUtility.clearView(allCRContainer);
+            pageUtility.attachTitleElement('h3', 'Completed Request', allCRContainer);
+            // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
+            pageUtility.generateTableElement(['Employee ID', 'Manager ID', 'Response', 'Responding Message', 'Resolved'], 'all-completed-request-table', allCRContainer);
+            homepageView.appendChild(allCRContainer);
+            pageUtility.generateSingleTableRowClean(completedRequest, document.getElementById('all-completed-request-table'), [0]);
+            homepageView.appendChild(allCRContainer);
+        }
     }
 }
 
@@ -573,6 +795,16 @@ const requestInteractionUtility = {
         let managerResponseJson = JSON.stringify({requestId:tableRow.children[0].innerText, employeeId:tableRow.children[1].innerText , managerId:userData.employeeId, status:responseObj.bool, response: responseObj.text});
         tableRow.innerHTML = "";
         postRequestResponse(managerResponseJson);
+    },
+    openResponse : function(e){
+        let tableRow = e.target.parentNode;
+        console.log(tableRow);
+        requestViewUtility.viewCompletedResponseDisplay(tableRow);
+    },
+    openResponseManager : function(e){
+        let tableRow = e.target.parentNode;
+        console.log(tableRow);
+        requestViewUtility.viewCompletedResponseDisplayManager(tableRow);
     }
 }
 
@@ -622,17 +854,17 @@ const statisticsUtility = {
         pageUtility.attachTitleElement('h3', 'General Employee Role Statistics', generalStatisticsRoleContainer);
         pageUtility.generateTableElement(["Employee Roles", "Mean Average", "Sum"], 'general-employee-role-table', generalStatisticsRoleContainer);
         generalStatisticsContainer.appendChild(generalStatisticsRoleContainer);
-        pageUtility.generateTableRows('general-employee-role-table', generalStatisticsRoleContainer, generalStatData.sortedRoles);
+        pageUtility.generateTableRowsStats('general-employee-role-table', generalStatisticsRoleContainer, generalStatData.sortedRoles);
 
         pageUtility.attachTitleElement('h3', 'General Request Type Statistics', generalStatisticsTypeContainer);
         pageUtility.generateTableElement(["Request Types", "Mean Average", "Sum"], 'general-request-type-table', generalStatisticsTypeContainer);
         generalStatisticsContainer.appendChild(generalStatisticsTypeContainer);
-        pageUtility.generateTableRows('general-request-type-table', generalStatisticsTypeContainer, generalStatData.sortedTypes);
+        pageUtility.generateTableRowsStats('general-request-type-table', generalStatisticsTypeContainer, generalStatData.sortedTypes);
 
         pageUtility.attachTitleElement('h3', 'General Total Statistics', generalStatisticsTotalContainer);
         pageUtility.generateTableElement(["Total", "Mean Average", "Sum"], 'general-total-table', generalStatisticsTotalContainer);
         generalStatisticsContainer.appendChild(generalStatisticsTotalContainer);
-        pageUtility.generateSingleTableRow(generalStatData.total, document.getElementById('general-total-table'));
+        pageUtility.generateSingleTableRowStats(generalStatData.total, document.getElementById('general-total-table'));
         console.log(document.getElementById('general-total-table'));
         console.log(generalStatData);
     },
@@ -646,7 +878,7 @@ const statisticsUtility = {
         console.log(individualEmployeeData); 
         let tableContainer = document.getElementById('individual-employee-table');
         if(tableContainer.children[1]) tableContainer.removeChild(tableContainer.children[1]);
-        pageUtility.generateSingleTableRow(individualEmployeeData, document.getElementById('individual-employee-table'));
+        pageUtility.generateSingleTableRowIndividualStat(individualEmployeeData, document.getElementById('individual-employee-table'));
 
     },
     individualEmployeeSearchDisplay: function(){
@@ -787,7 +1019,6 @@ function loadEmployeeHomepage(homepageView){
     personalCRContainer = document.createElement('div');
     personalCRContainer.id = 'completed-request-div';
     requestViewUtility.createPersonalRequestTables();
-
 }
 
 function loadManagerHomepage(homepageView){
@@ -840,7 +1071,7 @@ function loadStatistics(statisticsPageView){
     statisticsPageView.appendChild(statisticsTopContainer);
 
     pageUtility.attachTitleElement('h3', 'Options', statisticsTopContainer);
-    pageUtility.attachButtonElement('homepage-button', 'return', statisticsTopContainer, 'click', toggleStatistics);
+    pageUtility.attachButtonElement('homepage-button', 'Return', statisticsTopContainer, 'click', toggleStatistics);
 
 
     generalStatisticsContainer = document.createElement('div');
@@ -941,12 +1172,10 @@ function getUserLogin(){
     let usernameInput = userForm.elements[0].value;
     let passwordInput = userForm.elements[1].value;
     if(usernameInput && passwordInput){
-        userLoginObj = JSON.stringify({ username: usernameInput, password:passwordInput});
-        verifyUser();
+        verifyUser(JSON.stringify({ username: usernameInput, password:passwordInput}));
     } else{
         window.alert("INPUT ALL FIELDS");
     }
-
 }
 
 function failedLogin(){
@@ -1010,14 +1239,13 @@ const userRequestUtility = {
 
 /* Asynchronous functions: Fetch and server logic*/
 
-async function verifyUser(){
+async function verifyUser(userLoginJson){
     let loginUrl = 'http://localhost:9002/login/validate';
     try{
-        let userLoginBody = await fetch(loginUrl, {method: "POST", body: userLoginObj});
+        let userLoginBody = await fetch(loginUrl, {method: "POST", body: userLoginJson});
         userData = await userLoginBody.json();
         if(userData) {
             if(userData.status){
-                console.log(userData);
                 getEmployeeInfo(userData);   
             }else failedLogin();
         }else failedLogin();
@@ -1032,7 +1260,7 @@ async function getEmployeeInfo(userData){
     try{
         let employeeResponseBody = await fetch(employeeValidationUrl, {method: "GET"});
         employeeData = await employeeResponseBody.json();
-        if(userData) {
+        if(employeeData) {
             successfulLogin(userData, employeeData.manager);
             welcomeEmployee(employeeData);
         }else failedLogin();
@@ -1075,9 +1303,9 @@ async function getMTotalRequests(userData){
     let totalRequestUrl = 'http://localhost:9002/manager/total';
     try{
         let totalRequestResponseBody = await fetch(totalRequestUrl, {method: 'GET'});
-        totalRequestData = await totalRequestResponseBody.json();
+        let totalRequestData = await totalRequestResponseBody.json();
         if(totalRequestData){
-            let sortedRequests = sortingUtility.sortManagerTotalRequests(totalRequestData, userData.employeeId);
+            sortedRequests = sortingUtility.sortManagerTotalRequests(totalRequestData, userData.employeeId);
             requestViewUtility.displayManagerRequests(sortedRequests);
         }else failed();
     }catch(e){
