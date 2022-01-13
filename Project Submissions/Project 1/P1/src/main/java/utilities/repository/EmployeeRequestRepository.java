@@ -11,8 +11,6 @@ public interface EmployeeRequestRepository {
 	
 	Employee findByEmployeeName(String name);
 	
-	Request findByRequestId(int id);
-	
 	List<Request> findRequestsByEmployeeName(String name);
 	
 	List<Request> findAllRequests();

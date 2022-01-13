@@ -11,13 +11,6 @@ public class DevelopingDevelopers {
 		Javalin app = Javalin.create(config ->
 			config.enableCorsForAllOrigins()).start(7777);
 		
-		//JavalinConfig jConfig = new JavalinConfig(app).configureHttpMethodPreference().enableCORS();
-//		app.before(ctx ->{
-//			ctx.header("Access-Control-Allow-Origin", "*");
-//	        ctx.header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-//	        ctx.header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
-//		});
-		
 		// Look at JWT (JSON Web Tokens) or HttpSession for log in validation
 		app.post("/session", ctx -> {
 			ctx.req.getSession();

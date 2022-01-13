@@ -1,9 +1,5 @@
 package utilities.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,8 +13,6 @@ import org.hibernate.query.Query;
 
 import models.Employee;
 import models.Request;
-import utilities.connect.ConnectionClosers;
-import utilities.connect.ConnectionHandler;
 import utilities.connect.HibernateSessionFactory;
 
 public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
@@ -58,41 +52,6 @@ public class EmployeeRequestRepositoryImpl implements EmployeeRequestRepository{
 			session.close(); 
 		} // End finally block
 		return emp;
-	} // End method
-
-	@Override
-	public Request findByRequestId(int id) {
-		Request r = null;
-		final String SQL = "select * from requests where request_id = ?";
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet set = null;
-		
-		try {
-			conn = ConnectionHandler.getConnection();
-			stmt = conn.prepareStatement(SQL);
-			stmt.setInt(1, id);
-			set = stmt.executeQuery();
-			
-			if (set.next()) {
-				r = new Request(
-						set.getInt(1),
-						set.getString(2),
-						set.getDouble(3),
-						set.getString(4),
-						set.getString(5),
-						set.getString(6)
-						);
-			} // End if statement
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			ConnectionClosers.closeConnection(conn);
-			ConnectionClosers.closeResultSet(set);
-			ConnectionClosers.closeStatement(stmt);
-		} // End finally block
-		
-		return r;
 	} // End method
 
 	@Override
