@@ -4,6 +4,7 @@ import com.revature.presentation.model.requests.recieve.CompletedRequest;
 import com.revature.presentation.model.requests.PendingRequest;
 import com.revature.presentation.model.statisticsRequests.response.QuickSortEmployee;
 import com.revature.repository.DTO.EmployeeAccountEntity;
+import com.revature.repository.DTO.PendingRequestEntity;
 import com.revature.service.DTO.SortedRequests;
 import com.revature.service.handleRequest.interfaces.SortingServiceInterface;
 import org.slf4j.Logger;
@@ -18,12 +19,8 @@ public class SortingService implements SortingServiceInterface {
     private final Logger dLog = LoggerFactory.getLogger("dLog");
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
-    private final PendingRequestService pendingRequestService;
-    private final CompletedRequestService completedRequestService;
 
-    public SortingService(PendingRequestService pendingRequestService, CompletedRequestService completedRequestService) {
-        this.pendingRequestService = pendingRequestService;
-        this.completedRequestService = completedRequestService;
+    public SortingService() {
     }
 
     @Override
@@ -48,28 +45,6 @@ public class SortingService implements SortingServiceInterface {
     }
 
     @Override
-    public SortedMap<Double, CompletedRequest> orderByAmountCompleted(List<CompletedRequest> completedRequestsTrue) throws SQLException {
-//        List<PendingRequest> pendingRequestList = pendingRequestService.getAllPendingRequests();
-//
-//        List<PendingRequest> completePenderRequestList = new ArrayList<>();
-//
-//        for (CompletedRequest completedRequest : completedRequestsTrue) {
-//            for (PendingRequest pendingRequest : pendingRequestList) {
-//                if(pendingRequest.getId() == completedRequest.getId()) completePenderRequestList.add(pendingRequest);
-//            }
-//        }
-//        List<PendingRequest> orderedCompletePendingReqList = orderByAmountPending(completePenderRequestList);
-//        SortedMap<Double, CompletedRequest> orderdCompleteRequestSortedMap = new TreeMap<>();
-//
-//        for (PendingRequest pendingRequest : orderedCompletePendingReqList) {
-//            orderdCompleteRequestSortedMap.put(pendingRequest.getAmount(), completedRequestService.convertCompletedRequestEntity(completedRequestService.getCompletedRequestById(pendingRequest.getId())));
-//        }
-//        dLog.debug("order by amount CompletedRequests");
-//        return orderdCompleteRequestSortedMap;
-    return null;
-    }
-
-    @Override
     public List<QuickSortEmployee> orderSortedEmployee(List<QuickSortEmployee> sortedEmployees) {
         sortedEmployees.sort(Comparator.comparing((QuickSortEmployee::getSum)));
         return sortedEmployees;
@@ -90,10 +65,8 @@ public class SortingService implements SortingServiceInterface {
     @Override
     public List<QuickSortEmployee> employeeRankedSort(HashMap<EmployeeAccountEntity, BigDecimal> employeeSet) {
         List<QuickSortEmployee> quickSortEmployees = new ArrayList<>(employeeSet.size());
-        Iterator<EmployeeAccountEntity> employeeSetter = employeeSet.keySet().iterator();
-        
-        while(employeeSetter.hasNext()){
-            EmployeeAccountEntity employeeAccount = employeeSetter.next();
+
+        for (EmployeeAccountEntity employeeAccount : employeeSet.keySet()) {
             quickSortEmployees.add(new QuickSortEmployee(employeeAccount.getId(), employeeSet.get(employeeAccount)));
         }
         

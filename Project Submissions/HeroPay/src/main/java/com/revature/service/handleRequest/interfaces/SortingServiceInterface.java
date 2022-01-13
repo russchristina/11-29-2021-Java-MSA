@@ -20,8 +20,6 @@ public interface SortingServiceInterface {
 
     List<PendingRequest> orderByAmountPending(List<PendingRequest> pendingRequests);
 
-    SortedMap<Double, CompletedRequest> orderByAmountCompleted(List<CompletedRequest> completedRequestsTrue) throws SQLException;
-
     List<QuickSortEmployee> orderSortedEmployee(List<QuickSortEmployee> sortedEmployees);
 
     SortedRequests sortPendingRequestsByStatus(List<PendingRequest> pendingRequests);

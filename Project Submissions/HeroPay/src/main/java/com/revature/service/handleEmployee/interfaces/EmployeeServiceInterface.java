@@ -14,7 +14,7 @@ public interface EmployeeServiceInterface {
 
     Employee convertEmployeeEntityToEmployee(EmployeeAccountEntity employeeAccountEntity);
 
-    Employee getEmployee(int employeeId);
+    Employee getEmployeeModelWithEmployeeId(int employeeId);
 
     List<EmployeeAccountEntity> getAllEmployeesAccountEntities();
 

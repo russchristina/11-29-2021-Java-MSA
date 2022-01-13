@@ -17,11 +17,7 @@ public interface PendingRequestServiceInterface {
 
     List<PendingRequest> getAllPendingRequests();
 
-    List<PendingRequest> getPendingRequestByType(int typeId);
-
     void updatePendingRequestStatus(int requestId, boolean status);
-
-    void deletePendingRequest(int requestId);
 
     PendingRequest convertPendingRequestEntity(PendingRequestEntity pendingRequestEntity);
 
@@ -31,7 +27,5 @@ public interface PendingRequestServiceInterface {
 
     List<PendingRequest> getAllAnsweredRequestsByType(int typeId);
 
-    List<RequestTypeEntity> getRequestTypes();
 
-    List<PendingRequest> getAllAnsweredRequestsByRole(int id);
 }

@@ -30,18 +30,23 @@ public class EmployeeService implements EmployeeServiceInterface {
     @Override
     public Employee convertEmployeeEntityToEmployee(EmployeeAccountEntity employeeAccountEntity) {
         dLog.debug("Converting EmployeeAccountEntity to Employee Model: " + employeeAccountEntity);
-        boolean managerCheck = employeeAccountEntity.getEmployeeRole().getId() == 4;
-        return new Employee(
-                employeeAccountEntity.getId(),
-                employeeAccountEntity.getFirstName(),
-                employeeAccountEntity.getLastName(),
-                employeeAccountEntity.getEmployeeRole().getRoleName(),
-                managerCheck
-        );
+        try {
+            boolean managerCheck = employeeAccountEntity.getEmployeeRole().getRoleName().contentEquals("Manager");
+            return new Employee(
+                    employeeAccountEntity.getId(),
+                    employeeAccountEntity.getFirstName(),
+                    employeeAccountEntity.getLastName(),
+                    employeeAccountEntity.getEmployeeRole().getRoleName(),
+                    managerCheck
+            );
+        }catch(NullPointerException e){
+            dLog.debug("Null Employee Account Entity conversion attempt, returning null");
+            return null;
+        }
     }
 
     @Override
-    public Employee getEmployee(int employeeId) {
+    public Employee getEmployeeModelWithEmployeeId(int employeeId) {
         dLog.debug("Getting employee with ID and converting them: " + employeeId);
         return convertEmployeeEntityToEmployee(getEmployeeAccountById(employeeId));
     }

@@ -1,33 +1,71 @@
-//package com.revature.service.handleRequest;
-//
-//import com.revature.presentation.model.requests.recieve.CompletedRequest;
-//import com.revature.presentation.model.requests.PendingRequest;
-//import com.revature.repository.DAOClasses.CompletedRequestDao;
-//import com.revature.repository.DTO.CompletedRequestEntity;
-//import com.revature.service.serviceExceptions.EmployeeIdException;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//import org.mockito.MockitoAnnotations;
-//
-//import java.sql.Date;
-//import java.sql.SQLException;
-//import java.time.LocalDate;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//class CompletedRequestServiceTest {
-//
-//    @Mock
-//    private CompletedRequestDao mockCompletedRequestDao;
-//
-//    private CompletedRequestService completedRequestService;
-//
+package com.revature.service.handleRequest;
+
+import com.revature.presentation.model.requests.recieve.CompletedRequest;
+import com.revature.presentation.model.requests.PendingRequest;
+import com.revature.repository.DAOClasses.CompletedRequestDao;
+import com.revature.repository.DTO.*;
+import com.revature.service.serviceExceptions.EmployeeIdException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class CompletedRequestServiceTest {
+
+    @Mock
+    private CompletedRequestDao mockCompletedRequestDao;
+
+    private CompletedRequestService completedRequestService;
+
+
+
+
+    //Variable
+    private int employeeId;
+    private int managerId;
+    private boolean managerStatus;
+    private String managerResponse;
+    private LocalDate dateResolved;
+
+    private int storedPendingRequestId;
+    private String storedRequestMessage;
+    private BigDecimal storedAmount;
+    private Date dateSubmission;
+    private boolean status;
+
+    //objects
+    private EmployeeAccountEntity employeeAccountEntity;
+    private EmployeeAccountEntity managerAccountEntity;
+    private PendingRequestEntity returnedPendingRequest;
+    private CompletedRequest inputCompletedRequestModel;
+
+    private CompletedRequestEntity convertedCompletedRequest;
+
+    private CompletedRequestEntity returnedCompletedRequest;
+
+    private EmployeeAccountEntity returnedManagerAccount;
+
+    private int uniqueId;
+
+    private EmployeeAccountEntity returnedEmployeeAccount;
+    private RequestTypeEntity returnedType;
+
+    private CompletedRequest entityConvertedModel;
+
+
+
 //    private CompletedRequest newCompleteRequest;
 //    private CompletedRequest oldCompleteRequest;
 //    private CompletedRequestEntity completedRequestEntity;
@@ -47,131 +85,84 @@
 //    private List<CompletedRequest> completedRequestListByManagerId;
 //    private List<CompletedRequestEntity> statusCompleteRequestList;
 //    private List<CompletedRequest> statusRequestList;
-//
-//    @BeforeAll
-//    void setup(){
-//        newRequestId = 0;
-//        storedRequestId = 1;
-//        employeeId = 2;
-//        managerId = 1;
-//        response = "You are not here";
-//        dateResolved = LocalDate.of(2021, 2, 2);
-//        sqlDate = Date.valueOf(dateResolved);
-//
-//
-//        newCompleteRequest = new CompletedRequest(
-//                storedRequestId, employeeId, managerId, true, response, dateResolved);
-//
-//        oldCompleteRequest = new CompletedRequest(
-//                storedRequestId, employeeId, managerId, true, response, dateResolved);
-//
-//        completedRequestEntity = new CompletedRequestEntity(
-//                storedRequestId, employeeId, managerId, true, response, sqlDate);
-//
-//        completedRequestEntityList = new ArrayList<>();
-//        completedRequestList = new ArrayList<>();
-//
-//        completedRequestEntityListByManagerId = new ArrayList<>();
-//        completedRequestListByManagerId = new ArrayList<>();
-//
-//        statusCompleteRequestList = new ArrayList<>();
-//        statusRequestList = new ArrayList<>();
-//
-//        completedRequestEntityList.add(new CompletedRequestEntity(1, employeeId, managerId, true, "Hello", sqlDate));
-//        completedRequestEntityList.add(new CompletedRequestEntity(2, employeeId, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
-//        completedRequestEntityList.add(new CompletedRequestEntity(3, employeeId, 5, false, "Bonjour", Date.valueOf(LocalDate.of(1888, 2, 4))));
-//
-//        completedRequestEntityListByManagerId.add(new CompletedRequestEntity(1, employeeId, managerId, true, "Hello", sqlDate));
-//        completedRequestEntityListByManagerId.add(new CompletedRequestEntity(2, employeeId, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
-//
-//        completedRequestList.add(new CompletedRequest(1, employeeId, managerId, true, "Hello", sqlDate.toLocalDate()));
-//        completedRequestList.add(new CompletedRequest(2, employeeId, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
-//        completedRequestList.add(new CompletedRequest(3, employeeId, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
-//
-//        completedRequestListByManagerId.add(new CompletedRequest(1, employeeId, managerId, true, "Hello", sqlDate.toLocalDate()));
-//        completedRequestListByManagerId.add(new CompletedRequest(2, employeeId, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
-//
-//        statusCompleteRequestList.add(new CompletedRequestEntity(2, employeeId, managerId, false, "Greeting", Date.valueOf(LocalDate.of(2000, 2, 4))));
-//        statusCompleteRequestList.add(new CompletedRequestEntity(3, employeeId, 5, false, "Bonjour", Date.valueOf(LocalDate.of(1888, 2, 4))));
-//
-//        statusRequestList.add(new CompletedRequest(2, employeeId, managerId, false, "Greeting", LocalDate.of(2000, 2, 4)));
-//        statusRequestList.add(new CompletedRequest(3, employeeId, 5, false, "Bonjour", LocalDate.of(1888, 2, 4)));
-//
-//
-//
-//        MockitoAnnotations.openMocks(this);
-//        try {
-//            Mockito.when(mockCompletedRequestDao.insertCompletedRequest(1, employeeId, managerId, true, response, dateResolved)).thenReturn(completedRequestEntity);
-//            Mockito.when(mockCompletedRequestDao.getAllCompletedRequestList()).thenReturn(completedRequestEntityList);
-//            Mockito.when(mockCompletedRequestDao.getCompletedRequestByManagerIdList(managerId)).thenReturn(completedRequestEntityListByManagerId);
-//            Mockito.when(mockCompletedRequestDao.getCompletedRequestByStatus(false)).thenReturn(statusCompleteRequestList);
-//            Mockito.when(mockCompletedRequestDao.deleteCompletedRequest(storedRequestId)).thenReturn(completedRequestEntity);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        completedRequestService = new CompletedRequestService(mockCompletedRequestDao);
-//    }
-//
-//    @Test
-//    void storeCompletedRequestTest() {
-//        assertEquals(completedRequestEntity, completedRequestService.storeCompletedRequest(new CompletedRequest(1, employeeId, managerId, true, response, dateResolved)));
-//    }
-//
-//    @Test
-//    void storeCompleteRequestNullReturnInvalidRequestTest(){
-//        assertNull(completedRequestService.storeCompletedRequest(new CompletedRequest()));
-//    }
-//
-//    @Test
-//    void convertCompletedRequestEntityTest() {
-//        assertEquals(oldCompleteRequest, completedRequestService.convertCompletedRequestEntity(completedRequestEntity));
-//    }
-//
-//    @Test
-//    void validateCompletedRequestInvalidManagerIdExceptionTest(){
-//        assertThrows(EmployeeIdException.class, () -> completedRequestService.validateCompletedRequest(
-//                new CompletedRequest(0,1,  -1, true, response, dateResolved))
-//        );
-//    }
-//
-//    @Test
-//    void getAllCompletedRequestsTest() {
-//        assertEquals(completedRequestList, completedRequestService.getAllCompletedRequests());
-//    }
-//
-//    @Test
-//    void getAllCompletedRequestsByManagerIdTest() {
-//        assertEquals(completedRequestListByManagerId, completedRequestService.getAllCompletedRequestsByManagerId(managerId));
-//    }
-//
-//    @Test
-//    void getAllCompletedRequestsByManagerIdInvalidManagerIdTest() {
-//        assertNotEquals(completedRequestListByManagerId, completedRequestService.getAllCompletedRequestsByManagerId(-1));
-//    }
-//
-//    @Test
-//    void getAllCompletedRequestsByStatusTest() {
-//        assertEquals(statusRequestList, completedRequestService.getAllCompletedRequestsByStatus(false));
-//    }
-//
-//    @Test
-//    void getAllCompletedRequestsByDifferentStatusTest() {
-//        assertNotEquals(statusRequestList, completedRequestService.getAllCompletedRequestsByStatus(true));
-//    }
-//
-//    @Test
-//    void deleteCompletedRequestTest() {
-//        assertEquals(completedRequestEntity, completedRequestService.deleteCompletedRequest(storedRequestId));
-//    }
-//
-//    @Test
-//    void deleteCompletedRequestInvalidIdNullTest(){
-//        assertNull(completedRequestService.deleteCompletedRequest(-1));
-//    }
-//
-//    @Test
-//    void convertPendingRequest() {
-//
-//    }
-//}
+
+    @BeforeAll
+    void setup(){
+        MockitoAnnotations.openMocks(this);
+        employeeId = 3;
+        managerId = 2;
+        managerResponse = "RESPONSE";
+        managerStatus = true;
+        dateResolved = LocalDate.of(2222, 2, 2);
+        storedPendingRequestId = 1;
+        uniqueId = 5;
+
+        inputCompletedRequestModel = new CompletedRequest(storedPendingRequestId, employeeId, managerId, managerStatus, managerResponse, dateResolved);
+
+        returnedEmployeeAccount = new EmployeeAccountEntity(employeeId, "Gwyndolyn", "Braveheart", new EmployeeRoleEntity(1, "Knight"));
+        returnedType = new RequestTypeEntity(1, "Travel");
+        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status);
+        storedRequestMessage = "Las Vegas baby";
+        storedAmount = new BigDecimal("0.05");
+        dateSubmission = Date.valueOf(LocalDate.of(2022, 01, 11));
+        status = true;
+
+        returnedManagerAccount = new EmployeeAccountEntity(12, "Misha", "Marcus", new EmployeeRoleEntity(4, "Manager"));
+
+        convertedCompletedRequest = new CompletedRequestEntity(
+                new PendingRequestEntity(inputCompletedRequestModel.getId(), new EmployeeAccountEntity(), new RequestTypeEntity(), "", BigDecimal.ZERO, Date.valueOf(LocalDate.now()), true),
+                new EmployeeAccountEntity(inputCompletedRequestModel.getEmployeeId(), "", "", new EmployeeRoleEntity()),
+                new EmployeeAccountEntity(inputCompletedRequestModel.getManagerId(), "", "", new EmployeeRoleEntity()),
+                inputCompletedRequestModel.isStatus(),
+                inputCompletedRequestModel.getResponse(),
+                Date.valueOf(inputCompletedRequestModel.getDateResolved()),
+                0
+        );
+        returnedCompletedRequest = new CompletedRequestEntity(
+                returnedPendingRequest,
+                returnedEmployeeAccount,
+                returnedManagerAccount,
+                managerStatus,
+                managerResponse,
+                Date.valueOf(dateResolved),
+                uniqueId
+        );
+
+        entityConvertedModel = new CompletedRequest(
+                returnedCompletedRequest.getPendingRequest().getId(),
+                returnedCompletedRequest.getEmployeeAccount().getId(),
+                returnedCompletedRequest.getManagerAccount().getId(),
+                returnedCompletedRequest.isStatus(),
+                returnedCompletedRequest.getResponse(),
+                returnedCompletedRequest.getDateResolved().toLocalDate()
+        );
+
+
+        Mockito.when(mockCompletedRequestDao.insertCompletedRequest(convertedCompletedRequest)).thenReturn(uniqueId);
+        Mockito.when(mockCompletedRequestDao.getCompletedRequestWithUniqueId(uniqueId)).thenReturn(returnedCompletedRequest);
+
+        completedRequestService = new CompletedRequestService(mockCompletedRequestDao);
+    }
+
+
+    @Test
+    void storeCompletedRequestTest() {
+        assertEquals(returnedCompletedRequest, completedRequestService.storeCompletedRequest(inputCompletedRequestModel));
+    }
+
+    @Test
+    void convertCompletedRequestEntityTest() {
+        assertEquals(entityConvertedModel, completedRequestService.convertCompletedRequestEntity(returnedCompletedRequest));
+    }
+
+    @Test
+    void validateCompletedRequestTest() {
+        assertDoesNotThrow(() -> completedRequestService.validateCompletedRequest(inputCompletedRequestModel));
+    }
+
+    @Test
+    void validateCompletedRequestInvalidManagerIdExceptionTest() {
+        CompletedRequest inputCompletedRequestModelFail = new CompletedRequest(storedPendingRequestId, employeeId, -1, managerStatus, managerResponse, dateResolved);
+        assertThrows(EmployeeIdException.class, () -> completedRequestService.validateCompletedRequest(inputCompletedRequestModelFail));
+    }
+}

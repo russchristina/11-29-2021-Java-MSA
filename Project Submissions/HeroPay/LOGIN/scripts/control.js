@@ -317,9 +317,17 @@ const pageUtility = {
             let counter2 = 0;
             tableRow = document.createElement('tr');
             for(let key in values[i]){
-                tableElement = document.createElement('td')
+                tableElement = document.createElement('td');
+                if(Array.isArray(values[i][key])){
+                    tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
+                }else if(values[i][key] === false){
+                    tableElement.innerText = 'Pending';
+                } else if(values[i][key] === true){
+                    tableElement.innerText = 'Answered';
+                }else{
+                    tableElement.innerText = values[i][key];
+                }
                 console.log(values[i][key])
-                tableElement.innerText = values[i][key];
                 for(let hidden of hiddenColumns){
                     if(hidden == counter2){
                     tableElement.hidden = true;
@@ -1008,8 +1016,10 @@ async function verifyUser(){
         let userLoginBody = await fetch(loginUrl, {method: "POST", body: userLoginObj});
         userData = await userLoginBody.json();
         if(userData) {
-            console.log(userData);
-            getEmployeeInfo(userData);
+            if(userData.status){
+                console.log(userData);
+                getEmployeeInfo(userData);   
+            }else failedLogin();
         }else failedLogin();
     }catch(e){
         console.log(e);

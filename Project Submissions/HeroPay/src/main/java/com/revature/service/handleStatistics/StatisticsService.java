@@ -8,6 +8,7 @@ import com.revature.service.DTO.RolesToEmployee;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleEmployee.RoleService;
 import com.revature.service.handleRequest.CompletedRequestService;
+import com.revature.service.handleRequest.RequestTypeService;
 import com.revature.service.handleRequest.SortingService;
 import com.revature.service.handleRequest.PendingRequestService;
 import com.revature.service.handleStatistics.interfaces.StatisticsServiceInterface;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class StatisticsService implements StatisticsServiceInterface {
@@ -29,16 +31,18 @@ public class StatisticsService implements StatisticsServiceInterface {
     private RoleService roleService;
     private SortingService sortingService;
     private CompletedRequestService completedRequestService;
+    private RequestTypeService requestTypeService;
 
     public StatisticsService() {
     }
 
-    public StatisticsService(PendingRequestService pendingRequestService, EmployeeService employeeService, RoleService roleService, SortingService sortingService, CompletedRequestService completedRequestService) {
+    public StatisticsService(PendingRequestService pendingRequestService, EmployeeService employeeService, RoleService roleService, SortingService sortingService, CompletedRequestService completedRequestService, RequestTypeService requestTypeService) {
         this.pendingRequestService = pendingRequestService;
         this.employeeService = employeeService;
         this.roleService = roleService;
         this.sortingService = sortingService;
         this.completedRequestService = completedRequestService;
+        this.requestTypeService = requestTypeService;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class StatisticsService implements StatisticsServiceInterface {
         generalStatistics.setTotal(new SortedAll("Total", meanAverage(allAnsweredRequests), sumOfAmountCompleted(allAnsweredRequests)));
 
         List<SortedType> sortedTypeList = new ArrayList<>();
-        List<RequestTypeEntity> requestTypes = pendingRequestService.getRequestTypes();
+        List<RequestTypeEntity> requestTypes = requestTypeService.getAllRequestTypes();
         for(int i = 0; i < requestTypes.size(); i++){
             dLog.debug("Sorting Request By Type: " + i);
             List<PendingRequest> answeredRequestsByType = pendingRequestService.getAllAnsweredRequestsByType(requestTypes.get(i).getId());
@@ -75,10 +79,11 @@ public class StatisticsService implements StatisticsServiceInterface {
             sortedRole.setSum(BigDecimal.ZERO);
             for (EmployeeAccountEntity employeeAccountEntity : employeeAccountEntities) {
                 SortedEmployee sortedEmployee = getEmployeeStatistics(employeeAccountEntity.getId());
-                sortedRole.setSum(sortedRole.getSum().add(sortedEmployee.getSum(), new MathContext(2)));
+                sortedRole.setSum(sortedRole.getSum().add(sortedEmployee.getSum(), new MathContext(20)));
             }
-            if(employeeAccountEntities.size() != 0) sortedRole.setMeanAverage(sortedRole.getSum().divide(BigDecimal.valueOf(employeeAccountEntities.size()), new MathContext(2)));
+            if(employeeAccountEntities.size() != 0) sortedRole.setMeanAverage(sortedRole.getSum().divide(BigDecimal.valueOf(employeeAccountEntities.size()), new MathContext(20)).setScale(2, RoundingMode.DOWN));
             else sortedRole.setSum(BigDecimal.ZERO);
+
             sortedRoleList.add(sortedRole);
         }
         generalStatistics.setSortedRoles(sortedRoleList);
@@ -117,8 +122,9 @@ public class StatisticsService implements StatisticsServiceInterface {
         dLog.debug("summing amount service" + StatisticsService.class);
         BigDecimal result = BigDecimal.ZERO;
         for (PendingRequest completedRequest : completedRequests) {
-            result = result.add(completedRequest.getAmount(), new MathContext(2));
+            result = result.add(completedRequest.getAmount(), new MathContext(20));
         }
+        result = result.setScale(2, RoundingMode.DOWN);
         return result;
     }
 
@@ -127,9 +133,9 @@ public class StatisticsService implements StatisticsServiceInterface {
         dLog.debug("mean average service" + StatisticsService.class);
         BigDecimal result = BigDecimal.ZERO;
         for (PendingRequest completedRequest : completedRequests) {
-            result = result.add(completedRequest.getAmount(), new MathContext(2));
+            result = result.add(completedRequest.getAmount(), new MathContext(20));
         }
-        if(completedRequests.size()!= 0) result = result.divide(BigDecimal.valueOf(completedRequests.size()), new MathContext(2));
+        if(completedRequests.size()!= 0) result = result.divide(BigDecimal.valueOf(completedRequests.size()), new MathContext(20)).setScale(2, RoundingMode.DOWN);
         return result;
     }
 

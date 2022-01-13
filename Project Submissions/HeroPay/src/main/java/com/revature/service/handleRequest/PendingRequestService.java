@@ -11,6 +11,7 @@ import com.revature.repository.DTO.RequestTypeEntity;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleRequest.interfaces.PendingRequestServiceInterface;
 import com.revature.service.serviceExceptions.EmployeeIdException;
+import com.revature.service.serviceExceptions.NegativeAmountException;
 import com.revature.service.serviceExceptions.RequestMessageShortException;
 import com.revature.service.serviceExceptions.RequestTypeException;
 import org.slf4j.Logger;
@@ -28,23 +29,18 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private final PendingRequestDao pendingRequestDao;
-    private final RequestTypeDao requestTypeDao;
-    private final EmployeeService employeeService;
 
-
-    public PendingRequestService(PendingRequestDao pendingRequestDao, RequestTypeDao requestTypeDao, EmployeeService employeeService) {
+    public PendingRequestService(PendingRequestDao pendingRequestDao) {
         this.pendingRequestDao = pendingRequestDao;
-        this.requestTypeDao = requestTypeDao;
-        this.employeeService = employeeService;
     }
 
     @Override
     public PendingRequestEntity storePendingRequest(NewRequest newRequest) {
         dLog.debug("Storing new request: " + newRequest);
+        validateNewPendingRequest(newRequest);
         PendingRequestEntity pendingRequestEntity = convertNewRequest(newRequest);
         dLog.debug("Storing new request converted to pending request entity: " + pendingRequestEntity);
         int storedPendingRequestId = pendingRequestDao.insertPendingRequest(pendingRequestEntity);
-
         dLog.debug("Stored pending request ID: " + storedPendingRequestId);
         PendingRequestEntity retrievedPendingRequest = pendingRequestDao.getPendingRequestByRequestId(storedPendingRequestId);
         dLog.debug("retrieved pending request: " + retrievedPendingRequest);
@@ -52,14 +48,16 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     }
 
     private PendingRequestEntity convertNewRequest(NewRequest newRequest) {
-
         dLog.debug("Converting new request to PendingRequestEntity: " + newRequest);
-        EmployeeAccountEntity employeeAccountEntity = employeeService.getEmployeeAccountById(newRequest.getEmployeeId());
-        RequestTypeEntity requestTypeEntity = new RequestTypeEntity(0, newRequest.getType());
-        BigDecimal amount = newRequest.getAmount();
-        PendingRequestEntity pendingRequestEntity = new PendingRequestEntity(0, employeeAccountEntity, requestTypeEntity, newRequest.getRequestMessage(),amount, Date.valueOf(LocalDate.now()), false);
-        dLog.debug("New request to pendingRequestEntity complete: " + pendingRequestEntity);
-        return pendingRequestEntity;
+        RequestTypeService requestTypeService = new RequestTypeService(new RequestTypeDao());
+        return new PendingRequestEntity(
+                0,
+                new EmployeeAccountEntity(newRequest.getEmployeeId(), "", "", new EmployeeRoleEntity(0, "")),
+                requestTypeService.getRequestWithString(newRequest.getType()),
+                newRequest.getRequestMessage(),
+                newRequest.getAmount(),
+                Date.valueOf(LocalDate.now()),
+                false);
     }
 
     @Override
@@ -67,6 +65,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         if(newRequest.getEmployeeId() <= 0) throw new EmployeeIdException("Invalid employee ID, <= 0");
         if(newRequest.getType().length() <=1) throw new RequestTypeException("Invalid request Type String given, <= 1 character");
         if(newRequest.getRequestMessage().length() < 5) throw new RequestMessageShortException("Pending Request is < 5 characters");
+        if(newRequest.getAmount().compareTo(BigDecimal.ZERO) <= 0) throw new NegativeAmountException("Amount requested is invalid");
         dLog.debug("pending request validated: " + PendingRequestService.class);
     }
 
@@ -93,27 +92,12 @@ public class PendingRequestService implements PendingRequestServiceInterface {
     }
 
     @Override
-    public void deletePendingRequest(int requestId) {
-        dLog.debug("Deleting pending request-" + requestId + " :" + PendingRequestService.class);
-        pendingRequestDao.deletePendingRequest(pendingRequestDao.getPendingRequestByRequestId(requestId));
-    }
-
-    @Override
     public List<PendingRequest> getAllPendingRequests() {
         List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getAllPendingRequests();
         List<PendingRequest> pendingRequests = new ArrayList<>(pendingRequestsEntities.size());
         pendingRequestsEntities.forEach(p -> pendingRequests.add(convertPendingRequestEntity(p)));
         return pendingRequests;
  }
-
-    @Override
-    public List<PendingRequest> getPendingRequestByType(int typeId) {
-        dLog.debug("getting pending requests entities and converting to pending request by request typeId - " + typeId);
-        List<PendingRequestEntity> pendingRequestsEntities = pendingRequestDao.getPendingRequestsByTypeId(new RequestTypeEntity(typeId, ""));
-        List<PendingRequest> pendingRequests = new ArrayList<>(pendingRequestsEntities.size());
-        pendingRequestsEntities.forEach(p -> pendingRequests.add(convertPendingRequestEntity(p)));
-        return pendingRequests;
-        }
 
     @Override
     public void updatePendingRequestStatus(int requestId, boolean status) {
@@ -150,13 +134,4 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         return pendingRequests;
     }
 
-    @Override
-    public List<RequestTypeEntity> getRequestTypes() {
-        return requestTypeDao.getRequestTypes();
-    }
-
-    @Override
-    public List<PendingRequest> getAllAnsweredRequestsByRole(int id) {
-        return null;
-    }
 }

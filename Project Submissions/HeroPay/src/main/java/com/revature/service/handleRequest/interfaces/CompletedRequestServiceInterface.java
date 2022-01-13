@@ -16,10 +16,6 @@ public interface CompletedRequestServiceInterface {
 
     List<CompletedRequest> getAllCompletedRequests();
 
-    List<CompletedRequest> getAllCompletedRequestsByManagerId(int managerId);
-
-    List<CompletedRequest> getAllCompletedRequestsByStatus(boolean status);
-
     List<CompletedRequest> getAllEmployeeRequests(int employeeId);
 
 }

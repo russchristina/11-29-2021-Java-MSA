@@ -1,193 +1,161 @@
-//package com.revature.service.handleRequest;
-//
-//import com.revature.presentation.model.requests.PendingRequest;
-//import com.revature.repository.DAOClasses.PendingRequestDao;
-//import com.revature.repository.DTO.PendingRequestEntity;
-//import com.revature.repository.DTO.RequestTypeEntity;
-//import com.revature.service.serviceExceptions.EmployeeIdException;
-//import com.revature.service.serviceExceptions.NegativeAmountException;
-//import com.revature.service.serviceExceptions.RequestMessageShortException;
-//import com.revature.service.serviceExceptions.RequestTypeException;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//import org.mockito.MockitoAnnotations;
-//
-//import java.sql.Date;
-//import java.sql.SQLException;
-//import java.time.LocalDate;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//class PendingRequestServiceTest {
-//
-//    @Mock
-//    private PendingRequestDao mockPendingRequestDao;
-//
-//    private PendingRequestService pendingRequestService;
-//
-//    private PendingRequest mockNewPendingRequestModel;
-//    private PendingRequest mockPendingRequestModel;
-//    private PendingRequestEntity mockedPendingRequestEntity;
-//
-//    private RequestTypeEntity mockedRequestTypeEntity;
-//
-//    private int newPendingRequestId;
-//    private int storedPendingRequestId;
-//    private int employeeId;
-//    private int typeId1;
-//    private int typeId2;
-//    private String requestMessage;
-//    private double amount;
-//    private LocalDate dateSubmission;
-//    private Date sqlDate;
-//    private boolean status;
-//
-//    private Map<Integer, String> requestTypeMap;
-//
-//    private List<PendingRequest> pendingRequestList;
-//    private List<PendingRequestEntity> storedPendingRequestList;
-//
-//    private List<PendingRequestEntity> storedPendingRequestByTypeList;
-//    private List<PendingRequest> pendingRequestByTypeList;
-//
-//    @BeforeAll
-//    void setUp() {
-//        newPendingRequestId = 0;
-//        storedPendingRequestId = 1;
-//        employeeId = 1;
-//        typeId1 = 1;
-//        typeId2 = 2;
-//        requestMessage = "hello, my name is Yoshikage Kira";
-//        amount = 20.01;
-//        dateSubmission = LocalDate.of(2022, 1, 1);
-//        sqlDate = Date.valueOf(dateSubmission);
-//        status = false;
-//
-//        requestTypeMap = new HashMap<>();
-//        requestTypeMap.put(1, "cash");
-//        requestTypeMap.put(2, "books");
-//
-//        mockedRequestTypeEntity = new RequestTypeEntity(typeId1, requestTypeMap.get(typeId1));
-//
-//        mockNewPendingRequestModel = new PendingRequest(newPendingRequestId, employeeId, requestTypeMap.get(typeId1), requestMessage, amount, dateSubmission);
-//
-//        mockPendingRequestModel = new PendingRequest(storedPendingRequestId, employeeId, requestTypeMap.get(typeId1), requestMessage, amount, dateSubmission);
-//
-//        mockedPendingRequestEntity = new PendingRequestEntity(storedPendingRequestId, employeeId, typeId1, requestMessage, amount, sqlDate, status);
-//
-//        storedPendingRequestList = new ArrayList<>();
-//        pendingRequestList = new ArrayList<>();
-//
-//        storedPendingRequestByTypeList = new ArrayList<>();
-//        pendingRequestByTypeList = new ArrayList<>();
-//
-//        storedPendingRequestList.add(new PendingRequestEntity(1, employeeId, typeId1, "Hello Greg", amount, sqlDate, status));
-//        storedPendingRequestList.add(new PendingRequestEntity(2, employeeId, typeId2, "Hello sads", amount + 33, Date.valueOf(LocalDate.of(2022, 1, 2)), status));
-//        storedPendingRequestList.add(new PendingRequestEntity(3, employeeId, typeId1, "sdfo sads", amount + 23.02, Date.valueOf(LocalDate.of(2010, 1, 2)), status));
-//        storedPendingRequestList.add(new PendingRequestEntity(4, employeeId, typeId2, "dff sddfasdfasdads", amount + 11, Date.valueOf(LocalDate.of(2019, 1, 2)), status));
-//
-//        pendingRequestList.add(new PendingRequest(1, employeeId, requestTypeMap.get(typeId1), "Hello Greg", amount, sqlDate.toLocalDate()));
-//        pendingRequestList.add(new PendingRequest(2, employeeId, requestTypeMap.get(typeId2), "Hello sads", amount + 33, LocalDate.of(2022, 1, 2)));
-//        pendingRequestList.add(new PendingRequest(3, employeeId, requestTypeMap.get(typeId1), "sdfo sads", amount + 23.02, LocalDate.of(2010, 1, 2)));
-//        pendingRequestList.add(new PendingRequest(4, employeeId, requestTypeMap.get(typeId2), "dff sddfasdfasdads", amount + 11, LocalDate.of(2019, 1, 2)));
-//
-//        storedPendingRequestByTypeList.add(new PendingRequestEntity(1, employeeId, typeId1, "Hello Greg", amount, sqlDate, status));
-//        storedPendingRequestByTypeList.add(new PendingRequestEntity(3, employeeId, typeId1, "sdfo sads", amount + 23.02, Date.valueOf(LocalDate.of(2010, 1, 2)), status));
-//
-//        pendingRequestByTypeList.add(new PendingRequest(1, employeeId, requestTypeMap.get(typeId1), "Hello Greg", amount, sqlDate.toLocalDate()));
-//        pendingRequestByTypeList.add(new PendingRequest(3, employeeId, requestTypeMap.get(typeId1), "sdfo sads", amount + 23.02, LocalDate.of(2010, 1, 2)));
-//
-//        MockitoAnnotations.openMocks(this);
-//
-//        try {
-//            Mockito.when(mockPendingRequestDao.insertPendingRequest(employeeId, typeId1, requestMessage, amount, sqlDate)).thenReturn(mockedPendingRequestEntity);
-//            Mockito.when(mockPendingRequestDao.getRequestTypeWithString(requestTypeMap.get(typeId1))).thenReturn(mockedRequestTypeEntity);
-//            Mockito.when(mockPendingRequestDao.getEmployeePendingRequestList(employeeId)).thenReturn(storedPendingRequestList);
-//            Mockito.when(mockPendingRequestDao.getRequestTypeMap()).thenReturn(requestTypeMap);
-//            Mockito.when(mockPendingRequestDao.deletePendingRequest(storedPendingRequestId)).thenReturn(mockedPendingRequestEntity);
-//            Mockito.when(mockPendingRequestDao.getAllPendingRequests()).thenReturn(storedPendingRequestList);
-//            Mockito.when(mockPendingRequestDao.getAllPendingRequestsByType(typeId1)).thenReturn(storedPendingRequestByTypeList);
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        pendingRequestService = new PendingRequestService(mockPendingRequestDao);
-//    }
-//
-//
-//    @Test
-//    void storePendingRequestTest() {
-//        assertEquals(mockedPendingRequestEntity, pendingRequestService.storePendingRequest(mockNewPendingRequestModel));
-//    }
-//
-//    @Test
-//    void validatePendingRequestThrowEmployeeIdException(){
-//        assertThrows(EmployeeIdException.class, () -> pendingRequestService.validateNewPendingRequest(new PendingRequest(0, -1, requestTypeMap.get(typeId1), requestMessage, amount, dateSubmission)));
-//    }
-//
-//    @Test
-//    void validatePendingRequestThrowNegativeAmountException(){
-//        assertThrows(NegativeAmountException.class, () -> pendingRequestService.validateNewPendingRequest(new PendingRequest(0, 1, requestTypeMap.get(typeId1), requestMessage, -1, dateSubmission)));
-//    }
-//    @Test
-//    void validatePendingRequestThrowRequestMessageShortException(){
-//        assertThrows(RequestMessageShortException.class, () -> pendingRequestService.validateNewPendingRequest(new PendingRequest(0, 1, requestTypeMap.get(typeId1), "lol", amount, dateSubmission)));
-//    }
-//
-//    @Test
-//    void validatePendingRequestThrowRequestTypeException(){
-//        assertThrows(RequestTypeException.class, () -> pendingRequestService.validateNewPendingRequest(new PendingRequest(0, 1, "", requestMessage, amount, dateSubmission)));
-//    }
-//
-//    @Test
-//    void getAllEmployeePendingRequest() {
-//        assertEquals(pendingRequestList.get(1), pendingRequestService.getAllEmployeePendingRequest(employeeId).get(1));
-//    }
-//
-//    @Test
-//    void getAllEmployeePendingRequestInvalidEmployeeIdTest() {
-//        assertNotEquals(pendingRequestList, pendingRequestService.getAllEmployeePendingRequest(-1));
-//    }
-//
-//    @Test
-//    void deletePendingRequest() {
-//        assertEquals(mockedPendingRequestEntity, pendingRequestService.deletePendingRequest(storedPendingRequestId));
-//    }
-//
-//    @Test
-//    void deletePendingRequestInvalidRequestId() {
-//        assertNull(pendingRequestService.deletePendingRequest(-1));
-//    }
-//
-//
-//    @Test
-//    void getAllPendingRequests() {
-//        assertEquals(pendingRequestList.get(1), pendingRequestService.getAllPendingRequests().get(1));
-//    }
-//
-//
-//    @Test
-//    void getPendingRequestByType() {
-//        assertEquals(pendingRequestByTypeList, pendingRequestService.getPendingRequestByType(typeId1));
-//    }
-//
-//    @Test
-//    void getPendingRequestByTypeInvalidTypeId() {
-//        assertNotEquals(pendingRequestByTypeList, pendingRequestService.getPendingRequestByType(-1));
-//    }
-//
-//    @Test
-//    void convertPendingRequestEntity() {
-//        assertEquals(mockPendingRequestModel, pendingRequestService.convertPendingRequestEntity(mockedPendingRequestEntity));
-//    }
-//
-//}
+package com.revature.service.handleRequest;
+
+import com.revature.presentation.model.requests.NewRequest;
+import com.revature.presentation.model.requests.PendingRequest;
+import com.revature.repository.DAOClasses.PendingRequestDao;
+import com.revature.repository.DTO.EmployeeAccountEntity;
+import com.revature.repository.DTO.EmployeeRoleEntity;
+import com.revature.repository.DTO.PendingRequestEntity;
+import com.revature.repository.DTO.RequestTypeEntity;
+import com.revature.service.serviceExceptions.EmployeeIdException;
+import com.revature.service.serviceExceptions.RequestMessageShortException;
+import com.revature.service.serviceExceptions.RequestTypeException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class PendingRequestServiceTest {
+
+    @Mock
+    private PendingRequestDao mockDao;
+    @Mock
+    private RequestTypeService mockRTS;
+
+    private PendingRequestService pendingRequestService;
+
+    private PendingRequestEntity mockStoredPendingRequest;
+    private EmployeeAccountEntity returnedEmployeeAccount;
+    private EmployeeAccountEntity convertedEmployeeAccount;
+    private RequestTypeEntity mockRequestType;
+
+
+    private NewRequest inputNewRequest;
+
+    private PendingRequestEntity inputPendingRequestEntity;
+    private PendingRequest mockConvertedPendingRequest;
+
+    private PendingRequestEntity updatedPendingRequestByStatus;
+
+    private List<PendingRequestEntity> pendingRequestEntitiesList;
+    private List<PendingRequest> pendingRequests;
+
+
+    private int storedRequestId;
+    private String message;
+    private BigDecimal amount;
+    private Date dateSubmitted;
+
+    @BeforeAll
+    void setUp() {
+
+        MockitoAnnotations.openMocks(this);
+        storedRequestId = 1;
+        message = "TESTasdfa";
+        amount = new BigDecimal("10.02");
+        dateSubmitted = Date.valueOf(LocalDate.now());
+
+        mockRequestType = new RequestTypeEntity(1, "Travel");
+
+        returnedEmployeeAccount = new EmployeeAccountEntity(1, "Name", "Name", new EmployeeRoleEntity(1, "Knight"));
+
+        convertedEmployeeAccount = new EmployeeAccountEntity(1, "", "", new EmployeeRoleEntity(0, ""));
+        mockStoredPendingRequest = new PendingRequestEntity(
+                storedRequestId, returnedEmployeeAccount,  mockRequestType, message, amount, dateSubmitted, false
+        );
+
+        inputNewRequest = new NewRequest(1, "Travel", message, amount);
+        inputPendingRequestEntity = new PendingRequestEntity(
+                0,
+                convertedEmployeeAccount,
+                mockRequestType,
+                message,
+                amount,
+                dateSubmitted,
+                false);
+
+        mockConvertedPendingRequest = new PendingRequest(
+                mockStoredPendingRequest.getId(),
+                mockStoredPendingRequest.getEmployeeAccount().getId(),
+                mockStoredPendingRequest.getRequestType().getRequestType(),
+                mockStoredPendingRequest.getRequestMessage(),
+                mockStoredPendingRequest.getAmount(),
+                mockStoredPendingRequest.getDateSubmission().toLocalDate(),
+                mockStoredPendingRequest.isStatus());
+
+        pendingRequestEntitiesList = new ArrayList<>();
+        pendingRequests = new ArrayList<>();
+        pendingRequestEntitiesList.add(mockStoredPendingRequest);
+        pendingRequests.add(mockConvertedPendingRequest);
+
+        updatedPendingRequestByStatus = new PendingRequestEntity(
+                mockStoredPendingRequest.getId(),
+                mockStoredPendingRequest.getEmployeeAccount(),
+                mockStoredPendingRequest.getRequestType(),
+                mockStoredPendingRequest.getRequestMessage(),
+                mockStoredPendingRequest.getAmount(),
+                mockStoredPendingRequest.getDateSubmission(),
+                mockStoredPendingRequest.isStatus()
+        );
+
+        Mockito.when(mockDao.getPendingRequestByRequestId(storedRequestId)).thenReturn(mockStoredPendingRequest);
+        Mockito.when(mockDao.insertPendingRequest(inputPendingRequestEntity)).thenReturn(storedRequestId);
+        Mockito.when(mockDao.getAllPendingRequests()).thenReturn(pendingRequestEntitiesList);
+        Mockito.when(mockDao.getEmployeesPendingRequestList(new EmployeeAccountEntity(1, "", "", new EmployeeRoleEntity()))).thenReturn(pendingRequestEntitiesList);
+
+        pendingRequestService = new PendingRequestService(mockDao);
+
+    }
+
+    @Test
+    void storePendingRequestTest() {
+        assertEquals(mockStoredPendingRequest, pendingRequestService.storePendingRequest(inputNewRequest));
+    }
+
+    @Test
+    void storePendingRequestInvalidNewRequestEmployeeIdTest() {
+        assertThrows(EmployeeIdException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(-1, "Travel", "message", new BigDecimal("0231.23"))));
+    }
+
+    @Test
+    void storePendingRequestInvalidNewRequestMessageTest() {
+        assertThrows(RequestMessageShortException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(1, "Travel", "a", new BigDecimal("0231.23"))));
+    }
+
+    @Test
+    void storePendingRequestInvalidNewRequestTypeTest() {
+        assertThrows(RequestTypeException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(1, "a", "aasdfaw", new BigDecimal("0231.23"))));
+    }
+
+    @Test
+    void getAllEmployeePendingRequestTest() {
+
+        assertEquals(returnedEmployeeAccount.getId(), pendingRequestService.getAllEmployeePendingRequest(1).get(0).getId());
+    }
+
+    @Test
+    void getAllEmployeePendingRequestInvalidEmployeeIdTest() {
+        assertEquals(0, pendingRequestService.getAllEmployeePendingRequest(-1).size());
+    }
+
+    @Test
+    void convertPendingRequestEntity() {
+        assertEquals(mockConvertedPendingRequest, pendingRequestService.convertPendingRequestEntity(mockStoredPendingRequest));
+    }
+
+    @Test
+    void getAllPendingRequests() {
+        assertNotNull(pendingRequestService.getAllPendingRequests());
+    }
+}

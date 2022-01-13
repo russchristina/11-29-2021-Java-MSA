@@ -3,7 +3,6 @@ package com.revature.presentation.manageEmployee.controller;
 import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.presentation.model.employeeRequests.EmployeeResponse;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
-import com.revature.repository.DAOClasses.EmployeeRoleDao;
 import com.revature.service.handleEmployee.EmployeeService;
 import io.javalin.http.Handler;
 import org.slf4j.Logger;
@@ -23,7 +22,7 @@ public class EmployeeController {
             dLog.debug("Finding employee: " + ctx.queryParam("employeeId"));
             try {
                 int employeeId = Integer.parseInt(ctx.queryParam("employeeId"));
-                Employee employee = employeeService.getEmployee(employeeId);
+                Employee employee = employeeService.getEmployeeModelWithEmployeeId(employeeId);
                 EmployeeResponse employeeResponse = new EmployeeResponse();
                 if (employee != null) {
                     employeeResponse.setStatus(true);

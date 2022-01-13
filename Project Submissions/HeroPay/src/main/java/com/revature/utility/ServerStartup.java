@@ -1,4 +1,5 @@
 package com.revature.utility;
+
 import com.revature.presentation.manageEmployee.controller.EmployeeController;
 import com.revature.presentation.manageLogin.controller.LoginController;
 import com.revature.presentation.manageRequest.controller.RequestController;
@@ -7,10 +8,10 @@ import com.revature.repository.DAOClasses.*;
 import com.revature.service.handleEmployee.EmployeeService;
 import com.revature.service.handleEmployee.RoleService;
 import com.revature.service.handleLogin.LoginService;
-import com.revature.service.handleManager.ManagerService;
 import com.revature.service.handleRequest.CompletedRequestService;
-import com.revature.service.handleRequest.SortingService;
 import com.revature.service.handleRequest.PendingRequestService;
+import com.revature.service.handleRequest.RequestTypeService;
+import com.revature.service.handleRequest.SortingService;
 import com.revature.service.handleStatistics.StatisticsService;
 import io.javalin.Javalin;
 
@@ -40,12 +41,13 @@ public class ServerStartup {
         LoginService ls = new LoginService(lid);
         RoleService rs = new RoleService(erd);
         EmployeeService es = new EmployeeService(eid);
-        PendingRequestService prs = new PendingRequestService(pid, rtd, es);
+        RequestTypeService rts = new RequestTypeService(rtd);
+        PendingRequestService prs = new PendingRequestService(pid);
         CompletedRequestService crs = new CompletedRequestService(crd);
 
-        ManagerService ms = new ManagerService(prs, crs);
-        SortingService os = new SortingService(prs, crs);
-        StatisticsService ss = new StatisticsService(prs, es, rs, os, crs);
+
+        SortingService os = new SortingService();
+        StatisticsService ss = new StatisticsService(prs, es, rs, os, crs, rts);
 
         LoginController lc = new LoginController(ls);
         EmployeeController ec = new EmployeeController();
