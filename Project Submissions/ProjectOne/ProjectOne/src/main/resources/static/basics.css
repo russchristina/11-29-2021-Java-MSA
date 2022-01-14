@@ -1,0 +1,38 @@
+body {
+    background: url("C:/Users/Kymon/Pictures/Weenie Hut SR's.png");
+    background-repeat: no-repeat;
+    background-size: 1920px 1080px
+    
+}
+header{
+    text-align: center;
+    display: grid;
+    font-size: 14px;
+    font-family: Robo;
+}
+img.page_image{
+    width: 5em;
+}
+nav{
+    background-color: lightblue;
+    text-align: center;
+}   
+a{
+font-size: larger;
+margin-top: 0.5em;
+}
+img.wh1{
+
+}
+
+input{
+width: 10%;
+background-color: #53565A;
+color: #11fff3
+}cd 
+label{
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+#TITLES{
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}

@@ -1,0 +1,39 @@
+h1{
+    text-align: center;
+}
+
+#h3Tag{
+    text-align: center;
+    display: grid;
+    font-size: 20px;
+    font-family: Robo;
+}
+
+table {
+    border: 1px solid black;
+    
+}
+
+#tablediv {
+position: relative;
+}
+
+
+button{
+    color: aqua;
+    position: relative;
+
+}
+#mastertable{
+margin-left: auto;
+margin-right: auto;
+
+}
+
+input[id = "Reason for Request1"]:focus{
+    width: 2000px;
+}
+
+#formID{
+    padding-top: 5%;
+}
