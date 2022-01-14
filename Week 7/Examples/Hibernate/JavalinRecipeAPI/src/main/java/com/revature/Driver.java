@@ -29,7 +29,7 @@ public class Driver {
 		 */
 		
 		app.before(ctx -> {
-			System.out.println("This happens before the request makes it to its intended handler.");
+			System.out.println("Ayyyye! Jenkins works.");
 		});
 		
 		/*
@@ -90,6 +90,10 @@ public class Driver {
 		app.get("/logout", ctx -> {
 			HttpSession session = ctx.req.getSession(false);
 			if(session != null) session.invalidate();
+		});
+
+		app.get("/hello-jenkins", ctx -> {
+			ctx.req.getWriter().write("ayeeeee jenkins works");
 		});
 	}
 }
