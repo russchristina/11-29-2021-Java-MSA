@@ -118,7 +118,15 @@ insert into ingredient values(2, 'Pepper', 'spicy');
 insert into ingredient values(3, 'Clove', 'spicy');
 insert into ingredient values(10, 'Celery Salt', 'salty');
 
-select * from ingredient;
+
+insert into hibernate_author values(1, 'Christina', 'nothing');
+insert into hibernate_author values(2, 'Florence', 'Southern cooking');
+
+insert into hibernate_recipe values(3, 23, 'Ham', 2);
+
+select * from app_user;
+
+insert into hibernate_ingredient values(1, 89.7, 'sweet', 'gummy bears');
 
 insert into ingredient values(11, 'Lawry''s Seasoning Salt', 'savory');
 
