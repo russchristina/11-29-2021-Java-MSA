@@ -93,7 +93,7 @@ public class Driver {
 		});
 
 		app.get("/hello-jenkins", ctx -> {
-			ctx.req.getWriter().write("ayeeeee jenkins works");
+			ctx.res.getWriter().write("ayeeeee jenkins works");
 		});
 	}
 }
