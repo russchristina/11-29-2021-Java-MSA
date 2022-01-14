@@ -1,6 +1,7 @@
 package com.revature.utility;
 
 import com.revature.presentation.manageEmployee.controller.EmployeeController;
+import com.revature.presentation.manageFiles.controller.FileController;
 import com.revature.presentation.manageLogin.controller.LoginController;
 import com.revature.presentation.manageRequest.controller.RequestController;
 import com.revature.presentation.manageStatistics.controller.StatisticsController;
@@ -14,12 +15,14 @@ public class Endpoints {
     private final EmployeeController employeeController;
     private final RequestController requestController;
     private final StatisticsController statisticsController;
+    private final FileController fileController;
 
-    public Endpoints(LoginController loginController, EmployeeController employeeController, RequestController requestController, StatisticsController statisticsController) {
+    public Endpoints(LoginController loginController, EmployeeController employeeController, RequestController requestController, StatisticsController statisticsController, FileController fileController) {
         this.loginController = loginController;
         this.employeeController = employeeController;
         this.requestController = requestController;
         this.statisticsController = statisticsController;
+        this.fileController = fileController;
     }
 
     public void initializeEndpoints(Javalin app){
@@ -50,6 +53,10 @@ public class Endpoints {
 
                     path("/new", () -> {
                        post(requestController.createRequest);
+                    });
+
+                    path("/file", () ->{
+                        post(fileController.handleFileUpload);
                     });
 
                 });

@@ -1,6 +1,7 @@
 package com.revature.utility;
 
 import com.revature.presentation.manageEmployee.controller.EmployeeController;
+import com.revature.presentation.manageFiles.controller.FileController;
 import com.revature.presentation.manageLogin.controller.LoginController;
 import com.revature.presentation.manageRequest.controller.RequestController;
 import com.revature.presentation.manageStatistics.controller.StatisticsController;
@@ -26,10 +27,9 @@ public class ServerStartup {
     public void configureServer(){
         this.app.before(ctx -> {
             ctx.header("Access-Control-Allow-Origin", "*");
-            ctx.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE");
+            ctx.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
             ctx.header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
         });
-        this.app._conf.prefer405over404 = true;
         LoginInfoDao lid = new LoginInfoDao();
         PendingRequestDao pid = new PendingRequestDao();
         CompletedRequestDao crd = new CompletedRequestDao();
@@ -53,8 +53,9 @@ public class ServerStartup {
         EmployeeController ec = new EmployeeController();
         RequestController rc = new RequestController(prs, crs, os);
         StatisticsController sc = new StatisticsController(ss);
+        FileController fc = new FileController();
 
-        Endpoints endpoints = new Endpoints(lc, ec, rc, sc);
+        Endpoints endpoints = new Endpoints(lc, ec, rc, sc, fc);
         endpoints.initializeEndpoints(this.app);
     }
 
