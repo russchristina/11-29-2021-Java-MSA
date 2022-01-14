@@ -93,3 +93,9 @@ select * from ingredient except select * from author;
 -- higher you go, the slower your transactions will be as higher levels place more read and
 -- write locks on tables and records.
 set transaction isolation level read committed;
+
+-- For those who would like to create a separate schema for their new project tables:
+create schema another_schema;
+
+set search_path to another_schema;
+
