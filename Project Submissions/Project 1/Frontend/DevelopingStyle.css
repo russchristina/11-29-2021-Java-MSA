@@ -60,3 +60,71 @@ h3 {
 #loginImageHolder {
     transform: translate(0%, -5%);
 }
+
+#mainBox {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#menuBox {
+    align-content: center;
+    box-sizing: content-box;
+    width: 4.2in;
+    height: 3.8in;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -10%);
+    border-style: inset;
+    border-color: deepskyblue;
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
+}
+
+#menu {
+    list-style: none;
+    padding: 15%;
+}
+
+li {
+    border-style: outset;
+    padding: 5%;
+    line-height: 10px;
+    background-color: lightskyblue;
+    border-color: rgb(115, 196, 247);
+}
+
+li:hover {
+    background-color: rgba(30, 100, 206, 0.842);
+    color: lightskyblue;
+}
+
+#tableBox {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.1in;
+    border-style: inset;
+    border-color: deepskyblue;
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
+}
+
+th, tr {
+    border-style: outset;
+    background-color: lightskyblue;
+    border-color: rgb(115, 196, 247);
+    color: #000;
+}
+
+td {
+    border-style: outset;
+    border-color: rgb(115, 196, 247);
+}
+
+tr:hover {
+    background-color: rgba(30, 100, 206, 0.842);
+    color: lightskyblue;
+}

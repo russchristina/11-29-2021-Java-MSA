@@ -1,4 +1,5 @@
 let mainContainer = document.getElementById('mainContainer')
+mainContainer.id='mainBox'
 let loginForm = document.getElementById('loginForm')
 
 /**
@@ -35,6 +36,7 @@ function fetchData() {
 function generateMenu(data) {
     mainContainer.innerHTML = ''
     let employeeMenu = document.createElement('ul')
+    employeeMenu.id='menu'
     
     let createNewRequest = document.createElement('li')
     createNewRequest.innerText = 'Create new reimbursement request'
@@ -64,8 +66,11 @@ function generateMenu(data) {
     }
     employeeMenu.appendChild(logOut)
 
-    mainContainer.append(employeeMenu)
-    console.log(data)
+    let menuDiv = document.createElement('div')
+    menuDiv.id = 'menuBox'
+    menuDiv.append(employeeMenu)
+
+    mainContainer.append(menuDiv)
 }
 
 /**
@@ -120,10 +125,18 @@ function createRequest(data) {
 
     requestForm.onsubmit= function(){createRequestHandler(requestForm, data)}
 
+    let backButton = document.createElement('button')
+    backButton.innerText='Go Back'
+    backButton.onclick = function() {generateMenu(data)}
+
     mainContainer.innerHTML=''
     let reqDiv = document.createElement('div')
-    
+    reqDiv.id='reqBox'
+    let b = document.createElement('br')
+
     reqDiv.append(requestForm)
+    reqDiv.append(b)
+    reqDiv.append(backButton)
     mainContainer.append(reqDiv)
 }
 
@@ -139,7 +152,7 @@ async function viewRequestHandler(data) {
     })
     let empReqData = await response_body.json()
 
-    buildTable(empReqData, data) 
+    buildTable(empReqData, data, false) 
 }
 
 /**
@@ -150,7 +163,7 @@ async function getAllRequestData(data) {
     let response_body = await fetch(url)
     let allRequestData = await response_body.json()
 
-    buildTable(allRequestData, data)
+    buildTable(allRequestData, data, true)
 }
 
 /**
@@ -245,7 +258,7 @@ function createRequestHandler(requestForm, data)  {
 /**
  *  Table construction for employees and managers
  */
-function buildTable(buildData, data) {
+function buildTable(buildData, data, viewAll) {
 
     let table = document.createElement('table');
     let thead = document.createElement('thead');
@@ -277,7 +290,7 @@ function buildTable(buildData, data) {
     row_1.appendChild(heading_4);
     row_1.appendChild(heading_5);
     row_1.appendChild(heading_6);
-    if(data.manager === true){
+    if(data.manager === true && viewAll){
         row_1.appendChild(heading_7);
     }
     thead.appendChild(row_1);
@@ -318,6 +331,7 @@ function buildTable(buildData, data) {
     }
     
     let tableDiv = document.createElement('div')
+    tableDiv.id='tableBox'
     let b = document.createElement('br')
     let backButton = document.createElement('button')
     backButton.innerText='Go Back'
