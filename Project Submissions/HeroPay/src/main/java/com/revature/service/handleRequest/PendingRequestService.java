@@ -34,20 +34,7 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         this.pendingRequestDao = pendingRequestDao;
     }
 
-    @Override
-    public PendingRequestEntity storePendingRequest(NewRequest newRequest) {
-        dLog.debug("Storing new request: " + newRequest);
-        validateNewPendingRequest(newRequest);
-        PendingRequestEntity pendingRequestEntity = convertNewRequest(newRequest);
-        dLog.debug("Storing new request converted to pending request entity: " + pendingRequestEntity);
-        int storedPendingRequestId = pendingRequestDao.insertPendingRequest(pendingRequestEntity);
-        dLog.debug("Stored pending request ID: " + storedPendingRequestId);
-        PendingRequestEntity retrievedPendingRequest = pendingRequestDao.getPendingRequestByRequestId(storedPendingRequestId);
-        dLog.debug("retrieved pending request: " + retrievedPendingRequest);
-        return retrievedPendingRequest;
-    }
-
-    private PendingRequestEntity convertNewRequest(NewRequest newRequest) {
+    private PendingRequestEntity convertNewRequest(NewRequest newRequest, boolean fileCheck) {
         dLog.debug("Converting new request to PendingRequestEntity: " + newRequest);
         RequestTypeService requestTypeService = new RequestTypeService(new RequestTypeDao());
         return new PendingRequestEntity(
@@ -57,7 +44,9 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                 newRequest.getRequestMessage(),
                 newRequest.getAmount(),
                 Date.valueOf(LocalDate.now()),
-                false);
+                false,
+                fileCheck
+                );
     }
 
     @Override
@@ -88,7 +77,8 @@ public class PendingRequestService implements PendingRequestServiceInterface {
                 p.getRequestMessage(),
                 p.getAmount(),
                 p.getDateSubmission().toLocalDate(),
-                p.isStatus());
+                p.isStatus(),
+                p.isFileUploadCheck());
     }
 
     @Override
@@ -134,4 +124,16 @@ public class PendingRequestService implements PendingRequestServiceInterface {
         return pendingRequests;
     }
 
+    @Override
+    public PendingRequestEntity storePendingRequest(NewRequest newRequest, boolean fileUploadCheck) {
+        dLog.debug("Storing new request: " + newRequest);
+        validateNewPendingRequest(newRequest);
+        PendingRequestEntity pendingRequestEntity = convertNewRequest(newRequest, fileUploadCheck);
+        dLog.debug("Storing new request converted to pending request entity: " + pendingRequestEntity);
+        int storedPendingRequestId = pendingRequestDao.insertPendingRequest(pendingRequestEntity);
+        dLog.debug("Stored pending request ID: " + storedPendingRequestId);
+        PendingRequestEntity retrievedPendingRequest = pendingRequestDao.getPendingRequestByRequestId(storedPendingRequestId);
+        dLog.debug("retrieved pending request: " + retrievedPendingRequest);
+        return retrievedPendingRequest;
+    }
 }

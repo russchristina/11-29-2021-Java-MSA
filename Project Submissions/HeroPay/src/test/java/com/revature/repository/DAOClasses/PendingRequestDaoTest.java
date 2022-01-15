@@ -41,7 +41,7 @@ class PendingRequestDaoTest {
         storedAmount = new BigDecimal("0.05");
         dateSubmission = Date.valueOf(LocalDate.of(2022, 01, 11));
         status = true;
-        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status);
+        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status, false);
 
         testEntity = new PendingRequestEntity(
                 0,
@@ -50,6 +50,7 @@ class PendingRequestDaoTest {
                 "This is just me testing",
                 new BigDecimal("30.30"),
                 Date.valueOf(LocalDate.of(2300, 2, 3)),
+                false,
                 false);
     }
 
@@ -90,6 +91,7 @@ class PendingRequestDaoTest {
                 "This is just me testing",
                 new BigDecimal("30.30"),
                 Date.valueOf(LocalDate.of(2300, 2, 3)),
+                false,
                 false);
 
         assertEquals(-1, pDao.insertPendingRequest(invalidRequest));
@@ -104,6 +106,7 @@ class PendingRequestDaoTest {
                 "This is just me testing",
                 new BigDecimal("30.30"),
                 Date.valueOf(LocalDate.of(2300, 2, 3)),
+                false,
                 false);
 
         assertEquals(-1, pDao.insertPendingRequest(invalidRequest));
@@ -140,7 +143,8 @@ class PendingRequestDaoTest {
                 originalEntity.getRequestMessage(),
                 originalEntity.getAmount(),
                 originalEntity.getDateSubmission(),
-                true
+                true,
+                false
         );
         pDao.updatePendingRequest(updatedEntity);
         assertEquals(updatedEntity, pDao.getPendingRequestByRequestId(originalEntity.getId()));

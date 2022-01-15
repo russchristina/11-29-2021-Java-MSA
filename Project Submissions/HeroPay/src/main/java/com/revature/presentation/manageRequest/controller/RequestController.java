@@ -75,38 +75,48 @@ public class RequestController {
     public final Handler createRequest = ctx -> {
         dLog.debug("Creating new request: " + ctx.body());
 
+        String fileUpload = ctx.queryParam("fileUpload");
+        //Handle different request if file upload .contentEquals('check');
+        //set boolean check in newRequest - boolean file upload
         try{
             NewRequest newRequest = ctx.bodyAsClass(NewRequest.class);
-            try{
+            if(fileUpload.contentEquals("check")){
                 pendingRequestService.validateNewPendingRequest(newRequest);
-                PendingRequestEntity pendingRequestEntity = pendingRequestService.storePendingRequest(newRequest);
+                PendingRequestEntity pendingRequestEntity = pendingRequestService.storePendingRequest(newRequest, true);
                 dLog.debug("The stored and returned pendingRequestEntity: " + pendingRequestEntity);
-                if(pendingRequestEntity == null) ctx.status(500);
+                if (pendingRequestEntity == null) ctx.status(500);
                 PendingRequest pendingRequest = pendingRequestService.convertPendingRequestEntity(pendingRequestEntity);
                 tLog.info("Inserted new pending request in database");
                 ctx.json(pendingRequest);
                 ctx.status(201);
-            }catch(EmployeeIdException e){
-                dLog.debug(e.getMessage(), e);
-                ctx.json(new FailCreateRequestResponse("Invalid Employee Id"));
-                ctx.status(406);
-            }catch(RequestTypeException e){
-                dLog.debug(e.getMessage(), e);
-                ctx.json(new FailCreateRequestResponse("Invalid Request Type"));
-                ctx.status(406);
-            }catch(RequestMessageShortException e){
-                dLog.debug(e.getMessage(), e);
-                ctx.json(new FailCreateRequestResponse("Invalid Request Message, too short"));
-                ctx.status(406);
-            }catch(NegativeAmountException e){
-                dLog.debug(e.getMessage(), e);
-                ctx.json(new FailCreateRequestResponse("Invalid amount requested"));
-                ctx.status(406);
+            }else {
+                pendingRequestService.validateNewPendingRequest(newRequest);
+                PendingRequestEntity pendingRequestEntity = pendingRequestService.storePendingRequest(newRequest, false);
+                dLog.debug("The stored and returned pendingRequestEntity: " + pendingRequestEntity);
+                if (pendingRequestEntity == null) ctx.status(500);
+                PendingRequest pendingRequest = pendingRequestService.convertPendingRequestEntity(pendingRequestEntity);
+                tLog.info("Inserted new pending request in database");
+                ctx.json(pendingRequest);
+                ctx.status(201);
             }
-
-        }catch(Exception e){
+        }catch(EmployeeIdException e){
             dLog.debug(e.getMessage(), e);
+            ctx.json(new FailCreateRequestResponse("Invalid Employee Id"));
+            ctx.status(406);
+        }catch(RequestTypeException e){
+            dLog.debug(e.getMessage(), e);
+            ctx.json(new FailCreateRequestResponse("Invalid Request Type"));
+            ctx.status(406);
+        }catch(RequestMessageShortException e){
+            dLog.debug(e.getMessage(), e);
+            ctx.json(new FailCreateRequestResponse("Invalid Request Message, too short"));
+            ctx.status(406);
+        }catch(NegativeAmountException e){
+            dLog.debug(e.getMessage(), e);
+            ctx.json(new FailCreateRequestResponse("Invalid amount requested"));
+            ctx.status(406);
         }
+
     };
 
     public final Handler getAllRequests = ctx -> {

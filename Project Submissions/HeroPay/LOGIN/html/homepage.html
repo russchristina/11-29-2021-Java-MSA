@@ -12,8 +12,15 @@
     <button id="upload-button">Upload</button> -->
     <h1>Upload example</h1>
     <form>
-        <input type="file" id="files">
-        <input type='button' value="submit" id="file-upload-button">
+        <div id='formContainer'>
+            <input type="text">
+            <input type="file" id="files">
+            <input type='button' value="submit" id="file-upload-button">
+        </div>
+
+        <div id='receive'>
+            <input type='button' value='download' id='seeThing'>
+        </div>
     </form>
     
     <script src='../scripts/fileUpload.js'></script>

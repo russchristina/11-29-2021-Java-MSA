@@ -72,7 +72,7 @@ class PendingRequestServiceTest {
 
         convertedEmployeeAccount = new EmployeeAccountEntity(1, "", "", new EmployeeRoleEntity(0, ""));
         mockStoredPendingRequest = new PendingRequestEntity(
-                storedRequestId, returnedEmployeeAccount,  mockRequestType, message, amount, dateSubmitted, false
+                storedRequestId, returnedEmployeeAccount,  mockRequestType, message, amount, dateSubmitted, false, false
         );
 
         inputNewRequest = new NewRequest(1, "Travel", message, amount);
@@ -83,6 +83,7 @@ class PendingRequestServiceTest {
                 message,
                 amount,
                 dateSubmitted,
+                false,
                 false);
 
         mockConvertedPendingRequest = new PendingRequest(
@@ -92,7 +93,8 @@ class PendingRequestServiceTest {
                 mockStoredPendingRequest.getRequestMessage(),
                 mockStoredPendingRequest.getAmount(),
                 mockStoredPendingRequest.getDateSubmission().toLocalDate(),
-                mockStoredPendingRequest.isStatus());
+                mockStoredPendingRequest.isStatus(),
+                mockStoredPendingRequest.isFileUploadCheck());
 
         pendingRequestEntitiesList = new ArrayList<>();
         pendingRequests = new ArrayList<>();
@@ -106,8 +108,8 @@ class PendingRequestServiceTest {
                 mockStoredPendingRequest.getRequestMessage(),
                 mockStoredPendingRequest.getAmount(),
                 mockStoredPendingRequest.getDateSubmission(),
-                mockStoredPendingRequest.isStatus()
-        );
+                mockStoredPendingRequest.isStatus(),
+                mockStoredPendingRequest.isFileUploadCheck());
 
         Mockito.when(mockDao.getPendingRequestByRequestId(storedRequestId)).thenReturn(mockStoredPendingRequest);
         Mockito.when(mockDao.insertPendingRequest(inputPendingRequestEntity)).thenReturn(storedRequestId);
@@ -120,22 +122,22 @@ class PendingRequestServiceTest {
 
     @Test
     void storePendingRequestTest() {
-        assertEquals(mockStoredPendingRequest, pendingRequestService.storePendingRequest(inputNewRequest));
+        assertEquals(mockStoredPendingRequest, pendingRequestService.storePendingRequest(inputNewRequest, false));
     }
 
     @Test
     void storePendingRequestInvalidNewRequestEmployeeIdTest() {
-        assertThrows(EmployeeIdException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(-1, "Travel", "message", new BigDecimal("0231.23"))));
+        assertThrows(EmployeeIdException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(-1, "Travel", "message", new BigDecimal("0231.23")), false));
     }
 
     @Test
     void storePendingRequestInvalidNewRequestMessageTest() {
-        assertThrows(RequestMessageShortException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(1, "Travel", "a", new BigDecimal("0231.23"))));
+        assertThrows(RequestMessageShortException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(1, "Travel", "a", new BigDecimal("0231.23")), false));
     }
 
     @Test
     void storePendingRequestInvalidNewRequestTypeTest() {
-        assertThrows(RequestTypeException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(1, "a", "aasdfaw", new BigDecimal("0231.23"))));
+        assertThrows(RequestTypeException.class, () -> pendingRequestService.storePendingRequest(new NewRequest(1, "a", "aasdfaw", new BigDecimal("0231.23")), false));
     }
 
     @Test

@@ -59,6 +59,10 @@ public class Endpoints {
                         post(fileController.handleFileUpload);
                     });
 
+                    path("/treasure", () ->{
+                        get(fileController.retrieveFile);
+                    });
+
                 });
             });
 

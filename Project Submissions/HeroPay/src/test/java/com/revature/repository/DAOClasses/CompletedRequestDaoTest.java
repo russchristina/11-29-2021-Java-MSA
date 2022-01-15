@@ -48,7 +48,7 @@ class CompletedRequestDaoTest {
         storedAmount = new BigDecimal("0.05");
         dateSubmission = Date.valueOf(LocalDate.of(2022, 01, 11));
         status = true;
-        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status);
+        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status, false);
 
         returnedManagerAccount = new EmployeeAccountEntity(12, "Misha", "Marcus", new EmployeeRoleEntity(4, "Manager"));
         managerStatus = false;
@@ -73,6 +73,7 @@ class CompletedRequestDaoTest {
                 "This is just me testing",
                 new BigDecimal("30.30"),
                 Date.valueOf(LocalDate.of(2300, 2, 3)),
+                false,
                 false);
 
         testCompletedEntity = new CompletedRequestEntity(testPendingEntity, testPendingEntity.getEmployeeAccount(), returnedManagerAccount, false, "Testing Completion", dateResolved, 0);

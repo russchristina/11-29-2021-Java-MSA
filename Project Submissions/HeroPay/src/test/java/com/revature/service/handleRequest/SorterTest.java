@@ -93,15 +93,15 @@ public class SorterTest {
         employeeAccount2 = new EmployeeAccountEntity();
         managerAccount = new EmployeeAccountEntity();
 
-        PendingRequestEntity pre1 = new PendingRequestEntity(1, employeeAccount1, requestType1, "Hello Greg", amount1, Date.valueOf(LocalDate.now()), true);
-        PendingRequestEntity pre2 = new PendingRequestEntity(2, employeeAccount1, requestType2, "Hello sads", amount2, Date.valueOf(LocalDate.of(2022, 1, 2)), true);
-        PendingRequestEntity pre3 = new PendingRequestEntity(3, employeeAccount2, requestType1, "sdfo sads", amount3, Date.valueOf(LocalDate.of(2010, 1, 2)), true);
-        PendingRequestEntity pre4 = new PendingRequestEntity(4, employeeAccount2, requestType2, "dff sddfasdfasdads", amount4, Date.valueOf(LocalDate.of(2019, 1, 2)), true);
+        PendingRequestEntity pre1 = new PendingRequestEntity(1, employeeAccount1, requestType1, "Hello Greg", amount1, Date.valueOf(LocalDate.now()), true, false);
+        PendingRequestEntity pre2 = new PendingRequestEntity(2, employeeAccount1, requestType2, "Hello sads", amount2, Date.valueOf(LocalDate.of(2022, 1, 2)), true, false);
+        PendingRequestEntity pre3 = new PendingRequestEntity(3, employeeAccount2, requestType1, "sdfo sads", amount3, Date.valueOf(LocalDate.of(2010, 1, 2)), true, false);
+        PendingRequestEntity pre4 = new PendingRequestEntity(4, employeeAccount2, requestType2, "dff sddfasdfasdads", amount4, Date.valueOf(LocalDate.of(2019, 1, 2)), true, false);
 
-        PendingRequest pr1 = new PendingRequest(1, 1, requestType1.getRequestType(), "Hello Greg", amount1, (LocalDate.now()), true);
-        PendingRequest pr2 = new PendingRequest(2, 1, requestType2.getRequestType(), "Hello sads", amount2, (LocalDate.of(2022, 1, 2)), true);
-        PendingRequest pr3 = new PendingRequest(3, 2, requestType1.getRequestType(), "sdfo sads", amount3, (LocalDate.of(2010, 1, 2)), true);
-        PendingRequest pr4 = new PendingRequest(4, 2, requestType2.getRequestType(), "dff sddfasdfasdads", amount4, (LocalDate.of(2019, 1, 2)), true);
+        PendingRequest pr1 = new PendingRequest(1, 1, requestType1.getRequestType(), "Hello Greg", amount1, (LocalDate.now()), true, false);
+        PendingRequest pr2 = new PendingRequest(2, 1, requestType2.getRequestType(), "Hello sads", amount2, (LocalDate.of(2022, 1, 2)), true, false);
+        PendingRequest pr3 = new PendingRequest(3, 2, requestType1.getRequestType(), "sdfo sads", amount3, (LocalDate.of(2010, 1, 2)), true, false);
+        PendingRequest pr4 = new PendingRequest(4, 2, requestType2.getRequestType(), "dff sddfasdfasdads", amount4, (LocalDate.of(2019, 1, 2)), true, false);
 
         CompletedRequestEntity cre1 = new CompletedRequestEntity(pre1, employeeAccount1, managerAccount, true, "You got it buddy", Date.valueOf(LocalDate.of(2023, 1, 1)), 1);
         CompletedRequestEntity cre2 = new CompletedRequestEntity(pre2, employeeAccount1, managerAccount, true, "You got it buddy", Date.valueOf(LocalDate.of(2020, 1, 1)), 2);

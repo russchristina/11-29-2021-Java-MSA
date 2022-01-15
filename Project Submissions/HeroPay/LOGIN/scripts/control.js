@@ -21,6 +21,7 @@ let allCRContainer;
 
 let containerOptions;
 let requestFormContainer;
+let requestFileUpload;
 
 let createRequestCheck = true;
 let completedRequestCheck = true;
@@ -619,9 +620,11 @@ const requestViewUtility = {
             pageUtility.attachInputNumberElement('amount', '$0.00', requestFormContainer);
             pageUtility.generateNewLine(2, requestFormContainer);
             
+            requestViewUtility.fileUpload('file-upload', requestFormContainer);
+            pageUtility.generateNewLine(2, requestFormContainer);
             pageUtility.attachButtonElement('close-create-button', 'close', requestFormContainer, 'click', requestViewUtility.closeCreateRequestDisplay);
             pageUtility.attachButtonElement('submit-request', 'submit', requestFormContainer, 'click', userRequestUtility.getCreateRequest);
-    
+            
             containerOptions.appendChild(requestFormContainer);
             homepageTopContainer.appendChild(containerOptions);
         }
@@ -658,6 +661,12 @@ const requestViewUtility = {
         let respondForm = document.getElementById('respond-form-container');
         allPRContainer.removeChild(respondForm);
         
+    },
+    fileUpload: function(fileId, container){
+        let inputFile = document.createElement('input');
+        inputFile.type = 'file';
+        inputFile.id = fileId;
+        container.appendChild(inputFile);
     },
     createPersonalRequestTables: function(){
         pageUtility.attachTitleElement('h3', 'Pending Requests', personalPRContainer);
@@ -1206,12 +1215,19 @@ const userRequestUtility = {
         let message = requestForm.elements[0].value;
         let type = requestForm.elements[1].value;
         let amount = requestForm.elements[2].value;
-    
-         
-        if(message && type && amount) {
+        let file = document.getElementById('file-upload').files[0];
+
+        if(file){
+            console.log(file);
+        }
+        if(message && type && amount && file) {
+            createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type:type, requestMessage: message, amount:amount});
+            postNewRequestWithFile(createRequestObj, file);
+        } else if(message && type && amount){
             createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type:type, requestMessage: message, amount:amount});
             postNewRequest(createRequestObj);
-        } else window.alert("EMPTY INPUT")
+        } 
+        else window.alert("EMPTY INPUT")
     },
     getResponse: function (){
         let responseForm = document.getElementById('respond-form-container');
@@ -1299,6 +1315,22 @@ async function postNewRequest(createRequestObj){
     }
 }
 
+async function postNewRequestWithFile(createRequestObj, file){
+    let createNewRequestUrl = 'http://localhost:9002/employee/request/new?fileUpload=check';
+    try{
+        let newRequestResponseBody = await fetch(createNewRequestUrl, {method: "POST", body: createRequestObj});
+        newRequestData = await newRequestResponseBody.json();
+        if(newRequestData) {
+            requestViewUtility.closeCreateRequestDisplay();
+            console.log(newRequestData);
+            savePhoto(newRequestData, file);
+            requestViewUtility.displayNewPendingRequests(newRequestData);
+        }else failedLogin();
+    }catch(e){
+        console.log(e);
+    }
+}
+
 async function getMTotalRequests(userData){
     let totalRequestUrl = 'http://localhost:9002/manager/total';
     try{
@@ -1369,5 +1401,14 @@ async function getIndividualEmployeeRequest(id){
         } 
     }catch(e){
         console.log(e);
+    }
+}
+
+async function savePhoto(newRequest, file){
+    let fileUploadUrl = 'http://localhost:9002/employee/request/file?fileKey=' + newRequest.id +'_file'
+    try{
+        let r = await fetch(fileUploadUrl, {method: "POST", body : file});
+    }catch(e){
+        console.log("damn");
     }
 }

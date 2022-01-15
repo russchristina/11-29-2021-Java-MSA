@@ -101,7 +101,7 @@ class CompletedRequestServiceTest {
 
         returnedEmployeeAccount = new EmployeeAccountEntity(employeeId, "Gwyndolyn", "Braveheart", new EmployeeRoleEntity(1, "Knight"));
         returnedType = new RequestTypeEntity(1, "Travel");
-        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status);
+        returnedPendingRequest = new PendingRequestEntity(storedPendingRequestId, returnedEmployeeAccount, returnedType, storedRequestMessage, storedAmount, dateSubmission, status, false);
         storedRequestMessage = "Las Vegas baby";
         storedAmount = new BigDecimal("0.05");
         dateSubmission = Date.valueOf(LocalDate.of(2022, 01, 11));
@@ -110,7 +110,7 @@ class CompletedRequestServiceTest {
         returnedManagerAccount = new EmployeeAccountEntity(12, "Misha", "Marcus", new EmployeeRoleEntity(4, "Manager"));
 
         convertedCompletedRequest = new CompletedRequestEntity(
-                new PendingRequestEntity(inputCompletedRequestModel.getId(), new EmployeeAccountEntity(), new RequestTypeEntity(), "", BigDecimal.ZERO, Date.valueOf(LocalDate.now()), true),
+                new PendingRequestEntity(inputCompletedRequestModel.getId(), new EmployeeAccountEntity(), new RequestTypeEntity(), "", BigDecimal.ZERO, Date.valueOf(LocalDate.now()), true, false),
                 new EmployeeAccountEntity(inputCompletedRequestModel.getEmployeeId(), "", "", new EmployeeRoleEntity()),
                 new EmployeeAccountEntity(inputCompletedRequestModel.getManagerId(), "", "", new EmployeeRoleEntity()),
                 inputCompletedRequestModel.isStatus(),

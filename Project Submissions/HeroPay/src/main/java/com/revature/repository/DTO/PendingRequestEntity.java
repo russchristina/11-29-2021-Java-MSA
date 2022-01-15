@@ -28,11 +28,13 @@ public class PendingRequestEntity {
     private Date dateSubmission;
     @Column(name = "status")
     private boolean status;
+    @Column(name = "file_upload_check")
+    private boolean fileUploadCheck;
 
     public PendingRequestEntity() {
     }
 
-    public PendingRequestEntity(int id, EmployeeAccountEntity employeeAccount, RequestTypeEntity requestType, String requestMessage, BigDecimal amount, Date dateSubmission, boolean status) {
+    public PendingRequestEntity(int id, EmployeeAccountEntity employeeAccount, RequestTypeEntity requestType, String requestMessage, BigDecimal amount, Date dateSubmission, boolean status, boolean fileUploadCheck) {
         this.id = id;
         this.employeeAccount = employeeAccount;
         this.requestType = requestType;
@@ -40,6 +42,7 @@ public class PendingRequestEntity {
         this.amount = amount;
         this.dateSubmission = dateSubmission;
         this.status = status;
+        this.fileUploadCheck = fileUploadCheck;
     }
 
     public int getId() {
@@ -98,17 +101,25 @@ public class PendingRequestEntity {
         this.status = status;
     }
 
+    public boolean isFileUploadCheck() {
+        return fileUploadCheck;
+    }
+
+    public void setFileUploadCheck(boolean fileUploadCheck) {
+        this.fileUploadCheck = fileUploadCheck;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PendingRequestEntity)) return false;
         PendingRequestEntity that = (PendingRequestEntity) o;
-        return id == that.id && status == that.status && Objects.equals(employeeAccount, that.employeeAccount) && Objects.equals(requestType, that.requestType) && Objects.equals(requestMessage, that.requestMessage) && Objects.equals(amount, that.amount) && Objects.equals(dateSubmission, that.dateSubmission);
+        return id == that.id && status == that.status && fileUploadCheck == that.fileUploadCheck && Objects.equals(employeeAccount, that.employeeAccount) && Objects.equals(requestType, that.requestType) && Objects.equals(requestMessage, that.requestMessage) && Objects.equals(amount, that.amount) && Objects.equals(dateSubmission, that.dateSubmission);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, employeeAccount, requestType, requestMessage, amount, dateSubmission, status);
+        return Objects.hash(id, employeeAccount, requestType, requestMessage, amount, dateSubmission, status, fileUploadCheck);
     }
 
     @Override
@@ -121,6 +132,7 @@ public class PendingRequestEntity {
                 + ", \"amount\":\"" + amount + "\""
                 + ", \"dateSubmission\":" + dateSubmission
                 + ", \"status\":\"" + status + "\""
+                + ", \"fileUploadCheck\":\"" + fileUploadCheck + "\""
                 + "}}";
     }
 }

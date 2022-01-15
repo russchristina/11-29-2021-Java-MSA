@@ -33,7 +33,7 @@ public class CompletedRequestService implements CompletedRequestServiceInterface
     private CompletedRequestEntity convertCompletedRequestModel(CompletedRequest completedRequest) {
         dLog.debug("converting completed request model: " + completedRequest);
         return new CompletedRequestEntity(
-                new PendingRequestEntity(completedRequest.getId(), new EmployeeAccountEntity(), new RequestTypeEntity(), "", BigDecimal.ZERO, Date.valueOf(LocalDate.now()), true),
+                new PendingRequestEntity(completedRequest.getId(), new EmployeeAccountEntity(), new RequestTypeEntity(), "", BigDecimal.ZERO, Date.valueOf(LocalDate.now()), true, false),
                 new EmployeeAccountEntity(completedRequest.getEmployeeId(), "", "", new EmployeeRoleEntity()),
                 new EmployeeAccountEntity(completedRequest.getManagerId(), "", "", new EmployeeRoleEntity()),
                 completedRequest.isStatus(),

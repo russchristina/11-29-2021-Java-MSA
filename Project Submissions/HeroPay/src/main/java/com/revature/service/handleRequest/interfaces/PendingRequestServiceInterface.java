@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PendingRequestServiceInterface {
 
-    PendingRequestEntity storePendingRequest(NewRequest newRequest);
+    PendingRequestEntity storePendingRequest(NewRequest newRequest, boolean fileCheck);
 
     void validateNewPendingRequest(NewRequest newRequest);
 
