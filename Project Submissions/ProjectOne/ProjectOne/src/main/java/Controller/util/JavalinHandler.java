@@ -1,10 +1,11 @@
 package Controller.util;
 
-import Controller.util.models.LoginReceived;
 import daolayer.Reimbursements;
 import daolayer.UserSpecs;
 import io.javalin.http.Handler;
-import serviceUtil.ReimbursementBuilder;
+import Driver.serviceUtil.ReimbursementBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class JavalinHandler {
     Reimbursements reimbursements;
     UserSpecs specs;
     ReimbursementBuilder builder = new ReimbursementBuilder();
+    Logger logins = LoggerFactory.getLogger("LOGINS");
     public final Handler FINDALLRECORDS = ctx -> {
         ctx.json(builder.sortByStatus());
     };
@@ -34,11 +36,15 @@ public class JavalinHandler {
         builder.updateRequestService(reimbursements);
     };
     public final Handler VALIDATEUSER = ctx -> {
-        specs= ctx.bodyAsClass(UserSpecs.class);
-        System.out.println("PRINTED HERE" + specs);
-        System.out.println(specs.getUserLogin());
-        System.out.println(specs.getUserPass());
-        ctx.json(builder.validateUserService(specs));
+
+       try {
+           specs= ctx.bodyAsClass(UserSpecs.class);
+           ctx.json(builder.validateUserService(specs));
+           logins.info("User" + specs.getUserLogin() + "has successfully logged in");
+       }catch (Exception e){
+           logins.error("User " + specs.getUserLogin() + " attempted to log in, but the attempt was unsuccessful\n" +
+                   "" + e.getMessage(),e);
+       }
 
     };
     public final Handler SHOWBYUSER = ctx -> {

@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Table(schema = "project_one", name = "hibernate_reimbursements")
@@ -16,7 +17,7 @@ public class Reimbursements {
     private String requestID;
     @Column
     private String submittedBy;
-    @Column
+    @ManyToOne
     private Date submittedDate;
     @Column
     private int requestAmount;
@@ -24,7 +25,17 @@ public class Reimbursements {
     private String reason;
     @Column
     private String status;
-//    @ManyToOne
+    private Set<UserSpecs> specsSet;
+
+    public Set<UserSpecs> getSpecsSet() {
+        return specsSet;
+    }
+
+    public void setSpecsSet(Set<UserSpecs> specsSet) {
+        this.specsSet = specsSet;
+    }
+
+    //    @ManyToOne
 //    private  UserSpecs userSpecs;
     public Reimbursements() {
     }

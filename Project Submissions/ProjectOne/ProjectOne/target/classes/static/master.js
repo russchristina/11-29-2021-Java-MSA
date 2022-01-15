@@ -20,6 +20,9 @@ let amountValue;
 let requestReason;
 let request_body;
 let requestDetails;
+let updateRequest;
+let updateString;
+let update_body;
 function breakGenerator(breakNum, object){
     let br;
     for(let i = 0; i < breakNum ; i++){
@@ -40,6 +43,7 @@ function createTagOnHome(hTag, tagID, tagText ) {
     tag.id = tagID;
     tag.innerHTML = tagText;
     userBanner.appendChild(tag);
+    userHomePage.appendChild(userBanner);
 }
 function initHomePage(){
     userHomePage.appendChild(userBanner);
@@ -182,25 +186,36 @@ async function verifyLogin(){
     });
          response_body = await iHateJS.json();
       
-        if (response_body.manager){
-            console.log("IS a manager");
 
-        }else{
-            console.log("IS NOT a manager");
            console.log(response_body);
             loginID = {
              submittedBy:  response_body[0].userLogin
            }
             console.log(loginID)
             titleBanner.remove();
-           initHomePage();
+            if (response_body[0].manager){
+                createTagOnHome("button","modify","Modify Requests");
+                console.log("IS  a manager");
+                let modify = document.getElementById("modify");  
+     modify.addEventListener("click",() =>{
+    formFactoryHome("Request ID", "text", "Status", "text","Submit");
+    });
+            updateRequestButtons();
 
-        }
+            }else{
+
+            }
+        //    initHomePage();
+           
+        
     }catch(e){
-        window.alert("Incorrect Username or Password");
         console.log(e)
+        // window.alert("Incorrect Username or Password");
     }
     requestsByUser();
+}
+function modifyRequest(){
+    
 }
 async function requestsByUser(){
     console.log(loginID); 
@@ -212,8 +227,6 @@ async function requestsByUser(){
         let connection = await fetch(url, {method: 'POST', body: storedLogin});
          data_body = await connection.json();
         console.log(data_body);
-        createTagOnHome("div", "tablediv", "Reimbursements");
-        let tablediv = document.getElementById("tablediv")
         for (const dateChange of data_body){
             for (let i = 0; i < data_body.length; i++){
                 data_body[i].submittedDate = new Date(data_body[i].submittedDate).toLocaleDateString();
@@ -240,9 +253,9 @@ async function requestsByUser(){
 
 }
  function homeOptions(){
-    let logout = document.getElementById("logout")
-    let newReq= document.getElementById("createnew")
-    logout.addEventListener('click', () =>{
+    let logout = document.getElementById("logout");
+    let newReq= document.getElementById("createnew");
+       logout.addEventListener('click', () =>{
         console.log("worked")
         userBanner.remove();
         location.reload();
@@ -250,6 +263,7 @@ async function requestsByUser(){
        
 
     })
+    
     newReq.addEventListener("click", ()=>{
      formFactoryHome("Reason for Request","text","Requested Amount", "text","Submit", "newReq");
      userHomePage.appendChild(userBanner);
@@ -260,28 +274,60 @@ async function requestsByUser(){
              submittedBy: response_body[0].userLogin,
             reason: reasonValue.value,
             requestAmount: amountValue.value
+
         };
         console.log(requestDetails);
+        newRequest();
      })
     
     });
-   
 }
 async function newRequest(){
     let url ="http://localhost:8800/reimbursements/new";
     requestReason = JSON.stringify(requestDetails)
     try{
        let connection = await fetch(url, {method:"POST", body: requestReason});
-       request_body = await connection.json();
-       console.log(request_body);
+    //    request_body = await connection.json();
+       window.alert("Refund submitted. Relog to see updated list")
     }catch(e){
        console.log(e);
     }
+}
+ function updateRequestButtons(){
+    let requestID = document.getElementById("Request ID2");
+    let status = document.getElementById("Status2");
+    let buttonID = document.getElementById("Submit2")
+    buttonID.addEventListener("click", ()=>{
+       
+        updateRequest = {
+            requestID: requestID.value, 
+            status: status.value
+
+    };
+    console.log(updateRequest);
+    fetchUpdates();
+
+});
+
+
+
+}
+async function fetchUpdates(){
+let url = "http://localhost:8800/reimbursements/manager/update";
+updateString = JSON.stringify(updateRequest);
+try{
+    let connection = await fetch (url,{method: "PUT", body: updateString});
+    // update_body = await connection.json();
+    
+}catch(e){
+    console.log(e);
+}
 }
 function initBoi (){
     tagFactory();
     formFactory("Username", "text", "Password", "password", "Submit", "login");
     inputButton.addEventListener('click', ()=>{
+        
         loginObject = {
             userLogin: inputUser.value,
             userPass: inputPass.value
