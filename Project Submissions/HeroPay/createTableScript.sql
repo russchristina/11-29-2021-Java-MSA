@@ -76,4 +76,8 @@ alter table completed_request add column unique_id serial primary key;
 alter table completed_request rename column id to completed_request_id;
 alter table pending_request rename column id to pending_request_id;
 alter table login_info rename column id to login_info_id;
-select * from pending_request;
+
+alter table pending_request add column file_upload_check boolean;
+
+update pending_request set file_upload_check = false;
+

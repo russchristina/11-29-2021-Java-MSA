@@ -81,6 +81,7 @@ public class RequestController {
         try{
             NewRequest newRequest = ctx.bodyAsClass(NewRequest.class);
             if(fileUpload.contentEquals("check")){
+                dLog.debug("File upload checked for new request");
                 pendingRequestService.validateNewPendingRequest(newRequest);
                 PendingRequestEntity pendingRequestEntity = pendingRequestService.storePendingRequest(newRequest, true);
                 dLog.debug("The stored and returned pendingRequestEntity: " + pendingRequestEntity);
@@ -88,8 +89,8 @@ public class RequestController {
                 PendingRequest pendingRequest = pendingRequestService.convertPendingRequestEntity(pendingRequestEntity);
                 tLog.info("Inserted new pending request in database");
                 ctx.json(pendingRequest);
-                ctx.status(201);
             }else {
+                dLog.debug("File upload unchecked for new request");
                 pendingRequestService.validateNewPendingRequest(newRequest);
                 PendingRequestEntity pendingRequestEntity = pendingRequestService.storePendingRequest(newRequest, false);
                 dLog.debug("The stored and returned pendingRequestEntity: " + pendingRequestEntity);
@@ -97,8 +98,8 @@ public class RequestController {
                 PendingRequest pendingRequest = pendingRequestService.convertPendingRequestEntity(pendingRequestEntity);
                 tLog.info("Inserted new pending request in database");
                 ctx.json(pendingRequest);
-                ctx.status(201);
             }
+            ctx.status(201);
         }catch(EmployeeIdException e){
             dLog.debug(e.getMessage(), e);
             ctx.json(new FailCreateRequestResponse("Invalid Employee Id"));

@@ -6,25 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOGIN/html/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/html/homepage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LOGIN/scripts/control.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/control.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOGIN/scripts/fileUpload.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/fileUpload.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/createTableScript.sql" beforeDir="false" afterPath="$PROJECT_DIR$/createTableScript.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageFiles/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageFiles/controller/FileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/PendingRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/requests/PendingRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repository/DTO/PendingRequestEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repository/DTO/PendingRequestEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/CompletedRequestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/PendingRequestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/PendingRequestServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleRequest/interfaces/PendingRequestServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Driver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/Endpoints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/repository/DAOClasses/CompletedRequestDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/repository/DAOClasses/CompletedRequestDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/repository/DAOClasses/PendingRequestDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/repository/DAOClasses/PendingRequestDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/CompletedRequestServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/CompletedRequestServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/PendingRequestServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/PendingRequestServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/SorterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleRequest/SorterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

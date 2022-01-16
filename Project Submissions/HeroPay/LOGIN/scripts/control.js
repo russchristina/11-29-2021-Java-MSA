@@ -121,6 +121,7 @@ const pageUtility = {
         input.name = labelName;
         input.placeholder = name;
         input.required = 'required';
+        input.step = '.01';
     
         container.appendChild(input);
     },
@@ -186,8 +187,7 @@ const pageUtility = {
         let tableElement;
         if(values.length == 0) {
             tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+            tableElement = document.createElement('td');
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
@@ -641,12 +641,18 @@ const requestViewUtility = {
 
             respondFormContainer = document.createElement('form');
             respondFormContainer.id = 'respond-form-container';
-
             pageUtility.generateNewLine(1, respondFormContainer);
             pageUtility.attachSelectOptions('status', "Respond", ['Approve', 'Deny'], respondFormContainer);
             pageUtility.generateNewLine(2, respondFormContainer);
             pageUtility.attachInputElement('response-message', 'Response', respondFormContainer);
             pageUtility.generateNewLine(1, respondFormContainer);
+
+            if(tableRow.children[7].innerText == 'Answered'){
+                pageUtility.attachButtonElement('file-download', 'Download File', respondFormContainer, 'click', () => {
+                    getFile(tableRow.children[0].innerText);
+                });
+            }
+
             pageUtility.attachButtonElement('close-respond-button', 'close', respondFormContainer, 'click', requestViewUtility.closeRespondRequestDisplay);
             pageUtility.attachButtonElement('submit-response', 'submit', respondFormContainer, 'click', () => {
                 requestInteractionUtility.getResponse(tableRow);
@@ -706,12 +712,12 @@ const requestViewUtility = {
         console.log(sortedRequests);
     },
     displayPendingRequests : function (pendingRequests){
-        pageUtility.generateTableRowsCleanPender('pending-request-table', personalPRContainer, pendingRequests, [0, 1, 6]);
+        pageUtility.generateTableRowsCleanPender('pending-request-table', personalPRContainer, pendingRequests, [0, 1, 6, 7]);
         homepageView.appendChild(personalPRContainer);
     },
     displayAnsweredRequests : function (answeredRequests){
 
-        pageUtility.generateCompletedRequestRowClean('answered-request-table', personalARContainer, answeredRequests, requestInteractionUtility.openResponseManager, [0, 1, 6]);
+        pageUtility.generateCompletedRequestRowClean('answered-request-table', personalARContainer, answeredRequests, requestInteractionUtility.openResponse, [0, 1, 6, 7]);
         homepageView.appendChild(personalARContainer);
         // pageUtility.generateTableRowsCleanPender('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
         // homepageView.appendChild(personalARContainer);
@@ -726,12 +732,12 @@ const requestViewUtility = {
         pageUtility.generateSingleTableRowClean(newPendingRequestData, table, [0, 1]);
     },
     displayAllPendingRequests : function (pendingRequests){
-        pageUtility.generateManagerTableRowClean('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest, [0, 6]);
+        pageUtility.generateManagerTableRowClean('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest, [0, 6, 7]);
         homepageView.appendChild(allPRContainer);
     },
     displayAllAnsweredRequests : function (answeredRequests){
         // pageUtility.generateTableRowsCleanPender('all-answered-request-table', allARContainer, answeredRequests, [0])
-        pageUtility.generateCompletedRequestRowClean('all-answered-request-table', allARContainer, answeredRequests,requestInteractionUtility.openResponseManager, [0, 6])
+        pageUtility.generateCompletedRequestRowClean('all-answered-request-table', allARContainer, answeredRequests,requestInteractionUtility.openResponseManager, [0, 6, 7])
 
         homepageView.appendChild(allARContainer);
     },
@@ -1301,7 +1307,7 @@ async function getEmployeeTotalRequests(userData){
 }
 
 async function postNewRequest(createRequestObj){
-    let createNewRequestUrl = 'http://localhost:9002/employee/request/new';
+    let createNewRequestUrl = 'http://localhost:9002/employee/request/new?fileUpload=no';
     try{
         let newRequestResponseBody = await fetch(createNewRequestUrl, {method: "POST", body: createRequestObj});
         newRequestData = await newRequestResponseBody.json();
@@ -1323,7 +1329,7 @@ async function postNewRequestWithFile(createRequestObj, file){
         if(newRequestData) {
             requestViewUtility.closeCreateRequestDisplay();
             console.log(newRequestData);
-            savePhoto(newRequestData, file);
+            saveFile(newRequestData, file);
             requestViewUtility.displayNewPendingRequests(newRequestData);
         }else failedLogin();
     }catch(e){
@@ -1404,11 +1410,30 @@ async function getIndividualEmployeeRequest(id){
     }
 }
 
-async function savePhoto(newRequest, file){
+async function saveFile(newRequest, file){
     let fileUploadUrl = 'http://localhost:9002/employee/request/file?fileKey=' + newRequest.id +'_file'
     try{
         let r = await fetch(fileUploadUrl, {method: "POST", body : file});
     }catch(e){
         console.log("damn");
+    }
+}
+
+async function getFile(requestId){
+    let fileDownloadUrl = 'http://localhost:9002/employee/request/treasure/?fileKey='+ requestId + '_file';
+    try{
+        let r = await fetch(fileDownloadUrl, {method: "GET"});
+        let file = await r.blob(['hello'], {type: 'image/jpeg'});
+        let fileURL = URL.createObjectURL(file);
+        const anchor = document.createElement('a');
+        anchor.target = '_blank';
+        anchor.href = fileURL;
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+
+        URL.revokeObjectURL(fileURL);
+    }catch(e){
+        console.log(e);
     }
 }

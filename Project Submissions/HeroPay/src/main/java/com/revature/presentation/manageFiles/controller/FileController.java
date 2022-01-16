@@ -25,7 +25,7 @@ public class FileController {
         Region region = Region.US_EAST_2;
         S3Client s3 = S3Client.builder().region(region).build();
         String bucket = "project1revaturestorage";
-        String key = "imageTest";
+        String key = fileKey;
 
         s3.putObject(PutObjectRequest.builder().bucket(bucket).key(key).build(),
                 RequestBody.fromBytes(returnValue));
@@ -45,7 +45,7 @@ public class FileController {
                 .build();
         InputStream fileRetrieved = s3.getObject(getObjectRequest);
         ctx.header("Content-disposition", "attachment; filename=file");
-        ctx.header("Content-type", "image/png");
+        ctx.header("Content-type", "image/jpeg");
         ctx.result(fileRetrieved);
     };
 }
