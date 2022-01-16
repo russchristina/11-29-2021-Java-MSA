@@ -42,24 +42,21 @@ let generalStatisticsTypeContainer;
 let generalStatisticsTotalContainer;
 
 let individualEmployeeFormContainer;
-let individualEmployeeData;
+
 
 let statisticsPageCheck = true;
 
 
 /** JSON objects with needed information for global access */
 
-let userData;
-let employeeData;
-let allRequestData;
-
 let createRequestObj;
-let newRequestData;
 let newResponseData;
 
 let generalStatData;
 let generalEmployeeStatData;
 let sortedRequests;
+
+let individualEmployeeData;
 
 
 //============================================================================
@@ -72,7 +69,7 @@ toggleViewButton.addEventListener('click', toggleView);
 let loginPageCheck = true;
 let homePageCheck = false;
 
-function toggleView(){
+function toggleView() {
     loginPageCheck = !loginPageCheck;
     homePageCheck = !homePageCheck;
     toggleLogin(loginPageCheck);
@@ -87,105 +84,106 @@ document.body.appendChild(toggleViewButton);
 /* Handle Page Utility*/
 
 const pageUtility = {
-    logoutHomepage: function (){
+    logoutHomepage: function () {
         toggleHomepage(false);
         toggleLogin(true);
         createRequestCheck = true;
         respondRequestCheck = true;
+        localStorage.clear();
 
     },
-    generateNewLine: function (lines, container){
+    generateNewLine: function (lines, container) {
         let emptySpace;
-        for(let i = 0; i < lines;i++){
+        for (let i = 0; i < lines; i++) {
             emptySpace = document.createElement('br');
             container.appendChild(emptySpace);
         }
     },
-    clearView: function (divContainer){
+    clearView: function (divContainer) {
         divContainer.innerHTML = "";
     },
-    attachInputElement: function (labelName, name, container){
+    attachInputElement: function (labelName, name, container) {
         let input = document.createElement('input');
-    
+
         input.type = 'text';
         input.name = labelName;
         input.placeholder = name;
         input.required = 'required';
-    
+
         container.appendChild(input);
     },
-    attachInputNumberElement: function (labelName, name, container){
+    attachInputNumberElement: function (labelName, name, container) {
         let input = document.createElement('input');
-    
+
         input.type = 'number';
         input.name = labelName;
         input.placeholder = name;
         input.required = 'required';
         input.step = '.01';
-    
+
         container.appendChild(input);
     },
-    attachButtonElement: function (labelName, name, container,funkyType, funky){
+    attachButtonElement: function (labelName, name, container, funkyType, funky) {
         let input = document.createElement('input');
-    
+
         input.type = 'button';
         input.name = labelName;
         input.value = name;
-    
+
         input.addEventListener(funkyType, funky);
-    
+
         container.appendChild(input);
     },
-    attachSelectOptions: function (optionName, insideText, options, container){
-        
+    attachSelectOptions: function (optionName, insideText, options, container) {
+
         let selectBox = document.createElement('select');
-    
+
         let selectLabel = document.createElement('label');
-        
+
         selectBox.name = optionName;
         selectLabel.htmlFor = selectBox.name;
         selectLabel.innerText = insideText;
-    
+
         container.appendChild(selectLabel);
         pageUtility.generateOption(options, selectBox);
         pageUtility.generateNewLine(1, container);
         container.appendChild(selectBox);
     },
-    attachTitleElement: function (type, text, container){
+    attachTitleElement: function (type, text, container) {
         let title = document.createElement(type);
         title.innerHTML = text;
         container.appendChild(title);
     },
-    generateOption: function (selectOptions, container){
+    generateOption: function (selectOptions, container) {
         let option;
-        for(element in selectOptions){
+        for (element in selectOptions) {
             option = document.createElement('option');
             option.value = selectOptions[element];
             option.innerText = selectOptions[element];
             container.appendChild(option);
         }
     },
-    generateTableElement: function(headerNames, tableId, container){
+    generateTableElement: function (headerNames, tableId, container) {
         let table = document.createElement('table');
         table.id = tableId;
         pageUtility.generateTableHeader(headerNames, table);
         container.appendChild(table);
     },
-    generateTableHeader: function(headerNames, container){
+    generateTableHeader: function (headerNames, container) {
         let tableRow = document.createElement('tr');
         let headerElement;
-        for(let element of headerNames){
+        for (let element of headerNames) {
             headerElement = document.createElement('th')
             headerElement.innerText = element;
             tableRow.appendChild(headerElement);
         }
         container.appendChild(tableRow);
     },
-    generateTableRows: function(tableId, container, values){
+    generateTableRows: function (tableId, container, values) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td');
             tableElement.id = 'empty';
@@ -194,9 +192,9 @@ const pageUtility = {
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td')
                 tableElement.innerText = values[i][key];
                 tableRow.appendChild(tableElement);
@@ -205,27 +203,27 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
-    generateTableRowsStats: function(tableId, container, values){
+    generateTableRowsStats: function (tableId, container, values) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td')
-                if(key == 'meanAverage' || key == 'sum'){
+                if (key == 'meanAverage' || key == 'sum') {
                     tableElement.innerText = `$ ${values[i][key]}`
-                }else{
+                } else {
                     tableElement.innerText = values[i][key];
                 }
                 tableRow.appendChild(tableElement);
@@ -234,27 +232,27 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
-    generateTableRowsEmployeeStats: function (tableId, container, values){
+    generateTableRowsEmployeeStats: function (tableId, container, values) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.orderedList.length; i++){
+        for (let i = 0; i < values.orderedList.length; i++) {
             tableRow = document.createElement('tr');
-            for(let key in values.orderedList[i]){
+            for (let key in values.orderedList[i]) {
                 tableElement = document.createElement('td')
-                if(key == 'sum'){
+                if (key == 'sum') {
                     tableElement.innerText = `$ ${values.orderedList[i][key]}`
-                }else{
+                } else {
                     tableElement.innerText = values.orderedList[i][key];
                 }
 
@@ -264,45 +262,45 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
-    generateTableRowsClean: function(tableId, container, values, hiddenColumns){
+    generateTableRowsClean: function (tableId, container, values, hiddenColumns) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             let counter = 0;
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td')
-                if(Array.isArray(values[i][key])){
+                if (Array.isArray(values[i][key])) {
                     tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
-                }else if(values[i][key] === false){
+                } else if (values[i][key] === false) {
                     tableElement.innerText = 'Denied';
 
-                } else if(values[i][key] === true){
+                } else if (values[i][key] === true) {
                     tableElement.innerText = 'Approved';
-                }else if(key == 'amount'){
+                } else if (key == 'amount') {
                     tableElement.innerText = `$ ${values[i][key]}`
-                }else{
-                    console.log(values[i][key])
+                } else {
                     tableElement.innerText = values[i][key];
                 }
 
                 tableRow.appendChild(tableElement);
 
-                for(let hidden of hiddenColumns){
-                    if(hidden == counter){
+                for (let hidden of hiddenColumns) {
+                    if (hidden == counter) {
                         tableElement.hidden = true;
-                    }}
+                    }
+                }
                 counter++;
             }
             tableRow.id = "completed-id-" + String(tableRow.firstChild.innerText);
@@ -310,44 +308,45 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
-    generateTableRowsCleanPender: function(tableId, container, values, hiddenColumns){
+    generateTableRowsCleanPender: function (tableId, container, values, hiddenColumns) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             let counter = 0;
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td')
-                if(Array.isArray(values[i][key])){
+                if (Array.isArray(values[i][key])) {
                     tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
-                }else if(values[i][key] === false){
+                } else if (values[i][key] === false) {
                     tableElement.innerText = 'Pending';
-                } else if(values[i][key] === true){
+                } else if (values[i][key] === true) {
                     tableElement.innerText = 'Answered';
-                }else if(key == 'amount'){
+                } else if (key == 'amount') {
                     tableElement.innerText = `$ ${values[i][key]}`
-                }else{
+                } else {
                     tableElement.innerText = values[i][key];
                 }
- 
+
 
                 tableRow.appendChild(tableElement);
 
-                for(let hidden of hiddenColumns){
-                    if(hidden == counter){
+                for (let hidden of hiddenColumns) {
+                    if (hidden == counter) {
                         tableElement.hidden = true;
-                    }}
+                    }
+                }
                 counter++;
             }
             tableRow.id = "request-id-" + String(tableRow.firstChild.innerText);
@@ -355,23 +354,23 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
-    generateManagerTableRow: function(tableId, container, values, funky){
+    generateManagerTableRow: function (tableId, container, values, funky) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td')
                 tableElement.innerText = values[i][key];
                 tableRow.appendChild(tableElement);
@@ -383,216 +382,211 @@ const pageUtility = {
         }
         container.appendChild(table);
     },
-    generateManagerTableRowClean: function(tableId, container, values, funky, hiddenColumns){
+    generateManagerTableRowClean: function (tableId, container, values, funky, hiddenColumns) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             let counter2 = 0;
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td');
-                if(Array.isArray(values[i][key])){
+                if (Array.isArray(values[i][key])) {
                     tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
-                }else if(values[i][key] === false){
+                } else if (values[i][key] === false) {
                     tableElement.innerText = 'Pending';
-                } else if(values[i][key] === true){
+                } else if (values[i][key] === true) {
                     tableElement.innerText = 'Answered';
-                }else if(key == 'amount'){
+                } else if (key == 'amount') {
                     tableElement.innerText = `$ ${values[i][key]}`
-                }else{
+                } else {
                     tableElement.innerText = values[i][key];
                 }
-                for(let hidden of hiddenColumns){
-                    if(hidden == counter2){
-                    tableElement.hidden = true;
-                    }}
+                for (let hidden of hiddenColumns) {
+                    if (hidden == counter2) {
+                        tableElement.hidden = true;
+                    }
+                }
                 counter2++;
                 tableRow.appendChild(tableElement);
             }
-                pageUtility.attachButtonElement('respond-button', 'Respond', tableRow, 'click', e => {
+            pageUtility.attachButtonElement('respond-button', 'Respond', tableRow, 'click', e => {
                 funky(e);
-                });
-                table.appendChild(tableRow);
-            }
+            });
+            table.appendChild(tableRow);
+        }
         container.appendChild(table);
     },
-    generateCompletedRequestRowClean: function(tableId, container, values, funky, hiddenColumns){
+    generateCompletedRequestRowClean: function (tableId, container, values, funky, hiddenColumns) {
         let table = document.getElementById(tableId);
         let tableRow;
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++) {
             let counter2 = 0;
             tableRow = document.createElement('tr');
-            for(let key in values[i]){
+            for (let key in values[i]) {
                 tableElement = document.createElement('td');
-                if(Array.isArray(values[i][key])){
+                if (Array.isArray(values[i][key])) {
                     tableElement.innerText = `${values[i][key][2]} / ${values[i][key][1]} / ${values[i][key][0]}`;
-                }else if(values[i][key] === false){
+                } else if (values[i][key] === false) {
                     tableElement.innerText = 'Pending';
-                } else if(values[i][key] === true){
+                } else if (values[i][key] === true) {
                     tableElement.innerText = 'Answered';
-                }else if(key == 'amount'){
+                } else if (key == 'amount') {
                     tableElement.innerText = `$ ${values[i][key]}`
-                }else{
+                } else {
                     tableElement.innerText = values[i][key];
                 }
-                for(let hidden of hiddenColumns){
-                    if(hidden == counter2){
-                    tableElement.hidden = true;
-                    }}
+                for (let hidden of hiddenColumns) {
+                    if (hidden == counter2) {
+                        tableElement.hidden = true;
+                    }
+                }
                 counter2++;
                 tableRow.appendChild(tableElement);
             }
-                pageUtility.attachButtonElement('open-cr-button', 'View Response', tableRow, 'click', e => {
+            pageUtility.attachButtonElement('open-cr-button', 'View Response', tableRow, 'click', e => {
                 funky(e);
-                });
-                table.appendChild(tableRow);
-            }
+            });
+            table.appendChild(tableRow);
+        }
         container.appendChild(table);
     },
-    generateSingleTableRow: function(value, container){
+    generateSingleTableRow: function (value, container) {
         let tableRow = document.createElement('tr');
         let tableElement;
-        if(values.length == 0) {
+        if (values.length == 0) {
             tableRow = document.createElement('tr');
             tableElement = document.createElement('td')
-            tableElement.innerText = "Empty";
+
             tableElement.id = 'empty';
             tableRow.appendChild(tableElement);
             table.appendChild(tableRow);
             container.appendChild(table);
             return;
         }
-        for(let key in value){
+        for (let key in value) {
             tableElement = document.createElement('td')
-            if(key == 'amount'){
+            if (key == 'amount') {
                 tableElement.innerText = `$ ${value[key]}`
-            }else{
-                tableElement.innerText = value[key];  
+            } else {
+                tableElement.innerText = value[key];
             }
 
             tableRow.appendChild(tableElement);
         }
         container.appendChild(tableRow);
     },
-    generateSingleTableRowStats: function(value, container){
+    generateSingleTableRowStats: function (value, container) {
         let tableRow = document.createElement('tr');
         let tableElement;
-        if(!value) {
-            console.log("Empty");
+        if (!value) {
             return;
         }
-        for(let key in value){
+        for (let key in value) {
             tableElement = document.createElement('td')
-            if(key == 'meanAverage' || key == 'sum'){
+            if (key == 'meanAverage' || key == 'sum') {
                 tableElement.innerText = `$ ${value[key]}`
-            }else{
+            } else {
                 tableElement.innerText = value[key];
             }
             tableRow.appendChild(tableElement);
         }
         container.appendChild(tableRow);
     },
-    generateSingleTableRowIndividualStat: function(value, container){
+    generateSingleTableRowIndividualStat: function (value, container) {
         let tableRow = document.createElement('tr');
         let tableElement;
-        if(!value) {
-            console.log("Empty");
-            return;
-        }
-        for(let key in value){
+        if (!value) return;
+
+        for (let key in value) {
             tableElement = document.createElement('td')
-            if(key == 'average' || key == 'sum'){
+            if (key == 'average' || key == 'sum') {
                 tableElement.innerText = `$ ${value[key]}`
-            }else{
+            } else {
                 tableElement.innerText = value[key];
             }
             tableRow.appendChild(tableElement);
         }
         container.appendChild(tableRow);
     },
-    generateSingleTableRowClean : function(value, container, hiddenColumns){
+    generateSingleTableRowClean: function (value, container, hiddenColumns) {
         let tableRow = document.createElement('tr');
         let tableElement;
         let counter = 0;
-        if(!value) {
-            console.log("Empty");
-            return;
-        }
-        for(let key in value){
+        if (!value) return;
+
+        for (let key in value) {
             tableElement = document.createElement('td')
-            if(Array.isArray(value[key])){
+            if (Array.isArray(value[key])) {
                 tableElement.innerText = `${value[key][2]} / ${value[key][1]} / ${value[key][0]}`;
-            }else if(value[key] === false){
+            } else if (value[key] === false) {
                 tableElement.innerText = 'Denied';
-            } else if(value[key] === true){
+            } else if (value[key] === true) {
                 tableElement.innerText = 'Approved';
-            }else if(key == 'amount'){
+            } else if (key == 'amount') {
                 tableElement.innerText = `$ ${values[i][key]}`
-            }else{
-                console.log(value[key])
+            } else {
                 tableElement.innerText = value[key];
             }
             tableRow.appendChild(tableElement);
 
-            for(let hidden of hiddenColumns){
-                if(hidden == counter){
+            for (let hidden of hiddenColumns) {
+                if (hidden == counter) {
                     tableElement.hidden = true;
-                }}
+                }
+            }
             counter++;
         }
         container.appendChild(tableRow);
     },
-    generateSingleTableRowCleanPender : function(value, container, hiddenColumns){
+    generateSingleTableRowCleanPender: function (value, container, hiddenColumns) {
         let tableRow = document.createElement('tr');
         let tableElement;
         let counter = 0;
-        if(!value) {
-            console.log("Empty");
-            return;
-        }
-        for(let key in value){
+        if (!value) return;
+
+        for (let key in value) {
             tableElement = document.createElement('td')
-            if(Array.isArray(value[key])){
+            if (Array.isArray(value[key])) {
                 tableElement.innerText = `${value[key][2]} / ${value[key][1]} / ${value[key][0]}`;
-            }else if(value[key] === false){
+            } else if (value[key] === false) {
                 tableElement.innerText = 'Pending';
 
-            } else if(value[key] === true){
+            } else if (value[key] === true) {
                 tableElement.innerText = 'Answered';
-            }else if(key == 'amount'){
+            } else if (key == 'amount') {
                 tableElement.innerText = `$ ${value[key]}`
-            }else{
-                console.log(value[key])
+            } else {
                 tableElement.innerText = value[key];
             }
             tableRow.appendChild(tableElement);
 
-            for(let hidden of hiddenColumns){
-                if(hidden == counter){
+            for (let hidden of hiddenColumns) {
+                if (hidden == counter) {
                     tableElement.hidden = true;
-                }}
+                }
+            }
             counter++;
         }
         container.appendChild(tableRow);
@@ -600,43 +594,46 @@ const pageUtility = {
 }
 
 const requestViewUtility = {
-    openCreateRequestDisplay: function (){
-        if(createRequestCheck){
+    openCreateRequestDisplay: function () {
+        if (createRequestCheck) {
             createRequestCheck = !createRequestCheck;
 
             requestFormContainer = document.createElement('form');
             requestFormContainer.id = 'request-form-container';
-    
-            pageUtility.generateNewLine(1, requestFormContainer);
-            pageUtility.attachInputElement('request-message', 'Request Message', requestFormContainer);
-            pageUtility.generateNewLine(2, requestFormContainer);
+
+            // pageUtility.generateNewLine(3, requestFormContainer);
+            // pageUtility.generateNewLine(2, requestFormContainer);
+
+            pageUtility.attachSelectOptions('request-type',
+                "Request Type",
+                ['Travel', 'Equipment', 'Consumable', 'Book'],
+                requestFormContainer);
             
-            pageUtility.attachSelectOptions('request-type', 
-                                "Type", 
-                                ['Travel', 'Equipment', 'Consumable', 'Book'], 
-                                requestFormContainer);
-    
+            pageUtility.generateNewLine(2, requestFormContainer);
+
+            pageUtility.attachInputElement('request-message', 'Request Message', requestFormContainer);
+
             pageUtility.generateNewLine(2, requestFormContainer);
             pageUtility.attachInputNumberElement('amount', '$0.00', requestFormContainer);
             pageUtility.generateNewLine(2, requestFormContainer);
-            
+
             requestViewUtility.fileUpload('file-upload', requestFormContainer);
             pageUtility.generateNewLine(2, requestFormContainer);
             pageUtility.attachButtonElement('close-create-button', 'close', requestFormContainer, 'click', requestViewUtility.closeCreateRequestDisplay);
             pageUtility.attachButtonElement('submit-request', 'submit', requestFormContainer, 'click', userRequestUtility.getCreateRequest);
-            
+
             containerOptions.appendChild(requestFormContainer);
             homepageTopContainer.appendChild(containerOptions);
         }
-        
+
     },
-    closeCreateRequestDisplay: function (){
+    closeCreateRequestDisplay: function () {
         createRequestCheck = !createRequestCheck;
         let requestForm = document.getElementById('request-form-container')
         containerOptions.removeChild(requestForm);
     },
-    openRespondRequestDisplay: function(tableRow){
-        if(respondRequestCheck){
+    openRespondRequestDisplay: function (tableRow) {
+        if (respondRequestCheck) {
             respondRequestCheck = !respondRequestCheck;
 
             respondFormContainer = document.createElement('form');
@@ -647,7 +644,7 @@ const requestViewUtility = {
             pageUtility.attachInputElement('response-message', 'Response', respondFormContainer);
             pageUtility.generateNewLine(1, respondFormContainer);
 
-            if(tableRow.children[7].innerText == 'Answered'){
+            if (tableRow.children[7].innerText == 'Answered') {
                 pageUtility.attachButtonElement('file-download', 'Download File', respondFormContainer, 'click', () => {
                     getFile(tableRow.children[0].innerText);
                 });
@@ -657,24 +654,24 @@ const requestViewUtility = {
             pageUtility.attachButtonElement('submit-response', 'submit', respondFormContainer, 'click', () => {
                 requestInteractionUtility.getResponse(tableRow);
             });
-            
+
             allPRContainer.appendChild(respondFormContainer);
 
         }
     },
-    closeRespondRequestDisplay: function(){
+    closeRespondRequestDisplay: function () {
         respondRequestCheck = !respondRequestCheck;
         let respondForm = document.getElementById('respond-form-container');
         allPRContainer.removeChild(respondForm);
-        
+
     },
-    fileUpload: function(fileId, container){
+    fileUpload: function (fileId, container) {
         let inputFile = document.createElement('input');
         inputFile.type = 'file';
         inputFile.id = fileId;
         container.appendChild(inputFile);
     },
-    createPersonalRequestTables: function(){
+    createPersonalRequestTables: function () {
         pageUtility.attachTitleElement('h3', 'Pending Requests', personalPRContainer);
         // pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'pending-request-table', personalPRContainer);
         pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'pending-request-table', personalPRContainer);
@@ -685,7 +682,7 @@ const requestViewUtility = {
         homepageView.appendChild(personalARContainer);
 
     },
-    createAllRequestTable: function(){
+    createAllRequestTable: function () {
         pageUtility.attachTitleElement('h3', 'All Pending Requests', allPRContainer);
         pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-pending-request-table', allPRContainer);
         homepageView.appendChild(allPRContainer);
@@ -694,89 +691,70 @@ const requestViewUtility = {
         pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-answered-request-table', allARContainer);
         homepageView.appendChild(allARContainer);
     },
-    displayEmployeeRequests: function (allRequestData){
-
+    displayEmployeeRequests: function () {
+        let allRequestData = JSON.parse(localStorage.getItem('allRequestData'));
         requestViewUtility.displayPendingRequests(allRequestData.unansweredRequests);
         requestViewUtility.displayAnsweredRequests(allRequestData.answeredRequests);
-        // requestViewUtility.displayCompletedRequests(allRequestData.completedRequests);
-        console.log(allRequestData);
     },
-    displayManagerRequests: function (sortedRequests){
+    displayManagerRequests: function (sortedRequests) {
         requestViewUtility.displayPendingRequests(sortedRequests.personalRequests.personalPendingRequests);
         requestViewUtility.displayAnsweredRequests(sortedRequests.personalRequests.personalAnsweredRequests);
-        // requestViewUtility.displayCompletedRequests(sortedRequests.personalRequests.personalCompletedRequests);
 
         requestViewUtility.displayAllPendingRequests(sortedRequests.employeeRequests.employeePendingRequests);
         requestViewUtility.displayAllAnsweredRequests(sortedRequests.employeeRequests.employeeAnsweredRequests);
-        // requestViewUtility.displayAllCompletedRequests(sortedRequests.employeeRequests.employeeCompletedRequests);
-        console.log(sortedRequests);
     },
-    displayPendingRequests : function (pendingRequests){
+    displayPendingRequests: function (pendingRequests) {
         pageUtility.generateTableRowsCleanPender('pending-request-table', personalPRContainer, pendingRequests, [0, 1, 6, 7]);
         homepageView.appendChild(personalPRContainer);
     },
-    displayAnsweredRequests : function (answeredRequests){
-
+    displayAnsweredRequests: function (answeredRequests) {
         pageUtility.generateCompletedRequestRowClean('answered-request-table', personalARContainer, answeredRequests, requestInteractionUtility.openResponse, [0, 1, 6, 7]);
         homepageView.appendChild(personalARContainer);
-        // pageUtility.generateTableRowsCleanPender('answered-request-table', personalARContainer, answeredRequests, [0, 1]);
-        // homepageView.appendChild(personalARContainer);
     },
-    displayCompletedRequests : function (completedRequests){
-
+    displayCompletedRequests: function (completedRequests) {
         pageUtility.generateTableRowsClean('completed-request-table', personalCRContainer, completedRequests, [0, 1, 2]);
         homepageView.appendChild(personalCRContainer);
     },
-    displayNewPendingRequests : function (newPendingRequestData){
-        let table = document.getElementById('pending-request-table');
-        pageUtility.generateSingleTableRowClean(newPendingRequestData, table, [0, 1]);
-    },
-    displayAllPendingRequests : function (pendingRequests){
+    displayAllPendingRequests: function (pendingRequests) {
         pageUtility.generateManagerTableRowClean('all-pending-request-table', allPRContainer, pendingRequests, requestInteractionUtility.respondToRequest, [0, 6, 7]);
         homepageView.appendChild(allPRContainer);
     },
-    displayAllAnsweredRequests : function (answeredRequests){
-        // pageUtility.generateTableRowsCleanPender('all-answered-request-table', allARContainer, answeredRequests, [0])
-        pageUtility.generateCompletedRequestRowClean('all-answered-request-table', allARContainer, answeredRequests,requestInteractionUtility.openResponseManager, [0, 6, 7])
-
+    displayAllAnsweredRequests: function (answeredRequests) {
+        pageUtility.generateCompletedRequestRowClean('all-answered-request-table', allARContainer, answeredRequests, requestInteractionUtility.openResponseManager, [0, 6, 7])
         homepageView.appendChild(allARContainer);
     },
-    displayAllCompletedRequests : function (completedRequests){
+    displayAllCompletedRequests: function (completedRequests) {
         pageUtility.generateTableRowsClean('all-completed-request-table', allCRContainer, completedRequests, [0]);
         homepageView.appendChild(allCRContainer);
     },
-    displayNewPendingRequests : function (newPendingRequestData){
+    displayNewPendingRequests: function () {
+        let newPendingRequestData = JSON.parse(localStorage.getItem('newRequestData'));
         let table = document.getElementById('pending-request-table');
         pageUtility.generateSingleTableRowCleanPender(newPendingRequestData, table, [0, 1]);
     },
-    failedToGetRequests : function (){
+    failedToGetRequests: function () {
         window.alert('Failed to get requests from server');
     },
-    viewCompletedResponseDisplay : function(tableRow){
+    viewCompletedResponseDisplay: function (tableRow) {
+        let allRequestData = JSON.parse(localStorage.getItem('allRequestData'));
         let answeredRequestId = tableRow.children[0].innerText;
-        console.log(answeredRequestId);
-        console.log(allRequestData.completedRequests);
         for (const iterator of allRequestData.completedRequests) {
-            console.log(iterator);
-            if(answeredRequestId == iterator.id) {
+            if (answeredRequestId == iterator.id) {
                 requestViewUtility.openCompletedRequestDisplay(iterator);
-            } 
+            }
         }
     },
-    viewCompletedResponseDisplayManager : function(tableRow){
+    viewCompletedResponseDisplayManager: function (tableRow) {
         let answeredRequestId = tableRow.children[0].innerText;
-        console.log(answeredRequestId);
-        console.log(sortedRequests.employeeRequests.employeeCompletedRequests);
         for (const iterator of sortedRequests.employeeRequests.employeeCompletedRequests) {
-            console.log(iterator);
-            if(answeredRequestId == iterator.id) {
+            if (answeredRequestId == iterator.id) {
                 requestViewUtility.openCompletedRequestDisplayManager(iterator);
-            } 
+            }
         }
     },
-    openCompletedRequestDisplay : function(completedRequest){
-        if(completedRequestCheck){
-            console.log("Viewing completed request");
+    openCompletedRequestDisplay: function (completedRequest) {
+        if (completedRequestCheck) {
+
             pageUtility.clearView(personalCRContainer);
             pageUtility.attachTitleElement('h3', 'Completed Request', personalCRContainer);
             // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
@@ -786,9 +764,9 @@ const requestViewUtility = {
             homepageView.appendChild(personalCRContainer);
         }
     },
-    openCompletedRequestDisplayManager : function(completedRequest){
-        if(completedRequestCheck){
-            console.log("Viewing completed All request");
+    openCompletedRequestDisplayManager: function (completedRequest) {
+        if (completedRequestCheck) {
+
             pageUtility.clearView(allCRContainer);
             pageUtility.attachTitleElement('h3', 'Completed Request', allCRContainer);
             // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
@@ -801,37 +779,39 @@ const requestViewUtility = {
 }
 
 const requestInteractionUtility = {
-    respondToRequest: function (e){
+    respondToRequest: function (e) {
         let tableRow = e.target.parentNode;
         requestViewUtility.openRespondRequestDisplay(tableRow);
     },
-    getResponse : function(tableRow){
+    getResponse: function (tableRow) {
+        let userData = JSON.parse(localStorage.getItem('userData'));
         let responseObj = userRequestUtility.getResponse();
-        let managerResponseJson = JSON.stringify({requestId:tableRow.children[0].innerText, employeeId:tableRow.children[1].innerText , managerId:userData.employeeId, status:responseObj.bool, response: responseObj.text});
+        let managerResponseJson = JSON.stringify({ requestId: tableRow.children[0].innerText, employeeId: tableRow.children[1].innerText, managerId: userData.employeeId, status: responseObj.bool, response: responseObj.text });
         tableRow.innerHTML = "";
         postRequestResponse(managerResponseJson);
     },
-    openResponse : function(e){
+    openResponse: function (e) {
         let tableRow = e.target.parentNode;
-        console.log(tableRow);
+
         requestViewUtility.viewCompletedResponseDisplay(tableRow);
     },
-    openResponseManager : function(e){
+    openResponseManager: function (e) {
         let tableRow = e.target.parentNode;
-        console.log(tableRow);
+
         requestViewUtility.viewCompletedResponseDisplayManager(tableRow);
     }
 }
 
 const userViewUtility = {
-    welcomeBanner : function (employeeData){
+    welcomeBanner: function () {
+        let employeeData = JSON.parse(localStorage.getItem('employeeData'));
         pageUtility.attachTitleElement('h2', employeeData.firstName + " " + employeeData.lastName, bannerDiv);
     }
 }
 
 const statisticsUtility = {
-    viewGeneralData: function(){
-        console.log("general");
+    viewGeneralData: function () {
+
         document.getElementsByName('view-general-button')[0].hidden = true;
         document.getElementsByName('view-ranking-button')[0].hidden = false;
         document.getElementsByName('view-individual-button')[0].hidden = false;
@@ -839,32 +819,32 @@ const statisticsUtility = {
         generalStatisticsContainer.hidden = false;
         employeeStatisticsContainer.hidden = true;
         indivdiualStatisticsContainer.hidden = true;
-        
-    },
-    viewEmployeeData: function(){
 
-        console.log("emp");
+    },
+    viewEmployeeData: function () {
+
+
         document.getElementsByName('view-ranking-button')[0].hidden = true;
         document.getElementsByName('view-general-button')[0].hidden = false;
         document.getElementsByName('view-individual-button')[0].hidden = false;
         generalStatisticsContainer.hidden = true;
         employeeStatisticsContainer.hidden = false;
         indivdiualStatisticsContainer.hidden = true;
-        
-    },
-    viewIndividualData : function(){
 
-        console.log("indi")
+    },
+    viewIndividualData: function () {
+
+
         document.getElementsByName('view-individual-button')[0].hidden = true;
         document.getElementsByName('view-general-button')[0].hidden = false;
         document.getElementsByName('view-ranking-button')[0].hidden = false;
-    
+
         generalStatisticsContainer.hidden = true;
         employeeStatisticsContainer.hidden = true;
         indivdiualStatisticsContainer.hidden = false;
 
     },
-    createGeneralStatisticsTable: function (){
+    createGeneralStatisticsTable: function () {
 
         pageUtility.attachTitleElement('h3', 'General Employee Role Statistics', generalStatisticsRoleContainer);
         pageUtility.generateTableElement(["Employee Roles", "Mean Average", "Sum"], 'general-employee-role-table', generalStatisticsRoleContainer);
@@ -880,23 +860,19 @@ const statisticsUtility = {
         pageUtility.generateTableElement(["Total", "Mean Average", "Sum"], 'general-total-table', generalStatisticsTotalContainer);
         generalStatisticsContainer.appendChild(generalStatisticsTotalContainer);
         pageUtility.generateSingleTableRowStats(generalStatData.total, document.getElementById('general-total-table'));
-        console.log(document.getElementById('general-total-table'));
-        console.log(generalStatData);
     },
-    createGeneralEmployeeStatisticsTable: function (){
+    createGeneralEmployeeStatisticsTable: function () {
         pageUtility.attachTitleElement('h3', 'Employee Detail View', employeeStatisticsContainer);
-        pageUtility.generateTableElement(['Employee ID',"Sum"], 'general-employee-statistics-table', employeeStatisticsContainer);
+        pageUtility.generateTableElement(['Employee ID', "Sum"], 'general-employee-statistics-table', employeeStatisticsContainer);
         pageUtility.generateTableRowsEmployeeStats('general-employee-statistics-table', employeeStatisticsContainer, generalEmployeeStatData);
-        console.log(generalEmployeeStatData);
     },
-    createIndividualEmployeeStatisticsTable: function (){
-        console.log(individualEmployeeData); 
+    createIndividualEmployeeStatisticsTable: function () {
         let tableContainer = document.getElementById('individual-employee-table');
-        if(tableContainer.children[1]) tableContainer.removeChild(tableContainer.children[1]);
+        if (tableContainer.children[1]) tableContainer.removeChild(tableContainer.children[1]);
         pageUtility.generateSingleTableRowIndividualStat(individualEmployeeData, document.getElementById('individual-employee-table'));
 
     },
-    individualEmployeeSearchDisplay: function(){
+    individualEmployeeSearchDisplay: function () {
         individualEmployeeFormContainer = document.createElement('form');
         individualEmployeeFormContainer.id = 'individual-employee-form-container';
 
@@ -904,7 +880,7 @@ const statisticsUtility = {
         pageUtility.attachInputNumberElement('employee-id-input', 'Employee ID', individualEmployeeFormContainer);
         pageUtility.generateNewLine(2, individualEmployeeFormContainer);
 
-        pageUtility.attachButtonElement('find-button', 'Find', individualEmployeeFormContainer,'click', userRequestUtility.getIndividualEmployeeRequest);
+        pageUtility.attachButtonElement('find-button', 'Find', individualEmployeeFormContainer, 'click', userRequestUtility.getIndividualEmployeeRequest);
         let resetButton = document.createElement('input');
         resetButton.type = 'reset';
         resetButton.value = 'reset';
@@ -917,29 +893,29 @@ const statisticsUtility = {
 }
 
 
-function toggleLogin(toggle){
-    if(toggle)loadLoginInput(loginView);
+function toggleLogin(toggle) {
+    if (toggle) loadLoginInput(loginView);
     else pageUtility.clearView(loginView)
 };
 
-function toggleHomepage(toggle, isManager, userData){
-    if(toggle){
-        if(isManager){
-            getGeneralStats(); 
+function toggleHomepage(toggle, isManager) {
+    if (toggle) {
+        if (isManager) {
+            getGeneralStats();
             loadManagerHomepage(homepageView);
-            getMTotalRequests(userData); 
-        }else{
+            getMTotalRequests();
+        } else {
             loadEmployeeHomepage(homepageView);
-            getEmployeeTotalRequests(userData);
+            getEmployeeTotalRequests();
         }
     }
-        else {
-            pageUtility.clearView(homepageView);
-        }
+    else {
+        pageUtility.clearView(homepageView);
+    }
 }
 
-function toggleStatistics(){
-    if(statisticsPageCheck){
+function toggleStatistics() {
+    if (statisticsPageCheck) {
         statisticsPageCheck = !statisticsPageCheck;
 
         pageUtility.clearView(homepageView);
@@ -949,7 +925,7 @@ function toggleStatistics(){
         pageUtility.clearView(statisticsPageView);
         statisticsPageCheck = !statisticsPageCheck;
 
-        toggleHomepage(true, true, userData);
+        toggleHomepage(true, true);
     }
 }
 
@@ -957,7 +933,7 @@ window.onload = toggleLogin(true);
 
 /* Page Views*/
 
-function loadLoginInput(loginView){
+function loadLoginInput(loginView) {
 
     let formContainer = document.createElement('form');
 
@@ -966,13 +942,13 @@ function loadLoginInput(loginView){
     let loginTitle = document.createElement('div');
 
     let title = document.createElement('h1');
-    let subTitle = document.createElement('h4');
+    // let subTitle = document.createElement('h4');
     title.innerText = 'Hero Pay';
-    subTitle.innerText = 'Login';
-    subTitle.id = 'subTitle';
+    // subTitle.innerText = 'Login';
+    // subTitle.id = 'subTitle';
     loginTitle.id = 'title';
     loginTitle.appendChild(title);
-    loginTitle.appendChild(subTitle);
+    // loginTitle.appendChild(subTitle);
     loginInputContainer.id = 'loginContainer';
     let loginInputDiv = document.createElement('div');
     loginInputDiv.id = 'loginDiv';
@@ -1009,7 +985,7 @@ function loadLoginInput(loginView){
 
 }
 
-function loadEmployeeHomepage(homepageView){
+function loadEmployeeHomepage(homepageView) {
     homepageTopContainer = document.createElement('div');
     homepageTopContainer.id = 'homepage-top';
 
@@ -1019,12 +995,12 @@ function loadEmployeeHomepage(homepageView){
     homepageTopContainer.appendChild(bannerDiv);
 
     homepageView.appendChild(homepageTopContainer);
-    pageUtility.attachTitleElement('h3', 'Options', homepageTopContainer);
-    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer,'click', requestViewUtility.openCreateRequestDisplay);
+    // pageUtility.attachTitleElement('h3', 'Options', homepageTopContainer);
+    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer, 'click', requestViewUtility.openCreateRequestDisplay);
     pageUtility.attachButtonElement('logout-button', 'Logout', homepageTopContainer, 'click', pageUtility.logoutHomepage);
     containerOptions = document.createElement('div');
     containerOptions.id = 'options-div';
-    
+
     personalPRContainer = document.createElement('div');
     personalPRContainer.id = 'pending-request-div';
 
@@ -1036,7 +1012,7 @@ function loadEmployeeHomepage(homepageView){
     requestViewUtility.createPersonalRequestTables();
 }
 
-function loadManagerHomepage(homepageView){
+function loadManagerHomepage(homepageView) {
     homepageTopContainer = document.createElement('div');
     homepageTopContainer.id = 'homepage-top';
 
@@ -1046,8 +1022,8 @@ function loadManagerHomepage(homepageView){
     homepageTopContainer.appendChild(bannerDiv);
 
     homepageView.appendChild(homepageTopContainer);
-    pageUtility.attachTitleElement('h3', 'Options', homepageTopContainer);
-    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer,'click', requestViewUtility.openCreateRequestDisplay);
+    // pageUtility.attachTitleElement('h3', 'Options', homepageTopContainer);
+    pageUtility.attachButtonElement('create-button', 'Create Request', homepageTopContainer, 'click', requestViewUtility.openCreateRequestDisplay);
     pageUtility.attachButtonElement('logout-button', 'Logout', homepageTopContainer, 'click', pageUtility.logoutHomepage);
 
     containerOptions = document.createElement('div');
@@ -1075,7 +1051,7 @@ function loadManagerHomepage(homepageView){
     requestViewUtility.createAllRequestTable();
 }
 
-function loadStatistics(statisticsPageView){
+function loadStatistics(statisticsPageView) {
     statisticsTopContainer = document.createElement('div');
     statisticsTopContainer.id = 'statistics-top';
 
@@ -1091,7 +1067,7 @@ function loadStatistics(statisticsPageView){
 
     generalStatisticsContainer = document.createElement('div');
     generalStatisticsContainer.id = 'general-statistics-container';
-    pageUtility.attachButtonElement('view-general-button', 'View General Data', statisticsTopContainer,'click', statisticsUtility.viewGeneralData);
+    pageUtility.attachButtonElement('view-general-button', 'View General Data', statisticsTopContainer, 'click', statisticsUtility.viewGeneralData);
     statisticsPageView.appendChild(generalStatisticsContainer);
 
     employeeStatisticsContainer = document.createElement('div');
@@ -1131,7 +1107,7 @@ function loadStatistics(statisticsPageView){
 /** Sorting utility */
 
 const sortingUtility = {
-    sortManagerTotalRequests: function(totalRequestData, managerId){
+    sortManagerTotalRequests: function (totalRequestData, managerId) {
         let personalPendingRequests = [];
         let personalAnsweredRequests = [];
         let personalCompletedRequests = [];
@@ -1145,34 +1121,34 @@ const sortingUtility = {
         totalRequestData.completedRequests.forEach(sortCompleted);
 
 
-        function sortPending(var1){
-            if(var1.employeeId == managerId){
+        function sortPending(var1) {
+            if (var1.employeeId == managerId) {
                 personalPendingRequests.push(var1);
-            }else{
+            } else {
                 employeePendingRequests.push(var1);
             }
         }
 
-        function sortAnswered(var1){
-            if(var1.employeeId == managerId){
+        function sortAnswered(var1) {
+            if (var1.employeeId == managerId) {
                 personalAnsweredRequests.push(var1);
-            }else{
+            } else {
                 employeeAnsweredRequests.push(var1);
             }
         }
 
-        function sortCompleted(var1){
-            if(var1.employeeId == managerId){
+        function sortCompleted(var1) {
+            if (var1.employeeId == managerId) {
                 personalCompletedRequests.push(var1);
-            }else{
+            } else {
                 employeeCompletedRequests.push(var1);
             }
         }
 
-        let personalRequests = {personalPendingRequests, personalAnsweredRequests, personalCompletedRequests};
-        let employeeRequests = {employeePendingRequests, employeeAnsweredRequests, employeeCompletedRequests};
-        
-        let sortedRequests = {personalRequests, employeeRequests};
+        let personalRequests = { personalPendingRequests, personalAnsweredRequests, personalCompletedRequests };
+        let employeeRequests = { employeePendingRequests, employeeAnsweredRequests, employeeCompletedRequests };
+
+        let sortedRequests = { personalRequests, employeeRequests };
         return sortedRequests;
     }
 }
@@ -1182,74 +1158,71 @@ const sortingUtility = {
 
 /** Handle User Login */
 
-function getUserLogin(){
+function getUserLogin() {
     let userForm = document.getElementById('formContainer');
     let usernameInput = userForm.elements[0].value;
     let passwordInput = userForm.elements[1].value;
-    if(usernameInput && passwordInput){
-        verifyUser(JSON.stringify({ username: usernameInput, password:passwordInput}));
-    } else{
+    if (usernameInput && passwordInput) {
+        verifyUser(JSON.stringify({ username: usernameInput, password: passwordInput }));
+    } else {
         window.alert("INPUT ALL FIELDS");
     }
 }
 
-function failedLogin(){
+function failedLogin() {
     window.alert("FAIL");
 }
 
-function successfulLogin(userData, isManager){
+function successfulLogin(isManager) {
     toggleLogin(false);
-    if(isManager){
+    if (isManager) {
         getGeneralEmployeeStats();
-        toggleHomepage(true, isManager, userData);
-    }else{
-        toggleHomepage(true, isManager, userData);
+        toggleHomepage(true, isManager);
+    } else {
+        toggleHomepage(true, isManager);
     }
 }
 
-function welcomeEmployee(employeeData){
-    userViewUtility.welcomeBanner(employeeData);
-    console.log(employeeData);
+function welcomeEmployee() {
+    userViewUtility.welcomeBanner();
 }
 /*================================================================================================*/
 
 /**Handle user request */
 
 const userRequestUtility = {
-    getCreateRequest: function (){
+    getCreateRequest: function () {
+        let userData = JSON.parse(localStorage.getItem('userData'));
         let requestForm = document.getElementById('request-form-container');
         let message = requestForm.elements[0].value;
         let type = requestForm.elements[1].value;
         let amount = requestForm.elements[2].value;
         let file = document.getElementById('file-upload').files[0];
 
-        if(file){
-            console.log(file);
-        }
-        if(message && type && amount && file) {
-            createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type:type, requestMessage: message, amount:amount});
+        if (message && type && amount && file) {
+            createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type: type, requestMessage: message, amount: amount });
             postNewRequestWithFile(createRequestObj, file);
-        } else if(message && type && amount){
-            createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type:type, requestMessage: message, amount:amount});
+        } else if (message && type && amount) {
+            createRequestObj = JSON.stringify({ employeeId: userData.employeeId, type: type, requestMessage: message, amount: amount });
             postNewRequest(createRequestObj);
-        } 
+        }
         else window.alert("EMPTY INPUT")
     },
-    getResponse: function (){
+    getResponse: function () {
         let responseForm = document.getElementById('respond-form-container');
         let statusText = responseForm.elements[0].value;
         let message = responseForm.elements[1].value;
         let boolio;
-        statusText == 'Approve' ? boolio = true: boolio = false;
-        let responseObj = {bool:boolio, text:message};
+        statusText == 'Approve' ? boolio = true : boolio = false;
+        let responseObj = { bool: boolio, text: message };
         return responseObj;
     },
-    getIndividualEmployeeRequest: function(){
+    getIndividualEmployeeRequest: function () {
         let id = individualEmployeeFormContainer.elements[0].value;
-        
-        if(id){
+
+        if (id) {
             getIndividualEmployeeRequest(id);
-        }else{
+        } else {
             window.alert('EMPTY INPUT');
         }
 
@@ -1261,169 +1234,266 @@ const userRequestUtility = {
 
 /* Asynchronous functions: Fetch and server logic*/
 
-async function verifyUser(userLoginJson){
+async function verifyUser(userLoginJson) {
     let loginUrl = 'http://localhost:9002/login/validate';
-    try{
-        let userLoginBody = await fetch(loginUrl, {method: "POST", body: userLoginJson});
-        userData = await userLoginBody.json();
-        if(userData) {
-            if(userData.status){
-                getEmployeeInfo(userData);   
-            }else failedLogin();
-        }else failedLogin();
-    }catch(e){
+    try {
+        let userLoginBody = await fetch(loginUrl, { method: "POST", body: userLoginJson });
+        let userData = await userLoginBody.json();
+        if (userData) {
+            if (userData.status) {
+                localStorage.setItem('userData', JSON.stringify(userData));
+                getEmployeeInfo();
+            } else failedLogin();
+        } else failedLogin();
+    } catch (e) {
         console.log(e);
         failedLogin();
     }
 }
 
-async function getEmployeeInfo(userData){
+async function getEmployeeInfo() {
+    let userData = JSON.parse(localStorage.getItem('userData'));
     let employeeValidationUrl = 'http://localhost:9002/login/employee-info?employeeId=' + userData.employeeId;
-    try{
-        let employeeResponseBody = await fetch(employeeValidationUrl, {method: "GET"});
-        employeeData = await employeeResponseBody.json();
-        if(employeeData) {
-            successfulLogin(userData, employeeData.manager);
-            welcomeEmployee(employeeData);
-        }else failedLogin();
-    }catch(e){
+    try {
+        let employeeResponseBody = await fetch(employeeValidationUrl, { method: "GET" });
+        let employeeData = await employeeResponseBody.json();
+        if (employeeData) {
+            localStorage.setItem('employeeData', JSON.stringify(employeeData));
+            successfulLogin(employeeData.manager);
+            welcomeEmployee();
+        } else failedLogin();
+    } catch (e) {
         console.log(e);
         failedLogin();
     }
 }
 
-async function getEmployeeTotalRequests(userData){
+async function getEmployeeTotalRequests() {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
+    let userData = JSON.parse(localStorage.getItem('userData'));
     let employeeTotalRequestUrl = 'http://localhost:9002/employee/request/all/?employeeId=' + userData.employeeId;
-    try{
-        let allRequestResponseBody = await fetch(employeeTotalRequestUrl, {method: "GET"});
-        allRequestData = await allRequestResponseBody.json();
-        if(allRequestData) {
-            requestViewUtility.displayEmployeeRequests(allRequestData);
-        }else failed();
-    }catch(e){
+    try {
+        let allRequestResponseBody = await fetch(employeeTotalRequestUrl,
+            {
+                method: "GET",
+                headers:
+                {
+                    'Authorization': `${userToken}`
+                }
+            });
+        let allRequestData = await allRequestResponseBody.json();
+        if (allRequestData) {
+            localStorage.setItem('allRequestData', JSON.stringify(allRequestData));
+            requestViewUtility.displayEmployeeRequests();
+        } else failed();
+    } catch (e) {
         console.log(e);
         requestViewUtility.failedToGetRequests();
     }
 }
 
-async function postNewRequest(createRequestObj){
+async function postNewRequest(createRequestObj) {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
     let createNewRequestUrl = 'http://localhost:9002/employee/request/new?fileUpload=no';
-    try{
-        let newRequestResponseBody = await fetch(createNewRequestUrl, {method: "POST", body: createRequestObj});
-        newRequestData = await newRequestResponseBody.json();
-        if(newRequestData) {
+    try {
+        let newRequestResponseBody = await fetch(createNewRequestUrl,
+            {
+                method: "POST",
+                headers:
+                {
+                    'Authorization': `${userToken}`
+                },
+                body: createRequestObj
+            });
+        let newRequestData = await newRequestResponseBody.json();
+        if (newRequestData) {
+            if (localStorage.getItem('newRequestData')) localStorage.removeItem('newRequestData');
+
+            localStorage.setItem('newRequestData', JSON.stringify(newRequestData));
             requestViewUtility.closeCreateRequestDisplay();
-            console.log(newRequestData);
-            requestViewUtility.displayNewPendingRequests(newRequestData);
-        }else failedLogin();
-    }catch(e){
+            requestViewUtility.displayNewPendingRequests();
+        } else failedLogin();
+    } catch (e) {
         console.log(e);
     }
 }
 
-async function postNewRequestWithFile(createRequestObj, file){
+async function postNewRequestWithFile(createRequestObj, file) {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
     let createNewRequestUrl = 'http://localhost:9002/employee/request/new?fileUpload=check';
-    try{
-        let newRequestResponseBody = await fetch(createNewRequestUrl, {method: "POST", body: createRequestObj});
-        newRequestData = await newRequestResponseBody.json();
-        if(newRequestData) {
+    try {
+        let newRequestResponseBody = await fetch(createNewRequestUrl,
+            {
+                method: "POST",
+                headers:
+                {
+                    'Authorization': `${userToken}`
+                },
+                body: createRequestObj
+            });
+        let newRequestData = await newRequestResponseBody.json();
+        if (newRequestData) {
+            if (localStorage.getItem('newRequestData')) localStorage.removeItem('newRequestData');
+
+            localStorage.setItem('newRequestData', JSON.stringify(newRequestData));
             requestViewUtility.closeCreateRequestDisplay();
-            console.log(newRequestData);
-            saveFile(newRequestData, file);
-            requestViewUtility.displayNewPendingRequests(newRequestData);
-        }else failedLogin();
-    }catch(e){
+            saveFile(file);
+            requestViewUtility.displayNewPendingRequests();
+        } else failedLogin();
+    } catch (e) {
         console.log(e);
     }
 }
 
-async function getMTotalRequests(userData){
+async function getMTotalRequests() {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
+    let userData = JSON.parse(localStorage.getItem('userData'));
     let totalRequestUrl = 'http://localhost:9002/manager/total';
-    try{
-        let totalRequestResponseBody = await fetch(totalRequestUrl, {method: 'GET'});
+    try {
+        let totalRequestResponseBody = await fetch(totalRequestUrl,
+            {
+                method: 'GET',
+                headers:
+                {
+                    'Authorization': `${userToken}`
+                }
+            });
         let totalRequestData = await totalRequestResponseBody.json();
-        if(totalRequestData){
+        if (totalRequestData) {
             sortedRequests = sortingUtility.sortManagerTotalRequests(totalRequestData, userData.employeeId);
             requestViewUtility.displayManagerRequests(sortedRequests);
-        }else failed();
-    }catch(e){
+        } else failed();
+    } catch (e) {
         console.log(e);
         requestViewUtility.failedToGetRequests();
     }
 }
 
-async function postRequestResponse(responseObj){
-    console.log(responseObj);
+async function postRequestResponse(responseObj) {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
+    let userData = JSON.parse(localStorage.getItem('userData'));
     let respondUrl = 'http://localhost:9002/manager/respond';
-    try{
-        let responseBody = await fetch(respondUrl, {method: "POST", body: responseObj});
+    try {
+        let responseBody = await fetch(respondUrl,
+            {
+                method: "POST",
+                headers:
+                {
+                    'Authorization': `${userToken}`
+                },
+                body: responseObj
+            });
         newResponseData = await responseBody.json();
-         if(newResponseData){
-             console.log("refresh to see new results");
-             pageUtility.clearView(homepageView);
-             toggleHomepage(true, true, userData);
-             console.log(newResponseData);
-         } 
-    } catch(e){
+        pageUtility.clearView(homepageView);
+        toggleHomepage(true, true, userData);
+    } catch (e) {
         console.log(e);
     }
 }
 
-async function getGeneralStats(){
+async function getGeneralStats() {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
     let generalStatUrl = 'http://localhost:9002/manager/statistic/general';
-    try{
-        let generalStatBody = await fetch(generalStatUrl, {method: "GET"});
+    try {
+        let generalStatBody = await fetch(generalStatUrl,
+            {
+                method: "GET",
+                headers:
+                {
+                    "Authorization": `${userToken}`
+                }
+            });
         generalStatData = await generalStatBody.json();
-        if(generalStatData){
-            console.log(generalStatData);
-            console.log("GOT THE STATS BOYS");
+        if (generalStatData) {
             pageUtility.attachButtonElement('statistic-page-button', 'Statistics', homepageTopContainer, 'click', toggleStatistics);
         }
-    }catch(e){
+    } catch (e) {
         console.log(e);
     }
 }
 
-async function getGeneralEmployeeStats(){
+async function getGeneralEmployeeStats() {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
     let generalEmployeeStatUrl = 'http://localhost:9002/manager/statistic/employee-list';
-    try{
-        let generalEmployeeBody = await fetch(generalEmployeeStatUrl, {method: "GET"});
+    try {
+        let generalEmployeeBody = await fetch(generalEmployeeStatUrl,
+            {
+                method: "GET",
+                headers:
+                {
+                    "Authorization": `${userToken}`
+                }
+            });
         generalEmployeeStatData = await generalEmployeeBody.json();
-        if(generalEmployeeStatData){
-            console.log("GOT THE EMPLOYEESTATS BOYS");
-        }
-    }catch(e){
+
+    } catch (e) {
         console.log(e);
     }
 }
 
-async function getIndividualEmployeeRequest(id){
+async function getIndividualEmployeeRequest(id) {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
     let individualEmployeeUrl = 'http://localhost:9002/manager/statistic/individual?employeeId=' + id;
-    try{
-        let individualEmployeeBody = await fetch(individualEmployeeUrl, {method: "GET"});
+    try {
+        let individualEmployeeBody = await fetch(individualEmployeeUrl,
+            {
+                method: "GET",
+                headers:
+                {
+                    "Authorization": `${userToken}`
+                }
+            });
         individualEmployeeData = await individualEmployeeBody.json();
-        if(individualEmployeeData){
+        if (individualEmployeeData) {
             statisticsUtility.createIndividualEmployeeStatisticsTable();
-        } 
-    }catch(e){
+        }
+    } catch (e) {
         console.log(e);
     }
 }
 
-async function saveFile(newRequest, file){
-    let fileUploadUrl = 'http://localhost:9002/employee/request/file?fileKey=' + newRequest.id +'_file'
-    try{
-        let r = await fetch(fileUploadUrl, {method: "POST", body : file});
-    }catch(e){
-        console.log("damn");
+async function saveFile(file) {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
+    let newRequest = JSON.parse(localStorage.getItem('newRequestData'));
+    let fileUploadUrl = 'http://localhost:9002/employee/request/file?fileKey=' + newRequest.id + '_file'
+    try {
+        let r = await fetch(fileUploadUrl,
+            {
+                method: "POST",
+                headers:
+                {
+                    "Authorization": `${userToken}`
+                },
+                body: file
+            });
+    } catch (e) {
+        console.log(e);
     }
 }
 
-async function getFile(requestId){
-    let fileDownloadUrl = 'http://localhost:9002/employee/request/treasure/?fileKey='+ requestId + '_file';
-    try{
-        let r = await fetch(fileDownloadUrl, {method: "GET"});
-        let file = await r.blob(['hello'], {type: 'image/jpeg'});
+async function getFile(requestId) {
+    let employeeData = JSON.parse(localStorage.getItem('employeeData'));
+    const userToken = employeeData.jwt;
+    let fileDownloadUrl = 'http://localhost:9002/employee/request/treasure/?fileKey=' + requestId + '_file';
+    try {
+        let r = await fetch(fileDownloadUrl,
+            {
+                method: "GET",
+                headers:
+                {
+                    "Authorization": `${userToken}`
+                }
+            });
+        let file = await r.blob(['hello'], { type: 'image/jpeg' });
         let fileURL = URL.createObjectURL(file);
         const anchor = document.createElement('a');
         anchor.target = '_blank';
@@ -1433,7 +1503,7 @@ async function getFile(requestId){
         document.body.removeChild(anchor);
 
         URL.revokeObjectURL(fileURL);
-    }catch(e){
+    } catch (e) {
         console.log(e);
     }
 }

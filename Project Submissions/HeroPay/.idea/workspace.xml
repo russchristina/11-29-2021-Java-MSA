@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc1ddeda-920e-49de-97ba-ae406cf7cb5f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/utility/JWTHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LOGIN/html/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/html/homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LOGIN/html/loginBase.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/LOGIN/scripts/control.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/control.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/createTableScript.sql" beforeDir="false" afterPath="$PROJECT_DIR$/createTableScript.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LOGIN/scripts/fileUpload.js" beforeDir="false" afterPath="$PROJECT_DIR$/LOGIN/scripts/fileUpload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageEmployee/controller/EmployeeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageFiles/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageFiles/controller/FileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageRequest/controller/RequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageStatistics/controller/StatisticsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/manageStatistics/controller/StatisticsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/employeeRequests/EmployeeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/presentation/model/employeeRequests/EmployeeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/interfaces/EmployeeServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/handleEmployee/interfaces/EmployeeServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/revature/service/handleEmployee/EmployeeServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/revature/service/handleEmployee/EmployeeServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +85,7 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.revature.utility" />
       <recent name="com.revature" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
@@ -99,18 +110,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CompletedRequestServiceTest.validateCompletedRequest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="JWTHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.revature.utility.JWTHandler" />
       <module name="HeroPay" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.revature.service.handleRequest.*" />
+          <option name="PATTERN" value="com.revature.utility.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.revature.service.handleRequest" />
-      <option name="MAIN_CLASS_NAME" value="com.revature.service.handleRequest.CompletedRequestServiceTest" />
-      <option name="METHOD_NAME" value="validateCompletedRequest" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -164,10 +172,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Driver" />
+        <item itemvalue="Application.JWTHandler" />
         <item itemvalue="JUnit.SorterTest" />
         <item itemvalue="JUnit.SortingServiceTest" />
         <item itemvalue="JUnit.CompletedRequestServiceTest.validateCompletedRequestInvalidManagerIdExceptionTest" />
-        <item itemvalue="JUnit.CompletedRequestServiceTest.validateCompletedRequest" />
       </list>
     </recent_temporary>
   </component>

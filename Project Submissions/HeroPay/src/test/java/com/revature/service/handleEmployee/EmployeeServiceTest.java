@@ -4,6 +4,7 @@ import com.revature.presentation.model.employeeRequests.Employee;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
+import com.revature.utility.JWTHandler;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

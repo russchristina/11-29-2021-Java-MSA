@@ -59,10 +59,6 @@ async function download(){
 }
 
 async function savePhoto(file){
-    let key = {key: 'photo'};
-    const ctrl = new AbortController()
-    setTimeout(() => ctrl.abort(), 5000);
-
     try{
         let r = await fetch('http://localhost:9002/employee/request/file', {method: "POST", body : file});
     }catch(e){

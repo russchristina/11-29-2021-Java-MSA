@@ -1,10 +1,12 @@
 package com.revature.service.handleEmployee;
 
 import com.revature.presentation.model.employeeRequests.Employee;
+import com.revature.presentation.model.employeeRequests.EmployeeResponse;
 import com.revature.repository.DAOClasses.EmployeeAccountDao;
 import com.revature.repository.DTO.EmployeeAccountEntity;
 import com.revature.repository.DTO.EmployeeRoleEntity;
 import com.revature.service.handleEmployee.interfaces.EmployeeServiceInterface;
+import com.revature.utility.JWTHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,7 @@ public class EmployeeService implements EmployeeServiceInterface {
     private final Logger tLog = LoggerFactory.getLogger("tLog");
 
     private final EmployeeAccountDao employeeAccountDao;
+
 
     public EmployeeService(EmployeeAccountDao employeeAccountDao) {
         this.employeeAccountDao = employeeAccountDao;
@@ -46,9 +49,21 @@ public class EmployeeService implements EmployeeServiceInterface {
     }
 
     @Override
-    public Employee getEmployeeModelWithEmployeeId(int employeeId) {
+    public EmployeeResponse getEmployeeModelWithEmployeeId(int employeeId) {
         dLog.debug("Getting employee with ID and converting them: " + employeeId);
-        return convertEmployeeEntityToEmployee(getEmployeeAccountById(employeeId));
+        Employee employee = convertEmployeeEntityToEmployee(getEmployeeAccountById(employeeId));
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setStatus(true);
+        employeeResponse.setFirstName(employee.getFirstName());
+        employeeResponse.setLastName(employee.getLastName());
+        employeeResponse.setRole(employee.getRole());
+        employeeResponse.setManager(employee.isManager());
+        if(employee.isManager()){
+            employeeResponse.setJWT(JWTHandler.generateManagerJwt());
+        }else{
+            employeeResponse.setJWT(JWTHandler.generateEmployeeJwt());
+        }
+        return employeeResponse;
     }
 
     @Override
