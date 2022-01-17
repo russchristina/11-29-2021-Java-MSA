@@ -58,28 +58,6 @@ let sortedRequests;
 
 let individualEmployeeData;
 
-
-//============================================================================
-// JUST FOR DEVELOPMENT, COMMENT OUT WHEN TESTING WITH SERVER, BUGGY
-let toggleViewButton = document.createElement('input');
-toggleViewButton.type = 'button';
-toggleViewButton.value = 'Switch Login <-> Homepage'
-toggleViewButton.addEventListener('click', toggleView);
-
-let loginPageCheck = true;
-let homePageCheck = false;
-
-function toggleView() {
-    loginPageCheck = !loginPageCheck;
-    homePageCheck = !homePageCheck;
-    toggleLogin(loginPageCheck);
-    toggleHomepage(homePageCheck, true);
-}
-
-document.body.appendChild(toggleViewButton);
-
-//============================================================================
-
 /** Function Objects */
 /* Handle Page Utility*/
 
@@ -184,12 +162,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td');
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
+
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -208,13 +181,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -237,13 +204,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.orderedList.length; i++) {
@@ -267,13 +228,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -313,13 +268,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -359,13 +308,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -387,13 +330,7 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -432,13 +369,6 @@ const pageUtility = {
         let tableRow;
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
-
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let i = 0; i < values.length; i++) {
@@ -476,13 +406,7 @@ const pageUtility = {
         let tableRow = document.createElement('tr');
         let tableElement;
         if (values.length == 0) {
-            tableRow = document.createElement('tr');
-            tableElement = document.createElement('td')
 
-            tableElement.id = 'empty';
-            tableRow.appendChild(tableElement);
-            table.appendChild(tableRow);
-            container.appendChild(table);
             return;
         }
         for (let key in value) {
@@ -605,7 +529,7 @@ const requestViewUtility = {
             // pageUtility.generateNewLine(2, requestFormContainer);
 
             pageUtility.attachSelectOptions('request-type',
-                "Request Type",
+                "Create Request",
                 ['Travel', 'Equipment', 'Consumable', 'Book'],
                 requestFormContainer);
             
@@ -619,8 +543,8 @@ const requestViewUtility = {
 
             requestViewUtility.fileUpload('file-upload', requestFormContainer);
             pageUtility.generateNewLine(2, requestFormContainer);
-            pageUtility.attachButtonElement('close-create-button', 'close', requestFormContainer, 'click', requestViewUtility.closeCreateRequestDisplay);
-            pageUtility.attachButtonElement('submit-request', 'submit', requestFormContainer, 'click', userRequestUtility.getCreateRequest);
+            pageUtility.attachButtonElement('close-create-button', 'Close', requestFormContainer, 'click', requestViewUtility.closeCreateRequestDisplay);
+            pageUtility.attachButtonElement('submit-request', 'Submit', requestFormContainer, 'click', userRequestUtility.getCreateRequest);
 
             containerOptions.appendChild(requestFormContainer);
             homepageTopContainer.appendChild(containerOptions);
@@ -650,8 +574,8 @@ const requestViewUtility = {
                 });
             }
 
-            pageUtility.attachButtonElement('close-respond-button', 'close', respondFormContainer, 'click', requestViewUtility.closeRespondRequestDisplay);
-            pageUtility.attachButtonElement('submit-response', 'submit', respondFormContainer, 'click', () => {
+            pageUtility.attachButtonElement('close-respond-button', 'Close', respondFormContainer, 'click', requestViewUtility.closeRespondRequestDisplay);
+            pageUtility.attachButtonElement('submit-response', 'Submit', respondFormContainer, 'click', () => {
                 requestInteractionUtility.getResponse(tableRow);
             });
 
@@ -672,22 +596,51 @@ const requestViewUtility = {
         container.appendChild(inputFile);
     },
     createPersonalRequestTables: function () {
-        pageUtility.attachTitleElement('h3', 'Pending Requests', personalPRContainer);
+        pageUtility.attachButtonElement('personalRequest', 'Pending Requests', personalPRContainer, 'click', () =>{
+            if (document.getElementById('pending-request-table').style.display === "block") {
+                document.getElementById('pending-request-table').style.display = "none";
+            } else {
+                document.getElementById('pending-request-table').style.display = "block";
+            }
+        });
         // pageUtility.generateTableElement(['id', 'employeeId', 'type', 'requestMessage', 'amount', 'dateSubmission'], 'pending-request-table', personalPRContainer);
+        
         pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted'], 'pending-request-table', personalPRContainer);
         homepageView.appendChild(personalPRContainer);
 
-        pageUtility.attachTitleElement('h3', 'Past Requests', personalARContainer);
+        pageUtility.attachButtonElement('pastRequests', 'Past Requests', personalARContainer, 'click', () =>{
+            if (document.getElementById('answered-request-table').style.display === "block") {
+                document.getElementById('answered-request-table').style.display = "none";
+            } else {
+                document.getElementById('answered-request-table').style.display = "block";
+            }
+        });
+
+
         pageUtility.generateTableElement(['Request Type', 'Message', 'Cost', 'Submitted', 'View Response'], 'answered-request-table', personalARContainer);
         homepageView.appendChild(personalARContainer);
 
     },
     createAllRequestTable: function () {
-        pageUtility.attachTitleElement('h3', 'All Pending Requests', allPRContainer);
+        pageUtility.attachButtonElement('allPendingRequests', 'All Pending Requests', allPRContainer, 'click', () =>{
+            if (document.getElementById('all-pending-request-table').style.display === "block") {
+                document.getElementById('all-pending-request-table').style.display = "none";
+            } else {
+                document.getElementById('all-pending-request-table').style.display = "block";
+            }
+        });
+
         pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-pending-request-table', allPRContainer);
         homepageView.appendChild(allPRContainer);
 
-        pageUtility.attachTitleElement('h3', 'All Past Requests', allARContainer);
+        pageUtility.attachButtonElement('allPastRequests', 'All Past Requests', allARContainer, 'click', () =>{
+            if (document.getElementById('all-answered-request-table').style.display === "block") {
+                document.getElementById('all-answered-request-table').style.display = "none";
+            } else {
+                document.getElementById('all-answered-request-table').style.display = "block";
+            }
+        });
+
         pageUtility.generateTableElement(['Employee ID', 'Request Type', 'Message', 'Cost', 'Submitted'], 'all-answered-request-table', allARContainer);
         homepageView.appendChild(allARContainer);
     },
@@ -756,7 +709,14 @@ const requestViewUtility = {
         if (completedRequestCheck) {
 
             pageUtility.clearView(personalCRContainer);
-            pageUtility.attachTitleElement('h3', 'Completed Request', personalCRContainer);
+            
+            pageUtility.attachButtonElement('completedRequests', 'Completed Request', personalCRContainer, 'click', () =>{
+                if (document.getElementById('completed-request-table').style.display === "block") {
+                    document.getElementById('completed-request-table').style.display = "none";
+                } else {
+                    document.getElementById('completed-request-table').style.display = "block";
+                }
+            });
             // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
             pageUtility.generateTableElement(['Status', 'Response', 'Resolved'], 'completed-request-table', personalCRContainer);
             homepageView.appendChild(personalCRContainer);
@@ -767,8 +727,15 @@ const requestViewUtility = {
     openCompletedRequestDisplayManager: function (completedRequest) {
         if (completedRequestCheck) {
 
+
             pageUtility.clearView(allCRContainer);
-            pageUtility.attachTitleElement('h3', 'Completed Request', allCRContainer);
+            pageUtility.attachButtonElement('allCompletedRequests', 'Completed Request', allCRContainer, 'click', () =>{
+                if (document.getElementById('all-completed-request-table').style.display === "block") {
+                    document.getElementById('all-completed-request-table').style.display = "none";
+                } else {
+                    document.getElementById('all-completed-request-table').style.display = "block";
+                }
+            });
             // pageUtility.generateTableElement(['id', 'employeeId', 'managerId', 'status', 'response', 'dateResolved'], 'completed-request-table', personalCRContainer);
             pageUtility.generateTableElement(['Employee ID', 'Manager ID', 'Response', 'Responding Message', 'Resolved'], 'all-completed-request-table', allCRContainer);
             homepageView.appendChild(allCRContainer);
@@ -882,8 +849,8 @@ const statisticsUtility = {
 
         pageUtility.attachButtonElement('find-button', 'Find', individualEmployeeFormContainer, 'click', userRequestUtility.getIndividualEmployeeRequest);
         let resetButton = document.createElement('input');
-        resetButton.type = 'reset';
-        resetButton.value = 'reset';
+        resetButton.type = 'Reset';
+        resetButton.value = 'Reset';
         individualEmployeeFormContainer.appendChild(resetButton);
         indivdiualStatisticsContainer.appendChild(individualEmployeeFormContainer);
         pageUtility.attachTitleElement('h3', 'Employee Details', indivdiualStatisticsContainer);
@@ -943,7 +910,7 @@ function loadLoginInput(loginView) {
 
     let title = document.createElement('h1');
     // let subTitle = document.createElement('h4');
-    title.innerText = 'Hero Pay';
+    title.innerText = 'Fantasy Reimbursement';
     // subTitle.innerText = 'Login';
     // subTitle.id = 'subTitle';
     loginTitle.id = 'title';
@@ -959,13 +926,13 @@ function loadLoginInput(loginView) {
     let resetButton = document.createElement('input');
 
     submitButton.type = 'button';
-    submitButton.value = 'submit';
+    submitButton.value = 'Submit';
 
 
     submitButton.addEventListener('click', getUserLogin);
 
-    resetButton.type = 'reset';
-    resetButton.value = 'reset';
+    resetButton.type = 'Reset';
+    resetButton.value = 'Reset';
 
     formContainer.id = 'formContainer';
 
@@ -1060,8 +1027,6 @@ function loadStatistics(statisticsPageView) {
     pageUtility.attachTitleElement('h1', 'Statistics', bannerDiv);
     statisticsTopContainer.appendChild(bannerDiv);
     statisticsPageView.appendChild(statisticsTopContainer);
-
-    pageUtility.attachTitleElement('h3', 'Options', statisticsTopContainer);
     pageUtility.attachButtonElement('homepage-button', 'Return', statisticsTopContainer, 'click', toggleStatistics);
 
 

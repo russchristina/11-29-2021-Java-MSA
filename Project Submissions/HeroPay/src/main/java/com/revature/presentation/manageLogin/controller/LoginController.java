@@ -36,7 +36,7 @@ public class LoginController {
             ctx.json(loginResponse);
         } catch (Exception e){
             dLog.error(e.getMessage(), e);
-            ctx.status(400);
+            ctx.status(406);
         }
     };
 

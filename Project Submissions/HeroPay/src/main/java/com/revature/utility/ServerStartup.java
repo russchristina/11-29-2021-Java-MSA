@@ -30,6 +30,14 @@ public class ServerStartup {
             ctx.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
             ctx.header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
         });
+
+        this.app.error(404, ctx ->{
+            ctx.redirect("http://127.0.0.1:5500/html/404.html");
+        });
+
+        this.app.error(401, ctx ->{
+            ctx.redirect("http://127.0.0.1:5500/html/401.html");
+        });
         LoginInfoDao lid = new LoginInfoDao();
         PendingRequestDao pid = new PendingRequestDao();
         CompletedRequestDao crd = new CompletedRequestDao();
