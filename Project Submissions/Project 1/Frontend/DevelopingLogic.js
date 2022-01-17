@@ -21,7 +21,6 @@ function fetchData() {
             generateMenu(data)
         } catch {
         window.alert(text)
-        console.log(text)
         }
     })
 
@@ -81,31 +80,51 @@ function createRequest(data) {
     
     let empName = document.createElement('input')
     empName.name='empName'
-    empName.setAttribute('type', 'text')
+    empName.type='text'
     empName.value = data.name
     empName.setAttribute('readonly', 'readonly')
+    let empNameLbl = document.createElement('label')
+    empNameLbl.className='reqBoxLbl'
+    empNameLbl.htmlFor='empName'
+    empNameLbl.innerText='Employee name '
 
     let reqAmount = document.createElement('input')
     reqAmount.name='reqAmount'
     reqAmount.required = true
-    reqAmount.type=('text')
+    reqAmount.type='text'
+    reqAmount.maxLength='8'
     reqAmount.placeholder=('Enter amount')
+    let reqAmountLbl = document.createElement('label')
+    reqAmountLbl.className='reqBoxLbl'
+    reqAmountLbl.htmlFor='reqAmount'
+    reqAmountLbl.innerText='Amount requested '
 
     let reqReason = document.createElement('select')
     reqReason.required = true
     reqReason.name='reqReason'
+    reqReason.id='reqReasonSel'
+    let reqReasonLbl = document.createElement('label')
+    reqReasonLbl.className='reqBoxLbl'
+    reqReasonLbl.htmlFor='reqReason'
+    reqReasonLbl.innerText='Reason for request '
     let option1 = document.createElement('option')
     option1.text = 'Travel'
+    option1.className='reqOption'
     let option2 = document.createElement('option')
     option2.text = 'Equipment'
+    option2.className='reqOption'
     let option3 = document.createElement('option')
     option3.text = 'Work-related expense'
+    option3.className='reqOption'
     let option4 = document.createElement('option')
     option4.text = 'Illness'
+    option4.className='reqOption'
     let option5 = document.createElement('option')
     option5.text = 'Work-related injury'
+    option5.className='reqOption'
     let option6 = document.createElement('option')
     option6.text = 'Other'
+    option6.className='reqOption'
 
     reqReason.options.add(option1)
     reqReason.options.add(option2)
@@ -113,17 +132,33 @@ function createRequest(data) {
     reqReason.options.add(option4)
     reqReason.options.add(option5)
     reqReason.options.add(option6)
-    
+
     let reqButton = document.createElement('button')
     reqButton.type='submit'
     reqButton.innerText='Submit'
 
+    let b = document.createElement('br')
+    let bb = document.createElement('br')
+    let bbb = document.createElement('br')
+    let bbbb = document.createElement('br')
+    let bbbbb = document.createElement('br')
+    let bbbbbb = document.createElement('br')
+
+    requestForm.appendChild(empNameLbl)  
     requestForm.appendChild(empName)
+    requestForm.appendChild(b)
+    requestForm.appendChild(bbbbb)
+    requestForm.appendChild(reqAmountLbl)
     requestForm.appendChild(reqAmount)
+    requestForm.appendChild(bb)
+    requestForm.appendChild(bbbbbb)
+    requestForm.appendChild(reqReasonLbl)
     requestForm.appendChild(reqReason)
+    requestForm.appendChild(bbb)
+    requestForm.appendChild(bbbb)
     requestForm.appendChild(reqButton)
 
-    requestForm.onsubmit= function(){createRequestHandler(requestForm, data)}
+    requestForm.onsubmit= function(event){createRequestHandler(requestForm, data), event.preventDefault()}
 
     let backButton = document.createElement('button')
     backButton.innerText='Go Back'
@@ -132,12 +167,24 @@ function createRequest(data) {
     mainContainer.innerHTML=''
     let reqDiv = document.createElement('div')
     reqDiv.id='reqBox'
-    let b = document.createElement('br')
+    
+
+    let reqH = document.createElement('h2')
+    reqH.id='reqH'
+    reqH.innerText='Reimbursement Request Form'
+
+    let br = document.createElement('br')
+    let bbr = document.createElement('br')
+    let reqDivHolder = document.createElement('div')
+    reqDivHolder.id='rDivHolder'
 
     reqDiv.append(requestForm)
-    reqDiv.append(b)
-    reqDiv.append(backButton)
+    reqDivHolder.append(reqH)
+    mainContainer.append(reqDivHolder)
     mainContainer.append(reqDiv)
+    mainContainer.append(br)
+ 
+    mainContainer.append(backButton)
 }
 
 /**
@@ -145,7 +192,6 @@ function createRequest(data) {
  */
 async function viewRequestHandler(data) {
     let url = 'http://localhost:7777/empRequests'
-    console.log(data)
     let response_body = await fetch(url, {
         method: "POST", 
         body: JSON.stringify(data)
@@ -171,12 +217,17 @@ async function getAllRequestData(data) {
  */
 function viewStats(data) {
     let mainStatDiv = document.createElement('div')
+    mainStatDiv.id='statDiv'
     let highestPayoutDiv = document.createElement('button')
     highestPayoutDiv.innerText='Highest amount paid'
+    highestPayoutDiv.className='buttonSpace'
+    highestPayoutDiv.id='highest'
     let numberOfReqDiv = document.createElement('button')
     numberOfReqDiv.innerText='Number of requests submitted'
+    numberOfReqDiv.className='buttonSpace'
     let avgAmtReqDiv = document.createElement('button') 
     avgAmtReqDiv.innerText='Average amount requested'
+    avgAmtReqDiv.className='buttonSpace'
     
     highestPayoutDiv.addEventListener('click', function(){
         let url  = 'http://localhost:7777/highest-payout'
@@ -185,7 +236,7 @@ function viewStats(data) {
         .then(text => {
         try {
             let statRequestData = JSON.parse(text)
-            window.alert("Employee: " + statRequestData.employeeName + "\nAmount: " + statRequestData.amount.toFixed(2))
+            statDisplay.innerText=("Employee: " + statRequestData.employeeName + "\nAmount: $" + statRequestData.amount.toFixed(2))
         } catch {
             window.alert(text)
         }})
@@ -199,7 +250,7 @@ function viewStats(data) {
         .then(text => {
         try {
             let statRequestData = JSON.parse(text)
-            window.alert("Total number of requests submitted: " + statRequestData)
+            statDisplay.innerText=("Total number of requests submitted:\n" + statRequestData)
         } catch {
             window.alert(text)
         }})
@@ -213,24 +264,39 @@ function viewStats(data) {
         .then(text => {
         try {
             let statRequestData = JSON.parse(text)
-            window.alert("Average amount requested: " + statRequestData.toFixed(2))
+            statDisplay.innerText=("Average amount requested:\n$" + statRequestData.toFixed(2))
         } catch {
             window.alert(text)
         }})
         .catch(() => {window.alert('Oops.. Something happened')})
     })
     
-    let backButton = document.createElement('button')
-    backButton.innerText='Go Back'
-    backButton.onclick = function() {generateMenu(data)}
+    let backB = document.createElement('button')
+    backB.innerText='Go Back'
+    backB.onclick = function() {generateMenu(data)}
+    backB.id='backButton'
+    let br = document.createElement('br')
+    let bbr = document.createElement('br')
+    let bbbr = document.createElement('br')
+    let statDisplay = document.createElement('div')
+    statDisplay.id='statDivDisplay'
+    let statBtnDiv = document.createElement('div')
+    statBtnDiv.id='statBtnDiv'
+    let holderDiv= document.createElement('div')
 
-    mainStatDiv.append(highestPayoutDiv)
-    mainStatDiv.append(numberOfReqDiv)
-    mainStatDiv.append(avgAmtReqDiv)
-    mainStatDiv.append(backButton)
     mainContainer.innerHTML=''
-    mainContainer.append(mainStatDiv)
+    statBtnDiv.append(highestPayoutDiv)
+    statBtnDiv.append(bbr)
+    statBtnDiv.append(numberOfReqDiv)
+    statBtnDiv.append(bbbr)
+    statBtnDiv.append(avgAmtReqDiv)
+    mainStatDiv.append(statBtnDiv)
+    mainStatDiv.append(statDisplay)
+    
+    holderDiv.appendChild(mainStatDiv)
+    holderDiv.append(backB)
 
+    mainContainer.append(holderDiv)
 }
 
 /**
@@ -248,7 +314,6 @@ function createRequestHandler(requestForm, data)  {
     .then(response => response.text())
     .then(text => {
         window.alert(text)
-        console.log(text)
     })
 
     .catch(() => {window.alert('Oops.. Something happened')})
@@ -319,6 +384,7 @@ function buildTable(buildData, data, viewAll) {
         if(data.manager === true && data.name !== request.employeeName && request.status === 'Pending'){
             let approveButton = document.createElement('button')
             approveButton.innerText='Approve'
+            approveButton.id='approveButton'
             approveButton.onclick = function() {handleRequest(request, 'Approved', data)}
             let denyButton = document.createElement('button')
             denyButton.innerText='Deny'  
@@ -351,23 +417,22 @@ function buildTable(buildData, data, viewAll) {
 function handleRequest(requestData, reqAction, data) { 
     let url = 'http://localhost:7777/request-update';
     let noteWindow = prompt('Reason for action. (Optional)')
-    requestData.status = reqAction
     
     if(noteWindow != null) {
         requestData.note = noteWindow
+        requestData.status = reqAction
+    
+        fetch(url, {
+            method: 'PUT', 
+            body: JSON.stringify(requestData)
+        })
+        
+        .then(response => response.text())
+        .then(text => {
+            window.alert(text)
+            getAllRequestData(data)
+        })
+        
+        .catch(() => {window.alert('Oops.. Something happened')})
     } 
-    
-    fetch(url, {
-        method: 'PUT', 
-        body: JSON.stringify(requestData)
-    })
-    
-    .then(response => response.text())
-    .then(text => {
-        window.alert(text)
-        console.log(text)
-        getAllRequestData(data)
-    })
-    
-    .catch(() => {window.alert('Oops.. Something happened')})
 }

@@ -3,7 +3,7 @@ body {
 }  
 
 #title {
-    background: linear-gradient(45deg, rgb(170, 35, 197), #20a7e6);
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
     font: 45px Arial, sans-serif;
     font-weight: bolder;
     background-clip: text;
@@ -12,7 +12,7 @@ body {
     -moz-text-fill-color: transparent;
     -webkit-text-fill-color: transparent;
     border-style: double;
-    border-color: rgb(122, 28, 141);
+    border-color: darkblue;
     border-radius: 30px;
     border-width: 10px;
 }
@@ -32,12 +32,13 @@ h3 {
     top: 50%;
     transform: translate(-50%, -10%);
     padding: 20px;
-    border-style: outset;
-    border-color: lightskyblue;
+    border-style: inset;
+    border-color: deepskyblue;
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
 }
 
 #loginImage {
@@ -70,7 +71,7 @@ h3 {
     align-content: center;
     box-sizing: content-box;
     width: 4.2in;
-    height: 3.8in;
+    height: auto;
     position: relative;
     left: 50%;
     top: 50%;
@@ -127,4 +128,127 @@ td {
 tr:hover {
     background-color: rgba(30, 100, 206, 0.842);
     color: lightskyblue;
+}
+
+button {
+    background-color: rgb(138, 226, 248);
+    border-color: rgb(60, 196, 250);
+    color: rgb(17, 35, 192);
+    font-style: italic;
+    font-size: 13px;
+}
+
+button:hover {
+    background-color: rgb(85, 205, 235);
+}
+
+input, select {  
+    background: linear-gradient(50deg, #18298a, rgb(91, 164, 247));
+    border-style: inset;
+    border-color: deepskyblue;
+    color: rgb(1, 192, 250);
+}
+
+#reqReasonSel {
+    width: 1.85in;
+    height: 0.225in;
+    border-width: 2px;
+}
+
+.reqOption {
+    background-color: #18298a;
+}
+
+input::placeholder {
+    color: rgb(1, 192, 250);
+}
+
+#reqH {
+    font: 28px Arial, sans-serif;
+    font-weight: 500;
+    color: rgb(17, 191, 235);
+}
+
+#rDivHolder {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -8.9%);
+    box-sizing: content-box;
+    width: 3.5in;
+    height: 1in;
+    padding: 1%;
+    background: linear-gradient(130deg, rgb(27, 173, 231), #061a8b);
+    border-style: groove;
+    border-width: 4px;
+    border-color: deepskyblue;
+}
+
+#reqBox {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -5%);
+    align-content: center;
+    box-sizing: content-box;
+    width: 3.5in;
+    height: auto;
+    padding: 1%;
+    border-style: groove;
+    border-width: 4px;
+    border-color: deepskyblue;
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
+}
+
+.reqBoxLbl {
+    display: block;  
+    margin-right: 1em;
+    color: rgb(17, 191, 235);
+}
+
+#approveButton {
+    margin-right: 2px;
+}
+
+.buttonSpace {
+    margin: 1em;
+    transform: translate(0%, 0%);
+    display: block;
+}
+
+#statBtnDiv {
+    width: 2.5in;
+    height: 2in;
+}
+
+#statDivDisplay {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+    left: 0%;
+    top: 0%;
+    transform: translate(70%, -104%);
+    width: 4in;
+    height: 2in;
+    border-style: inset;
+    border-width: 4px;
+    border-color: deepskyblue;
+    background-color: lightskyblue;
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(16, 16, 156);
+}
+
+#statDiv {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -15%);
+    width: 7in;
+    height: 2.1in;
+    padding: 10px;
+    border-style: inset;
+    border-width: 4px;
+    border-color: deepskyblue;
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
 }
