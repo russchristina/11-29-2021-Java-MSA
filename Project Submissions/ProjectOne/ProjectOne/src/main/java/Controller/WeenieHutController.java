@@ -44,9 +44,14 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
             path("/show", () ->{
                 post(handle.SHOWBYUSER);
             });
+            path("manager/stats",() -> {
+                get(handle.SHOWSTATS);
+
+                });
+            });
         });
 
-        });
+        };
 
 
 
@@ -61,4 +66,4 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
 
     }
 
-}
+

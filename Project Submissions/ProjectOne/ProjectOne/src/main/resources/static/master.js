@@ -23,6 +23,8 @@ let requestDetails;
 let updateRequest;
 let updateString;
 let update_body;
+let returnedRequestBody;
+let statBody;
 function breakGenerator(breakNum, object){
     let br;
     for(let i = 0; i < breakNum ; i++){
@@ -167,9 +169,40 @@ function tableGenerator(){
         tableDiv.appendChild(masterTable);
         
         userBanner.appendChild(tableDiv);
-    };
+      }
 
-
+ function tableGeneratorManager(){
+        let headers = ['Request ID', 'Submitted By', 'Submitted Date', 'Request Amount','Reason', 'Status']
+        let tableDiv = document.createElement("div");
+        tableDiv.id = "tablediv";
+        let masterTable = document.createElement("table");
+        masterTable.id = "mastertable"
+        let tableRows = document.createElement("tr");
+        tableRows.id = "rows";
+        headers.forEach(headerText => {
+            let header = document.createElement("th");
+            let textNode = document.createTextNode(headerText);
+            header.appendChild(textNode);
+            tableRows.appendChild(header);
+    
+        });
+        masterTable.appendChild(tableRows);
+    
+            returnedRequestBody.forEach(reqs => {
+                let row = document.createElement('tr');
+                Object.values(reqs).forEach(vals => {
+                    let cell = document.createElement('td');
+                    let node = document.createTextNode(vals);
+                    cell.appendChild(node);
+                    row.appendChild(cell);
+                })
+                masterTable.appendChild(row);
+    
+            });
+            tableDiv.appendChild(masterTable);
+            
+            userBanner.appendChild(tableDiv);
+          }
 
 // function postFetcher(url,bodyData) 
 //     {
@@ -177,7 +210,7 @@ function tableGenerator(){
 // }
 async function verifyLogin(){
     console.log("Go back to Java please?");
-    console.log(loginObject);
+    // console.log(loginObject);
     let objectString = JSON.stringify(loginObject);
     let url = "http://localhost:8800/reimbursements/validate";
     try{
@@ -187,23 +220,18 @@ async function verifyLogin(){
          response_body = await iHateJS.json();
       
 
-           console.log(response_body);
             loginID = {
              submittedBy:  response_body[0].userLogin
            }
-            console.log(loginID)
+            // console.log(loginID)
             titleBanner.remove();
             if (response_body[0].manager){
                 createTagOnHome("button","modify","Modify Requests");
+                createTagOnHome("button","all","View All");
+                createTagOnHome("button","stats","Statistics");
                 console.log("IS  a manager");
-                let modify = document.getElementById("modify");  
-     modify.addEventListener("click",() =>{
-    formFactoryHome("Request ID", "text", "Status", "text","Submit");
-    createButton.addEventListener("click", () =>{
-                    updateRequestButtons();
-    })
-    });
 
+                modifyRequest();
             }else{
 
             }
@@ -212,12 +240,46 @@ async function verifyLogin(){
         
     }catch(e){
         console.log(e)
-        // window.alert("Incorrect Username or Password");
     }
     requestsByUser();
+    
 }
 function modifyRequest(){
-    
+    let modify = document.getElementById("modify");  
+    modify.addEventListener("click",() =>{
+   formFactoryHome("Request ID", "text", "Status", "text","Submit");
+   createButton.addEventListener("click", () =>{
+                   updateRequestButtons();
+   })
+   });
+}
+function viewAllRequests(){
+    let view = document.getElementById("all");
+    let tableKiller = document.getElementById("mastertable");
+
+    view.addEventListener("click", () => {
+    tableKiller.remove();
+    returnAllRequests();
+    });
+}
+async function returnAllRequests(){
+let url = "http://localhost:8800/reimbursements/manager/all";
+try{
+let connection = await fetch (url, {method: "GET"});
+returnedRequestBody = await connection.json();
+formatDate(returnedRequestBody);
+tableGeneratorManager();
+console.log(returnedRequestBody);
+}catch(e){
+console.log(e);
+}
+}
+function formatDate(body){
+    for (const dateChange of body){
+        for (let i = 0; i < body.length; i++){
+            body[i].submittedDate = new Date(body[i].submittedDate).toLocaleDateString();
+        }
+    }
 }
 async function requestsByUser(){
     console.log(loginID); 
@@ -229,15 +291,13 @@ async function requestsByUser(){
         let connection = await fetch(url, {method: 'POST', body: storedLogin});
          data_body = await connection.json();
         console.log(data_body);
-        for (const dateChange of data_body){
-            for (let i = 0; i < data_body.length; i++){
-                data_body[i].submittedDate = new Date(data_body[i].submittedDate).toLocaleDateString();
-            }
-        }
+        formatDate(data_body);
          info = JSON.stringify(data_body)
          data_body.forEach(infoData =>{
              console.log(Object.values(infoData));
-         })
+
+            })
+
         // tablediv.innerHTML = info;
         createTagOnHome("h1", "h1Tag", `Welcome Back, ${response_body[0].firstName}`)
 
@@ -249,10 +309,34 @@ async function requestsByUser(){
 
     }catch(e){
         console.log(e);
+        window.alert("Error in input");
+
     }
-  
+    viewAllRequests();
+    showStatistics();
+
    
 
+}
+function showStatistics(){
+    let stats = document.getElementById("stats");
+    stats.addEventListener("click", () =>{
+        let tableKiller = document.getElementById("mastertable");
+        showStats();
+    })
+}
+async function showStats(){
+    let url = "http://localhost:8800/reimbursements/manager/stats";
+
+    
+    try{
+        let connection = await fetch(url,{method: "GET" });
+
+        statBody = await connection.text();
+        window.alert(statBody);
+    }catch(e){
+        console.log(e);
+    }
 }
  function homeOptions(){
     let logout = document.getElementById("logout");
@@ -306,15 +390,38 @@ async function newRequest(){
     };
     console.log(updateRequest);
   
-   
-            if(data_body[0].submittedBy == response_body[0].userLogin)
-            {
-                
-                window.alert("Ever heard of separations of powers, checks and balances? Nice try bud")
-            }
-            else{
-                  fetchUpdates();
+            console.log("BODY HERE");
+            console.log(returnedRequestBody);
+            console.log(requestID.value)
+            try{
+                let bodyIndex = returnedRequestBody.findIndex(obj => obj.requestID == requestID.value);
 
+                if(returnedRequestBody[bodyIndex].submittedBy == response_body[0].userLogin)
+                {
+                    
+                    window.alert("Ever heard of separations of powers, checks and balances? Nice try bud")
+                }
+                
+                else{
+                    const APPROVED = 'approved';
+                    const DECLINED = 'declined';
+                    const field = document.getElementById("Status2").value
+                    
+    
+                    
+                    if (field.toLowerCase().includes(APPROVED) || field.toLowerCase().includes(DECLINED)){
+                        fetchUpdates();
+                        window.alert("Request Updated Successfully. Relog to see change.")
+          
+                    } 
+                    else{
+                        window.alert("Invalid option in Status field.");
+                    }
+            }
+       
+
+            }catch(e){
+                window.alert("ID DOES NOT EXIST")
             }
         
     
@@ -344,11 +451,10 @@ function initBoi (){
             userPass: inputPass.value
         
         }
-        console.log(loginObject)
+        // console.log(loginObject)
         verifyLogin();
     
-        }
-        );
+        });
     }
     
     initBoi();

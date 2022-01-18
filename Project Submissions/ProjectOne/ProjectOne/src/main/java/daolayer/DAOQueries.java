@@ -1,8 +1,6 @@
 package daolayer;
 
-import dbutil.CloseDB;
 import dbutil.HibernateSessionFactory;
-import dbutil.OpenDB;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -10,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import Driver.serviceUtil.ReimbursementBuilder;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DAOQueries {
 
@@ -41,82 +39,41 @@ public class DAOQueries {
         return specsList;
     }
 
-    //If you care for your eyesight, do not open this section
 
-//    public void returnJoinedList() {
-//        final String SQL = "select * from reimbursements left join users on user_id = submitted_by";
+//
+//    public List<JoinedList> returnMasterList(){
+//        final String SQL = "select * from users right join reimbursements on user_login = submitted_by";
 //        Connection connection = null;
 //        PreparedStatement statement = null;
 //        ResultSet set = null;
-//        List<String> returnedList = null;
+//        List <JoinedList> joinedList = new ArrayList<>();
 //        try {
 //            connection = OpenDB.getConnection();
 //            statement = connection.prepareStatement(SQL);
 //            set = statement.executeQuery();
-//
 //            while (set.next()) {
-//                String requestID = set.getString(1);
-//                String submittedBy = set.getString(2);
-//                Date submittedDate = set.getDate(3);
-//                int requestAmount = set.getInt(4);
-//                String submissionReason = set.getString(5);
-//                String currentStatus = set.getString(6);
-//                int userID = set.getInt(7);
-//                String firstName = set.getString(8);
-//                String lastName = set.getString(9);
-//                boolean isManager = set.getBoolean(12);
-//                System.out.println(" Current Status of Request: " + currentStatus.toUpperCase()
-//                        + " |Request ID: " + requestID + "| Submitted by User ID # " + submittedBy +
-//                        ", " + firstName + " " + lastName + ". Manger: " + isManager + "| Date of submission: " +
-//                        submittedDate + "| Requsted Amount: $" +
-//                        String.format("%,d", requestAmount) +
-//                        "| Reason for Request: " + submissionReason);
-//
+//                joinedList.add( new JoinedList(set.getInt(1),
+//                set.getString(2),
+//                set.getString(3),
+//                set.getString(4),
+//                set.getBoolean(6),
+//                set.getString(7),
+//                set.getDate(9),
+//                set.getInt(10),
+//                set.getString(11),
+//                set.getString(12)));
 //
 //            }
-//        } catch (SQLException e) {
-//            exceptionLogger.debug(e.getMessage(), e);
-//        } finally {
+//        }catch (SQLException e){
+//            exceptionLogger.debug(e.getMessage(),e);
+//        }finally {
 //            CloseDB.connectionCloser(connection);
 //            CloseDB.statementCloser(statement);
-//
+//            CloseDB.setCloser(set);
 //        }
-//
+//        return joinedList;
+
 //    }
-
-    public List<JoinedList> returnMasterList(){
-        final String SQL = "select * from users right join reimbursements on user_login = submitted_by";
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet set = null;
-        List <JoinedList> joinedList = new ArrayList<>();
-        try {
-            connection = OpenDB.getConnection();
-            statement = connection.prepareStatement(SQL);
-            set = statement.executeQuery();
-            while (set.next()) {
-                joinedList.add( new JoinedList(set.getInt(1),
-                set.getString(2),
-                set.getString(3),
-                set.getString(4),
-                set.getBoolean(6),
-                set.getString(7),
-                set.getDate(9),
-                set.getInt(10),
-                set.getString(11),
-                set.getString(12)));
-
-            }
-        }catch (SQLException e){
-            exceptionLogger.debug(e.getMessage(),e);
-        }finally {
-            CloseDB.connectionCloser(connection);
-            CloseDB.statementCloser(statement);
-            CloseDB.setCloser(set);
-        }
-        return joinedList;
-
-    }
     public List<UserSpecs> returnAllUsers(){
         List<UserSpecs> reimbursementsList = null;
         Session session = null;
@@ -132,6 +89,7 @@ public class DAOQueries {
         }
         return reimbursementsList;
     }
+
     public List<Reimbursements> returnRequests() {
       List<Reimbursements> reimbursementsList = null;
       Session session = null;
@@ -145,11 +103,64 @@ public class DAOQueries {
 
       }catch (HibernateException e){
           transaction.rollback();
+
           e.printStackTrace();
       }
       return  reimbursementsList;
         }
+        public List<Long> returnSum (String name) {
+            List<Long> reimbursementsList = null;
+            Reimbursements reimbursements = new Reimbursements();
+            Session session = null;
+            Transaction transaction = null;
+            try {
+            session = HibernateSessionFactory.getSession();
+            transaction = session.beginTransaction();
+            reimbursementsList = session.createQuery
+                    ("select SUM(r.requestAmount) FROM Reimbursements r where r.submittedBy = :login", Long.class)
+                    .setParameter("login", name).getResultList();
+            transaction.commit();
+            }catch (HibernateException e){
+                transaction.rollback();
+                e.printStackTrace();
+            }
+            return  reimbursementsList;
+        }
+    public List<Long> returnRequestNum (String name) {
+        List<Long> reimbursementsList = null;
+        Reimbursements reimbursements = new Reimbursements();
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateSessionFactory.getSession();
+            transaction = session.beginTransaction();
+            reimbursementsList = session.createQuery
+                    ("select COUNT(*) from Reimbursements r where r.submittedBy = :login", Long.class)
+                            .setParameter("login",name).getResultList();
+            transaction.commit();
+        }catch (HibernateException e){
+            transaction.rollback();
+            e.printStackTrace();
+        }
+        return  reimbursementsList;
+    }
+    public Double returnMean (){
+        Session session = null;
+        Transaction transaction = null;
+        Double num = null;
+        try {
+            session = HibernateSessionFactory.getSession();
+            transaction = session.beginTransaction();
+             num = session.createQuery
+                    ("select AVG(r.requestAmount) FROM Reimbursements r",Double.class).getSingleResult();
+            transaction.commit();
+        }catch (HibernateException e){
+            transaction.rollback();
+            e.printStackTrace();
 
+        }
+        return num;
+    }
     public List<Reimbursements> returnRequestsByLogin(Reimbursements reimbursements) {
         Session session = null;
         Transaction transaction = null;
@@ -220,5 +231,21 @@ public class DAOQueries {
            }
         }
         //END OF DELETES
-
+//PIPE DREAM//
+        public List<String> returnLoginsForCalc(){
+        Session session = null;
+        Transaction transaction = null;
+        List<String> loginList = null;
+        try {
+            session = HibernateSessionFactory.getSession();
+            transaction = session.beginTransaction();
+            loginList = session.createQuery
+                    ("SELECT DISTINCT r.submittedBy from Reimbursements r",String.class).getResultList();
+            transaction.commit();
+        }catch (HibernateException e ){
+            transaction.rollback();
+            e.printStackTrace();
+        }
+        return loginList;
+        }
 }

@@ -1,20 +1,20 @@
 package Driver;
 
 import daolayer.DAOQueries;
+import daolayer.Reimbursements;
 import daolayer.UserSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import Driver.serviceUtil.ReimbursementBuilder;
 
-import java.util.List;
+import java.util.*;
 
 public class Testing {
-
+String[] myArray;
 
     public static void main(String[] args) {
         Logger loginLogger = LoggerFactory.getLogger("LoginLogger");
         Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
-        DAOQueries queries = new DAOQueries();
         ReimbursementBuilder builder = new ReimbursementBuilder();
 //        queries.returnJoinedList();
         Testing testing = new Testing();
@@ -24,9 +24,18 @@ public class Testing {
         final String STATUSDENIED = "Denied";
     UserSpecs specs = new UserSpecs(0, "null", "null", "IndenturedServant123","hateithere", false);
     List<UserSpecs> specsList = builder.validateUserService(specs);
+        Reimbursements requests = new Reimbursements();
+
+        System.out.println(new DAOQueries().returnMean());
+
+            //        try{
+//            System.out.println(requests.getSubmittedBy());
+//            System.out.println(requests.getSubmittedBy() + "" + queries.returnSum(requests.getSubmittedBy()));
+//        }catch (Exception e){
+//            exceptions.error(e.getMessage(),e);
+//        }
 //        System.out.println(new DAOQueries().validateUser(specs.getUserLogin(),specs.getUserPass()));
 
-    //           Reimbursements requests = new Reimbursements("s", "IndenturedServant123",myDate,0,"","");
 
 //        System.out.println(builder.requestsByUserService(requests));
 

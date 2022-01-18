@@ -6,9 +6,7 @@ import daolayer.UserSpecs;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ReimbursementBuilder {
     Date myDate = Date.valueOf(getDate());
@@ -47,6 +45,7 @@ public class ReimbursementBuilder {
 
 
     public Reimbursements passStringForID(String variable) {
+
         return new Reimbursements(variable,
                 "",
                 null,
@@ -89,11 +88,36 @@ public List<UserSpecs> validateUserService(UserSpecs specs) {
         List<Reimbursements> reimbursementsList = new DAOQueries().returnRequests();
         reimbursementsList.sort(Comparator.comparing(Reimbursements::getStatus));
         return reimbursementsList;
+
     }
+
     public List<Reimbursements> sortByDate(){
         List<Reimbursements> reimbursementsList = new DAOQueries().returnRequests();
         reimbursementsList.sort(Comparator.comparing(Reimbursements::getSubmittedDate));
         return reimbursementsList;
+    }
+    public List<String> returnSumService(){
+        String[] myArray = null;
+        DAOQueries queries = new DAOQueries();
+
+        List<String> myList = new ArrayList<>();
+        List<String> calcList = queries.returnLoginsForCalc();
+        StringBuilder finishedString = new StringBuilder();
+        for (String a : calcList) {
+            String sumList = String.valueOf(queries.returnSum(a));
+            String numList = String.valueOf(queries.returnRequestNum(a));
+
+            myList.add(a);
+            myList.add(sumList);
+            myList.add(numList);
+//            myArray = myList.toArray(new String[0]);
+
+        }
+//        return Arrays.toString(myArray);
+        return myList;
+    }
+    public Double returnMeanService(){
+        return new DAOQueries().returnMean();
     }
     public List<Reimbursements> sortByUser(){
         List<Reimbursements> reimbursementsList = new DAOQueries().returnRequests();

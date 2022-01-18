@@ -36,15 +36,16 @@ public class JavalinHandler {
         builder.updateRequestService(reimbursements);
     };
     public final Handler VALIDATEUSER = ctx -> {
-
-       try {
            specs= ctx.bodyAsClass(UserSpecs.class);
+        System.out.println("PRINTING" + specs);
+        List<UserSpecs> specsList = builder.validateUserService(specs);
+        System.out.println(specsList);
            ctx.json(builder.validateUserService(specs));
-           logins.info("User" + specs.getUserLogin() + "has successfully logged in");
-       }catch (Exception e){
-           logins.error("User " + specs.getUserLogin() + " attempted to log in, but the attempt was unsuccessful\n" +
-                   "" + e.getMessage(),e);
-       }
+//           logins.info("User" + specs.getUserLogin() + "has successfully logged in");
+//
+//           logins.error("User " + specs.getUserLogin() + " attempted to log in, but the attempt was unsuccessful\n" +
+//                   "" + e.getMessage(),e);
+//       }
 
     };
     public final Handler SHOWBYUSER = ctx -> {
@@ -55,6 +56,14 @@ public class JavalinHandler {
     };
     public final Handler SHOWALLUSERS = ctx -> {
          ctx.json(builder.returnAllUserService());
+
+    };
+    public final Handler SHOWSTATS = ctx -> {
+//        ctx.json(builder.returnSumService());
+//        ctx.jsonStream(builder.returnSumService());
+        ctx.res.getWriter().println("Listing each User, Total Amount Spent, and their Total Amount of Requests:\n");
+        ctx.res.getWriter().println(builder.returnSumService());
+        ctx.res.getWriter().println("\nAverage cost to company: " + builder.returnMeanService());
 
     };
 //    public final Handler FINDBYID = ctx -> {

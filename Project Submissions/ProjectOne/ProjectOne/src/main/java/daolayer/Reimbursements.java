@@ -15,9 +15,9 @@ public class Reimbursements {
     @GenericGenerator(name="status_id_seq", strategy = "assigned")
     @SequenceGenerator(allocationSize = 1, name = "status_id_seq", sequenceName = "status_id_seq")
     private String requestID;
-    @Column
+
     private String submittedBy;
-    @ManyToOne
+    @Column
     private Date submittedDate;
     @Column
     private int requestAmount;
@@ -25,18 +25,10 @@ public class Reimbursements {
     private String reason;
     @Column
     private String status;
-    private Set<UserSpecs> specsSet;
 
-    public Set<UserSpecs> getSpecsSet() {
-        return specsSet;
-    }
 
-    public void setSpecsSet(Set<UserSpecs> specsSet) {
-        this.specsSet = specsSet;
-    }
 
-    //    @ManyToOne
-//    private  UserSpecs userSpecs;
+
     public Reimbursements() {
     }
 
