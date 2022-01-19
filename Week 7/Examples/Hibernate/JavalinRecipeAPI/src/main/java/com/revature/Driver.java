@@ -93,7 +93,7 @@ public class Driver {
 		});
 
 		app.get("/hello-jenkins", ctx -> {
-			ctx.res.getWriter().write("ayeeeee jenkins works for real this time with set +e");
+			ctx.res.getWriter().write("ayeeeee jenkins works for real this time with set +e and correct path");
 		});
 	}
 }
