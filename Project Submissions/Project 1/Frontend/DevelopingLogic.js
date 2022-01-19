@@ -5,34 +5,51 @@ let loginForm = document.getElementById('loginForm')
 /**
  * Log in form handling
  */
+
 function fetchData() {
     let url = 'http://localhost:7777/verify'
     let loginData = new FormData(loginForm)
-
     fetch(url, {
         method: "POST", 
         body: loginData
     })
-
     .then(response => response.text())
     .then(text => {
         try {
-            const data = JSON.parse(text)
+            const data = JSON.parse(text)  
+            startSession()
             generateMenu(data)
         } catch {
         window.alert(text)
         }
     })
-
     .catch(() => {window.alert('Oops.. Something happened')})
 
     return false
 }
 
+function startSession() {
+    let urlg='http://localhost:7777/gen'
+    fetch(urlg, {
+        method: 'GET' 
+    })
+    .then(response => response.text())
+    .then(text => {
+        try {
+            const d = JSON.parse(text)  
+            console.log(d)               
+        } catch {
+            console.log(text)           
+        }
+    })
+    
+    .catch(() => {window.alert('Oops.. Something happened')})
+}
+
 /**
  * Employee menu handling
  */
-function generateMenu(data) {
+function generateMenu(data) {  
     mainContainer.innerHTML = ''
     let employeeMenu = document.createElement('ul')
     employeeMenu.id='menu'
@@ -47,7 +64,13 @@ function generateMenu(data) {
     
     let logOut = document.createElement('li')
     logOut.innerText = 'Log out'
-    logOut.addEventListener('click', () => {location.reload(true)})
+    logOut.addEventListener('click', () => {
+        let url='http://localhost:7777/logout'
+        fetch(url), {
+            method: "GET"
+        }
+        location.reload(true)
+    })
     
     employeeMenu.appendChild(createNewRequest)
     employeeMenu.appendChild(viewRequests)
@@ -167,7 +190,6 @@ function createRequest(data) {
     mainContainer.innerHTML=''
     let reqDiv = document.createElement('div')
     reqDiv.id='reqBox'
-    
 
     let reqH = document.createElement('h2')
     reqH.id='reqH'
@@ -191,21 +213,28 @@ function createRequest(data) {
  *  Employee request view handling
  */
 async function viewRequestHandler(data) {
-    let url = 'http://localhost:7777/empRequests'
-    let response_body = await fetch(url, {
+    let url = 'http://localhost:7777/devdev/empRequests'
+    
+    fetch(url, {
         method: "POST", 
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     })
-    let empReqData = await response_body.json()
-
-    buildTable(empReqData, data, false) 
+        .then(response => response.text())
+        .then(text => {
+        try {
+            let empReqData = JSON.parse(text)
+            buildTable(empReqData, data, false)
+        } catch {
+            window.alert(text)
+        }})
+        .catch(() => {window.alert('Oops.. Something happened')})
 }
 
 /**
  *  Manager request view handling
  */
 async function getAllRequestData(data) {
-    let url = 'http://localhost:7777/all-requests'
+    let url = 'http://localhost:7777/devdev/all-requests'
     let response_body = await fetch(url)
     let allRequestData = await response_body.json()
 
@@ -230,7 +259,7 @@ function viewStats(data) {
     avgAmtReqDiv.className='buttonSpace'
     
     highestPayoutDiv.addEventListener('click', function(){
-        let url  = 'http://localhost:7777/highest-payout'
+        let url  = 'http://localhost:7777/devdev/highest-payout'
         fetch(url)
         .then(response => response.text())
         .then(text => {
@@ -244,7 +273,7 @@ function viewStats(data) {
     })
 
     numberOfReqDiv.addEventListener('click', function(){
-        let url = 'http://localhost:7777/number-requests'
+        let url = 'http://localhost:7777/devdev/number-requests'
         fetch(url)
         .then(response => response.text())
         .then(text => {
@@ -258,7 +287,7 @@ function viewStats(data) {
     })
 
     avgAmtReqDiv.addEventListener('click', function(){
-        let url = 'http://localhost:7777/average-requested'
+        let url = 'http://localhost:7777/devdev/average-requested'
         fetch(url)
         .then(response => response.text())
         .then(text => {
@@ -275,7 +304,6 @@ function viewStats(data) {
     backB.innerText='Go Back'
     backB.onclick = function() {generateMenu(data)}
     backB.id='backButton'
-    let br = document.createElement('br')
     let bbr = document.createElement('br')
     let bbbr = document.createElement('br')
     let statDisplay = document.createElement('div')
@@ -303,7 +331,7 @@ function viewStats(data) {
  *  Handle send/recieve portion of request creation
  */
 function createRequestHandler(requestForm, data)  {
-    let url = 'http://localhost:7777/requestSubmit'
+    let url = 'http://localhost:7777/devdev/requestSubmit'
     let createReqData = new FormData(requestForm)
 
     fetch(url, {
@@ -336,14 +364,24 @@ function buildTable(buildData, data, viewAll) {
     let row_1 = document.createElement('tr');
     let heading_1 = document.createElement('th');
     heading_1.innerHTML = 'Request ID';
+    heading_1.className='headerGroup'
+    heading_1.onclick=function(){sortTableN(0)}
     let heading_2 = document.createElement('th');
     heading_2.innerHTML = 'Employee Name';
+    heading_2.className='headerGroup'
+    heading_2.onclick=function(){sortTable(1)}
     let heading_3 = document.createElement('th');
     heading_3.innerHTML = 'Amount';
+    heading_3.className='headerGroup'
+    heading_3.onclick=function(){sortTableN(2)}
     let heading_4 = document.createElement('th');
     heading_4.innerHTML = 'Reason';
+    heading_4.className='headerGroup'
+    heading_4.onclick=function(){sortTable(3)}
     let heading_5 = document.createElement('th');
     heading_5.innerHTML = 'Status';
+    heading_5.className='headerGroup'
+    heading_5.onclick=function(){sortTable(4)}
     let heading_6 = document.createElement('th');
     heading_6.innerHTML = 'Manager Note';
     let heading_7 = document.createElement('th');
@@ -412,10 +450,124 @@ function buildTable(buildData, data, viewAll) {
 }
 
 /**
+ *  Table sorting
+ */
+ function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("requestTable");
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = "asc";
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+        based on the direction, asc or desc: */
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+
+/**
+ *  Numerical table sort
+ */
+ function sortTableN(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("requestTable");
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = "asc";
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+        based on the direction, asc or desc: */
+        if (dir == "asc") {
+            if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                shouldSwitch = true;
+                break;
+              }
+        } else if (dir == "desc") {
+            if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                shouldSwitch = true;
+                break;
+              }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+
+/**
  *  Handle approve/deny request functionality
  */
 function handleRequest(requestData, reqAction, data) { 
-    let url = 'http://localhost:7777/request-update';
+    let url = 'http://localhost:7777/devdev/request-update';
     let noteWindow = prompt('Reason for action. (Optional)')
     
     if(noteWindow != null) {

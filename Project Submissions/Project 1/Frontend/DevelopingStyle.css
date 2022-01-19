@@ -130,6 +130,10 @@ tr:hover {
     color: lightskyblue;
 }
 
+.headerGroup:hover {
+    background-color: rgb(85, 205, 235);
+}
+
 button {
     background-color: rgb(138, 226, 248);
     border-color: rgb(60, 196, 250);

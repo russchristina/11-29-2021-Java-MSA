@@ -21,6 +21,7 @@ public class Controller {
 		} else if (!pass.equals(user.getPassword())) {
 			ctx.html("Password incorrect");
 		} else {
+			user.setPassword("");
 			ctx.json(user);
 		} // End else statement
 	}; // End Handler
