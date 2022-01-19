@@ -1,0 +1,68 @@
+h1{
+    text-align: center;
+    color: blue;
+    font-size:800%
+
+    
+}
+body {
+   background-color: rgb(209, 190, 162);
+  }
+
+#h3Tag{
+    text-align: center;
+    display: grid;
+    font-size: 20px;
+    
+    font-family: Robo;
+}
+
+table {
+    border: 1px solid black;
+    
+}
+
+#tablediv {
+position: relative;
+}
+
+
+button{
+    color: aqua;
+    position: relative;
+
+}
+#mastertable{
+margin-left: auto;
+margin-right: auto;
+
+}
+
+input[id = "Reason for Request1"]:focus{
+    width: 2000px;
+}
+
+#formID{
+display: inline-block;
+font-style: italic;
+ width: 100%;
+padding-right: 0%;
+margin: 8px 0;
+box-sizing: border-box;
+/* background-color: brown; */
+}
+
+#loginPage{
+    align-items: center;
+}
+input[type=text] {
+    border: 2px solid red;
+    border-radius: 4px;
+    background-color: aqua;
+  }
+  input[type=password] {
+    border: 2px solid red;
+    border-radius: 4px;
+    background-color: aqua;
+
+  }

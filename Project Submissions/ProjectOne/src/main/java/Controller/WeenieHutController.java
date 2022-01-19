@@ -1,17 +1,10 @@
 package Controller;
 
 import Controller.util.JavalinHandler;
-import daolayer.DAOQueries;
-import daolayer.Reimbursements;
 import io.javalin.Javalin;
 
-import io.javalin.apibuilder.EndpointGroup;
-import io.javalin.http.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import serviceUtil.ReimbursementBuilder;
-
-import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 public class WeenieHutController {
@@ -33,6 +26,9 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
             path("/validate", () -> {
                post(handle.VALIDATEUSER);
             });
+            path("/all", () ->{
+                get(handle.SHOWALLUSERS);
+            });
             path("new", () -> {
             post(handle.SAVENEWRECORDS);
             });
@@ -46,11 +42,16 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
             put(handle.UPDATERECORD);
             });
             path("/show", () ->{
-                get(handle.SHOWBYUSER);
+                post(handle.SHOWBYUSER);
+            });
+            path("manager/stats",() -> {
+                get(handle.SHOWSTATS);
+
+                });
             });
         });
 
-        });
+        };
 
 
 
@@ -65,4 +66,4 @@ Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
 
     }
 
-}
+

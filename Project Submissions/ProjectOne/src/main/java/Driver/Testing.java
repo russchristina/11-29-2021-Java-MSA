@@ -5,33 +5,40 @@ import daolayer.Reimbursements;
 import daolayer.UserSpecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import serviceUtil.ReimbursementBuilder;
+import Driver.serviceUtil.ReimbursementBuilder;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Testing {
-
+String[] myArray;
 
     public static void main(String[] args) {
         Logger loginLogger = LoggerFactory.getLogger("LoginLogger");
         Logger exceptions = LoggerFactory.getLogger("EXCEPTIONS");
-        DAOQueries queries = new DAOQueries();
         ReimbursementBuilder builder = new ReimbursementBuilder();
 //        queries.returnJoinedList();
         Testing testing = new Testing();
-        Date date = Date.valueOf(builder.getDate());
+//        Date date = Date.valueOf(builder.getDate());
         String ID = String.valueOf(builder.idBuilder());
         final String STATUSAPPROVED = "Approved";
         final String STATUSDENIED = "Denied";
+    UserSpecs specs = new UserSpecs(0, "null", "null", "IndenturedServant123","password", false);
+    List<UserSpecs> specsList = builder.validateUserService(specs);
+        Reimbursements requests = new Reimbursements();
+
+            UserSpecs userSpecs1 = new UserSpecs(1, "firstName", "lastName",
+                    "Login","Pass",true);
+        System.out.println(specsList);
+            //        try{
+//            System.out.println(requests.getSubmittedBy());
+//            System.out.println(requests.getSubmittedBy() + "" + queries.returnSum(requests.getSubmittedBy()));
+//        }catch (Exception e){
+//            exceptions.error(e.getMessage(),e);
+//        }
+//        System.out.println(new DAOQueries().validateUser(specs.getUserLogin(),specs.getUserPass()));
 
 
-           Reimbursements requests = new Reimbursements("s", "IndenturedServant123",date,0,"","");
-
-        System.out.println(builder.requestsByUserService(requests));
+//        System.out.println(builder.requestsByUserService(requests));
 
 //        try {
 //

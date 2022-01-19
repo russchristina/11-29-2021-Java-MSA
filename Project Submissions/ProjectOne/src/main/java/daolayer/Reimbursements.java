@@ -1,15 +1,33 @@
 package daolayer;
 
 
-import java.sql.Date;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+import java.sql.Date;
+import java.util.Set;
+
+@Entity
+@Table(schema = "project_one", name = "hibernate_reimbursements")
 public class Reimbursements {
+    @Column(name = "request_id")
+    @Id @GeneratedValue(generator="status_id_seq")
+    @GenericGenerator(name="status_id_seq", strategy = "assigned")
+    @SequenceGenerator(allocationSize = 1, name = "status_id_seq", sequenceName = "status_id_seq")
     private String requestID;
+
     private String submittedBy;
+    @Column
     private Date submittedDate;
+    @Column
     private int requestAmount;
+    @Column
     private String reason;
+    @Column
     private String status;
+
+
+
 
     public Reimbursements() {
     }

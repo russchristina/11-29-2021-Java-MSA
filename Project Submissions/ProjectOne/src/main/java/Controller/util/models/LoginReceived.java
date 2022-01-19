@@ -1,6 +1,8 @@
 package Controller.util.models;
 
-public class LoginReceived {
+import daolayer.UserSpecs;
+
+public class LoginReceived extends UserSpecs {
 
     private String name;
     private String pass;

@@ -18,7 +18,15 @@
         </encoder>
     </appender>
     <appender name="FILE2" class="ch.qos.logback.core.FileAppender">
-        <file>P1Exceptions.log</file>
+    <file>P1Exceptions.log</file>
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+</appender>
+    <appender name="FILE3" class="ch.qos.logback.core.FileAppender">
+        <file>Javalin.log</file>
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
@@ -32,11 +40,15 @@
     <appender-ref ref="FILE2" />
 
 </logger>
+    <logger name = "JAVALIN " level = "DEBUG">
+        <appender-ref ref="FILE3" />
+
+    </logger>
 
 
     <!--        <appender-ref ref="STDOUT" />-->
 
-        <!--        <appender-ref ref="STDOUT" />-->
+                <appender-ref ref="STDOUT" />
     <root level ="DEBUG">
         <appender-ref ref ="STDOUT"/>
     </root>

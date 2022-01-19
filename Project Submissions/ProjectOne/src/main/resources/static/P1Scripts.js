@@ -1,5 +1,5 @@
 let userObject;
-
+let loginID;
 
     let username = document.getElementById("username")
     let password = document.getElementById("password")
@@ -35,20 +35,22 @@ async function verifyLogin(){
         }else{
             console.log("IS NOT a manager");
            console.log(response_body);
-           let loginID = response_body.userLogin;
+            loginID = response_body.userLogin;
+            employeePage();
 
         }
     }catch(e){
         window.alert("Incorrect Username or Password");
+        console.log(e)
     }
-    employeePage();
 
 
 }
     function employeePage(){
         
 
-        console.log("made it here");
+        console.log("made it here!");
+        console.log(loginID);
         let id = document.getElementById("form");
         id.remove();
         let link = document.getElementById("link");
@@ -58,11 +60,4 @@ async function verifyLogin(){
 
        requestsByUser();
     }
-    async function requestsByUser(){
-        console.log("Made it to the other thing")
-        let url = "http://localhost:8800/reimbursements/show";
-        let connection = await fetch(url);
-        let data = await connection.json();
-        console.log(data);
-
-    }
+  

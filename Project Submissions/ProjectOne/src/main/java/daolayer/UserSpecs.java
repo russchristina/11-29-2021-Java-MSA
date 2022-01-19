@@ -1,12 +1,24 @@
 package daolayer;
 
-public class UserSpecs {
+import javax.persistence.*;
 
+@Entity
+@Table(schema = "project_one", name = "hibernate_userspecs")
+public class UserSpecs {
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(generator = "auto_increment", strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(allocationSize = 1, name = "users_user_id_seq", sequenceName = "users_user_id_seq")
     private int userID;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String userLogin;
+    @Column
     private String userPass;
+    @Column
     private boolean isManager;
 
     public UserSpecs() {
