@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <title>Jerry</title>
+</head>
+<body>
+  <header>
+    <h1 class="employeeTitle">Manager Jerry</h1>
+  </header>
+  <main>
+    <h2>Would you like to:</h2>
+
+    <form action="">
+      <div class="test">
+        <p class="cardText">See All Reimbursements</p>
+        <input id="getAllUserReimbursement" class="btn" type="button" value="See All">
+        </div>
+        <div>
+         <p class="cardText">See Individual Employee Reimbursements</p>
+        <input id="getAllReimbursements_Ben" class="btn" type="button" value="Ben's">
+        <input id="getAllReimbursements_Alli" class="btn" type="button" value="Alli's ">
+        <input id="getAllReimbursements_Sam"  class="btn" type="button" value="Sam's">
+      </div>
+      <div>
+        <input id="stats"class="btn" type="button" value="See Statistics">
+        
+        <input id="showForm" class="btn" type="button" value="Approve or Deny">
+      </div>
+      <div>
+      <input id="goBack" type="button" class="btn" value="logout">
+      </div>
+    </form>
+    <form action="">
+    </form>
+
+    <form id="hide" class="hide submitReimbursementForm" name="invoiceEmployeeForm"action="">
+      <div id="errorMessage"></div>
+      <label for="invoiceNum">Invoice Number: </label>
+      <input id="invoiceNum" type="text" name="invoiceNum">
+      <label for="employeeName">Employee Name: </label>
+      <input id="employeeName" type="text" name="employeeName">
+      <input id="invoice-lookup" class="btn" type="button" value="SUBMIT">
+    </form>
+
+    
+    <form id="approval" class="hide submitReimbursementForm" name="approve-submissionForm" action="">
+      <div id="errorMessage2"></div>
+      <label for="Status">Status (completed/pending)</label>
+      <input id="status" type="text" name="status"/>
+      <label for="Approval">Approval (approved/not approved)</label>
+      <input id="approvals" type="text" name="approval"/>
+      <label for="managerReason">Manager Reason:</label>
+      <input id="managerReason" type="text" name="managerReason"/>
+      <input id="approve-submission" type="button" value="SUBMIT" />
+    </form>
+
+    <section class="reimburseCards">
+     
+      <div class="card hide">
+        
+      </div>
+    </section>
+  </main>
+<footer>
+
+</footer>
+ <script src="indexManager.js"></script> 
+</body>
+</html>

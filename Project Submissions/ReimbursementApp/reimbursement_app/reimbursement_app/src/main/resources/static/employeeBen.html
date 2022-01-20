@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <title>Ben</title>
+</head>
+<body>
+  <header>
+    <h1 class="employeeTitle">Employee Ben</h1>
+  </header>
+  <main>
+    <h2>Would you like to:</h2>
+    <div id="errorMessage"></div>
+    <form action="">
+      <input id="getAllReimbursements"  class="btn" type="button" value="Reimbursements">
+    </form>
+    <form action="">
+      <input id="showForm" class="btn" type="button" value="Submit">
+    </form>
+    <input id="goBack"  class="btn" type="button" value="logout">
+    
+    <form id="hide" class="hide submitReimbursementForm" name="submissionForm" action="">
+      <label for="Amount">Amount:</label>
+      <input id="amount" type="number" name="amount"/>
+      <label for="Reason">Reason:</label>
+      <input id="reason" type="text" name="reason"/>
+      <input id="reimbursement-submission"  class="btn" type="button" value="SUBMIT" />
+    </form>
+
+    <section class="reimburseCards">
+     
+      <div class="card hide">
+  
+      </div>
+    </section>
+  </main>
+<footer>
+
+</footer>
+ <script src="indexEmployee.js"></script> 
+</body>
+</html>

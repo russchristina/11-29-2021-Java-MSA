@@ -1,0 +1,46 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+
+<!-- The root tag of a HIbernate configuration file is hibernate-configuration.
+you'll find configuration information regarding you session factory and your hibernate models 
+insdie this tag -->
+<hibernate-configuration>
+  <!-- Our session factory tag is where we specify our credentials, dialect of SQL,
+  and various other properties pertaining to how a HIibernate session should be
+configured.  A hibernate session represents a connection to your DB -->
+  <session-factory>
+    <!-- Specifying the driver class(which should be on the classpath as we have jdbc -->
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <!-- specify the dialect of SQL you are using. -->
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <!-- specify your DB credentials. -->
+    <property name="hibernate.connection.url"></property>
+    <property name="hibernate.connection.username"></property>
+    <property name="hibernate.connection.password"></property>
+    <!-- optional. this is useful to see the sql queries Hibernate generates for you. -->
+    <property name="show_sql">true</property>
+    <!-- this property determines the connection pool size -->
+    <property name="hibernate.connection.pool_size">5</property>
+    <!-- this property defines how hibernate sessions are handled.
+    in this case they are tracked by their thread of execution. -->
+    <property name="hibernate.current_session_context_class">thread</property>
+    <!-- we can run Hibernate in several different modes.  the modes determines
+    how involved Hibernate is in creating your database tables.  this can range
+  from not involved, to super involved.
+      -create(BAD PRACTICE) : will purge the existing tables and create tables from scratch. 
+      -update:(slightly better practice) modify the schema without purging it.  it will update any data within the DB that no consistent with our mapped Java models.
+      -create-drop:Hibernate creates all the tables and then drops them when the app starts running; this is a good option for testing.
+      -validate: validate the pre-exisiting schema.  this means it will attempt to make sure you java models are mapped in a way that is consistent with your existing schema 
+    -->
+    <property name="hibernate.hbm2ddl.auto">update</property>
+
+    <!-- once you have mapped your java models using JPA annotations,
+    you want to come back and list the mapped models in your SessionFactory. -->
+
+    <mapping class="com.revature.model.Reimbursements_Alli" />
+    <mapping class="com.revature.model.Reimbursements_Sam" />
+    <mapping class="com.revature.model.Reimbursements_Ben" />
+    <mapping class="com.revature.model.Employee_login" />
+    <mapping class="com.revature.model.Manager_login" />
+  </session-factory>
+</hibernate-configuration>
