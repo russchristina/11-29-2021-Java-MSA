@@ -1,0 +1,101 @@
+li {
+    border-style: outset;
+    padding: 5%;
+    line-height: 10px;
+    background-color: lightskyblue;
+    border-color: rgb(115, 196, 247);
+}
+
+li:hover {
+    background-color: rgba(30, 100, 206, 0.842);
+    color: lightskyblue;
+}
+
+#tableBox {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.1in;
+    border-style: inset;
+    border-color: deepskyblue;
+    background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
+}
+
+th, tr {
+    border-style: outset;
+    background-color: lightskyblue;
+    border-color: rgb(115, 196, 247);
+    color: #000;
+}
+
+td {
+    border-style: outset;
+    border-color: rgb(115, 196, 247);
+}
+
+tr:hover {
+    background-color: rgba(30, 100, 206, 0.842);
+    color: lightskyblue;
+}
+
+img.transition
+         {  padding:200px 200px;
+            position: relative;
+	    left:50px;
+            -webkit-animation: movingimage linear 25s 1s 3 alternate;
+            -moz-animation: movingimage linear 25s 1s 3 alternate;
+            animation: movingimage linear 25s 1s 3 alternate;
+         }
+         @-webkit-keyframes movingimage 
+         {
+            0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 0px; top: 50px;}
+            50%  {opacity: 0; left: 100px; top: 100px;}
+            75%  {opacity: 1; left: 100px; top: 50px;}
+            100% {opacity: 0; left: 200px; top: 0px;}
+         }
+         @-moz-keyframes movingimage 
+         {
+             0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 0px; top: 50px;}
+            50%  {opacity: 0; left: 100px; top: 100px;}
+            75%  {opacity: 1; left: 100px; top: 50px;}
+            100% {opacity: 0; left: 200px; top: 0px;}
+         }
+         @keyframes movingimage
+         {
+              0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 50px; top: -150px;}
+            50%  {opacity: 0; left: -100px; top: 10px;}
+            75%  {opacity: 1; left: 500px; top: 50px;}
+            100% {opacity: 0; left: 50px; top: -150px;}
+         }
+
+         div.box
+         {color: black;
+           height:200px;
+           border:7px groove blue;
+           padding: 20px 10px;
+           text-align: center;
+            background: -webkit-gradient(
+                linear, center top, center bottom,
+                color-stop(30%,#006600), color-stop(60%, lightsteelblue),
+                color-stop(85%, #47A3FF) );
+             background: -moz-linear-gradient(
+                top center, #006600 15%, lightsteelblue 50%,#47A3FF 75% );
+             background: linear-gradient(
+                top, #006600 30%, lightsteelblue 50%, #47A3FF 85% );
+             float: left;
+        box-shadow: 30px 50px 30px #006652;
+        }
+
+img{
+    width: 20%;
+    height: 30%;
+
+}
+

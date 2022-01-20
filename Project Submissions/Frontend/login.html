@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crazy Inc</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body align = "center" bgcolor="lightblue">
+    <div id = "title">
+        <h1>Crazy Incorporated</h1>
+    </div>
+    <h2>Reimburse System</h2>
+    
+    <br>
+    <div id= "mainContainer" class="box">
+        <h3>Please enter your username and password to log in.</h3>
+        <form  id= "loginForm"  onsubmit="return validateForm()">
+            <div id = "login">
+                <div class="form-group">
+                    <label for="username"><b>Username:</b></label>
+                    <input type="text" placeholder="Enter Username" name="username" required><br>
+                    <br>
+                    <label for="password"><b>Password: </b></label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+                </div>
+                <br>
+                <button id='loginButton' type="submit">Log In</button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div id="loginImageHolder">
+        <img id= "loginImage" class="transition" src = "https://mpng.subpng.com/20190531/vcg/kisspng-it-evil-clown-portable-network-graphics-joker-5cf0f0a98cc342.3590744715592941215766.jpg" />
+        <img id="loginImage2" class="transition" src="http://www.clipartbest.com/cliparts/dT8/X6M/dT8X6M7jc.jpg"/>
+    </div>
+    <script src="scripts\index.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+img.transition
+         {  padding:200px 200px;
+            position: relative;
+	    left:50px;
+            -webkit-animation: movingimage linear 25s 1s 3 alternate;
+            -moz-animation: movingimage linear 25s 1s 3 alternate;
+            animation: movingimage linear 25s 1s 3 alternate;
+         }
+
+         @-webkit-keyframes movingimage 
+         {
+            0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 0px; top: 50px;}
+            50%  {opacity: 0; left: 100px; top: 100px;}
+            75%  {opacity: 1; left: 100px; top: 50px;}
+            100% {opacity: 0; left: 200px; top: 0px;}
+         }
+         @-moz-keyframes movingimage 
+         {
+             0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 0px; top: 50px;}
+            50%  {opacity: 0; left: 100px; top: 100px;}
+            75%  {opacity: 1; left: 100px; top: 50px;}
+            100% {opacity: 0; left: 200px; top: 0px;}
+         }
+         @keyframes movingimage
+         {
+              0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 50px; top: -150px;}
+            50%  {opacity: 0; left: -100px; top: 10px;}
+            75%  {opacity: 1; left: 500px; top: 50px;}
+            100% {opacity: 0; left: 50px; top: -150px;}
+         }
+         body {  
+            background: linear-gradient(90deg, #20a7e6, rgba(0, 0, 0, 0)); 
+        }  
+        
+        #title {
+            background: linear-gradient(45deg, rgb(170, 35, 197), #20a7e6);
+            font: 45px Arial, sans-serif;
+            font-weight: bolder;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            -moz-text-fill-color: transparent;
+            -webkit-text-fill-color: transparent;
+            border-style: double;
+            border-color: rgb(122, 28, 141);
+            border-radius: 30px;
+            border-width: 10px;
+        }
+        
+        h2 {
+            font: 40px Arial, sans-serif;
+        }
+        
+        h3 {
+            font-size: 16px;
+        }
+        
+        #login {
+            width: 300px;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -10%);
+            padding: 20px;
+            border-style: outset;
+            border-color: lightskyblue;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        #loginImage {
+            height: 3.5in;
+            width: 6in;
+            border-style: inset;
+            border-color: deepskyblue;
+            transform: translate(23%, 20%);
+        }
+        
+        #loginImage2 {
+            height: 2in;
+            width: 2.5in;
+            position: relative;
+            transform: translate(-5%, -60%);
+            border-style: inset;
+            border-color: deepskyblue;
+        }
+        
+        #loginImageHolder {
+            transform: translate(0%, -5%);
+        }
+        
+        #mainBox {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #menuBox {
+            align-content: center;
+            box-sizing: content-box;
+            width: 4.2in;
+            height: 3.8in;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -10%);
+            border-style: inset;
+            border-color: deepskyblue;
+            background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
+        }
+        
+        #menu {
+            list-style: none;
+            padding: 15%;
+        }
+        
+        li {
+            border-style: outset;
+            padding: 5%;
+            line-height: 10px;
+            background-color: lightskyblue;
+            border-color: rgb(115, 196, 247);
+        }
+        
+        li:hover {
+            background-color: rgba(30, 100, 206, 0.842);
+            color: lightskyblue;
+        }
+        
+        #tableBox {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.1in;
+            border-style: inset;
+            border-color: deepskyblue;
+            background: linear-gradient(45deg, rgb(27, 173, 231), #061a8b);
+        }
+        
+        th, tr {
+            border-style: outset;
+            background-color: lightskyblue;
+            border-color: rgb(115, 196, 247);
+            color: #000;
+        }
+        
+        td {
+            border-style: outset;
+            border-color: rgb(115, 196, 247);
+        }
+        
+        tr:hover {
+            background-color: rgba(30, 100, 206, 0.842);
+            color: lightskyblue;
+        }

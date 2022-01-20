@@ -1,0 +1,94 @@
+img.right
+{position:absolute;
+left:1000px;
+   -webkit-box-reflect: right 5px
+      -webkit-gradient(
+         linear, right top, left top, 
+         from(transparent), to(#85FF5C));
+}
+
+img.transition
+         {  padding:200px 200px;
+            position: relative;
+	    left:50px;
+            -webkit-animation: movingimage linear 25s 1s 3 alternate;
+            -moz-animation: movingimage linear 25s 1s 3 alternate;
+            animation: movingimage linear 25s 1s 3 alternate;
+         }
+
+         @-webkit-keyframes movingimage 
+         {
+            0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 0px; top: 50px;}
+            50%  {opacity: 0; left: 100px; top: 100px;}
+            75%  {opacity: 1; left: 100px; top: 50px;}
+            100% {opacity: 0; left: 200px; top: 0px;}
+         }
+         @-moz-keyframes movingimage 
+         {
+             0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 0px; top: 50px;}
+            50%  {opacity: 0; left: 100px; top: 100px;}
+            75%  {opacity: 1; left: 100px; top: 50px;}
+            100% {opacity: 0; left: 200px; top: 0px;}
+         }
+         @keyframes movingimage
+         {
+              0%   {opacity: 0; left: 100px; top: 0px;}
+            25%  {opacity: 1; left: 50px; top: -150px;}
+            50%  {opacity: 0; left: -100px; top: 10px;}
+            75%  {opacity: 1; left: 500px; top: 50px;}
+            100% {opacity: 0; left: 50px; top: -150px;}
+         }
+
+         #repeat
+         {   
+            -webkit-border-image: url(wondersexy.jpg) 100% 100% repeat;
+            -moz-border-image: url(wondersexy.jpg) 100% 100% repeat; 
+            -o-border-image: url(wondersexy.jpg) 100% 100% repeat; 
+            border-image: url(wondersexy.jpg) 100% 100% repeat;
+         }
+	     #repeat2
+         {   
+            -webkit-border-image: url(wondersexy2.jpg) 100% 100% repeat;
+            -moz-border-image: url(wondersexy2.jpg) 100% 100% repeat; 
+            -o-border-image: url(wondersexy2.jpg) 100% 100% repeat; 
+            border-image: url(wondersexy2.jpg) 100% 100%repeat;
+         } 
+
+         #radial
+	{position: absolute;
+	   top: 600px;
+	   left:200px;
+	 width:300px;
+	 height:200px;
+	 padding: 20px 10px;
+	 color: red;
+	 text-align: center;
+	 background: -webkit-radial-gradient(center, blue, green);
+         background: -moz-radial-gradient(center, blue, green);
+         background: radial-gradient(center,blue, green);
+	 box-shadow:none;
+	 }
+
+     div.box
+	 {position: absolute;
+	   top: 600px;
+	   left:920px;
+	   width: 300px;
+	   color: red;
+	   height:200px;
+	   border:7px groove blue;
+	   padding: 20px 10px;
+	   text-align: center;
+	    background: -webkit-gradient(
+            linear, center top, center bottom,
+            color-stop(30%,#006600), color-stop(60%, lightsteelblue),
+            color-stop(85%, #47A3FF) );
+         background: -moz-linear-gradient(
+            top center, #006600 15%, lightsteelblue 50%,#47A3FF 75% );
+         background: linear-gradient(
+            top, #006600 30%, lightsteelblue 50%, #47A3FF 85% );
+         float: left;
+	box-shadow: 30px 50px 30px #006652;
+	}
