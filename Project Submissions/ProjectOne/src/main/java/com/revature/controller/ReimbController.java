@@ -17,9 +17,7 @@ public class ReimbController {
 	}
 
 	public void initEndpoints() {
-		// EndpointGroup defined by Javalin is a func interface, we pass a
-		// lambda expression to the "routes" method.
-		// An endpoint group is a group of endpoints (defined using get(), post(), etc).
+
 		this.app.routes(() -> {
 			path("/reimb", () -> {
 				path("/all", () -> {
