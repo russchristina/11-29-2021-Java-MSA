@@ -1,7 +1,7 @@
 package service;
 
-import present.login.LoginInput;
-import present.login.UserModel;
+import models.LoginInput;
+import models.UserModel;
 
 public interface UserLoginServiceInterface {
 	

@@ -1,24 +1,32 @@
 package dao;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 import models.Request;
 
 public interface RequestDAO {
-
-	public Request findByEmp(String username);
 	
-	public Request findByDate(Date date);
+	public List<Request> viewAll();
+
+	public List<Request> findByEmp(String username);
+	
+	public List<Request> findByDate(Date date);
 	
 	public Request findById(int Id);
 	
 	public Request findByAmount(int Amount);
 	
-	public Request findByStatus(String status);
+	public List<Request> findByStatus(String status);
 	
-	public void submitNew(int id, String employee, int amount, String notes, Date date, String status, String approvedBy);
+	public void submitNew(Request request);
 	
-	public void update(Request reimburse);
+	public void update(Request request);
 	
-	public void delete(Request reimburse);
+	public void delete(Request request);
+
+
+
+	
 }

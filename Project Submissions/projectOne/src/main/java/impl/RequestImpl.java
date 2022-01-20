@@ -1,123 +1,89 @@
 package impl;
 
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import dao.RequestDAO;
 import models.Request;
-import util.ConnectClose;
-import util.ConnectUtil;
+import util.GreendaleLogger;
+import util.HibernateSessionFactory;
 
 public class RequestImpl implements RequestDAO{
+	
+	private static final Logger myLogger = LoggerFactory.getLogger(GreendaleLogger.class);
 
 	@Override
-	public Request findByEmp(String username) {
-		Request request= null;
-		final String SQL = "select * from requests where employee_submit = " + username;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet set = null;
+	public List<Request> findByEmp(String lastName) {
+		
+		List<Request> requests = null;
+		Session session = null;
+		Transaction transaction = null;
 				
 		try {
-			conn= ConnectUtil.getConnection();
-			stmt = conn.createStatement();
-			set = stmt.executeQuery(SQL);
-			
-			if(set.next()) {
-				request = new Request(set.getInt(1),
-						set.getString(2),
-						set.getInt(3),
-						set.getString(4),
-						set.getDate(5),
-						set.getString(6),
-						set.getString(7)
-						);
-						
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			requests = session.createQuery("FROM Request where employee = ?", Request.class).getResultList();
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeResultSet(set);
-			ConnectClose.closeStatement(stmt);
-		}
-				
-		return request;
+			session.close();
+		}	
+		return requests;
 		
 	}
 
 	@Override
-	public Request findByDate(Date date) {
-		Request request= null;
-		final String SQL = "select * from requests where date_submit = " + date;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet set = null;
+	public List<Request> findByDate(Date date) {
 		
-		
-		try {
-			conn= ConnectUtil.getConnection();
-			stmt = conn.createStatement();
-			set = stmt.executeQuery(SQL);
-			
-			if(set.next()) {
-				request = new Request(set.getInt(1),
-						set.getString(2),
-						set.getInt(3),
-						set.getString(4),
-						set.getDate(5),
-						set.getString(6),
-						set.getString(7)
-						);
-						
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeResultSet(set);
-			ConnectClose.closeStatement(stmt);
-		}
+		List<Request> requests = null;
+		Session session = null;
+		Transaction transaction = null;
 				
-		return request;
+		try {
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			requests = session.createQuery("FROM Request where date = ?", Request.class).getResultList();
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
+		}finally {
+			session.close();
+		}	
+				
+		return requests;
 		
 	}
 
 	@Override
 	public Request findById(int id) {
-		Request request= null;
-		final String SQL = "select * from requests where request_id = " + id;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet set = null;
-		
-		
+	
+		Request request = null;
+		Session session = null;
+		Transaction transaction = null;
+				
 		try {
-			conn= ConnectUtil.getConnection();
-			stmt = conn.createStatement();
-			set = stmt.executeQuery(SQL);
-			
-			if(set.next()) {
-				request = new Request(set.getInt(1),
-						set.getString(2),
-						set.getInt(3),
-						set.getString(4),
-						set.getDate(5),
-						set.getString(6),
-						set.getString(7)
-						);
-						
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			request = session.get(Request.class, id);
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeResultSet(set);
-			ConnectClose.closeStatement(stmt);
+			session.close();
 		}
 				
 		return request;
@@ -126,35 +92,21 @@ public class RequestImpl implements RequestDAO{
 
 	@Override
 	public Request findByAmount(int amount) {
-		Request request= null;
-		final String SQL = "select * from requests where amount_submit = " + amount;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet set = null;
 		
-		
+		Request request = null;
+		Session session = null;
+		Transaction transaction = null;
+				
 		try {
-			conn= ConnectUtil.getConnection();
-			stmt = conn.createStatement();
-			set = stmt.executeQuery(SQL);
-			
-			if(set.next()) {
-				request = new Request(set.getInt(1),
-						set.getString(2),
-						set.getInt(3),
-						set.getString(4),
-						set.getDate(5),
-						set.getString(6),
-						set.getString(7)
-						);
-						
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			request = session.get(Request.class, amount);
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeResultSet(set);
-			ConnectClose.closeStatement(stmt);
+			session.close();
 		}
 				
 		return request;
@@ -162,107 +114,118 @@ public class RequestImpl implements RequestDAO{
 	}
 
 	@Override
-	public Request findByStatus(String status) {
-		Request request= null;
-		final String SQL = "select * from requests where status = " + status;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet set = null;
+	public List<Request> findByStatus(String status) {
 		
-		
+		List<Request> requests = null;
+		Session session = null;
+		Transaction transaction = null;
+				
 		try {
-			conn= ConnectUtil.getConnection();
-			stmt = conn.createStatement();
-			set = stmt.executeQuery(SQL);
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
 			
-			if(set.next()) {
-				request = new Request(set.getInt(1),
-						set.getString(2),
-						set.getInt(3),
-						set.getString(4),
-						set.getDate(5),
-						set.getString(6),
-						set.getString(7)
-						);
-						
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
+			CriteriaBuilder cb = session.getCriteriaBuilder();
+			CriteriaQuery<Request> cq = cb.createQuery(Request.class);
+			
+			Root<Request> root = cq.from(Request.class);
+			cq.select(root).where(cb.equal(root.get("status"), status));
+			Query<Request> query = session.createQuery(cq);
+			
+			requests = query.getResultList();
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeResultSet(set);
-			ConnectClose.closeStatement(stmt);
+			session.close();
 		}
 				
-		return request;
+		return requests;
 		
 	}
 
 	
 	@Override
-	public void submitNew(int id, String employee, int amount, String notes, Date date, String status, String approvedBy) {
-		Request request = new Request();
-		final String SQL = "insert into requests values(default,?,?,?,?,'Pending',null) returning *";
-		Connection conn = null;
-		PreparedStatement stmt = null;
+	public void submitNew(Request request) {
+		Session session = null;
+		Transaction transaction = null;
+				
 		try {
-			conn = ConnectUtil.getConnection();
-			stmt = conn.prepareStatement(SQL);
-			
-			stmt.setString(1, request.getEmployee());
-			stmt.setInt(2, request.getAmount());
-			stmt.setString(3, request.getNotes());
-			stmt.setDate(4, request.getDate());
-
-			stmt.execute();
-		}catch (SQLException e) {
-			
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			session.save(request);
+			transaction.commit();
+		}catch (HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeStatement(stmt);
+			session.close();
 		}
 		
 	}
 
 	@Override
 	public void update(Request request) {
-		final String SQL = "update requests set amount_submit = ? where request_id = ?";
-		Connection conn = null;
-		PreparedStatement stmt = null;
+		Session session = null;
+		Transaction transaction = null;
 		
 		try {
-			conn = ConnectUtil.getConnection();
-			stmt = conn.prepareStatement(SQL);
-			stmt.setInt(1, request.getAmount());
-			stmt.setInt(2, request.getId());
-			stmt.execute();
-		}catch(SQLException e) {
-			e.printStackTrace();
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			session.update(request);
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeStatement(stmt);
+			session.close();
 		}
 		
 	}
 
 	@Override
 	public void delete(Request request) {
-		final String SQL = "delete from requests where request_id = ?";
-		Connection conn = null;
-		PreparedStatement stmt = null;
+		Session session = null;
+		Transaction transaction = null;
 		
 		try {
-			conn = ConnectUtil.getConnection();
-			stmt = conn.prepareStatement(SQL);
-			stmt.setInt(1, request.getId());
-			stmt.execute();
-		}catch(SQLException e) {
-			e.printStackTrace();
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			session.delete(request);
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
+					
 		}finally {
-			ConnectClose.closeConnection(conn);
-			ConnectClose.closeStatement(stmt);
+			session.close();
 		}
 		
 	}
+
+	@Override
+	public List<Request> viewAll() {
+		
+		List<Request> requests = null;
+		Session session = null;
+		Transaction transaction = null;
+				
+		try {
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			requests = session.createQuery("FROM Request", Request.class).getResultList();
+			transaction.commit();
+		}catch(HibernateException e) {
+			transaction.rollback();
+			myLogger.error("Hibernate Exception: ", e);
+			
+		}finally {
+			session.close();
+		}
+				
+		return requests;
+	}
+
+
 
 }

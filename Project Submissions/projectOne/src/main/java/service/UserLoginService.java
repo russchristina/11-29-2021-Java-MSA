@@ -1,17 +1,17 @@
 package service;
 
-import dao.UserEntity;
-import present.login.LoginInput;
-import present.login.UserModel;
-import repo.UserLoginDAO;
+import impl.UserLoginImpl;
+import models.LoginInput;
+import models.UserLogin;
+import models.UserModel;
 
 public class UserLoginService implements UserLoginServiceInterface{
 
-	private UserLoginDAO userLoginDAO;
+	private UserLoginImpl userLoginDAO;
 	
 	
 	
-	public UserLoginService(UserLoginDAO userLoginDAO) {
+	public UserLoginService(UserLoginImpl userLoginDAO) {
 		super();
 		this.userLoginDAO = userLoginDAO;
 	}
@@ -20,14 +20,14 @@ public class UserLoginService implements UserLoginServiceInterface{
 
 	@Override
 	public UserModel authenticateLoginInput(LoginInput loginInput) {
-		UserEntity userLoginEntity = userLoginDAO.getUser(loginInput.getUsername());
+		UserLogin userLoginEntity = userLoginDAO.getUser(loginInput.getUsername());
 		
 		return convertUserEntity(userLoginEntity);
 	}
 
 
 
-	private UserModel convertUserEntity(UserEntity userLoginEntity) {
+	private UserModel convertUserEntity(UserLogin userLoginEntity) {
 
 		return new UserModel(
 				userLoginEntity.getUsername(), userLoginEntity.isManager());

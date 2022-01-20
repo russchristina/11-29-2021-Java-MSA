@@ -1,22 +1,27 @@
 package dao;
 
+import java.util.List;
+
+import models.Employee;
+import models.Request;
+
 public interface EmployeeDAO {
 
-	public void viewPending(); //to see what invoices are pending
+	public List<Request> viewAllPending(String status);
 	
-	public void viewComplete(); // to see all non-pending invoices
+	public List<Request> viewAllComplete(String status);
 	
-	public void viewApproved(); // to see approved invoices
+	public List<Request> viewAll();
 	
-	public void viewDenied(); // to see which have been denied
+	public void submitNew(Request request);
 	
-	public void viewAll(); //to see all pending and complete invoices
+	public void update(Request reimburse);
 	
-	public void submitNew(); // to add new invoice
+	public void delete(Request request);
 	
-	public void update(); // to update pending invoice
 	
-	public void delete(); //to cancel pending invoice
+
+	
 	
 	
 }

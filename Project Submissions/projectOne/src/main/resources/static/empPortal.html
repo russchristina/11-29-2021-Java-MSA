@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Employee Portal</title>
+        <link rel="stylesheet" href="./greendale.css">
+    </head>
+    <body>
+        <div id="banner">
+            <img src="https://images5.fanpop.com/image/photos/27700000/Community-greendale-community-college-27772486-800-231.png" alt="greendale logo" />
+            <h2>Greendale Community College Employee Portal</h2>
+        </div>
+        <div id="info">
+            <h3> Welcome, (first name, last name)</h3>
+            <p>(department)</p>
+        </div>
+        <div id="requests">
+            <table id="request_table">
+                <caption>Reimbursement Requests:</caption>
+                <thead>
+                  <tr>
+                    <th id="request_id">Id</th>
+                    <th id="employee">Employee</th>
+                    <th id="request_amount">$ Amount</th>
+                    <th id="request_reason">Reason</th>
+                    <th id="request_date">Date Submitted</th>
+                    <th id="request_status">Status</th>
+                    <th id="request_approved">Approved By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="record_1_id"></td>
+                    <td id="record_1_employee"></td>
+                    <td id="record_1_amount"></td>
+                    <td id="record_1_reason"></td>
+                    <td id="record_1_date"></td>
+                    <td id="record_1_status"></td>
+                    <td id="record_1_approved"></td>
+                  </tr>
+                  <tr>
+                    <td id="record_2_id"></td>
+                    <td id="record_2_employee"></td>
+                    <td id="record_2_amount"></td>
+                    <td id="record_2_reason"></td>
+                    <td id="record_2_date"></td>
+                    <td id="record_2_status"></td>
+                    <td id="record_2_approved"></td>
+                  </tr>
+                 </tbody>
+              </table>
+        </div>
+        <div id="submit">
+            <h4 text-align: left>Submit a new Reimbursement Request:</h4>
+            <form id="submit-request">
+                <label for="employee-submit">Name:</label><br/>
+                <input id="employee-submit" type="text" name="Employee" placeholder="Your Name" required/>
+                <br/>
+                <label for="request-amount">Amount ($):</label><br/>
+                <input id="request-amount" type = "number" name="Amount" placeholder="$$$$" required/>
+                <br/>
+                <label for="request-reason">Reason:</label><br/>
+                <input id="request-reason" type = "text" name = "Reason" placeholder="Reason" required/>
+                <br/>
+                <label for="request-date">Date:</label><br />
+                <input id="request-date" type = "date" name="Date" required/>
+                <br></br>
+                <input id="request-submit" type = "button" value ="Submit"/>
+            </form>
+            <script src="./portal.js"></script>
+        </div>
+
+    </body>
+</html>

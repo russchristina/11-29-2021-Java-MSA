@@ -1,15 +1,37 @@
 package models;
 
 import java.sql.Date;
+import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+
+@Table
 public class Request {
-
+	
+	@Id
+	@Column
+	@GeneratedValue(generator = "requests_request_id_seq", strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(allocationSize = 1, name = "requests_request_id_seq", sequenceName = "requests_request_id_seq")
 	private int id;
+	@Column
 	private String employee;
+	@Column
 	private int amount;
-	private String notes;
+	@Column
+	private String reason;
+	@Column
 	private Date date;
+	@Column
 	private String status;
+	@Column
 	private String approvedBy;
 	
 	public Request() {
@@ -21,7 +43,7 @@ public class Request {
 		this.id = id;
 		this.employee = employee;
 		this.amount = amount;
-		this.notes = notes;
+		this.reason = notes;
 		this.date = date;
 		this.status = status;
 		this.approvedBy = approvedBy;
@@ -43,7 +65,7 @@ public class Request {
 		this.employee = employee;
 	}
 
-	public int getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 
@@ -63,7 +85,7 @@ public class Request {
 		return status;
 	}
 
-	public void setStatus(String statusint) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -75,17 +97,17 @@ public class Request {
 		this.approvedBy = approvedBy;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + amount;
-		result = prime * result + (status != null ? 1231 : 1237);
-		result = prime * result + ((approvedBy == null) ? 0 : approvedBy.hashCode());
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((employee == null) ? 0 : employee.hashCode());
-		result = prime * result + id;
-		return result;
+		return Objects.hash(amount, approvedBy, date, employee, id, reason, status);
 	}
 
 	@Override
@@ -97,43 +119,19 @@ public class Request {
 		if (getClass() != obj.getClass())
 			return false;
 		Request other = (Request) obj;
-		if (amount != other.amount)
-			return false;
-		if (status != other.status)
-			return false;
-		if (approvedBy == null) {
-			if (other.approvedBy != null)
-				return false;
-		} else if (!approvedBy.equals(other.approvedBy))
-			return false;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
-		if (employee == null) {
-			if (other.employee != null)
-				return false;
-		} else if (!employee.equals(other.employee))
-			return false;
-		if (id != other.id)
-			return false;
-		return true;
+		return amount == other.amount && Objects.equals(approvedBy, other.approvedBy)
+				&& Objects.equals(date, other.date) && Objects.equals(employee, other.employee) && id == other.id
+				&& Objects.equals(reason, other.reason) && Objects.equals(status, other.status);
 	}
 
 	@Override
 	public String toString() {
-		return "Reimburse [id=" + id + ", employee=" + employee + ", amount=" + amount + ", notes=" + notes + ", date=" + date
-				+ ", status=" + status + ", approvedBy=" + approvedBy + "]";
+		return "Request [id=" + id + ", employee=" + employee + ", amount=" + amount + ", reason=" + reason + ", date="
+				+ date + ", status=" + status + ", approvedBy=" + approvedBy + "]";
 	}
 
-	public String getNotes() {
-		return notes;
-	}
+		
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
 	
-	
+		
 }

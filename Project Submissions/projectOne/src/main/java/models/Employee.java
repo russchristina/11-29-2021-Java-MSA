@@ -1,27 +1,38 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+
+@Table
 public class Employee {
 
+	@Id
+	@Column
 	private int Id;
+	@Column
 	private String firstName;
+	@Column
 	private String lastName;
+	@Column
 	private String department;
-	private String permissions;
-	
+		
 	public Employee() {
 		super();
 	}
 
-	public Employee(int id, String username, String password, String firstName, String lastName, String department,
-			String permissions) {
+	public Employee(int id, String firstName, String lastName, String department) {
 		super();
 		Id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.department = department;
-		this.permissions = permissions;
-	}
+		}
 
+	
 	public int getId() {
 		return Id;
 	}
@@ -54,13 +65,7 @@ public class Employee {
 		this.department = department;
 	}
 
-	public String getPermissions() {
-		return permissions;
-	}
 
-	public void setPermissions(String permissions) {
-		this.permissions = permissions;
-	}
 
 	@Override
 	public int hashCode() {
@@ -70,8 +75,7 @@ public class Employee {
 		result = prime * result + ((department == null) ? 0 : department.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
-		return result;
+			return result;
 	}
 
 	@Override
@@ -100,11 +104,7 @@ public class Employee {
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (permissions == null) {
-			if (other.permissions != null)
-				return false;
-		} else if (!permissions.equals(other.permissions))
-			return false;
+
 		
 		return true;
 	}
@@ -112,7 +112,7 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [Id=" + Id + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", department=" + department + ", permissions=" + permissions + "]";
+				+ ", lastName=" + lastName + ", department=" + department + "]";
 	}
 	
 	

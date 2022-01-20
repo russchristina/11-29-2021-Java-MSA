@@ -1,5 +1,10 @@
 package dao;
 
+import java.util.List;
+
+import models.Login;
+import models.UserLogin;
+
 public interface UserLoginDAOInterface {
 
 /*
@@ -8,20 +13,13 @@ public interface UserLoginDAOInterface {
 
 	//Create
 	
-	UserEntity insertUser(String username, String password, boolean isManager);
+	UserLogin insertUser(String username, String password, boolean isManager);
 	
 	//Read
 	
-	UserEntity getUser(String username);
-	
-	//Update
-	UserEntity updateUsername(int id, String newUsername);
-	
-	//Delete
-	UserEntity deleteUser(int id);
-	
-	
-	
+	UserLogin getUser(String username);
+
+	List<Login> findAll();
 	
 	
 }
