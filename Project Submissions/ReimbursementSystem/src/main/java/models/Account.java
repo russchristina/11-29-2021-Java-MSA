@@ -2,33 +2,76 @@ package models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name="account")
 public class Account implements Serializable{
+	
+	@Id
+	@Column(name="emp_id")
+	@GeneratedValue(generator="emp_id_seq", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(allocationSize = 1, sequenceName = "emp_id_seq", name = "emp_id_seq")
 	private int emp_id;
+	@Column(name="username")
 	private String username;
-	private String password;
-	private String fName;
-	private String lName;
-	private String address;
+	@Column(name="pass")
+	private String pass;
+	@Column(name="first_name")
+	private String first_name;
+	@Column(name="last_name")
+	private String last_name;
+	@Column(name="street_address")
+	private String street_address;
+	@Column(name="city")
 	private String city;
+	@Column(name="state")
 	private String state;
+	@Column(name="zip")
 	private int zip;
+	@Column(name="social_number")
 	private String social_number;
+	@Column(name="balance")
 	private float balance;
+	@Column(name="manager")
 	private boolean manager;
 	
 	public Account() {
 		
 	}
 	
+	public Account(String username, String pass, String first_name, String last_name, String street_address,
+			String city, String state, int zip, String social_number, float balance, boolean manager) {
+		super();
+		this.username = username;
+		this.pass = pass;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.street_address = street_address;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.social_number = social_number;
+		this.balance = balance;
+		this.manager = manager;
+	}
+
 	public Account(int pKey, String username, String password, String fName, String lName, String address, String city, String state, int zip,
 			String social_number, float balance, boolean manager) {
 		super();
 		this.emp_id = pKey;
 		this.username = username;
-		this.password = password;
-		this.fName = fName;
-		this.lName = lName;
-		this.address = address;
+		this.pass = password;
+		this.first_name = fName;
+		this.last_name = lName;
+		this.street_address = address;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
@@ -54,35 +97,35 @@ public class Account implements Serializable{
 	}
 
 	public String getPassword() {
-		return password;
+		return pass;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.pass = password;
 	}
 
 	public String getfName() {
-		return fName;
+		return first_name;
 	}
 
 	public void setfName(String fName) {
-		this.fName = fName;
+		this.first_name = fName;
 	}
 
 	public String getlName() {
-		return lName;
+		return last_name;
 	}
 
 	public void setlName(String lName) {
-		this.lName = lName;
+		this.last_name = lName;
 	}
 
 	public String getAddress() {
-		return address;
+		return street_address;
 	}
 
 	public void setAddress(String address) {
-		this.address = address;
+		this.street_address = address;
 	}
 
 	public String getCity() {
@@ -137,11 +180,11 @@ public class Account implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((street_address == null) ? 0 : street_address.hashCode());
 		result = prime * result + Float.floatToIntBits(balance);
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((fName == null) ? 0 : fName.hashCode());
-		result = prime * result + ((lName == null) ? 0 : lName.hashCode());
+		result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
+		result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
 		result = prime * result + (manager ? 1231 : 1237);
 		result = prime * result + emp_id;
 		result = prime * result + ((social_number == null) ? 0 : social_number.hashCode());
@@ -159,10 +202,10 @@ public class Account implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		if (address == null) {
-			if (other.address != null)
+		if (street_address == null) {
+			if (other.street_address != null)
 				return false;
-		} else if (!address.equals(other.address))
+		} else if (!street_address.equals(other.street_address))
 			return false;
 		if (Float.floatToIntBits(balance) != Float.floatToIntBits(other.balance))
 			return false;
@@ -171,15 +214,15 @@ public class Account implements Serializable{
 				return false;
 		} else if (!city.equals(other.city))
 			return false;
-		if (fName == null) {
-			if (other.fName != null)
+		if (first_name == null) {
+			if (other.first_name != null)
 				return false;
-		} else if (!fName.equals(other.fName))
+		} else if (!first_name.equals(other.first_name))
 			return false;
-		if (lName == null) {
-			if (other.lName != null)
+		if (last_name == null) {
+			if (other.last_name != null)
 				return false;
-		} else if (!lName.equals(other.lName))
+		} else if (!last_name.equals(other.last_name))
 			return false;
 		if (manager != other.manager)
 			return false;
@@ -202,7 +245,7 @@ public class Account implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Employee [pKey=" + emp_id + ", fName=" + fName + ", lName=" + lName + ", address=" + address + ", city="
+		return "Employee [pKey=" + emp_id + ", fName=" + first_name + ", lName=" + last_name + ", address=" + street_address + ", city="
 				+ city + ", state=" + state + ", zip=" + zip + ", social_number=" + social_number + ", balance="
 				+ balance + ", manager=" + manager + "]";
 	}

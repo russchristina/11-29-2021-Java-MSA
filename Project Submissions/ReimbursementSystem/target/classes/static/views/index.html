@@ -7,6 +7,10 @@
     <meta charset="UTF-8"/>
 </head>
 
+<!-- I put the headers outside the body. They should be inside the body along with
+the footer. I would have to rewrite the css to change it. This app is only for 
+training purposes, so I'm leaving it. -->
+
 <header>
     <img id="header_img_left" src="../images/smalllogo.PNG" />
     <h2 id="header_h2">Small Company Group</h2>
@@ -20,11 +24,11 @@
         <img id="logo" src="../images/smallcompanygroup.PNG" />
     </div>
 
-    <div class="user_credentials">
+    <form class="user_credentials">
     	<input id="username" type="text" name="username" placeholder="username" />
-    	<input id="username" type="text" name="password" placeholder="password" />
+    	<input id="username" type="password" name="password" placeholder="password" />
         <button id='login_button' type="button">Login</button>
-    </div>
+    </form>
 </body>
 
 <footer></footer>

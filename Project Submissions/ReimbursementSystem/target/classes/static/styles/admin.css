@@ -1,0 +1,5 @@
+body {
+    display: grid;
+    grid-template-rows: subgrid auto auto auto;
+    grid-template-columns: subgrid auto auto;
+}

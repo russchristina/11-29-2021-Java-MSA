@@ -1,13 +1,13 @@
 package service;
 
-import db.Query;
+import db.DBConn;
 import models.Account;
 import models.LoginReceived;
 
 public class LoginService {
 
 	public Account authenicateLogin(LoginReceived loginReceived) {
-		Query q = new Query();
+		DBConn q = new DBConn();
 		
 		String username = loginReceived.getUser();
 		String password = loginReceived.getPass();
@@ -16,5 +16,5 @@ public class LoginService {
 		
 		return a;
 	}
-
+	
 }

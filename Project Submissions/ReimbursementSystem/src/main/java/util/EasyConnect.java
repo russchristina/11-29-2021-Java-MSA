@@ -1,58 +1,28 @@
 package util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public class EasyConnect {
 	
-	protected Connection getConnection() throws SQLException {
-		Connection conn =  DriverManager.getConnection(
-				System.getenv("db_url"), 
-				System.getenv("db_user"),
-				System.getenv("db_password")
-				);
-		conn.setSchema("p1");
+	private static SessionFactory sessionFactory;
+	
+	protected Session getConnection() {
 		
-		return conn;
-	}
-
-	
-	protected void closeRead(Connection conn, Statement stmt, ResultSet set) {
-		closeConnection(conn);
-		closeStatement(stmt);
-		closeResultSet(set);
-	}
-	
-	protected void closeWrite(Connection conn, Statement stmt) {
-		closeConnection(conn);
-		closeStatement(stmt);
-	}
-	
-	private void closeConnection(Connection conn) {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(sessionFactory == null) {
+			try {
+				sessionFactory = new Configuration().configure()
+						.setProperty("hibernate.connection.url", System.getenv("db_url"))
+						.setProperty("hibernate.connection.username", System.getenv("db_user"))
+						.setProperty("hibernate.connection.password", System.getenv("db_password"))
+						.buildSessionFactory();
+			}catch(HibernateException e) {
+				e.printStackTrace();
+			}
 		}
-	}
-	
-	private void closeStatement(Statement stmt) {
-		try {
-			stmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void closeResultSet(ResultSet set) {
-//		try {
-//			set.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		return sessionFactory.getCurrentSession();
 	}
 	
 }

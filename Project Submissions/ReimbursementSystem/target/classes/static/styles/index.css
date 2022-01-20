@@ -9,11 +9,15 @@ header{
 
 #header_img_left{
     width: 5em;
+    grid-column-start: 1;
+    grid-column-end: 2;
 }
 
 #header_img_right{
+    grid-column-start: 3;
     width: 5em;
     float: right;
+    grid-column-end: 4;
 }
 
 #logo{

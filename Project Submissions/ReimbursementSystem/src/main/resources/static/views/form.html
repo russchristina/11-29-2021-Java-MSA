@@ -2,6 +2,7 @@
 
 <html>
 	<head>
+		<meta charset="UTF-8" />
 		<link rel="stylesheet" href="../styles/form.css"/>
 		<link rel="stylesheet" href="../styles/index.css"/>
 	</head>
@@ -15,9 +16,16 @@
 	</header>
 	
 	<body>
+		<form id="reimbursement_form">
+			<input id="amount" name="amount" type="number" placeholder="Requested Amount"/>
+			<textarea id="memo" name="comment" rows="4" cols="50" ro></textarea>
+			<input id="reimbursement-button" name="reimbursement-button" type ="button" value="Submit"/>
+		</form>
 	</body>
 	
 	<footer>
 	</footer>
+
+	<script src="../scripts/reimbursementPage.js"></script>
 	
 </html>

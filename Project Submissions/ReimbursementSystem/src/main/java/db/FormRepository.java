@@ -1,18 +1,20 @@
 package db;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import models.RepayForm;
 
 public interface FormRepository {
 	
-	ArrayList<Integer> selectRequestsById(int empId);
+	List<RepayForm> selectRequestsById(int empId);
 	
-	ArrayList<RepayForm> selectAllNullRequests();
+	List<RepayForm> selectAllNullRequests();
+	
+	List<RepayForm> selectAllRequests();
 	
 	RepayForm selectForm(int formId);
 	
-	void insertForm(RepayForm form);
+	void save(RepayForm form);
 	
-	void updateFormStatus(int formId, boolean approval);
+	void merge(RepayForm form);
 }

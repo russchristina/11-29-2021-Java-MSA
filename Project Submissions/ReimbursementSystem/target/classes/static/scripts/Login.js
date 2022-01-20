@@ -32,11 +32,12 @@ export class Login{
             headers: {
                 'Content-Type': 'application/json',
                 },
+            mode: 'cors',
             body: JSON.stringify(this.loginForm)
+
         }).then(response => response.json())
         .then(data => {
             this.account = data
-
             if(this.account.emp_id > 0){
                 location.href = 'http://localhost:700/views/landing.html'
             }
