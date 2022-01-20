@@ -1,0 +1,30 @@
+body{
+    background-color:gray;
+    font-family: Arial, Helvetica, sans-serif;
+    color:white;
+}
+header{
+    text-align: center;
+    background-color:darkslategrey;
+    color: white;
+    border-radius: .5em;
+    padding-top: .1em;
+    padding-bottom: .1em;
+    margin:auto;
+    border: whitesmoke;
+    border-width: 6px;
+    border-style: solid;
+
+}
+#maindiv{
+    background-color: darkslategrey;
+    color: white;
+    border-radius: .5em;
+    width: 80%;
+    height:70%;
+    margin:auto;
+    padding: 3%;
+    size: 80%;
+    border: whitesmoke;
+    border-width: 6px;
+    border-style: solid;
