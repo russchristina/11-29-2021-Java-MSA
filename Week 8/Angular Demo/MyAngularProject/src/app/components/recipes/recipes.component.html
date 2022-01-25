@@ -37,7 +37,10 @@
                     <li>Eat the cheesecake.</li>
                 </ol>
             </div> -->
-           <app-recipe-card></app-recipe-card>
+            <!--*ngFor is another structural directive that we can use to dynamically generate multiple elements. This allows to cut down on the repetition that vanilla JS and HTML often require. For instance, if you know that you need to render multiple receipe cards, why not type it once and apply *ngFor to the element?
+            
+            Note also that we have used some property binding to pass down a prop called "recipe to each recipe-card component that is created. The value of this property is the loop variable.-->
+           <app-recipe-card *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-card>
             <!-- <div class="recipe_div">
                 <h3>Ice Cream</h3>
                 <p>Homemade Ice Cream</p>

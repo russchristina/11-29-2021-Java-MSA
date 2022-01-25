@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Recipe } from 'src/app/models/recipe';
 
 @Component({
@@ -15,11 +15,14 @@ export class RecipeCardComponent implements OnInit {
 
   /**
    * Remember that an Angular component is a class. This means that a component can have its own state. We can take advantage of this state by accessing it from the view.
+   * 
+   * Note that this state is passed down from the parent component. Also note that the name of the property should match the name of the property that is specified at the level of the parent component. For instance, this property is called "recipe" and the property is bound at the parent level is also called "recipe". Also note the use of "Input" decorator to pass this state down.
    */
 
-   recipe:Recipe = new Recipe(1, 'Generic Brand Ribs', 'These ribs are really generic.', 'https://image.shutterstock.com/image-photo/spicy-hot-grilled-spare-ribs-600w-611174102.jpg', ['step 1', 'step 2'], 'christina');
+   @Input()
+   recipe:Recipe;
 
-   isHidden:boolean = false;
+   isHidden:boolean = true;
 
   /**
    * If I'm going to use event binding in Angular, I still need to specify the callback function that should be invoked when an event occurs on the frontend.
