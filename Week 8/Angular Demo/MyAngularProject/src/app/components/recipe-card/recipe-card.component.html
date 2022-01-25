@@ -2,14 +2,18 @@
 
 This is one method of "data binding". This is specifically a method of "one-way data binding" as the data is bound only in direction.
 
-Note also the use of "property binding", which is also a type of one-way data binding. The syntax for property binding is [attributeName] = "someStateOnComponent". Note that property binding should be used with element attributes.-->
-<div class="recipe_div" [hidden]="isHidden">
-    <h3>{{recipe.name}}</h3>
-    <p>{{recipe.description}}</p>
+Note also the use of "property binding", which is also a type of one-way data binding. The syntax for property binding is [attributeName] = "someStateOnComponent". Note that property binding should be used with element attributes.
+
+While we've used property binding with the hidden attribute e.g."[hidden]="isHidden"", we can also simply use "ngIf". "ngIf" is a "structural directive"; structural directives they affect the DOM (e.g. they add or remove elements from the DOM). Structural directives are preceded with an asterisk(*). -->
+<div class="recipe_div" *ngIf="isHidden">
+    <!--Pipes allow you to perform temporary transformations of data, for the purpose of displaying data differently.-->
+    <h3>{{recipe.name | uppercase}}</h3>
+    <!--Applying a custom pipe.-->
+    <p>{{recipe.cookTimeInMinutes}}</p>
     <img class="recipe_img" src="{{recipe.img_url}}"/>
     <ol>
-        <li>{{recipe.recipe_steps[0]}}</li>
-        <li>{{recipe.recipe_steps[1]}}</li>
+        <li></li>
+        <li></li>
     </ol>
 <!--Let's add an input box which allows us to modify the description of the recipe. 
 
