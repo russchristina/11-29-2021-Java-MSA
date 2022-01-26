@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- The root tag of this file is fittingly "beans". This is because we can 
+	define all of our Spring beans within this file. A Spring Bean is a Java 
+	object whose life cycle is managed by the IOC container. Recall that our 
+	current IOC container is the ApplicationContext. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- This allows to use Spring annotations rather than declaring our beans here within this XML
+	file. -->
+	<context:annotation-config></context:annotation-config>
+	
+	<!-- Tell the framework which packages to scan for the annotations. Note that you can just use
+	the "base package", which is com.revature in our case, and that Spring will scan any subpackages
+	for annotations. -->
+	<!-- <context:component-scan base-package="com.revature"></context:component-scan> -->
+
+	<!-- Any object whose life cycle you would like to be managed by the IOC 
+		container should be declared here as a bean (assuming you're XML configuration, 
+		which we are in this case). In order to do so, you should use the "bean" 
+		tag. In order to create relationships between the beans in our IOC container, 
+		we must rely on "bean wiring". 
+		
+		Also note that Spring beans have "scopes". A scope determines how Spring handles creating
+		instances of the bean. The default scope is "singleton", which means that Spring only creates
+		one instance of the bean for the duration of the application.-->
+	<!--  <bean name="recipeController"
+		class="com.revature.controller.RecipeController" scope="singleton">
+		 We are letting Spring use "constructor injection" to supply our needed 
+			recipeService dependency.
+		<constructor-arg index="0" ref="recipeService"></constructor-arg>
+	</bean> -->
+
+
+	<!-- Thus far, we have explicitly told Spring which beans to wire in where. We can also have
+	Spring automatically wire in the appropriate bean candidates. It has a few different strategies
+	for determining what the "appropriate" candidate is for wiring. We refer to this as "autowiring".
+	
+	We can choose to wire a bean in by:
+	
+	byName: Spring looks for a bean of a specific name in the IOC container and chooses the bean name
+	which matches the property name (on the class). This is the most specific way of autowiring.
+	
+	byType: Spring looks for a bean of a specific type in the IOC container and chooses the bean type
+	which matches the type of the field. If you have multiple beans of this type in the IOC container,
+	this isn't going to be the best strategy.
+	
+	constructor: Similar to byType, but instead Spring looks for a bean of a specific type in the IOC container
+	based on constructor arguments.-->
+	
+	<!-- <bean name="recipeService"
+		class="com.revature.service.RecipeService" autowire="constructor">
+		We are letting Spring use "setter injection" to supply our needed recipeRepository
+		dependency.
+		<property name="recipeRepository" ref="recipeRepository"></property>
+	</bean> -->
+
+	<!--  <bean name="recipeRepository"
+		class="com.revature.repository.RecipeRepository"></bean> -->
+	
+	<!-- Additional bean added to show the effects of using byType to autowire in beans. -->
+	<!-- <bean name="recipeRepository2" class="com.revature.repository.RecipeRepository"></bean> -->
+
+</beans>
