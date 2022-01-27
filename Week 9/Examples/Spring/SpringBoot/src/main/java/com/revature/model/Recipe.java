@@ -15,9 +15,37 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/*
+ * As a bonus tool, you can use Lombok to automatically generate boilerplate
+ * code at runtime. This boilerplate code includes getters, setters, constructors,
+ * toString methods, equals and hashCode methods. Basically your entire JavaBean.
+ * 
+ * All you need is to 1)install support for Lombok in your IDE and 2) annotate
+ * your class with Lombok annotations.
+ */
+
 @Entity
 
 @Table(name = "hibernate_recipe")
+
+//@Getter
+//@Setter
+//@EqualsAndHashCode
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@ToString
+
+/*
+ * Note that @Data is a combination of @Getter, Setter, @ToString, @EqualsAndHashCode,
+ * and @RequiredArgsConstructor.
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Recipe {
 
 	@Id
@@ -53,106 +81,4 @@ public class Recipe {
 	inverseJoinColumns = {@JoinColumn(name= "ingredient_id")})
 	private Set<Ingredient> ingredients;
 
-	public Recipe() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Recipe(int id, String name, int cookTimeInMinutes, Author author, Set<Ingredient> ingredients) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.cookTimeInMinutes = cookTimeInMinutes;
-		this.author = author;
-		this.ingredients = ingredients;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getCookTimeInMinutes() {
-		return cookTimeInMinutes;
-	}
-
-	public void setCookTimeInMinutes(int cookTimeInMinutes) {
-		this.cookTimeInMinutes = cookTimeInMinutes;
-	}
-
-	public Author getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(Author author) {
-		this.author = author;
-	}
-
-	public Set<Ingredient> getIngredients() {
-		return ingredients;
-	}
-
-	public void setIngredients(Set<Ingredient> ingredients) {
-		this.ingredients = ingredients;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((author == null) ? 0 : author.hashCode());
-		result = prime * result + cookTimeInMinutes;
-		result = prime * result + id;
-		result = prime * result + ((ingredients == null) ? 0 : ingredients.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Recipe other = (Recipe) obj;
-		if (author == null) {
-			if (other.author != null)
-				return false;
-		} else if (!author.equals(other.author))
-			return false;
-		if (cookTimeInMinutes != other.cookTimeInMinutes)
-			return false;
-		if (id != other.id)
-			return false;
-		if (ingredients == null) {
-			if (other.ingredients != null)
-				return false;
-		} else if (!ingredients.equals(other.ingredients))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Recipe [id=" + id + ", name=" + name + ", cookTimeInMinutes=" + cookTimeInMinutes + ", author=" + author
-				+ ", ingredients=" + ingredients + "]";
-	}
 }

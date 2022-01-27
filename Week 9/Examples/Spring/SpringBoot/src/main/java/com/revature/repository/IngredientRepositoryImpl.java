@@ -34,8 +34,23 @@ public class IngredientRepositoryImpl implements IngredientRepository{
 
 	@Override
 	public Ingredient findById(int id) {
+		Session session = null;
+		Transaction transaction = null;
 		
-		return null;
+		Ingredient retrievedIngredient = null;
+		
+		try {
+			session = HibernateSessionFactory.getSession();
+			transaction = session.beginTransaction();
+			retrievedIngredient = session.get(Ingredient.class, id);
+			transaction.commit();
+			
+		}catch(HibernateException e) {
+			transaction.rollback();
+			e.printStackTrace();
+		}
+		
+		return retrievedIngredient;
 	}
 
 	@Override

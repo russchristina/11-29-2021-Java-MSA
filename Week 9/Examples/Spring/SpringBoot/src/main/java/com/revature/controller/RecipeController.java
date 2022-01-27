@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.model.Author;
 import com.revature.model.Recipe;
 import com.revature.service.RecipeService;
 
@@ -54,20 +55,25 @@ public class RecipeController {
 	 * The @ResponseBody annotation denotes that this method should write to the
 	 * response body instead of sending a view back to the client.
 	 */
-	// @ResponseBody COMMENTED OUT BECAUSE THE ENTIRE IS NOW A REST CONTROLLER
+	// @ResponseBody COMMENTED OUT BECAUSE THE ENTIRE CONTROLLER IS NOW A REST CONTROLLER
 	public List<Recipe> findAll(){
 		return this.recipeService.findAll();
 	}
 	
-	// Note to self: write note about annotation
+	// The @RequestBody body annotation denotes that our parameter is actually
+	//pulled directly the request's body. The JSON in the request body is deserialized
+	//for us.
 	@PostMapping("/new")
 	public void save(@RequestBody Recipe recipe) {
+		System.out.println(recipe);
 		this.recipeService.save(recipe);
 	}
 	
-//	@GetMapping(path="/home-view")
-//	public String home() {
-//		return "home";
-//	}
+	@PostMapping("/author")
+	public List<Recipe> findAllByAuthor(@RequestBody Author author){
+		return this.recipeService.findAllByAuthor(author);
+	}
+	
+	
 	
 }
