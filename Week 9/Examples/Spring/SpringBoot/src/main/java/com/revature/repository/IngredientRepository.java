@@ -2,6 +2,10 @@ package com.revature.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 import com.revature.model.Ingredient;
 
 /*
@@ -10,13 +14,15 @@ import com.revature.model.Ingredient;
  * my DB for ingredient records and also insert new ingredient records or even update
  * them. Basically, we'd like to define any basic CRUD here.
  */
-public interface IngredientRepository {
+@Repository("ingredientRepository")
+public interface IngredientRepository extends JpaRepository<Ingredient, Integer>{
 
 	/**
 	 * 
 	 * @param ingredient an ingredient that will be persisted to database
+	 * @return 
 	 */
-	void save(Ingredient ingredient);
+	<S extends Ingredient> S save(Ingredient ingredient);
 	
 	/**
 	 * 
@@ -27,6 +33,11 @@ public interface IngredientRepository {
 	/**
 	 * 
 	 * @param name the name of the ingredient in the database
+	 * 
+	 * Note that Spring Data JPA has its own expression language for writing
+	 * methods. You can use the name of a field on a type as we have done below,
+	 * and Spring Data JPA will know how to implement the method based on the
+	 * method name.
 	 */
 	Ingredient findByName(String name);
 	
@@ -34,12 +45,6 @@ public interface IngredientRepository {
 	 * This method locates every single ingredient in our database
 	 */
 	List<Ingredient> findAll();
-	
-	/**
-	 * 
-	 * @param ingredient the ingredient that will be update in our database
-	 */
-	void update(Ingredient ingredient);
 	
 	/**
 	 * 
