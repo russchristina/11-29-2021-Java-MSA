@@ -26,4 +26,8 @@ public class RecipeService {
 	public List<Recipe> findAllByAuthor(Author author){
 		return this.recipeRepository.findAllByAuthor(author);
 	}
+	
+	public List<Recipe> findAllByCooktimeinminutesLessThan(int cooktimeinminutes){
+		return this.recipeRepository.findAllByCooktimeinminutesLessThan(cooktimeinminutes);
+	}
 }

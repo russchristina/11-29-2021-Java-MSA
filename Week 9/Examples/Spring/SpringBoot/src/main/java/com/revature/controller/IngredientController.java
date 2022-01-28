@@ -44,10 +44,10 @@ public class IngredientController {
 				this.ingredientService.findAll(), HttpStatus.OK);
 	}
 	
-	@PutMapping(path = "/modified", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void update(@RequestBody Ingredient ingredient) {
-		this.ingredientService.update(ingredient);
-	}
+//	@PutMapping(path = "/modified", consumes = MediaType.APPLICATION_JSON_VALUE)
+//	public void update(@RequestBody Ingredient ingredient) {
+//		this.ingredientService.update(ingredient);
+//	}
 	
 	/*
 	 * We can also accept path variables. In this case, we will allow the client

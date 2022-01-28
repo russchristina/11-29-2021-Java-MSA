@@ -55,7 +55,12 @@ public class Recipe {
 	private int id;
 	@Column
 	private String name;
-	private int cookTimeInMinutes;
+	/*
+	 * Note that Spring Data JPA does not like pascal or camel casing on fields.
+	 * As such, I've changed this field name to make it more consistent with
+	 * Spring Data JPA.
+	 */
+	private int cooktimeinminutes;
 	/*
 	 * If you wish to create a foreign key, you need only specify the type directly
 	 * here and use the ManyToOne annotation.
@@ -77,7 +82,7 @@ public class Recipe {
 	 * In order to do so, we can use the @JoinTable annotation. As a general note, Hibernate
 	 * much prefers Set to List for nested/embedded collections.
 	 */
-	@JoinTable(joinColumns = {@JoinColumn(name = "recipe_id")}, 
+	@JoinTable(name = "hibernate_recipe_hibernate_ingredient", joinColumns = {@JoinColumn(name = "recipe_id")}, 
 	inverseJoinColumns = {@JoinColumn(name= "ingredient_id")})
 	private Set<Ingredient> ingredients;
 

@@ -36,7 +36,7 @@ public class IngredientService {
 		return this.ingredientRepository.findById(id);
 	}
 		
-	public void update(Ingredient ingredient) {
-		this.ingredientRepository.update(ingredient);
-	}
+//	public void update(Ingredient ingredient) {
+//		this.ingredientRepository.update(ingredient);
+//	}
 }
