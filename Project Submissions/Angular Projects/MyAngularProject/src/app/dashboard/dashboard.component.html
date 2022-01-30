@@ -1,0 +1,9 @@
+<h2>Top Associates</h2>
+<div class="associates-menu">
+  <a *ngFor="let associate of associates"
+      routerLink="/detail/{{associate.id}}">
+      {{associate.name}}
+  </a>
+</div>
+
+<app-associate-search></app-associate-search>

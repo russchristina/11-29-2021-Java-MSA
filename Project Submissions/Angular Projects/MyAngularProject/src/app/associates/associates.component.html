@@ -1,0 +1,21 @@
+<h2>My Associates</h2>
+
+<div>
+  <label for="new-associate">Associate name: </label>
+  <input id="new-associate" #associateName />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button class="add-button" (click)="add(associateName.value); associateName.value=''">
+    Add associate
+  </button>
+</div>
+
+<ul class="associates">
+  <li *ngFor="let associate of associates">
+    <a routerLink="/detail/{{associate.id}}">
+      <span class="badge">{{associate.id}}</span> {{associate.name}}
+    </a>
+    <button class="delete" title="delete associate"
+      (click)="delete(associate)">x</button>
+  </li>
+</ul>

@@ -1,0 +1,12 @@
+<div id="search-component">
+    <label for="search-box">Associate Search</label>
+    <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+  
+    <ul class="search-result">
+      <li *ngFor="let associate of associates$ | async" >
+        <a routerLink="/detail/{{associate.id}}">
+          {{associate.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
