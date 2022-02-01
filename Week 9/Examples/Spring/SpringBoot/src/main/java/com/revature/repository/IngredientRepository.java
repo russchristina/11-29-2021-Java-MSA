@@ -16,14 +16,6 @@ import com.revature.model.Ingredient;
  */
 @Repository("ingredientRepository")
 public interface IngredientRepository extends JpaRepository<Ingredient, Integer>{
-
-	/**
-	 * 
-	 * @param ingredient an ingredient that will be persisted to database
-	 * @return 
-	 */
-	<S extends Ingredient> S save(Ingredient ingredient);
-	
 	/**
 	 * 
 	 * @param id the primary key that is used to locate the ingredient
@@ -40,16 +32,5 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Integer>
 	 * method name.
 	 */
 	Ingredient findByName(String name);
-	
-	/**
-	 * This method locates every single ingredient in our database
-	 */
-	List<Ingredient> findAll();
-	
-	/**
-	 * 
-	 * @param ingredient the ingredient that will be deleted from the database
-	 */
-	void delete(Ingredient ingredient);
 	
 }
