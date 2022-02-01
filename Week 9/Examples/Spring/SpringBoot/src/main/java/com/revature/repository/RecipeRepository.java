@@ -21,8 +21,6 @@ import com.revature.model.Recipe;
 @Repository("recipeRepository")
 public interface RecipeRepository extends JpaRepository<Recipe, Integer>{
 
-	List<Recipe> findAll();
-	<S extends Recipe> S save(Recipe recipe);
 	List<Recipe> findAllByAuthor(Author author);
 	List<Recipe> findAllByCooktimeinminutesLessThan(int cooktimeinminutes);
 }
