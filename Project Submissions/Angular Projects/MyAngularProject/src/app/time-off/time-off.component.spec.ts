@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TimeOff } from '../time-off';
 
 import { TimeOffComponent } from './time-off.component';
 

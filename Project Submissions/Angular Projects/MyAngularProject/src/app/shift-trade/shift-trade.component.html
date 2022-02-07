@@ -1,1 +1,19 @@
-<p>shift-trade works!</p>
+<h2>Trade Shifts</h2>
+
+<div>
+  <label for="new-tradeshift">Tradeshift sender: </label>
+  <input id="new-tradeshift" #tradeshiftSender />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button class="add-button" (click)="add(tradeshiftSender.value); tradeshiftSender.value=''">
+    Add tradeshift
+  </button>
+</div>
+
+<ul class="tradeshifts">
+  <li *ngFor="let tradeshift of tradeshifts">
+    
+    <button class="delete" title="delete tradeshift"
+      (click)="delete(tradeshift)">x</button>
+  </li>
+</ul>

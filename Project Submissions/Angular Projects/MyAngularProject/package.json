@@ -18,7 +18,9 @@
     "@angular/platform-browser": "~13.1.0",
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
+    "angular-calendar-scheduler": "^11.0.7",
     "angular-in-memory-web-api": "^0.13.0",
+    "date-fns": "^2.28.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -1,21 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { TimeoffDetailsComponent } from './timeoff-details.component';
 
-import { AssociateDetailComponent } from './associate-detail.component';
-
-describe('AssociateDetailComponent', () => {
-  let component: AssociateDetailComponent;
-  let fixture: ComponentFixture<AssociateDetailComponent>;
+describe('TimeoffDetailsComponent', () => {
+  let component: TimeoffDetailsComponent;
+  let fixture: ComponentFixture<TimeoffDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssociateDetailComponent ]
+      declarations: [ TimeoffDetailsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssociateDetailComponent);
+    fixture = TestBed.createComponent(TimeoffDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

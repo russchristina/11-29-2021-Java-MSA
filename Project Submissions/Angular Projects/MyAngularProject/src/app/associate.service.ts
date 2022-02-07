@@ -118,6 +118,6 @@ export class AssociateService {
 
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
-    this.messageService.add(`HeroService: ${message}`);
+    this.messageService.add(`AssociateService: ${message}`);
   }
 }

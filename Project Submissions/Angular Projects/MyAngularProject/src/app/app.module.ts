@@ -16,6 +16,8 @@ import { SchedulerComponent } from './scheduler/scheduler.component';
 import { ShiftTradeComponent } from './shift-trade/shift-trade.component';
 import { TimeOffComponent } from './time-off/time-off.component';
 
+import { TimeoffDetailsComponent } from './timeoff-details/timeoff-details.component';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { TimeOffComponent } from './time-off/time-off.component';
    
     
     AssociatesComponent,
+  
+
     AssociateDetailComponent,
     MessagesComponent,
     DashboardComponent,
@@ -30,7 +34,10 @@ import { TimeOffComponent } from './time-off/time-off.component';
     ScheduleComponent,
     SchedulerComponent,
     ShiftTradeComponent,
-    TimeOffComponent
+    TimeOffComponent,
+   
+    TimeoffDetailsComponent,
+   
   ],
   imports: [
     BrowserModule,

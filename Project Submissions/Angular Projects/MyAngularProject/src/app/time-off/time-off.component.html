@@ -1,1 +1,21 @@
-<p>time-off works!</p>
+<h2>Associates Timeoff</h2>
+
+<div>
+  <label for="new-timeoff">TimeOffs </label>
+  <input id="new-timeoff" #timeoffSender />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button class="add-button" (click)="add(timeoffSender.value); timeoffSender.value=''">
+    Add timeoff
+  </button>
+</div>
+
+<ul class="timeoffs">
+  <li *ngFor="let timeoff of timeoffs">
+    <a routerLink="/detail/{{timeoff.id}}">
+      <span class="badge">{{timeoff.id}}</span> {{timeoff.sender}}
+    </a>
+    <button class="delete" title="delete timeoff"
+      (click)="delete(timeoff)">x</button>
+  </li>
+</ul>
