@@ -1,0 +1,23 @@
+header {
+    background-color: skyblue;
+    text-align: center;
+}
+
+body {
+    background-color: slateblue;
+}
+
+div {
+    background-color: skyblue;
+}
+
+#login {
+    padding: 5em;
+    
+}
+
+nav {
+	background-color: lightgreen;
+	padding: 5em;
+	margin-left: 5em;
+}

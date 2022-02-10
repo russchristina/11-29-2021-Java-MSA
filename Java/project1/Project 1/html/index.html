@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IceBerg Site</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<header>
+    <h1>IceBerg Company Site</h1>
+    <h2>Reimbursement Portal</h2>
+</header>
+
+<body>
+    <div id= "mainContainer">
+        <h3>Please enter your username and password to log in.</h3>
+        <form  id= "loginForm" onsubmit="return fetchData()">
+            <div id = "login">
+                <div class="form-group">
+                    <label for="username"><b>Username:</b></label>
+                    <input type="text" placeholder="Enter Username" name="username" required><br>
+                    <br>
+                    <label for="password"><b>Password: </b></label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+                </div>
+                <br>
+                <button id='loginButton' type="submit">Log In</button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <script src="script.js"></script>
+</body>
+</html>
