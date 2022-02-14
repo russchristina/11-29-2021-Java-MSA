@@ -1,0 +1,52 @@
+What is the Spring Framework?
+What version(s) of Spring are we using?
+What is tight coupling? Loose coupling?
+What is the difference between a framework and a library?
+What are some of the advantages of using Spring?
+What is dependency injection?
+What are the different approaches to dependency injection in Spring?
+What is the Spring Bean life cycle?
+What are some of the modules of Spring? What do they help you achieve?
+What are some of the Spring projects?
+What is the IOC container/Application Context?
+What was the old IOC container in Spring? How does it differ from the current IOC container?
+What are some of the different implementations of the Application Context? When do we use them?
+What are some Spring stereotypes? What are they used for?
+What are some of the other annotations available in Spring?
+List some of the annotations used in Spring MVC. What are they used for?
+What is a Spring Bean?
+What is Bean wiring? How do explicitly wire a bean in? Autowire a bean?
+What are some of the different ways in which we can wire beans? How do they work? What are the advantages/disadvantages of the different approaches?
+What are Bean scopes?
+What are some of the tags used in the ApplicationContext.xml?
+What is the name of the only servlet used in Spring MVC? How do you configure it?
+What is a controller?
+What is the HandlerMapping interface?
+How is a Controller different from a RestController?
+How do I handle exceptions in Spring MVC?
+How do I use Angular to make RESTful calls to MVC controllers?
+How do I expose/consume REST? SOAP?
+What is an aspect?
+What is a cross-cutting concern? Examples of cross-cutting concerns?
+What is AspectJ?
+What is Advice?
+What are some of the different types of Advice?
+How does Spring AOP allow you to modularize concerns?
+What are some of the AspectJ annotations? What do they do?
+What is a Pointcut?
+What is a Join Point? Proceeding Join Point?
+What is a web service?
+What is REST? What are the constraints of REST?
+What is HTTP?
+What are the HTTP verbs?
+What is Postman?
+How would you test your web services?
+What are the annotations of JUnit?
+What is Mockito?
+What is Spring Data Rest?
+What is the JPA Repository?
+What is Spring Data JPA?
+What is Spring Boot?
+What does the @SpringBootApplication annotation do? Which annotations does it rely on under the hood?
+What is the Spring MVC testing framework? Why do we use it?
+How do we mock a controller in Spring MVC?

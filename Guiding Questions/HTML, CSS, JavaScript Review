@@ -1,0 +1,70 @@
+What is HTML?
+What is semantic HTML? Why is it useful?
+What are some common tags of html?
+What is the doctype declaration?
+How do I create a table in HTML?
+How do I create an unordered/ordered list?
+How do I create various form data?
+What is CSS?
+Why is CSS called...CSS?
+What are the different ways to include CSS?
+What are some CSS selectors?
+What is specificity in CSS?
+What is precedence in CSS?
+What is Bootstrap?
+What is the bootstrap grid system?
+What is XML? *
+Well formed vs valid xml? *
+What is the difference between a DTD and XSD? *
+What is an XML namespace? *
+What is the syntax of XML? *
+What is an XPath? *
+Absolute vs relative XPath? *
+What is JavaScript?
+What is ECMAScript?
+What are the datatypes of JavaScript?
+What is type coercion?
+What are closures?
+What is prototypal inheritance?
+What is JSON?
+JSON syntax?
+== vs ===
+Null vs undefined? 
+What are template literals and arrow notation?
+What are the scopes of variables in JavaScript?
+Var vs Let vs Const?
+What is an event listener?
+What are some different events?
+What is the DOM?
+What is DOM manipulation?
+How do I manipulate the DOM using JavaScript?
+How do I select various elements in the DOM? What are different ways?
+What is bubbling and capturing?
+How do I cancel an event in JavaScript?
+What is the Event object? 
+What is a callback function?
+What is AJAX?
+What are the different states of AJAX?
+What is the object we use for AJAX in JavaScript?
+What triggers the different state changes?
+What is the name of the property detecting state changes?
+What is fetch?
+What is a Promise?
+What are the benefits of using a Promise?
+What are the "async" and "await" keywords used for?
+How do I use JavaScript for form validation?
+How do I use AJAX to hit an API? How do I receive JSON back?
+What is variable hoisting?
+Truthy values vs Falsy values in JavaScript
+What are some different JavaScript errors?
+What is the software development lifecycle?
+What is a business analyst?
+What is a user story?
+What is a burndown chart?
+What is a standup?
+What is a retrospective?
+What is a sprint?
+What is a sprint backlog?
+What is the agile approach to software development?
+What is the waterfall approach to software development?
+What are the benefits of the agile approach? Waterfall approach?

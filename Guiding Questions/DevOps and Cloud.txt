@@ -1,0 +1,21 @@
+What is Unix?
+What are some command Unix commands?
+What is VIM?
+How do I change file permissions?
+How do I create local environment variables and global environment variables?
+What is AWS?
+What is the cloud?
+What is an EC2, AMI, IAM, RDS, EBS, S3, VPC?
+What is PAAS, IAAS, SAAS?
+How do AWS availability zones work?
+What are AWS endpoints?
+What are AWS regions?
+What is DevOps?
+What are continuous integration, deployment, and delivery?
+What is Jenkins?
+How would you build a DevOps pipeline complete with notification and quality checking?
+What is Agile?
+What steps are in the agile process? Explain them. (kickoff, backlog filling, backlog grooming, user story scoring, sprint/iteration planning, retrospective)
+What are some "rules"/best practices of good DevOps?
+What is a burndown chart? (agile)
+What is velocity? (agile)
