@@ -67,8 +67,8 @@ export class ShifttradeService {
   //////// Save methods //////////
 
   /** POST: add a new hero to the server */
-  addShiftTrade(shiftTrade: ShiftTrade): Observable<ShiftTrade> {
-    return this.http.post<ShiftTrade>(this.shifttradesUrl, shiftTrade, this.httpOptions).pipe(
+  addShiftTrade(shifttrade: ShiftTrade): Observable<ShiftTrade> {
+    return this.http.post<ShiftTrade>(this.shifttradesUrl, shifttrade, this.httpOptions).pipe(
       tap((newShiftTrade: ShiftTrade) => this.log(`added associate w/ id=${newShiftTrade.id}`)),
       catchError(this.handleError<ShiftTrade>('addShiftTrade'))
     );

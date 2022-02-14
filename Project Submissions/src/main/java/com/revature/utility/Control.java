@@ -25,7 +25,7 @@ public class Control {
 			myLogger.info("Reimbursement request for " + String.format("%.2f", r.retreiveAmount()) + " submitted by " + r.retreiveFullName() + " for " + r.retreiveStatus().toLowerCase() + ".");
 			ctx.html("Offer submitted successfully");
 		} catch (NumberFormatException e) {
-			ctx.html("Invalid input. Request not created");
+			ctx.html("Invalid input. Offer not created");
 		} 
 	};
 	

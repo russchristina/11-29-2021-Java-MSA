@@ -18,7 +18,7 @@ public class HibernateMain {
 		
 		Session session=factory.openSession();
 		Transaction transaction = session.beginTransaction();
-		Associate a1 = new Associate("Jim Rogers","manager", "boo");
+		Associate a1 = new Associate("Jim Carl","manager", "boozo");
 		session.save(a1);
 		transaction.commit();
 		session.close();

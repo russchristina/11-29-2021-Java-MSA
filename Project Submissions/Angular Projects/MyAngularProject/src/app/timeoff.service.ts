@@ -72,7 +72,7 @@ export class TimeoffService {
   addTimeOff(timeoff: TimeOff): Observable<TimeOff> {
     return this.http.post<TimeOff>(this.timeoffUrl, timeoff, this.httpOptions).pipe(
       tap((newTimeOff: TimeOff) => this.log(`added timeoff w/ id=${newTimeOff.id}`)),
-      catchError(this.handleError<TimeOff>('addAssociate'))
+      catchError(this.handleError<TimeOff>('addTimeoff'))
     );
   }
 

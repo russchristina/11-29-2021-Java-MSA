@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SchedulerComponent } from './scheduler/scheduler.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 import { TimeOffComponent} from './time-off/time-off.component';
 import { TimeoffDetailsComponent} from './timeoff-details/timeoff-details.component';
 
@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'details/:id', component: TimeoffDetailsComponent, },
 
   { path: 'associates', component: AssociatesComponent },
-  { path: 'scheduler', component: SchedulerComponent },
+  { path: 'schedule', component: ScheduleComponent },
   { path: 'time-off', component: TimeOffComponent },
   { path: 'shift-trade', component: ShiftTradeComponent },
 

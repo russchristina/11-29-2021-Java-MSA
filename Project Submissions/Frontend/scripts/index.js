@@ -5,19 +5,9 @@ let loginForm = document.getElementById('loginForm')
 /**
  * Log in form handling
  */
- function validateForm() {
-    let x = document.forms["myForm"]["fname"].value;
-    if (x == "") {
-      alert("Name must be filled out");
-      return false;
-    }
-  }
-
-
-
 function fetchData() {
     
-    let url = 'http://localhost:9000/crazy/verify'
+    let url = 'http://localhost:9000/verify'
     let loginData = new FormData(loginForm)
 
     fetch(url, {
@@ -84,24 +74,9 @@ function generateMenu(data) {
     mainContainer.append(menuDiv)
 }
 
-function startSession() {
-    let url='http://localhost:9000/crazy/gen'
-    fetch(url, {
-        method: 'GET' 
-    })
-    .then(response => response.text())
-    .then(text => {
-        try {
-            const d = JSON.parse(text)  
-            console.log(d)               
-        } catch {
-            console.log(text)           
-        }
-    })
-    
-    .catch(() => {window.alert('Oops.. Something happened')})
-}
-
+/**
+ *  Request creation handling
+ */
 function createRequest(data) {
     let requestForm = document.createElement('form')
     
@@ -170,7 +145,7 @@ function createRequest(data) {
  *  Employee request view handling
  */
 async function viewRequestHandler(data) {
-    let url = 'http://localhost:9000/crazy/empRequests'
+    let url = 'http://localhost:9000/empRequests'
     console.log(data)
     let response_body = await fetch(url, {
         method: "POST", 
@@ -185,7 +160,7 @@ async function viewRequestHandler(data) {
  *  Manager request view handling
  */
 async function getAllRequestData(data) {
-    let url = 'http://localhost:9000/crazy/all-requests'
+    let url = 'http://localhost:9000/all-requests'
     let response_body = await fetch(url)
     let allRequestData = await response_body.json()
 
@@ -205,7 +180,7 @@ function viewStats(data) {
     avgAmtReqDiv.innerText='Average amount requested'
     
     highestPayoutDiv.addEventListener('click', function(){
-        let url  = 'http://localhost:9000/crazy/highest-payout'
+        let url  = 'http://localhost:9000/highest-payout'
         fetch(url)
         .then(response => response.text())
         .then(text => {
@@ -219,7 +194,7 @@ function viewStats(data) {
     })
 
     numberOfReqDiv.addEventListener('click', function(){
-        let url = 'http://localhost:9000/crazy/number-requests'
+        let url = 'http://localhost:9000/number-requests'
         fetch(url)
         .then(response => response.text())
         .then(text => {
@@ -233,7 +208,7 @@ function viewStats(data) {
     })
 
     avgAmtReqDiv.addEventListener('click', function(){
-        let url = 'http://localhost:9000/crazy/average-requested'
+        let url = 'http://localhost:9000/average-requested'
         fetch(url)
         .then(response => response.text())
         .then(text => {
@@ -263,7 +238,7 @@ function viewStats(data) {
  *  Handle send/recieve portion of request creation
  */
 function createRequestHandler(requestForm, data)  {
-    let url = 'http://localhost:9000/crazy/requestSubmit'
+    let url = 'http://localhost:9000/requestSubmit'
     let createReqData = new FormData(requestForm)
 
     fetch(url, {
@@ -375,7 +350,7 @@ function buildTable(buildData, data, viewAll) {
  *  Handle approve/deny request functionality
  */
 function handleRequest(requestData, reqAction, data) { 
-    let url = 'http://localhost:9000/crazy/request-update';
+    let url = 'http://localhost:9000/request-update';
     let noteWindow = prompt('Reason for action. (Optional)')
     requestData.status = reqAction
     
