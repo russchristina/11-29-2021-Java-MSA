@@ -1,0 +1,20 @@
+What is Hibernate?
+What is an ORM?
+What is a persistent class?
+What are the interfaces of Hibernate?
+What are the object states of the persistent object? At what point are they triggered?
+Where is Hibernate configured (xml wise)?
+How are objects mapped (xml wise)?
+How is hibernate configured (annotation wise)?
+How are objects mapped (annotation wise)?
+What is the difference between lazy loading and eager fetching? What is the default in hibernate?
+What is the difference between get() and load()?
+What is the difference between save() and persist()?
+What is the difference between merge() and update()?
+What is L1 caching? What is L2 caching?
+What are some L2 caching providers?
+What is the difference between HQL and Criteria?
+Give examples of their syntax (in reference to the previous question).
+How do I perform aggregate functions using criteria?
+How do I create namedQueries? *
+How do I use native SQL in hibernate?

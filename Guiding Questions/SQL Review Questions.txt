@@ -1,0 +1,37 @@
+﻿1. What is SQL?
+2. What is a database management system? A relational database management system?
+3. What is a database?
+4. What are the sublanguages of SQL?
+5. What is multiplicity?
+6. What is cardinality?
+7. What is a candidate key?
+8. What is referential integrity?
+9. What are primary keys? Foreign keys?
+10. What are some of the different constraints?
+11. What is an entity relation diagram?
+12. What are the differences between WHERE vs HAVING?
+13. What are the differences between GROUP BY and ORDER BY?
+14. What does LIKE do?
+15. What is the difference between IN and EXISTS?
+16. How do I use sub queries?
+17. How does BETWEEN work?
+18. What is the order of operations in an SQL statement?
+19. What is the difference between an aggregate function and a scalar function?
+20. What are examples of aggregate and scalar functions?
+21. What are the different joins in SQL?
+22. What are the different set operations in SQL? Which set operations support duplicates?
+23. What is the difference between joins and set operations?
+24. How can I create an alias in SQL?
+25. What does the AS keyword do in a query?
+26. What is a transaction?
+27. What are the properties of a transaction?
+28. What are the different types of reads we can get within transactions?
+29. What are the transaction isolation levels and what do they prevent?
+30. What are dirty reads, non repeatable reads, and phantom reads?
+31. What is normalization?
+32. What are the requirements for different levels of normalization?
+33. What are functions?
+34. What is SQL injection?
+35. What is JDBC?
+36. What are the interfaces of JDBC?
+37. PreparedStatement vs Statement?

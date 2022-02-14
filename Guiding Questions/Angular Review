@@ -1,0 +1,29 @@
+What is Angular?
+What is the purpose of Angular?
+What are some common Angular CLI commands?
+Explain the various files and their purposes within an Angular application.
+What is the purpose of npm and webpack? 
+What is linting?
+What is bundling?
+What is typescript?
+What are the different access modifiers of TS?
+What are the purposes of classes and decorators?
+What are directives?
+What are services?
+What are modules?
+What are pipes?
+What is the purpose of components and HTML templates?
+What is one-way data binding? Two-way data binding?
+How do I perform the different data bindings?
+What is string interpolation?
+What is property binding?
+What is event binding?
+What is routing?
+How do I perform routing?
+What is RxJS?
+How do I send HTTP requests in Angular?
+What is the difference between promises and observables?
+What is the difference between AngularJS and Angular 4+?
+What are the different lifecycle methods that can be used with components?
+What is the purpose of package.json?
+How do I pass state between a parent and a child component?
